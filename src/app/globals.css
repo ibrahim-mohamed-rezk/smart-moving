@@ -1,6 +1,16 @@
 /* fonts */
 
 @import "tailwindcss";
+@import "flag-icons/css/flag-icons.min.css";
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+
 
 
 
