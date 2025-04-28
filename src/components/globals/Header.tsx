@@ -6,6 +6,10 @@ import { Link, routing, usePathname, useRouter } from "@/i18n/routing";
 import { ChevronDown, Check, Menu, X } from "lucide-react";
 import Image from "next/image";
 import logo from "../../../public/logo.png";
+import AuthModal from "../ui/AuthModal";
+// import ForgetPasswordModal from "../ui/ForgetPasswordModal";
+// import { VerifyModal } from "../ui/VerifyModal";
+// import { CreatePasswordModal } from "../ui/CreatePasswordModal";
 
 const flagMap: Record<string, string> = {
   en: "gb",
@@ -17,6 +21,8 @@ export default function Header() {
   const pathname = usePathname();
   const locale = useLocale();
   const [langOpen, setLangOpen] = useState(false);
+  const [authModalType, setAuthModalType] = useState<"login" | "register" | null>(null);
+
   const [menuOpen, setMenuOpen] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
 
@@ -105,8 +111,20 @@ export default function Header() {
         >
           Ratings
         </Link>
-        <button className="text-white border rounded-2xl py-1 px-4 font-['Franklin Gothic Medium'] text-sm">Login</button>
-        <button className="text-white border rounded-2xl py-1 px-4 font-['Franklin Gothic Medium'] text-sm">Register Moving Company</button>
+        <button
+          onClick={() => setAuthModalType("login")}
+          className="text-white border rounded-2xl py-1 px-4 font-['Franklin Gothic Medium'] text-sm"
+        >
+          Login
+        </button>
+
+        <button
+          onClick={() => setAuthModalType("register")}
+          className="text-white border rounded-2xl py-1 px-4 font-['Franklin Gothic Medium'] text-sm"
+        >
+          Register Moving Company
+        </button>
+
       </nav>
 
       {/* Mobile Menu Button */}
@@ -154,6 +172,54 @@ export default function Header() {
           </button>
         </div>
       )}
+
+      {authModalType && (
+//          <CreatePasswordModal
+//         onClose={() => setAuthModalType(null)}
+//         onSave={(newPassword) => {
+//           console.log('Saving new password:', newPassword);
+//           setAuthModalType(null);
+//         }}
+//       />
+
+
+// <VerifyModal
+//           onClose={() => setAuthModalType(null)}
+//           onVerify={(code: string) => {
+//             console.log('Verifying code:', code);
+//             setAuthModalType(null);
+//           }}
+//           onResend={() => {
+//             console.log('Resend code');
+//             // your resend-logic here
+//           }}
+//         />  
+//         <ForgetPasswordModal
+//           onClose={() => setAuthModalType(null)} // This will close the modal
+//           onVerify={(email: string) => {
+//             // Handle the email verification logic
+//             console.log("Verifying email:", email);
+//             setAuthModalType(null); // Close modal after verification
+//           }}
+//         />  
+// {authModalType && (
+//         // <AuthModal type={authModalType} onClose={() => setAuthModalType(null)} />
+//         <ForgetPasswordModal />
+//       )}   
+<AuthModal type={authModalType} onClose={() => setAuthModalType(null)} />
+
+        
+      //   <CreatePasswordModal
+      //   onClose={() => setAuthModalType(null)}
+      //   onSave={(newPassword) => {
+      //     console.log('Saving new password:', newPassword);
+      //     setAuthModalType(null);
+      //   }}
+      // />
+      )}
+
+
+
     </header>
   );
 }
