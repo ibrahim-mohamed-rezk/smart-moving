@@ -1,6 +1,8 @@
 "use client";
 
-const LatestReviews = () => {
+import { ReviewTypes } from "@/libs/types/types";
+
+const LatestReviews = ({ reviews }: { reviews: ReviewTypes[] }) => {
   return (
     <section className="px-[clamp(1rem,5vw,4rem)] pb-[clamp(2rem,6vw,4rem)]">
       <h3 className="text-2xl font-bold mb-4">Latest reviews</h3>
@@ -9,15 +11,15 @@ const LatestReviews = () => {
           id="review-slider"
           className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth"
         >
-          {[1, 2, 3, 4, 5].map((i) => (
+          {reviews.map((review, i) => (
             <div
               key={i}
               className="flex-shrink-0 w-72 bg-white rounded-xl p-4 shadow-[4px_4px_20px_rgba(0,0,0,0.1)]"
             >
               <div className="flex justify-between items-center text-center">
-                <p className="text-sm font-semibold">Gert</p>
+                <p className="text-sm font-semibold">{review.user}</p>
                 <div className="flex items-center gap-1 mt-2">
-                  {[...Array(5)].map((_, index) => (
+                  {[...Array(review.rating)].map((_, index) => (
                     <span key={index}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -32,12 +34,11 @@ const LatestReviews = () => {
                 </div>
               </div>
               <p className="text-sm text-gray-700 mt-1">
-                wrote a review for CR Logistic ApS
-                <br />
-                about a Private Moving task in Næstved
+                {`wrote a review for ${review.company}
+                about ${review.service} service.`}
               </p>
               <p className="text-sm font-semibold mt-4">Review:</p>
-              <p className="text-sm text-gray-700">Absolutely perfect move</p>
+              <p className="text-sm text-gray-700">{review.review}</p>
             </div>
           ))}
         </div>
@@ -65,6 +66,6 @@ const LatestReviews = () => {
       </div>
     </section>
   );
-}
+};
 
-export default LatestReviews
+export default LatestReviews;
