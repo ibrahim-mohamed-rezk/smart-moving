@@ -13,7 +13,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
   return {
     locale,
     messages: (
-      await import(`../messages/${locale.toLocaleLowerCase()}.json`)
+      await import(`./messages/${locale.toLocaleLowerCase()}.json`)
     ).default,
   };
 });
