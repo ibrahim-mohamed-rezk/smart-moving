@@ -6,7 +6,6 @@ import Image from "next/image";
 import { Truck, ChevronRight, Youtube, Facebook } from "lucide-react";
 import {
   FaInstagram,
-  FaYoutube,
   FaXTwitter,
   FaWhatsapp,
   FaSnapchat,
