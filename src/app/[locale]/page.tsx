@@ -8,6 +8,7 @@ import { getData } from "@/libs/axios/server";
 import { ServiceTypes } from "@/libs/types/types";
 import { AxiosHeaders } from "axios";
 
+
 const HomePage = async ({
   params,
 }: {
