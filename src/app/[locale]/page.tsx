@@ -68,7 +68,7 @@ const HomePage = async ({
         <h3 className="text-[clamp(18px,3.333vw,164px)] text-[#192953] capitalize font-normal leading-[100%] tracking-[0] text-center font-['franklin-gothic-heavy'] mb-[clamp(20px,2.083vw,140px)]">
           services of move
         </h3>
-        <div className="flex items-center flex-wrap justify-center gap-[clamp(50px,5.208vw,1100px)] mx-auto">
+        <div className="flex items-center flex-wrap justify-center gap-[clamp(50px,5.208vw,1100px)] mt-[clamp(50px,5.208vw,300px)] mx-auto">
           {services.map((service: ServiceTypes, idx: number) => (
             <div
               key={idx}
