@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import worldCarIcon from "../../../public/worldCarIcon.png";
 import { CompanyTypes } from "@/libs/types/types";
 
 const BestCompanies = ({ companies }: { companies: CompanyTypes[] }) => {
@@ -19,7 +18,7 @@ const BestCompanies = ({ companies }: { companies: CompanyTypes[] }) => {
               className="flex-shrink-0 p-4 w-[clamp(12rem,15vw,15rem)] text-center"
             >
               <Image
-                src={compane.image}
+                src={compane.image || "/worldCarIcon.png"}
                 alt="Company Logo"
                 width={200}
                 height={200}

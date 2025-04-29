@@ -1,12 +1,12 @@
 import Image from "next/image";
 import { MoveRight } from "lucide-react";
-import logo from "../../../public/HeroSection.png";
 import or from "../../../public/OR.png";
 import image from "../../../public/image0.png";
 import BestCompanies from "@/components/home/BestCompanies";
 import LatestReviews from "@/components/home/LatestReviews";
 import { getData } from "@/libs/axios/server";
 import { ServiceTypes } from "@/libs/types/types";
+import { AxiosHeaders } from "axios";
 
 const HomePage = async ({
   params,
@@ -19,9 +19,9 @@ const HomePage = async ({
       const response = await getData(
         "home",
         {},
-        {
+        new AxiosHeaders({
           lang: locale,
-        }
+        })
       );
       return response.data;
     } catch (error) {
@@ -56,7 +56,7 @@ const HomePage = async ({
             </button>
           </div>
           <Image
-            src={hero_section?.image || logo}
+            src={hero_section?.image || "/HeroSection.png"}
             alt="Smart Moving"
             width={700}
             height={400}

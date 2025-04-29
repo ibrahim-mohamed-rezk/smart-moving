@@ -5,7 +5,7 @@ import { useState, useRef, useEffect } from "react";
 import { Link, routing, usePathname, useRouter } from "@/i18n/routing";
 import { ChevronDown, Check, Menu, X } from "lucide-react";
 import Image from "next/image";
-import logo from "../../../public/logo.png";
+import AuthModal from "../ui/AuthModal";
 
 const flagMap: Record<string, string> = {
   en: "gb",
@@ -17,6 +17,10 @@ export default function Header() {
   const pathname = usePathname();
   const locale = useLocale();
   const [langOpen, setLangOpen] = useState(false);
+  const [authModalType, setAuthModalType] = useState<
+    "login" | "register" | null
+  >(null);
+
   const [menuOpen, setMenuOpen] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
 
@@ -41,7 +45,7 @@ export default function Header() {
       <div className="flex items-center gap-4">
         <Link href="/" className="flex items-center">
           <Image
-            src={logo}
+            src={"/logo.png"}
             alt="MySite Logo"
             width={120}
             height={40}
@@ -61,8 +65,11 @@ export default function Header() {
           </button>
 
           <div
-            className={`absolute left-0 mt-2 w-32 border border-gray-200 bg-white bg-opacity-90 backdrop-blur-sm rounded-xl shadow-xl transform origin-top-left transition-all duration-150 ${langOpen ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"
-              }`}
+            className={`absolute left-0 mt-2 w-32 border border-gray-200 bg-white bg-opacity-90 backdrop-blur-sm rounded-xl shadow-xl transform origin-top-left transition-all duration-150 ${
+              langOpen
+                ? "opacity-100 scale-100 pointer-events-auto"
+                : "opacity-0 scale-95 pointer-events-none"
+            }`}
           >
             <ul className="divide-y divide-gray-100">
               {routing.locales.map((l) => (
@@ -73,7 +80,9 @@ export default function Header() {
                   >
                     <span className={`fi fi-${flagMap[l]} mr-2`} />
                     <span className="uppercase text-xs flex-1">{l}</span>
-                    {l === locale && <Check className="w-4 h-4 text-blue-600" />}
+                    {l === locale && (
+                      <Check className="w-4 h-4 text-blue-600" />
+                    )}
                   </button>
                 </li>
               ))}
@@ -105,8 +114,19 @@ export default function Header() {
         >
           Ratings
         </Link>
-        <button className="text-white border rounded-2xl py-1 px-4 font-['Franklin Gothic Medium'] text-sm">Login</button>
-        <button className="text-white border rounded-2xl py-1 px-4 font-['Franklin Gothic Medium'] text-sm">Register Moving Company</button>
+        <button
+          onClick={() => setAuthModalType("login")}
+          className="text-white border rounded-2xl py-1 px-4 font-['Franklin Gothic Medium'] text-sm"
+        >
+          Login
+        </button>
+
+        <button
+          onClick={() => setAuthModalType("register")}
+          className="text-white border rounded-2xl py-1 px-4 font-['Franklin Gothic Medium'] text-sm"
+        >
+          Register Moving Company
+        </button>
       </nav>
 
       {/* Mobile Menu Button */}
@@ -153,6 +173,13 @@ export default function Header() {
             Register Moving Company
           </button>
         </div>
+      )}
+
+      {authModalType && (
+        <AuthModal
+          type={authModalType}
+          onClose={() => setAuthModalType(null)}
+        />
       )}
     </header>
   );
