@@ -7,6 +7,7 @@ import BestCompanies from "@/components/home/BestCompanies";
 import LatestReviews from "@/components/home/LatestReviews";
 import { getData } from "@/libs/axios/server";
 import { ServiceTypes } from "@/libs/types/types";
+import { AxiosHeaders } from "axios";
 
 const HomePage = async ({
   params,
@@ -19,9 +20,9 @@ const HomePage = async ({
       const response = await getData(
         "home",
         {},
-        {
+        new AxiosHeaders({
           lang: locale,
-        }
+        })
       );
       return response.data;
     } catch (error) {

@@ -19,7 +19,7 @@ const BestCompanies = ({ companies }: { companies: CompanyTypes[] }) => {
               className="flex-shrink-0 p-4 w-[clamp(12rem,15vw,15rem)] text-center"
             >
               <Image
-                src={compane.image}
+                src={compane.image || worldCarIcon}
                 alt="Company Logo"
                 width={200}
                 height={200}

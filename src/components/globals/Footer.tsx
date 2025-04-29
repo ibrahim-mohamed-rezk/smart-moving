@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+// import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Truck, ChevronRight, Youtube, Facebook } from "lucide-react";
@@ -16,18 +16,18 @@ import logo from "../../../public/logoFooter.png";
 const tickerItems = ["Safe and Reliable", "Fast and Easy", "Live Support"];
 
 export default function Footer() {
-  const [langOpen, setLangOpen] = useState(false);
-  const langRef = useRef<HTMLDivElement>(null);
+  // const [langOpen, setLangOpen] = useState(false);
+  // const langRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const onClick = (e: MouseEvent) => {
-      if (langRef.current && !langRef.current.contains(e.target as Node)) {
-        setLangOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", onClick);
-    return () => document.removeEventListener("mousedown", onClick);
-  }, []);
+  // useEffect(() => {
+  //   const onClick = (e: MouseEvent) => {
+  //     if (langRef.current && !langRef.current.contains(e.target as Node)) {
+  //       setLangOpen(false);
+  //     }
+  //   };
+  //   document.addEventListener("mousedown", onClick);
+  //   return () => document.removeEventListener("mousedown", onClick);
+  // }, []);
 
   return (
     <footer className="text-black">

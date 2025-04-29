@@ -34,6 +34,7 @@ export default function LoginPage() {
       }
     } catch (error) {
       toast.error(t("NetworkError"));
+      console.error(error);
     } finally {
       setIsLoading(false);
     }

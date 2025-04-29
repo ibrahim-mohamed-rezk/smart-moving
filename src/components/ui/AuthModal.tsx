@@ -7,7 +7,7 @@ import HiddenIcon from "../../../public/aye";
 import Image from "next/image";
 import image0 from "../../../public/image0.png";
 import { postData } from "@/libs/axios/server";
-import axios from "axios";
+import axios, { AxiosHeaders } from "axios";
 import toast from "react-hot-toast";
 
 interface AuthModalProps {
@@ -50,10 +50,14 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
     e.preventDefault();
     if (modalType === "login") {
       try {
-        const response = await postData("customer/login-api", formData, {
-          Authorization: `Bearer token`,
-          "Content-Type": "multipart/form-data",
-        });
+        const response = await postData(
+          "customer/login-api",
+          formData,
+          new AxiosHeaders({
+            Authorization: `Bearer token`,
+            "Content-Type": "multipart/form-data",
+          })
+        );
 
         await axios.post("/api/auth/login", {
           token: response.token,
@@ -76,10 +80,10 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
         const response = await postData(
           "customer/register-api",
           registerformData,
-          {
+          new AxiosHeaders({
             Authorization: `Bearer token`,
             "Content-Type": "multipart/form-data",
-          }
+          })
         );
 
         await axios.post("/api/auth/login", {
@@ -162,12 +166,14 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
               modalType === "login" ? formData.login : registerformData.email
             }
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              modalType === "login"
-                ? setFormData({ ...formData, login: e.target.value })
-                : setRegisterFormData({
-                    ...registerformData,
-                    email: e.target.value,
-                  });
+              if (modalType === "login") {
+                setFormData({ ...formData, login: e.target.value });
+              } else {
+                setRegisterFormData({
+                  ...registerformData,
+                  email: e.target.value,
+                });
+              }
             }}
             className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -197,12 +203,14 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
                   : registerformData.password
               }
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                modalType === "login"
-                  ? setFormData({ ...formData, password: e.target.value })
-                  : setRegisterFormData({
-                      ...registerformData,
-                      password: e.target.value,
-                    });
+                if (modalType === "login") {
+                  setFormData({ ...formData, password: e.target.value });
+                } else {
+                  setRegisterFormData({
+                    ...registerformData,
+                    password: e.target.value,
+                  });
+                }
               }}
               className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
             />

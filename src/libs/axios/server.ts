@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosHeaders } from "axios";
 
 // Create an Axios instance
 const backendServer = axios.create({
@@ -11,8 +11,8 @@ const backendServer = axios.create({
 // Example of a GET request
 export const getData = async (
   endpoint: string,
-  params?: any,
-  headers?: any
+  params?: unknown,
+  headers?: AxiosHeaders
 ) => {
   try {
     const response = await backendServer.get(endpoint, { params, headers });
@@ -24,7 +24,11 @@ export const getData = async (
 };
 
 // Example of a POST request
-export const postData = async (endpoint: string, data: any, headers?: any) => {
+export const postData = async (
+  endpoint: string,
+  data: unknown,
+  headers?: AxiosHeaders
+) => {
   try {
     const response = await backendServer.post(endpoint, data, {
       headers: { ...headers },
