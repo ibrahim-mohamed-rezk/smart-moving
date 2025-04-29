@@ -6,7 +6,10 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["static.vecteezy.com"], // Add the external image domain here
+    domains: [
+      "static.vecteezy.com",
+      "storage.googleapis.com",
+    ], // Add the external image domain here
   },
 };
 
