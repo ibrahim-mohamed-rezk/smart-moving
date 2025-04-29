@@ -1,13 +1,10 @@
 import Image from "next/image";
 import { MoveRight } from "lucide-react";
-import or from "../../../public/OR.png";
-import image from "../../../public/image0.png";
 import BestCompanies from "@/components/home/BestCompanies";
 import LatestReviews from "@/components/home/LatestReviews";
 import { getData } from "@/libs/axios/server";
 import { ServiceTypes } from "@/libs/types/types";
 import { AxiosHeaders } from "axios";
-
 
 const HomePage = async ({
   params,
@@ -131,9 +128,13 @@ const HomePage = async ({
             </ul>
           </div>
           <div className="relative">
-            <Image src={or} alt="Or Section" className="w-full max-h-dvh" />
+            <Image
+              src={"/OR.png"}
+              alt="Or Section"
+              className="w-full max-h-dvh"
+            />
             <div className="absolute bottom-15 hidden lg:flex md:flex  left-0 p-8 border-8 rounded-full border-amber-50 bg-[#0F152F] -translate-x-1/2">
-              <Image src={image} alt="Icon" width={80} height={80} />
+              <Image src={"/image0.png"} alt="Icon" width={80} height={80} />
             </div>
           </div>
         </div>
