@@ -64,16 +64,16 @@ const HomePage = async ({
       </section>
 
       {/* Services Section */}
-      <section className="text-center px-[clamp(1rem,5vw,4rem)] py-[clamp(2rem,6vw,4rem)]">
+      <section className="text-center px-[clamp(5px,3.333vw,564px)] py-[clamp(2rem,6vw,4rem)]">
         <h3 className="text-[clamp(18px,3.333vw,164px)] text-[#192953] capitalize font-normal leading-[100%] tracking-[0] text-center font-['franklin-gothic-heavy'] mb-[clamp(20px,2.083vw,140px)]">
           services of move
         </h3>
-        <div className="flex items-center flex-wrap justify-center gap-[clamp(50px,5.208vw,1100px)] mt-[clamp(50px,5.208vw,300px)] mx-auto">
+        <div className="flex items-center flex-wrap justify-center gap-[clamp(30px,4vw,100px)] mt-[clamp(50px,5.208vw,300px)] mx-auto">
           {services.map((service: ServiceTypes, idx: number) => (
             <div
               key={idx}
               data-property-1="default"
-              className="relative group flex flex-col items-center justify-center w-[clamp(250px,26.042vw,1500px)] h-[clamp(250px,23.438vw,1450px)]"
+              className="relative group flex flex-col items-center justify-center w-[clamp(250px,26.042vw,700px)] h-[clamp(250px,23.438vw,650px)]"
             >
               <div className="w-full h-full px-[clamp(5px,1.667vw,132px)] bg-zinc-100 rounded-2xl shadow-[8px_8px_16px_0px_rgba(0,0,0,0.16)] flex flex-col justify-center items-center gap-[clamp(10px,1.667vw,132px)] transition-all duration-300 hover:bg-[#0E172F]">
                 <div className="self-stretch flex flex-col justify-center items-center gap-3 sm:gap-4">
