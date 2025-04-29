@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { MoveRight } from "lucide-react";
-import logo from "../../../public/HeroSection.png";
 import or from "../../../public/OR.png";
 import image from "../../../public/image0.png";
 import BestCompanies from "@/components/home/BestCompanies";
@@ -57,7 +56,7 @@ const HomePage = async ({
             </button>
           </div>
           <Image
-            src={hero_section?.image || logo}
+            src={hero_section?.image || "/HeroSection.png"}
             alt="Smart Moving"
             width={700}
             height={400}

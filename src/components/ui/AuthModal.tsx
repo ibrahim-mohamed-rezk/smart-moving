@@ -5,7 +5,6 @@ import { FC, useEffect, useRef, useState } from "react";
 import { Eye, X } from "lucide-react";
 import HiddenIcon from "../../../public/aye";
 import Image from "next/image";
-import image0 from "../../../public/image0.png";
 import { postData } from "@/libs/axios/server";
 import axios, { AxiosHeaders } from "axios";
 import toast from "react-hot-toast";
@@ -297,7 +296,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
           `}
         >
           <Image
-            src={image0}
+            src={"/image0.png"}
             alt="Background decoration"
             layout="fill"
             objectFit="cover"
