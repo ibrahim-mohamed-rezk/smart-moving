@@ -40,147 +40,163 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="bg-[#192953] shadow-sm p-4 flex items-center justify-between">
-      {/* Left side: Logo */}
-      <div className="flex items-center gap-4">
-        <Link href="/" className="flex items-center">
-          <Image
-            src={"/logo.png"}
-            alt="MySite Logo"
-            width={120}
-            height={40}
-            className="object-contain"
-          />
-        </Link>
+    <>
+      <header className="bg-gradient-to-r bg-[#192953] sticky top-0 z-50 shadow-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20">
+            {/* Left side: Logo and Language */}
+            <div className="flex items-center gap-6">
+              <Link href="/" className="flex items-center">
+                <Image
+                  src={"/logo.png"}
+                  alt="MySite Logo"
+                  width={130}
+                  height={40}
+                  className="object-contain"
+                />
+              </Link>
 
-        {/* Language Switcher */}
-        <div className="relative" ref={langRef}>
-          <button
-            onClick={() => setLangOpen((o) => !o)}
-            className="flex items-center gap-2 text-white transition px-2 py-1 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-300"
-          >
-            <span className={`fi fi-${flagMap[locale]} mr-1`} />
-            <span className="uppercase font-medium text-xs">{locale}</span>
-            <ChevronDown className="w-4 h-4 text-gray-300" />
-          </button>
+              {/* Language Switcher */}
+              <div className="relative" ref={langRef}>
+                <button
+                  onClick={() => setLangOpen((o) => !o)}
+                  className="flex items-center gap-2 text-white bg-[#263966] hover:bg-[#304680] transition px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
+                >
+                  <span className={`fi fi-${flagMap[locale]} mr-1`} />
+                  <span className="uppercase font-medium text-xs">{locale}</span>
+                  <ChevronDown className="w-4 h-4 text-gray-300" />
+                </button>
 
-          <div
-            className={`absolute left-0 mt-2 w-32 border border-gray-200 bg-white bg-opacity-90 backdrop-blur-sm rounded-xl shadow-xl transform origin-top-left transition-all duration-150 ${
-              langOpen
-                ? "opacity-100 scale-100 pointer-events-auto"
-                : "opacity-0 scale-95 pointer-events-none"
-            }`}
-          >
-            <ul className="divide-y divide-gray-100">
-              {routing.locales.map((l) => (
-                <li key={l}>
-                  <button
-                    onClick={() => changeLanguage(l)}
-                    className="w-full flex items-center px-3 py-2 hover:bg-gray-100 transition-colors"
-                  >
-                    <span className={`fi fi-${flagMap[l]} mr-2`} />
-                    <span className="uppercase text-xs flex-1">{l}</span>
-                    {l === locale && (
-                      <Check className="w-4 h-4 text-blue-600" />
-                    )}
-                  </button>
-                </li>
-              ))}
-            </ul>
+                <div
+                  className={`absolute left-0 mt-2 w-36 border border-gray-200 bg-white bg-opacity-95 backdrop-blur-sm rounded-xl shadow-xl transform origin-top-left transition-all duration-150 ${langOpen
+                    ? "opacity-100 scale-100 pointer-events-auto"
+                    : "opacity-0 scale-95 pointer-events-none"
+                    }`}
+                >
+                  <ul className="divide-y divide-gray-100">
+                    {routing.locales.map((l) => (
+                      <li key={l}>
+                        <button
+                          onClick={() => changeLanguage(l)}
+                          className="w-full flex items-center px-3 py-2 hover:bg-gray-100 transition-colors rounded-xl"
+                        >
+                          <span className={`fi fi-${flagMap[l]} mr-2`} />
+                          <span className="uppercase text-xs flex-1">{l}</span>
+                          {l === locale && (
+                            <Check className="w-4 h-4 text-blue-600" />
+                          )}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Right side: Desktop nav */}
+            <nav className="hidden md:flex items-center gap-6">
+              <Link
+                href="/"
+                locale={locale}
+                className="text-white hover:text-blue-400 text-sm font-medium transition-colors"
+              >
+                Get a quote
+              </Link>
+              <Link
+                href="/protected_route"
+                locale={locale}
+                className="text-white hover:text-blue-400 text-sm font-medium transition-colors"
+              >
+                Search price lists
+              </Link>
+              <Link
+                href="/protected_route"
+                locale={locale}
+                className="text-white hover:text-blue-400 text-sm font-medium transition-colors"
+              >
+                Ratings
+              </Link>
+              <button
+                onClick={() => setAuthModalType("login")}
+                className="text-white bg-transparent border border-white rounded-full py-2 px-9 font-medium text-sm transition-colors"
+              >
+                Login
+              </button>
+
+              <Link href="/RegisterCompany">
+                <button className="text-white border-white rounded-full border py-2 px-4 font-medium text-sm transition-colors">
+                  Register Moving Company
+                </button>
+              </Link>
+            </nav>
+
+            {/* Mobile Menu Button */}
+            <div className="md:hidden flex items-center">
+              <button
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="text-white focus:outline-none focus:ring-2 focus:ring-blue-300 rounded-lg p-1"
+              >
+                {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Right side: Desktop nav */}
-      <nav className="hidden md:flex items-center gap-6">
-        <Link
-          href="/"
-          locale={locale}
-          className="text-white hover:text-blue-400 text-sm font-['Franklin Gothic Medium']"
-        >
-          Get a quote
-        </Link>
-        <Link
-          href="/protected_route"
-          locale={locale}
-          className="text-white hover:text-blue-400 text-sm font-['Franklin Gothic Medium']"
-        >
-          Search price lists
-        </Link>
-        <Link
-          href="/protected_route"
-          locale={locale}
-          className="text-white hover:text-blue-400 text-sm font-['Franklin Gothic Medium']"
-        >
-          Ratings
-        </Link>
-        <button
-          onClick={() => setAuthModalType("login")}
-          className="text-white border rounded-2xl py-1 px-4 font-['Franklin Gothic Medium'] text-sm"
-        >
-          Login
-        </button>
+        {/* Mobile Menu - Outside the container but still in the header */}
+        {menuOpen && (
+          <div className="md:hidden bg-[#192953] shadow-lg border-t border-[#304680]">
+            <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col space-y-4">
+              <Link
+                href="/"
+                locale={locale}
+                className="text-white hover:text-blue-400 font-medium text-base block py-2 px-3 hover:bg-[#263966] rounded-lg transition-colors"
+                onClick={() => setMenuOpen(false)}
+              >
+                Get a quote
+              </Link>
+              <Link
+                href="/protected_route"
+                locale={locale}
+                className="text-white hover:text-blue-400 font-medium text-base block py-2 px-3 hover:bg-[#263966] rounded-lg transition-colors"
+                onClick={() => setMenuOpen(false)}
+              >
+                Search price lists
+              </Link>
+              <Link
+                href="/protected_route"
+                locale={locale}
+                className="text-white hover:text-blue-400 font-medium text-base block py-2 px-3 hover:bg-[#263966] rounded-lg transition-colors"
+                onClick={() => setMenuOpen(false)}
+              >
+                Ratings
+              </Link>
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                <button
+                  onClick={() => {
+                    setAuthModalType("login");
+                    setMenuOpen(false);
+                  }}
+                  className="text-white bg-transparent hover:bg-blue-600 border border-blue-40hover:border-blue-600 rounded-lg py-2 px-4 font-medium text-sm transition-colors w-full sm:w-auto"
+                >
+                  Login
+                </button>
+                <Link href="/RegisterCompany" className="w-full sm:w-auto" onClick={() => setMenuOpen(false)}>
+                  <button className="text-white bg-blue-600 hover:bg-blue-700 rounded-lg py-2 px-4 font-medium text-sm transition-colors w-full">
+                    Register Moving Company
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
 
-        <button
-          onClick={() => setAuthModalType("register")}
-          className="text-white border rounded-2xl py-1 px-4 font-['Franklin Gothic Medium'] text-sm"
-        >
-          Register Moving Company
-        </button>
-      </nav>
-
-      {/* Mobile Menu Button */}
-      <div className="md:hidden flex items-center">
-        <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="text-white focus:outline-none"
-        >
-          {menuOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="absolute top-20 left-0 w-full bg-[#192953] shadow-md flex flex-col items-center gap-4 py-6 md:hidden z-50">
-          <Link
-            href="/"
-            locale={locale}
-            className="text-white hover:text-blue-400 font-['Franklin Gothic Medium'] text-base"
-            onClick={() => setMenuOpen(false)}
-          >
-            Get a quote
-          </Link>
-          <Link
-            href="/protected_route"
-            locale={locale}
-            className="text-white hover:text-blue-400 font-['Franklin Gothic Medium'] text-base"
-            onClick={() => setMenuOpen(false)}
-          >
-            Search price lists
-          </Link>
-          <Link
-            href="/protected_route"
-            locale={locale}
-            className="text-white hover:text-blue-400 font-['Franklin Gothic Medium'] text-base"
-            onClick={() => setMenuOpen(false)}
-          >
-            Ratings
-          </Link>
-          <button className="text-white border rounded-2xl py-2 px-25 font-['Franklin Gothic Medium'] text-base">
-            Login
-          </button>
-          <button className="text-white border rounded-2xl py-2 px-6 font-['Franklin Gothic Medium'] text-base">
-            Register Moving Company
-          </button>
-        </div>
-      )}
-
-      {authModalType && (
-        <AuthModal
-          type={authModalType}
-          onClose={() => setAuthModalType(null)}
-        />
-      )}
-    </header>
+        {authModalType && (
+          <AuthModal
+            type={authModalType}
+            onClose={() => setAuthModalType(null)}
+          />
+        )}
+      </header>
+    </>
   );
 }

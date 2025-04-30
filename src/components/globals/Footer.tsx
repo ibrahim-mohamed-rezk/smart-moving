@@ -16,21 +16,23 @@ const tickerItems = ["Safe and Reliable", "Fast and Easy", "Live Support"];
 export default function Footer() {
   return (
     <footer className="text-black">
-      {/* marquee */}
-      <div className="bg-sky-500 overflow-hidden whitespace-nowrap py-[clamp(0.5rem,1vw,1rem)]">
-        <div className="inline-block animate-marquee">
-          {Array(2)
-            .fill(tickerItems)
-            .flat()
-            .map((txt, i) => (
-              <span
-                key={i}
-                className="inline-flex items-center px-[clamp(1rem,2vw,2rem)]"
-              >
-                <Truck className="w-[clamp(1rem,2vw,1.25rem)] h-[clamp(1rem,2vw,1.25rem)] mr-2" />
-                {txt}
-              </span>
-            ))}
+      {/* Improved infinite marquee */}
+      <div className="bg-sky-500 overflow-hidden py-[clamp(0.5rem,1vw,1rem)]">
+        <div className="ticker-wrapper">
+          <div className="ticker">
+            {Array(6) // Using more repetitions for smoother looping
+              .fill(tickerItems)
+              .flat()
+              .map((txt, i) => (
+                <span
+                  key={i}
+                  className="ticker-item"
+                >
+                  <Truck className="w-[clamp(1rem,2vw,1.25rem)] h-[clamp(1rem,2vw,1.25rem)] mr-2" />
+                  {txt}
+                </span>
+              ))}
+          </div>
         </div>
       </div>
 
@@ -127,16 +129,35 @@ export default function Footer() {
       </div>
 
       <style jsx global>{`
-        @keyframes marquee {
+        .ticker-wrapper {
+          width: 100%;
+          overflow: hidden;
+        }
+        
+        .ticker {
+          display: inline-flex;
+          white-space: nowrap;
+          animation: ticker 30s linear infinite;
+        }
+        
+        .ticker-item {
+          display: inline-flex;
+          align-items: center;
+          padding: 0 clamp(1rem, 2vw, 2rem);
+        }
+        
+        @keyframes ticker {
           0% {
-            transform: translateX(0%);
+            transform: translateX(0);
           }
           100% {
             transform: translateX(-50%);
           }
         }
-        .animate-marquee {
-          animation: marquee 20s linear infinite;
+        
+        /* Pause animation on hover for better accessibility */
+        .ticker-wrapper:hover .ticker {
+          animation-play-state: paused;
         }
       `}</style>
     </footer>
