@@ -10,6 +10,9 @@ const config: Config = {
         'franklin-gothic-heavy': ['Franklin Gothic Heavy', 'sans-serif'],
         'libre-baskerville': ['Libre Baskerville', 'sans-serif'],
       },
+      backgroundImage: {
+        'my-bg': "url('/75d033f9110ecbc423ce79318c6de657ef8e4a66.png')"
+      }
     },
   },
   plugins: [],
