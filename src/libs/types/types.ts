@@ -4,6 +4,7 @@ export interface ServiceTypes {
   title: string;
   description: string;
   image: string;
+  slug: string;
 }
 
 export interface ReviewTypes {

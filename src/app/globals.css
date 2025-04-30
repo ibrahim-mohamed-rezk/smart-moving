@@ -20,7 +20,10 @@
   scrollbar-width: none;
 }
 
-
+.hero-list ul{
+  list-style: disc;
+  list-style-position: inside
+}
 
 
 

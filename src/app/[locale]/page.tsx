@@ -5,6 +5,7 @@ import LatestReviews from "@/components/home/LatestReviews";
 import { getData } from "@/libs/axios/server";
 import { ServiceTypes } from "@/libs/types/types";
 import { AxiosHeaders } from "axios";
+import { Link } from "@/i18n/routing";
 
 const HomePage = async ({
   params,
@@ -31,25 +32,25 @@ const HomePage = async ({
     await feachData();
 
   return (
-    <div className="bg-white">
+    <div className="bg-[#F0F0F0] w-full">
       {/* Hero Section */}
-      <section className="bg-[#0F152F] text-white px-[clamp(1rem,5vw,4rem)] py-[clamp(2rem,6vw,5rem)]">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-[clamp(2rem,5vw,5rem)]">
+      <section className="bg-[#0F152F] max-w-full overflow-hidden text-white px-[clamp(1rem,5vw,4rem)] py-[clamp(2rem,6vw,5rem)]">
+        <div className="px-[clamp(5px,6.333vw,564px)] mx-auto flex flex-col md:flex-row items-center justify-between gap-[clamp(2rem,5vw,5rem)]">
           <div>
             <h2
               dangerouslySetInnerHTML={{ __html: hero_section?.name }}
-              className="text-[clamp(2.5rem,5vw,6rem)] capitalize md:text-4xl font-bold leading-snug font-['franklin-gothic-heavy']"
+              className="text-[clamp(20px,3.333vw,164px)] capitalize font-bold leading-snug font-['franklin-gothic-heavy']"
             />
 
             <p
               dangerouslySetInnerHTML={{
                 __html: hero_section?.description || "",
               }}
-              className="list-disc pl-6 mt-6 space-y-2 text-[clamp(1rem,2vw,1.5rem)] text-gray font-['franklin-gothic-heavy'] font-bold"
+              className="list-disc hero-list pl-6 mt-6 space-y-2 text-[clamp(10px,1.458vw,128px)] text-gray font-['franklin-gothic-heavy'] font-bold"
             />
 
-            <button className="mt-6 inline-flex items-center gap-2 px-6 py-3 font-['libre-baskerville'] bg-[#0E1B4D] text-white text-sm rounded-full hover:bg-[#1c2a63] transition">
-              <MoveRight className="w-4 h-4 " />
+            <button className="mt-6 inline-flex items-center text-[clamp(10px,1.042vw,120px)] gap-[clamp(4px,0.417vw,18px)] px-[clamp(5px,1.25vw,124px)] py-[clamp(4px,0.625vw,112px)] font-['libre-baskerville'] bg-[#0E1B4D] text-white text-sm rounded-full hover:bg-[#1c2a63] transition">
+              <MoveRight className="w-[clamp(5px,0.833vw,106px)] h-[clamp(5px,0.833vw,106px)] " />
               Select your move now
             </button>
           </div>
@@ -58,22 +59,23 @@ const HomePage = async ({
             alt="Smart Moving"
             width={700}
             height={400}
-            className="object-contain max-w-full"
+            className="object-contain w-[clamp(100px,42.448vw,12007px)] h-[clamp(5px,21.458vw,1508px)] max-w-full"
           />
         </div>
       </section>
 
       {/* Services Section */}
-      <section className="text-center px-[clamp(5px,3.333vw,564px)] py-[clamp(2rem,6vw,4rem)]">
+      <section className="text-center py-[clamp(2rem,6vw,4rem)] px-[clamp(5px,8.438vw,1162px)]">
         <h3 className="text-[clamp(18px,3.333vw,164px)] text-[#192953] capitalize font-normal leading-[100%] tracking-[0] text-center font-['franklin-gothic-heavy'] mb-[clamp(20px,2.083vw,140px)]">
           services of move
         </h3>
-        <div className="flex items-center flex-wrap justify-center gap-[clamp(30px,4vw,100px)] mt-[clamp(50px,5.208vw,300px)] mx-auto">
+        <div className="flex items-center flex-wrap justify-center gap-y-[clamp(30px,4vw,100px)] gap-x-[clamp(20px,3vw,100px)] mt-[clamp(50px,5.208vw,300px)] mx-auto">
           {services.map((service: ServiceTypes, idx: number) => (
-            <div
+            <Link
+              href={`/services?service=${service.slug}`}
               key={idx}
               data-property-1="default"
-              className="relative group flex flex-col items-center justify-center w-[clamp(250px,26.042vw,700px)] h-[clamp(250px,23.438vw,650px)]"
+              className="relative group flex flex-col items-center justify-center w-[clamp(250px,22.042vw,700px)] h-[clamp(250px,20.438vw,650px)]"
             >
               <div className="w-full h-full px-[clamp(5px,1.667vw,132px)] bg-zinc-100 rounded-2xl shadow-[8px_8px_16px_0px_rgba(0,0,0,0.16)] flex flex-col justify-center items-center gap-[clamp(10px,1.667vw,132px)] transition-all duration-300 hover:bg-[#0E172F]">
                 <div className="self-stretch flex flex-col justify-center items-center gap-3 sm:gap-4">
@@ -121,7 +123,7 @@ const HomePage = async ({
                   />
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>

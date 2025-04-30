@@ -1,8 +1,10 @@
 {
   "header": {
-    "home": "Home",
-    "logout": "Logout",
-    "protected_route": "Protected Route"
+    "Get a quote":"Get a quote",
+    "Search price lists":"Search price lists",
+    "Ratings":"Ratings",
+    "Login":"Login",
+    "Register Moving Company":"Register Moving Company"
   },
   "auth": {
     "Email": "Email",

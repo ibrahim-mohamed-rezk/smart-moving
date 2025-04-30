@@ -15,7 +15,7 @@ const tickerItems = ["Safe and Reliable", "Fast and Easy", "Live Support"];
 
 export default function Footer() {
   return (
-    <footer className="text-black">
+    <footer className="text-black overflow-hidden max-w-full">
       {/* Improved infinite marquee */}
       <div className="bg-sky-500 overflow-hidden py-[clamp(0.5rem,1vw,1rem)]">
         <div className="ticker-wrapper">
