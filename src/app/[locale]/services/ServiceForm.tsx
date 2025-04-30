@@ -3,6 +3,7 @@
 import { postData } from "@/libs/axios/server";
 import { useState } from "react";
 import { AxiosHeaders } from "axios";
+import toast from "react-hot-toast";
 
 const ServiceForm = () => {
     const [squareMeters, setSquareMeters] = useState<number>();
@@ -23,6 +24,7 @@ const ServiceForm = () => {
       );
       return response.data;
     } catch (error) {
+        toast.error("something went wrong");
       throw error;
     }
   };
@@ -53,8 +55,10 @@ const ServiceForm = () => {
                 FRA address
               </label>
               <input
-                              type="text"
-                              onChange={()=>setFormData(prev => ({}))}
+                type="text"
+                onChange={() =>
+                  setFormData((prev) => ({ ...prev, address: "" }))
+                }
                 className="flex-1 h-11 px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
                 placeholder="Enter origin address"
               />
@@ -246,7 +250,11 @@ const ServiceForm = () => {
 
       {/* Submit Button */}
       <div className="mt-10 flex justify-center lg:justify-end">
-        <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-12 py-3 rounded-lg shadow-md hover:shadow-lg transition-all flex items-center gap-2">
+        <button
+          onClick={handleSubmit}
+          type="submit"
+          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-12 py-3 rounded-lg shadow-md hover:shadow-lg transition-all flex items-center gap-2"
+        >
           Submit Request
           <svg
             xmlns="http://www.w3.org/2000/svg"

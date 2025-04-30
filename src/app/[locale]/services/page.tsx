@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import ServiceForm from "./ServiceForm";
 
-const MovingFormPage = ({ searchParams }: { searchParams: { service?: string } }) => {
+const MovingFormPage = async ({ searchParams }: { searchParams: Promise<{ service: string }> }) => {
   const tabs = [
     { title: "Private Moving", slug: "private-moving" },
     { title: "Company Relocation", slug: "company-relocation" },
@@ -12,6 +12,7 @@ const MovingFormPage = ({ searchParams }: { searchParams: { service?: string } }
     { title: "Storage", slug: "storage" },
     { title: "Taxi", slug: "taxi" },
   ];
+  const { service } = await searchParams;
   
 
   return (
@@ -34,10 +35,11 @@ const MovingFormPage = ({ searchParams }: { searchParams: { service?: string } }
             {/* Tabs Container */}
             <div className="w-full flex items-center justify-center rounded-xl relative translate-y-1/2 bg-white p-[clamp(5px,0.833vw,106px)]">
               {tabs.map((tab) => (
-                <Link href={`/services?service=${tab.slug}`}
+                <Link
+                  href={`/services?service=${tab.slug}`}
                   key={tab.slug}
                   className={`px-[clamp(5px,1.25vw,50px)] font-["libre_baskerville"] py-3 text-[clamp(8px,1.146vw,52px)] font-medium whitespace-nowrap transition-all duration-200 ${
-                    searchParams.service === tab.slug
+                    service === tab.slug
                       ? "bg-blue-600 text-white rounded-lg shadow-md"
                       : "text-black/40 hover:bg-white/20 rounded-lg"
                   }`}
@@ -52,7 +54,6 @@ const MovingFormPage = ({ searchParams }: { searchParams: { service?: string } }
 
       {/* Form Container */}
       <ServiceForm />
-      
     </div>
   );
 };

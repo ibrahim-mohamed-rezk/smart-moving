@@ -65,6 +65,7 @@ export default function Header() {
               <nav className="hidden ms-[clamp(20px,5.0vw,596px)] md:flex items-center gap-6">
                 {navigatons.map((nav) => (
                   <Link
+                    key={nav.href}
                     href={nav.href}
                     locale={locale}
                     className="text-white hover:text-blue-400 font-[400] font-['Libre_Baskerville'] leading-[100%] text-[clamp(12px,0.938vw,30px)] transition-colors"
@@ -153,6 +154,7 @@ export default function Header() {
               {navigatons.map((nav) => (
                 <Link
                   href={nav.href}
+                  key={nav.href}
                   locale={locale}
                   className="text-white hover:text-blue-400 font-medium text-base block py-2 px-3 hover:bg-[#263966] rounded-lg transition-colors"
                 >
