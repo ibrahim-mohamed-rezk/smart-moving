@@ -13,7 +13,7 @@ import sidebgimage from "../../../../public/side.svg";
 import HiddenIcon from "../../../../public/aye";
 import toast from "react-hot-toast";
 import { getData, postData } from "@/libs/axios/server";
-import axios, { AxiosHeaders } from "axios";
+import  { AxiosHeaders } from "axios";
 import { useParams } from "next/navigation";
 import { ServiceTypes } from "@/libs/types/types";
 import { useRouter } from "@/i18n/routing";
