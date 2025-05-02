@@ -120,7 +120,7 @@ export default function Header() {
                 ) : (
                   <button
                     onClick={() => setAuthModalType("login")}
-                    className="text-white bg-transparent border border-white rounded-[clamp(10px,0.833vw,20px)] font-['Libre_Baskerville'] text-[clamp(14px,1.042vw,30px)] font-[400] py-[clamp(5px,0.417vw,8px)] px-[clamp(5px,1.562vw,100px)] text-sm transition-colors"
+                    className="text-white bg-transparent border border-white rounded-[clamp(10px,0.833vw,20px)] font-['Libre_Baskerville'] text-[clamp(14px,1.042vw,20px)] font-[400] py-[clamp(5px,0.417vw,8px)] px-[clamp(5px,1.562vw,300px)] text-sm transition-colors"
                   >
                     {t("Login")}
                   </button>
@@ -155,7 +155,7 @@ export default function Header() {
                   </div>
                 ) : (
                   <Link href="/RegisterCompany">
-                    <button className="text-white border-white rounded-[clamp(10px,0.833vw,25px)] border font-['Libre_Baskerville'] text-[clamp(14px,1.042vw,20px)] font-[400] py-[clamp(5px,0.417vw,8px)] px-[clamp(5px,1.562vw,100px)] text-sm transition-colors">
+                    <button className="text-white border-white rounded-[clamp(10px,0.833vw,20px)] border font-['Libre_Baskerville'] text-[clamp(14px,1.042vw,20px)] font-[400] py-[clamp(5px,0.417vw,8px)] px-[clamp(5px,1.562vw,30px)] text-sm transition-colors">
                       {t("Register Moving Company")}
                     </button>
                   </Link>
