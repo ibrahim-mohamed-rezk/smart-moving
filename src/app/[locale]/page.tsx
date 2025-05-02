@@ -3,9 +3,7 @@ import { MoveRight } from "lucide-react";
 import BestCompanies from "@/components/home/BestCompanies";
 import LatestReviews from "@/components/home/LatestReviews";
 import { getData } from "@/libs/axios/server";
-import { ServiceTypes } from "@/libs/types/types";
 import { AxiosHeaders } from "axios";
-import { Link } from "@/i18n/routing";
 import { getTranslations } from "next-intl/server";
 import MobileServiceSwiper from "@/components/home/MobileServiceSwiper";
 
