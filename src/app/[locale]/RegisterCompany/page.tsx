@@ -12,11 +12,14 @@ import Image from "next/image";
 import sidebgimage from "../../../../public/side.svg";
 import HiddenIcon from "../../../../public/aye";
 import toast from "react-hot-toast";
-import { postData } from "@/libs/axios/server";
-import { AxiosHeaders } from "axios";
+import { getData, postData } from "@/libs/axios/server";
+import axios, { AxiosHeaders } from "axios";
+import { useParams } from "next/navigation";
+import { ServiceTypes } from "@/libs/types/types";
+import { useRouter } from "@/i18n/routing";
 
 interface FormData {
-  firstName: string;
+  first_name: string;
   sur_name: string;
   email: string;
   CVR: string;
@@ -27,13 +30,7 @@ interface FormData {
   postal_code: string;
   city: string;
   contact_person: string;
-  services: {
-    privateMeeting: boolean;
-    customerRetention: boolean;
-    businessConsultation: boolean;
-    storage: boolean;
-    misc: boolean;
-  };
+  services: number[];
 }
 
 interface PasswordRequirements {
@@ -49,7 +46,7 @@ const AccountCreationForm = () => {
   const [showpassword_confirmation, setShowpassword_confirmation] =
     useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [formSuccess, setFormSuccess] = useState(false);
+  const params = useParams<{ locale: string }>();
 
   // Form validation states
   const [validEmail, setValidEmail] = useState<boolean | null>(null);
@@ -57,11 +54,13 @@ const AccountCreationForm = () => {
   const [validPassword, setValidPassword] = useState<boolean | null>(null);
   const [passwordMatch, setPasswordMatch] = useState<boolean | null>(null);
   const [validPhone, setValidPhone] = useState<boolean | null>(null);
-  const [validFirstName, setValidFirstName] = useState<boolean | null>(null);
+  const [validFirst_name, setValidFirst_name] = useState<boolean | null>(null);
   const [validsur_name, setValidsur_name] = useState<boolean | null>(null);
+    const [services, setservices] = useState<ServiceTypes[]>([]);
+    const router = useRouter();
 
   const [formData, setFormData] = useState<FormData>({
-    firstName: "",
+    first_name: "",
     sur_name: "",
     CVR: "",
     email: "",
@@ -72,13 +71,7 @@ const AccountCreationForm = () => {
     postal_code: "",
     contact_person: "",
     city: "",
-    services: {
-      privateMeeting: false,
-      customerRetention: false,
-      businessConsultation: false,
-      storage: false,
-      misc: false,
-    },
+    services: [],
   });
 
   // Password requirements validation
@@ -90,14 +83,34 @@ const AccountCreationForm = () => {
       hasSpecial: false,
     });
 
+  // get services
+  useEffect(() => {
+    const feachData = async () => {
+      try {
+        const response = await getData(
+          "services",
+          {},
+          new AxiosHeaders({
+            lang: params?.locale,
+          })
+        );
+        setservices(response.data);
+      } catch (error) {
+        throw error;
+      }
+    };
+
+    feachData();
+  }, [params?.locale]);
+
   // Validate name fields
   useEffect(() => {
-    if (formData.firstName) {
-      setValidFirstName(formData.firstName.trim() !== "");
+    if (formData.first_name) {
+      setValidFirst_name(formData.first_name.trim() !== "");
     } else {
-      setValidFirstName(null);
+      setValidFirst_name(null);
     }
-  }, [formData.firstName]);
+  }, [formData.first_name]);
 
   useEffect(() => {
     if (formData.sur_name) {
@@ -131,9 +144,10 @@ const AccountCreationForm = () => {
   // Validate phone format
   useEffect(() => {
     if (formData.phone) {
-      // Simple validation for demonstration - adjust based on your requirements
-      const phoneRegex = /^[\d\s()+-]{10,15}$/;
-      setValidPhone(phoneRegex.test(formData.phone.replace(/[^\d]/g, "")));
+      // Validate phone number (only digits, between 8-15 characters)
+      const phoneDigits = formData.phone.replace(/\D/g, "");
+      const phoneRegex = /^\d{8,15}$/;
+      setValidPhone(phoneRegex.test(phoneDigits));
     } else {
       setValidPhone(null);
     }
@@ -171,38 +185,20 @@ const AccountCreationForm = () => {
     }
   }, [formData.password, formData.password_confirmation]);
 
-  // Format phone number as user types
-  const formatPhoneNumber = (value: string): string => {
-    if (!value) return value;
-
-    const phoneNumber = value.replace(/[^\d]/g, "");
-
-    if (phoneNumber.length < 4) return phoneNumber;
-    if (phoneNumber.length < 7) {
-      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
-    }
-    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(
-      3,
-      6
-    )}-${phoneNumber.slice(6, 10)}`;
-  };
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value, type, checked } = e.target;
 
     if (type === "checkbox") {
       setFormData({
         ...formData,
-        services: {
-          ...formData.services,
-          [name]: checked,
-        },
+        services: checked
+          ? [...formData.services, parseInt(name)]
+          : formData.services.filter((id) => id !== parseInt(name)),
       });
     } else if (name === "phone") {
-      const formattedPhone = formatPhoneNumber(value);
       setFormData({
         ...formData,
-        phone: formattedPhone,
+        phone: value,
       });
     } else {
       setFormData({
@@ -214,7 +210,7 @@ const AccountCreationForm = () => {
 
   const canProceedToNextTab = () => {
     const {
-      firstName,
+      first_name,
       sur_name,
       email,
       phone,
@@ -223,7 +219,7 @@ const AccountCreationForm = () => {
     } = formData;
 
     return (
-      firstName.trim() !== "" &&
+      first_name.trim() !== "" &&
       sur_name.trim() !== "" &&
       email.trim() !== "" &&
       validEmail === true &&
@@ -260,13 +256,14 @@ const AccountCreationForm = () => {
     window.scrollTo(0, 0);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (!canSubmitForm()) return;
 
     setIsLoading(true);
 
     try {
-       await postData(
+      const response = await postData(
         "company/register-api",
         formData,
         new AxiosHeaders({
@@ -275,7 +272,17 @@ const AccountCreationForm = () => {
         })
       );
 
-      setFormSuccess(true);
+       await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token: response.token, 
+          user: response.data, 
+        }),
+      });
+        
+      toast.success("Company registered successfully");
+      router.push("/");
     } catch (error) {
       toast.error("something went wrong, please try again.");
       console.error("Error submitting form:", error);
@@ -283,38 +290,6 @@ const AccountCreationForm = () => {
       setIsLoading(false);
     }
   };
-
-  if (formSuccess) {
-    return (
-      <div className="flex min-h-screen bg-gray-50">
-        <div className="hidden md:block md:w-1/3 lg:w-1/4 bg-[#192953] text-white relative">
-          <div className="absolute inset-0">
-            <Image
-              src={sidebgimage}
-              alt="Background"
-              fill
-              style={{ objectFit: "cover", objectPosition: "center" }}
-              priority
-            />
-          </div>
-        </div>
-        <div className="w-full md:w-2/3 lg:w-3/4 flex items-center justify-center p-6">
-          <div className="max-w-lg w-full bg-white p-8 rounded-2xl shadow-lg">
-            <div className="text-center">
-              <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                Account Created Successfully!
-              </h2>
-              <p className="text-gray-600">
-                Thank you for registering with us. You can now access all our
-                services.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="flex min-h-screen bg-gray-50 font-['libre-baskerville']">
@@ -443,7 +418,7 @@ const AccountCreationForm = () => {
                 <div className="flex flex-col sm:flex-row gap-6">
                   <div className="flex-1">
                     <label
-                      htmlFor="firstName"
+                      htmlFor="first_name"
                       className="block text-xl text-bold font-medium text-gray-700 mb-1"
                     >
                       First Name
@@ -451,23 +426,23 @@ const AccountCreationForm = () => {
                     <div className="relative">
                       <input
                         type="text"
-                        id="firstName"
-                        name="firstName"
+                        id="first_name"
+                        name="first_name"
                         placeholder="Enter First Name"
-                        value={formData.firstName}
+                        value={formData.first_name}
                         onChange={handleInputChange}
                         className={`w-full px-4 py-4 border ${
-                          validFirstName === false
+                          validFirst_name === false
                             ? "border-red-500"
-                            : validFirstName === true
+                            : validFirst_name === true
                             ? "border-green-500"
                             : "border-gray-300"
                         } rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all pr-10`}
                         required
                       />
-                      {validFirstName !== null && (
+                      {validFirst_name !== null && (
                         <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                          {validFirstName ? (
+                          {validFirst_name ? (
                             <CheckCircle2 className="w-5 h-5 text-green-500" />
                           ) : (
                             <XCircle className="w-5 h-5 text-red-500" />
@@ -475,7 +450,7 @@ const AccountCreationForm = () => {
                         </div>
                       )}
                     </div>
-                    {validFirstName === false && (
+                    {validFirst_name === false && (
                       <p className="mt-1 text-sm text-red-500">
                         First name is required
                       </p>
@@ -523,7 +498,6 @@ const AccountCreationForm = () => {
                   </div>
                 </div>
 
-               
                 <div>
                   <label
                     htmlFor="email"
@@ -565,7 +539,6 @@ const AccountCreationForm = () => {
                   )}
                 </div>
 
-               
                 <div>
                   <label
                     htmlFor="email"
@@ -605,6 +578,26 @@ const AccountCreationForm = () => {
                       Please enter a valid email address
                     </p>
                   )}
+                </div>
+                <div>
+                  <label
+                    htmlFor="contact_person"
+                    className="blocktext-xl text-bold font-medium text-gray-700 mb-1"
+                  >
+                    contact person
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      id="contact_person"
+                      name="contact_person"
+                      placeholder="Enter contact person"
+                      value={formData.contact_person}
+                      onChange={handleInputChange}
+                      className={`w-full px-4 py-4 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all pr-10`}
+                      required
+                    />
+                  </div>
                 </div>
 
                 <div>
@@ -917,120 +910,30 @@ const AccountCreationForm = () => {
                   </h3>
                   <div className="bg-gray-50 rounded-2xl border border-gray-200 p-1">
                     <div className="grid grid-cols-1 gap-2">
-                      <div
-                        className={`p-3 rounded-2xl flex items-center ${
-                          formData.services.privateMeeting
-                            ? "bg-blue-50 border border-blue-200"
-                            : "hover:bg-gray-100"
-                        }`}
-                      >
-                        <input
-                          type="checkbox"
-                          id="privateMeeting"
-                          name="privateMeeting"
-                          checked={formData.services.privateMeeting}
-                          onChange={handleInputChange}
-                          className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                        />
-                        <label
-                          htmlFor="privateMeeting"
-                          className="ml-3 text-sm font-medium text-gray-700 cursor-pointer w-full"
+                      {services.map((service) => (
+                        <div
+                          className={`p-3 rounded-2xl flex items-center ${
+                            formData.services.includes(service.id)
+                              ? "bg-blue-50 border border-blue-200"
+                              : "hover:bg-gray-100"
+                          }`}
                         >
-                          Private Meeting
-                        </label>
-                      </div>
-
-                      <div
-                        className={`p-3 rounded-2xl flex items-center ${
-                          formData.services.customerRetention
-                            ? "bg-blue-50 border border-blue-200"
-                            : "hover:bg-gray-100"
-                        }`}
-                      >
-                        <input
-                          type="checkbox"
-                          id="customerRetention"
-                          name="customerRetention"
-                          checked={formData.services.customerRetention}
-                          onChange={handleInputChange}
-                          className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                        />
-                        <label
-                          htmlFor="customerRetention"
-                          className="ml-3 text-sm font-medium text-gray-700 cursor-pointer w-full"
-                        >
-                          Customer Retention
-                        </label>
-                      </div>
-
-                      <div
-                        className={`p-3 rounded-2xl flex items-center ${
-                          formData.services.businessConsultation
-                            ? "bg-blue-50 border border-blue-200"
-                            : "hover:bg-gray-100"
-                        }`}
-                      >
-                        <input
-                          type="checkbox"
-                          id="businessConsultation"
-                          name="businessConsultation"
-                          checked={formData.services.businessConsultation}
-                          onChange={handleInputChange}
-                          className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                        />
-                        <label
-                          htmlFor="businessConsultation"
-                          className="ml-3 text-sm font-medium text-gray-700 cursor-pointer w-full"
-                        >
-                          Business consultation (premium-style goods)
-                        </label>
-                      </div>
-
-                      <div
-                        className={`p-3 rounded-2xl flex items-center ${
-                          formData.services.storage
-                            ? "bg-blue-50 border border-blue-200"
-                            : "hover:bg-gray-100"
-                        }`}
-                      >
-                        <input
-                          type="checkbox"
-                          id="storage"
-                          name="storage"
-                          checked={formData.services.storage}
-                          onChange={handleInputChange}
-                          className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                        />
-                        <label
-                          htmlFor="storage"
-                          className="ml-3 text-sm font-medium text-gray-700 cursor-pointer w-full"
-                        >
-                          Storage
-                        </label>
-                      </div>
-
-                      <div
-                        className={`p-3 rounded-2xl flex items-center ${
-                          formData.services.misc
-                            ? "bg-blue-50 border border-blue-200"
-                            : "hover:bg-gray-100"
-                        }`}
-                      >
-                        <input
-                          type="checkbox"
-                          id="misc"
-                          name="misc"
-                          checked={formData.services.misc}
-                          onChange={handleInputChange}
-                          className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                        />
-                        <label
-                          htmlFor="misc"
-                          className="ml-3 text-sm font-medium text-gray-700 cursor-pointer w-full"
-                        >
-                          Misc
-                        </label>
-                      </div>
+                          <input
+                            type="checkbox"
+                            id={service.id + ""}
+                            name={service.id + ""}
+                            checked={formData.services.includes(service.id)}
+                            onChange={handleInputChange}
+                            className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                          />
+                          <label
+                            htmlFor={service.id + ""}
+                            className="ml-3 text-sm font-medium text-gray-700 cursor-pointer w-full"
+                          >
+                            {service.title}
+                          </label>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
