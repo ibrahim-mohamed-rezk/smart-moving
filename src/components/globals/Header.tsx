@@ -65,7 +65,7 @@ export default function Header() {
             <div className="flex w-full items-center gap-6">
               <Link
                 href="/"
-                className="flex items-center w-[clamp(70px,11.458vw,520px)] "
+                className="flex items-center w-[clamp(100px,11.458vw,220px)] "
               >
                 <Image
                   src={"/logo.png"}
@@ -83,7 +83,7 @@ export default function Header() {
                     key={nav.href}
                     href={nav.href}
                     locale={locale}
-                    className="text-white hover:text-blue-400 font-[400] font-['Libre_Baskerville'] leading-[100%] text-[clamp(12px,0.938vw,30px)] transition-colors"
+                    className="text-white hover:text-blue-400 font-[400] font-['Libre_Baskerville'] leading-[100%] text-[clamp(12px,0.938vw,18px)] transition-colors"
                   >
                     {t(nav.name)}
                   </Link>
@@ -120,7 +120,7 @@ export default function Header() {
                 ) : (
                   <button
                     onClick={() => setAuthModalType("login")}
-                    className="text-white bg-transparent border border-white rounded-[clamp(10px,0.833vw,25px)] font-['Libre_Baskerville'] text-[clamp(14px,1.042vw,30px)] font-[400] py-[clamp(5px,0.417vw,8px)] px-[clamp(5px,1.562vw,100px)] text-sm transition-colors"
+                    className="text-white bg-transparent border border-white rounded-[clamp(10px,0.833vw,20px)] font-['Libre_Baskerville'] text-[clamp(14px,1.042vw,30px)] font-[400] py-[clamp(5px,0.417vw,8px)] px-[clamp(5px,1.562vw,100px)] text-sm transition-colors"
                   >
                     {t("Login")}
                   </button>
@@ -155,7 +155,7 @@ export default function Header() {
                   </div>
                 ) : (
                   <Link href="/RegisterCompany">
-                    <button className="text-white border-white rounded-[clamp(10px,0.833vw,25px)] border font-['Libre_Baskerville'] text-[clamp(14px,1.042vw,30px)] font-[400] py-[clamp(5px,0.417vw,8px)] px-[clamp(5px,1.562vw,100px)] text-sm transition-colors">
+                    <button className="text-white border-white rounded-[clamp(10px,0.833vw,25px)] border font-['Libre_Baskerville'] text-[clamp(14px,1.042vw,20px)] font-[400] py-[clamp(5px,0.417vw,8px)] px-[clamp(5px,1.562vw,100px)] text-sm transition-colors">
                       {t("Register Moving Company")}
                     </button>
                   </Link>
@@ -189,7 +189,7 @@ export default function Header() {
                               className="w-full flex items-center px-3 py-2 hover:bg-gray-100 transition-colors rounded-xl"
                             >
                               <span className={`fi fi-${flagMap[l]} mr-2`} />
-                              <span className="capitalize font-[400] font-['Libre_Baskerville'] text-[clamp(12px,0.938vw,30px)] flex-1">
+                              <span className="capitalize font-[400] font-['Libre_Baskerville'] text-[clamp(12px,0.938vw,20px)] flex-1">
                                 {l}
                               </span>
                               {l === locale && (
