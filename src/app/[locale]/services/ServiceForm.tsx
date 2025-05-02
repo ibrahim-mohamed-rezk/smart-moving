@@ -68,8 +68,8 @@ const ServiceForm = ({
               switch (input.type) {
                 case "text":
                   return (
-                    <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
-                      <label className="sm:w-1/3 text-sm font-medium text-gray-700">
+                    <div className="flex flex-col space-y-2 mb-4">
+                      <label className="text-sm font-medium text-gray-700 md:text-base">
                         {input.title}
                       </label>
                       <input
@@ -81,14 +81,15 @@ const ServiceForm = ({
                             [e.target.name]: e.target.value,
                           }))
                         }
-                        className="flex-1 h-11 px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+                        className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                        placeholder={`Enter ${input.title.toLowerCase()}`}
                       />
                     </div>
                   );
                 case "textarea":
                   return (
-                    <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
-                      <label className="sm:w-1/3 text-sm font-medium text-gray-700">
+                    <div className="flex flex-col space-y-2 mb-4">
+                      <label className="text-sm font-medium text-gray-700 md:text-base">
                         {input.title}
                       </label>
                       <textarea
@@ -99,86 +100,106 @@ const ServiceForm = ({
                           }))
                         }
                         name={input.name}
-                        className="flex-1 h-[100px] px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+                        className="w-full p-3 min-h-32 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-y"
+                        placeholder={`Enter ${input.title.toLowerCase()}`}
                       ></textarea>
                     </div>
                   );
                 case "select": {
                   return (
-                    <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
-                      <label className="sm:w-1/3 text-sm font-medium text-gray-700">
+                    <div className="flex flex-col space-y-2 mb-4">
+                      <label className="text-sm font-medium text-gray-700 md:text-base">
                         {input.title}
                       </label>
-                      <select
-                        name={input.name}
-                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            [e.target.name]: e.target.value,
-                          }))
-                        }
-                        className="flex-1 h-11 px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow bg-white"
-                      >
-                        {input.options?.map((option) => {
-                          return (
-                            <option key={option.value} value={option.value}>{option.title}</option>
-                          );
-                        })}
-                      </select>
+                      <div className="relative">
+                        <select
+                          name={input.name}
+                          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                            setFormData((prev) => ({
+                              ...prev,
+                              [e.target.name]: e.target.value,
+                            }))
+                          }
+                          className="w-full p-3 pr-10 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all appearance-none bg-white"
+                        >
+                          {input.options?.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.title}
+                            </option>
+                          ))}
+                        </select>
+                        <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                          <svg
+                            className="w-5 h-5 text-gray-500"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              clipRule="evenodd"
+                            ></path>
+                          </svg>
+                        </div>
+                      </div>
                     </div>
                   );
                 }
                 case "radio": {
                   return (
-                    <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
-                      <label className="sm:w-1/3 text-sm font-medium text-gray-700">
+                    <div className="flex flex-col space-y-2 mb-4">
+                      <label className="text-sm font-medium text-gray-700 md:text-base">
                         {input.title}
                       </label>
-
-                      <div className="flex items-center space-x-6">
-                        {input.options?.map((option) => {
-                          return (
-                            <label key={option.value} className="flex items-center space-x-2 cursor-pointer">
-                              <input
-                                type="radio"
-                                onChange={() =>
-                                  setFormData((prev) => ({
-                                    ...prev,
-                                    [input.name]: option.value,
-                                  }))
-                                }
-                                className="form-radio text-blue-600 h-4 w-4"
-                              />
-                              <span className="text-sm">{option.title}</span>
-                            </label>
-                          );
-                        })}
+                      <div className="flex flex-wrap gap-4">
+                        {input.options?.map((option) => (
+                          <label
+                            key={option.value}
+                            className="flex items-center space-x-2 cursor-pointer"
+                          >
+                            <input
+                              type="radio"
+                              name={input.name}
+                              value={option.value}
+                              onChange={() =>
+                                setFormData((prev) => ({
+                                  ...prev,
+                                  [input.name]: option.value,
+                                }))
+                              }
+                              className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                            />
+                            <span className="text-sm text-gray-700">
+                              {option.title}
+                            </span>
+                          </label>
+                        ))}
                       </div>
                     </div>
                   );
                 }
                 case "range": {
                   return (
-                    <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
-                      <label className="sm:w-1/3 text-sm font-medium text-gray-700">
-                        {input.title}
-                      </label>
-                      <div className="flex-1">
-                        <input
-                          type="range"
-                          min={0}
-                          max={200}
-                          value={squareMeters}
-                          onChange={(e) => setSquareMeters(+e.target.value)}
-                          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                        />
-                        <div className="flex justify-between mt-1">
-                          <span className="text-xs text-gray-500">0 m²</span>
-                          <span className="text-sm font-medium text-blue-600">
-                            {squareMeters} m²
-                          </span>
-                          <span className="text-xs text-gray-500">200 m²</span>
-                        </div>
+                    <div className="flex flex-col space-y-2 mb-4">
+                      <div className="flex justify-between items-center">
+                        <label className="text-sm font-medium text-gray-700 md:text-base">
+                          {input.title}
+                        </label>
+                        <span className="text-sm font-medium text-blue-600">
+                          {squareMeters} m²
+                        </span>
+                      </div>
+                      <input
+                        type="range"
+                        min={0}
+                        max={200}
+                        value={squareMeters}
+                        onChange={(e) => setSquareMeters(+e.target.value)}
+                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                      />
+                      <div className="flex justify-between mt-1">
+                        <span className="text-xs text-gray-500">0 m²</span>
+                        <span className="text-xs text-gray-500">200 m²</span>
                       </div>
                     </div>
                   );
@@ -199,8 +220,8 @@ const ServiceForm = ({
                 switch (input.type) {
                   case "text":
                     return (
-                      <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
-                        <label className="sm:w-1/3 text-sm font-medium text-gray-700">
+                      <div className="flex flex-col space-y-2 mb-4">
+                        <label className="text-sm font-medium text-gray-700 md:text-base">
                           {input.title}
                         </label>
                         <input
@@ -212,14 +233,15 @@ const ServiceForm = ({
                               [e.target.name]: e.target.value,
                             }))
                           }
-                          className="flex-1 h-11 px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+                          className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                          placeholder={`Enter ${input.title.toLowerCase()}`}
                         />
                       </div>
                     );
                   case "textarea":
                     return (
-                      <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
-                        <label className="sm:w-1/3 text-sm font-medium text-gray-700">
+                      <div className="flex flex-col space-y-2 mb-4">
+                        <label className="text-sm font-medium text-gray-700 md:text-base">
                           {input.title}
                         </label>
                         <textarea
@@ -232,90 +254,108 @@ const ServiceForm = ({
                             }))
                           }
                           name={input.name}
-                          className="flex-1 h-[100px] px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+                          className="w-full p-3 min-h-32 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-y"
+                          placeholder={`Enter ${input.title.toLowerCase()}`}
                         ></textarea>
                       </div>
                     );
                   case "select": {
                     return (
-                      <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
-                        <label className="sm:w-1/3 text-sm font-medium text-gray-700">
+                      <div className="flex flex-col space-y-2 mb-4">
+                        <label className="text-sm font-medium text-gray-700 md:text-base">
                           {input.title}
                         </label>
-                        <select
-                          name={input.name}
-                          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                            setFormData((prev) => ({
-                              ...prev,
-                              [e.target.name]: e.target.value,
-                            }))
-                          }
-                          className="flex-1 h-11 px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow bg-white"
-                        >
-                          {input.options?.map((option) => {
-                            return (
+                        <div className="relative">
+                          <select
+                            name={input.name}
+                            onChange={(
+                              e: React.ChangeEvent<HTMLSelectElement>
+                            ) =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                [e.target.name]: e.target.value,
+                              }))
+                            }
+                            className="w-full p-3 pr-10 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all appearance-none bg-white"
+                          >
+                            {input.options?.map((option) => (
                               <option key={option.value} value={option.value}>
                                 {option.title}
                               </option>
-                            );
-                          })}
-                        </select>
+                            ))}
+                          </select>
+                          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                            <svg
+                              className="w-5 h-5 text-gray-500"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                clipRule="evenodd"
+                              ></path>
+                            </svg>
+                          </div>
+                        </div>
                       </div>
                     );
                   }
                   case "radio": {
                     return (
-                      <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
-                        <label className="sm:w-1/3 text-sm font-medium text-gray-700">
+                      <div className="flex flex-col space-y-2 mb-4">
+                        <label className="text-sm font-medium text-gray-700 md:text-base">
                           {input.title}
                         </label>
-
-                        <div className="flex items-center space-x-6">
-                          {input.options?.map((option) => {
-                            return (
-                              <label key={option.value} className="flex items-center space-x-2 cursor-pointer">
-                                <input
-                                  type="radio"
-                                  onChange={() =>
-                                    setFormData((prev) => ({
-                                      ...prev,
-                                      [input.name]: option.value,
-                                    }))
-                                  }
-                                  className="form-radio text-[#192953] h-4 w-4"
-                                />
-                                <span className="text-sm">{option.title}</span>
-                              </label>
-                            );
-                          })}
+                        <div className="flex flex-wrap gap-4">
+                          {input.options?.map((option) => (
+                            <label
+                              key={option.value}
+                              className="flex items-center space-x-2 cursor-pointer"
+                            >
+                              <input
+                                type="radio"
+                                name={input.name}
+                                value={option.value}
+                                onChange={() =>
+                                  setFormData((prev) => ({
+                                    ...prev,
+                                    [input.name]: option.value,
+                                  }))
+                                }
+                                className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                              />
+                              <span className="text-sm text-gray-700">
+                                {option.title}
+                              </span>
+                            </label>
+                          ))}
                         </div>
                       </div>
                     );
                   }
                   case "range": {
                     return (
-                      <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
-                        <label className="sm:w-1/3 text-sm font-medium text-gray-700">
-                          {input.title}
-                        </label>
-                        <div className="flex-1">
-                          <input
-                            type="range"
-                            min={0}
-                            max={200}
-                            value={squareMeters}
-                            onChange={(e) => setSquareMeters(+e.target.value)}
-                            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                          />
-                          <div className="flex justify-between mt-1">
-                            <span className="text-xs text-gray-500">0 m²</span>
-                            <span className="text-sm font-medium text-blue-600">
-                              {squareMeters} m²
-                            </span>
-                            <span className="text-xs text-gray-500">
-                              200 m²
-                            </span>
-                          </div>
+                      <div className="flex flex-col space-y-2 mb-4">
+                        <div className="flex justify-between items-center">
+                          <label className="text-sm font-medium text-gray-700 md:text-base">
+                            {input.title}
+                          </label>
+                          <span className="text-sm font-medium text-blue-600">
+                            {squareMeters} m²
+                          </span>
+                        </div>
+                        <input
+                          type="range"
+                          min={0}
+                          max={200}
+                          value={squareMeters}
+                          onChange={(e) => setSquareMeters(+e.target.value)}
+                          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                        />
+                        <div className="flex justify-between mt-1">
+                          <span className="text-xs text-gray-500">0 m²</span>
+                          <span className="text-xs text-gray-500">200 m²</span>
                         </div>
                       </div>
                     );
