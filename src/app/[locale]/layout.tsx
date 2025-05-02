@@ -7,6 +7,9 @@ import { ClientToaster } from "@/components/ui/ClientToaster";
 import Header from "@/components/globals/Header";
 import Footer from "@/components/globals/Footer";
 import "../globals.css";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 export const metadata: Metadata = {
   title: "Smart Moving",
