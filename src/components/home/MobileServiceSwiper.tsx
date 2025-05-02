@@ -70,7 +70,7 @@ const ServiceCard = ({ service, idx }:{ service: ServiceTypes, idx: number}) => 
       href={`/services?service=${service.slug}&service_id=${service.id}`}
       key={idx}
       data-property-1="default"
-      className="relative group flex flex-col items-center justify-center w-[clamp(210px,22.042vw,450px)] h-[clamp(200px,20.438vw,400px)]"
+      className="relative group flex flex-col items-center justify-center w-[clamp(210px,22.042vw,450px)] h-[clamp(250px,20.438vw,400px)]"
     >
       <div className="w-full h-full px-[clamp(5px,1.667vw,132px)] bg-zinc-100 rounded-2xl shadow-[8px_8px_16px_0px_rgba(0,0,0,0.16)] flex flex-col justify-center items-center gap-[clamp(10px,1.667vw,32px)] transition-all duration-500 ease-in-out group-hover:bg-[#0E172F] group-hover:scale-105 group-hover:shadow-[0px_10px_30px_0px_rgba(0,0,0,0.3)]">
         <div className="self-stretch flex flex-col justify-center items-center gap-3 sm:gap-4">
