@@ -266,7 +266,7 @@ const AccountCreationForm = () => {
     setIsLoading(true);
 
     try {
-      const response = await postData(
+       await postData(
         "company/register-api",
         formData,
         new AxiosHeaders({
