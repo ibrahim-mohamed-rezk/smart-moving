@@ -167,7 +167,7 @@ const ServiceForm = ({
                                   [input.name]: option.value,
                                 }))
                               }
-                              className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                              className="w-4 h-4 text-[#192953] border-gray-300 focus:ring-blue-500"
                             />
                             <span className="text-sm text-gray-700">
                               {option.title}
@@ -185,7 +185,7 @@ const ServiceForm = ({
                         <label className="text-sm font-medium text-gray-700 md:text-base">
                           {input.title}
                         </label>
-                        <span className="text-sm font-medium text-blue-600">
+                        <span className="text-sm font-medium text-[#192953]">
                           {squareMeters} m²
                         </span>
                       </div>
@@ -195,7 +195,7 @@ const ServiceForm = ({
                         max={200}
                         value={squareMeters}
                         onChange={(e) => setSquareMeters(+e.target.value)}
-                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#192953]"
                       />
                       <div className="flex justify-between mt-1">
                         <span className="text-xs text-gray-500">0 m²</span>
@@ -323,7 +323,7 @@ const ServiceForm = ({
                                     [input.name]: option.value,
                                   }))
                                 }
-                                className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                                className="w-4 h-4 text-[#192953] border-gray-300 focus:ring-blue-500"
                               />
                               <span className="text-sm text-gray-700">
                                 {option.title}
@@ -341,7 +341,7 @@ const ServiceForm = ({
                           <label className="text-sm font-medium text-gray-700 md:text-base">
                             {input.title}
                           </label>
-                          <span className="text-sm font-medium text-blue-600">
+                          <span className="text-sm font-medium text-[#192953]">
                             {squareMeters} m²
                           </span>
                         </div>
@@ -351,7 +351,7 @@ const ServiceForm = ({
                           max={200}
                           value={squareMeters}
                           onChange={(e) => setSquareMeters(+e.target.value)}
-                          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#192953]"
                         />
                         <div className="flex justify-between mt-1">
                           <span className="text-xs text-gray-500">0 m²</span>
