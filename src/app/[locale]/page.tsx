@@ -6,6 +6,7 @@ import { getData } from "@/libs/axios/server";
 import { ServiceTypes } from "@/libs/types/types";
 import { AxiosHeaders } from "axios";
 import { Link } from "@/i18n/routing";
+import { getTranslations } from "next-intl/server";
 
 const HomePage = async ({
   params,
@@ -13,6 +14,7 @@ const HomePage = async ({
   params: Promise<{ locale: string }>;
 }) => {
   const { locale } = await params;
+  const t = await getTranslations("home");
   const feachData = async () => {
     try {
       const response = await getData(
@@ -35,22 +37,22 @@ const HomePage = async ({
     <div className="bg-[#F0F0F0] w-full">
       {/* Hero Section */}
       <section className="bg-[#0F152F] max-w-full overflow-hidden text-white px-[clamp(1rem,5vw,4rem)] py-[clamp(2rem,6vw,5rem)]">
-        <div className="px-[clamp(5px,6.333vw,564px)] mx-auto flex flex-col md:flex-row items-center justify-between gap-[clamp(2rem,5vw,5rem)]">
+        <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-[clamp(2rem,5vw,5rem)]">
           <div>
             <h2
               dangerouslySetInnerHTML={{ __html: hero_section?.name }}
-              className="text-[clamp(20px,3.333vw,164px)] capitalize font-bold leading-snug font-['franklin-gothic-heavy']"
+              className="text-[clamp(25px,3.333vw,164px)] capitalize font-bold leading-snug font-['franklin-gothic-heavy']"
             />
 
             <p
               dangerouslySetInnerHTML={{
                 __html: hero_section?.description || "",
               }}
-              className="list-disc hero-list pl-6 mt-6 space-y-2 text-[clamp(10px,1.458vw,128px)] text-gray font-['franklin-gothic-heavy'] font-bold"
+              className="list-disc hero-list pl-6 mt-6 space-y-2 text-[clamp(18px,1.458vw,128px)] text-gray font-['franklin-gothic-heavy'] font-bold"
             />
 
-            <button className="mt-6 inline-flex items-center text-[clamp(10px,1.042vw,120px)] gap-[clamp(4px,0.417vw,18px)] px-[clamp(5px,1.25vw,124px)] py-[clamp(4px,0.625vw,112px)] font-['libre-baskerville'] bg-[#0E1B4D] text-white text-sm rounded-full hover:bg-[#1c2a63] transition">
-              <MoveRight className="w-[clamp(5px,0.833vw,106px)] h-[clamp(5px,0.833vw,106px)] " />
+            <button className="mt-6 inline-flex items-center text-[clamp(18px,1.042vw,120px)] gap-[clamp(4px,0.417vw,18px)] px-[clamp(5px,1.25vw,124px)] py-[clamp(4px,0.625vw,112px)] font-['libre-baskerville'] bg-[#0E1B4D] text-white text-sm rounded-full hover:bg-[#1c2a63] transition">
+              <MoveRight className="w-[clamp(15px,0.833vw,106px)] h-[clamp(15px,0.833vw,106px)] " />
               Select your move now
             </button>
           </div>
@@ -59,23 +61,23 @@ const HomePage = async ({
             alt="Smart Moving"
             width={700}
             height={400}
-            className="object-contain w-[clamp(100px,42.448vw,12007px)] h-[clamp(5px,21.458vw,1508px)] max-w-full"
+            className="object-contain w-[clamp(300px,42.448vw,12007px)] h-[clamp(270px,21.458vw,1508px)]"
           />
         </div>
       </section>
 
       {/* Services Section */}
-      <section className="text-center py-[clamp(2rem,6vw,4rem)] px-[clamp(5px,8.438vw,1162px)]">
+      <section className="text-center py-[clamp(2rem,6vw,4rem)] container mx-auto">
         <h3 className="text-[clamp(18px,3.333vw,164px)] text-[#192953] capitalize font-normal leading-[100%] tracking-[0] text-center font-['franklin-gothic-heavy'] mb-[clamp(20px,2.083vw,140px)]">
           services of move
         </h3>
-        <div className="flex items-center flex-wrap justify-center gap-y-[clamp(30px,4vw,100px)] gap-x-[clamp(20px,3vw,100px)] mt-[clamp(50px,5.208vw,300px)] mx-auto">
+        <div className="flex items-center flex-wrap justify-center gap-y-[clamp(30px,4vw,100px)] gap-x-[clamp(20px,2vw,100px)] mt-[clamp(50px,5.208vw,300px)] mx-auto">
           {services.map((service: ServiceTypes, idx: number) => (
             <Link
-              href={`/services?service=${service.slug}`}
+              href={`/services?service=${service.slug}&service_id=${service.id}`}
               key={idx}
               data-property-1="default"
-              className="relative group flex flex-col items-center justify-center w-[clamp(250px,22.042vw,700px)] h-[clamp(250px,20.438vw,650px)]"
+              className="relative group flex flex-col items-center justify-center w-[clamp(250px,22.042vw,500px)] h-[clamp(250px,20.438vw,450px)]"
             >
               <div className="w-full h-full px-[clamp(5px,1.667vw,132px)] bg-zinc-100 rounded-2xl shadow-[8px_8px_16px_0px_rgba(0,0,0,0.16)] flex flex-col justify-center items-center gap-[clamp(10px,1.667vw,132px)] transition-all duration-300 hover:bg-[#0E172F]">
                 <div className="self-stretch flex flex-col justify-center items-center gap-3 sm:gap-4">
@@ -129,24 +131,71 @@ const HomePage = async ({
       </section>
 
       {/* About Section */}
-      <section className="bg-[#F3F8FF] py-[clamp(2rem,6vw,5rem)] px-[clamp(1rem,5vw,4rem)]">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-          <div>
-            <h3 className="text-3xl capitalize font-bold mb-4">
-              {about_us.title}
+      <section className="bg-[#F3F8FF] px-[10px] py-[clamp(10px,2.5vw,48px)] w-full mt-[clamp(90px,10.417vw,200px)]">
+        <div className="container mx-auto flex flex-col sm:flex-row justify-between gap-[clamp(20px,4.167vw,80px)] items-start">
+          <div className="order-2 sm:oreder-1">
+            <h3 className="text-[clamp(14px,3.333vw,64px)] relative text-[#192953] capitalize font-bold mb-4">
+              <span className="z-1 relative">{t("about_us.title")}</span>
+              <span className="absolute flex items-center justify-center -start-[clamp(10px,1.562vw,30px)] z-0 top-1/2 ">
+                <svg
+                  className="w-[clamp(20px,4.635vw,89px)] h-[clamp(20px,4.635vw,89px)]"
+                  viewBox="0 0 89 89"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M48.2083 81.5834C45.1741 81.5834 42.2757 80.3181 36.4785 77.7876C29.7124 74.8343 24.5326 72.5733 20.939 70.4584H7.41663M48.2083 81.5834C51.2425 81.5834 54.1409 80.3181 59.9381 77.7876C74.3684 71.489 81.5833 68.3395 81.5833 63.0417V24.1042M48.2083 81.5834V40.7917M14.8333 24.1042V35.2292"
+                    stroke="#93BD5F"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M34.5837 35.9389L23.7509 30.6971C17.8059 27.8204 14.8334 26.382 14.8334 24.1042C14.8334 21.8265 17.8059 20.3881 23.7509 17.5114L34.5837 12.2695C41.2693 9.03436 44.6124 7.41675 48.2084 7.41675C51.8043 7.41675 55.1474 9.03432 61.8332 12.2695L72.6659 17.5114C78.6108 20.3881 81.5834 21.8265 81.5834 24.1042C81.5834 26.382 78.6108 27.8204 72.6659 30.6971L61.8332 35.9389C55.1474 39.1742 51.8043 40.7917 48.2084 40.7917C44.6124 40.7917 41.2693 39.1742 34.5837 35.9389Z"
+                    stroke="#93BD5F"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M7.41663 48.2083H18.5416"
+                    stroke="#93BD5F"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M7.41663 59.3333H18.5416"
+                    stroke="#93BD5F"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
             </h3>
             <p
               dangerouslySetInnerHTML={{ __html: about_us.description }}
-              className="text-base text-[#7FB63D] mb-4"
+              className="text-base text-[#7FB63D] my-[clamp(10px,2.604vw,50px)]"
             />
-            <ul className="text-base space-y-4 text-[#7FB63D]">
+
+            <h3 className="text-[clamp(18px,1.875vw,36px)] relative text-[#7FB63D] capitalize font-bold">
+              {t("about_us.Why choose us")}
+            </h3>
+
+            <ul className=" flex flex-col mt-[10px]  gap-[clamp(8px,0.833vw,16px)] ps-[clamp(10px,1.562vw,30px)] text-[#7FB63D]">
               {Array.isArray(about_us.keywords) ? (
                 about_us.keywords.map((text: string, idx: number) => (
-                  <li key={idx} className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-[#7FB63D] text-white flex items-center justify-center font-bold text-sm">
+                  <li
+                    key={idx}
+                    className="flex items-center gap-[clamp(5px,0.625vw,12px)]"
+                  >
+                    <div className="w-[clamp(25px,3.333vw,64px)] h-[clamp(25px,3.333vw,64px)] rounded-full bg-[#7FB63D] text-white flex items-center justify-center font-bold text-[clamp(18px,1.667vw,32px)] ">
                       {idx + 1}
                     </div>
-                    <span>{text}</span>
+                    <span className="text-[clamp(16px,1.458vw,28px)] ">
+                      {text}
+                    </span>
                   </li>
                 ))
               ) : (
@@ -159,7 +208,7 @@ const HomePage = async ({
               )}
             </ul>
           </div>
-          <div className="relative">
+          <div className="relative order-1 sm:order-2 w-[80%] mx-auto  sm:w-[clamp(200px,30.625vw,588px)] -mt-[clamp(100px,10.515vw,175px)]">
             <Image
               src={"/OR.png"}
               alt="Or Section"
@@ -167,12 +216,12 @@ const HomePage = async ({
               height={400}
               className="w-full max-h-dvh"
             />
-            <div className="absolute bottom-15 hidden lg:flex md:flex  left-0 p-8 border-8 rounded-full border-amber-50 bg-[#0F152F] -translate-x-1/2">
+            <div className="absolute bottom-15 hidden lg:flex md:flex left-0 p-8 border-8 rounded-full border-amber-50 bg-[#0F152F] -translate-x-1/2">
               <Image src={"/image0.png"} alt="Icon" width={80} height={80} />
             </div>
           </div>
         </div>
-        <p className="text-base mt-6 text-[#7FB63D] font-bold text-center w-full">
+        <p className="text-[clamp(16px,1.875vw,36px)] py-3 container mx-auto text-[#7FB63D] font-bold text-start w-full">
           Let us handle the heavy lifting - you focus on the excitement of your
           new beginning!
         </p>

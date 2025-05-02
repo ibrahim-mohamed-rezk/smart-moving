@@ -33,3 +33,22 @@ export interface CompanyTypes {
   services: ServiceTypes[];
   reviews: ReviewTypes[];
 }
+
+export interface ServiceInput {
+  title: string;
+  name: string;
+  type: string;
+  options?: { title: string; value: string }[];
+}
+
+export interface ServiceFormData {
+  isDivided: boolean;
+  firstPart?: {
+    title: string;
+  },
+  secondPart?: {
+    title: string;
+  }
+  out_address?: ServiceInput[];
+  moving_address?: ServiceInput[];
+}

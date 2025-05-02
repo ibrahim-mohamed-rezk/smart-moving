@@ -26,6 +26,10 @@
   },
   "home": {
     "welcome": "Welcome to Smart Moving!",
-    "title": "Get 3 free quotes for your move"
+    "title": "Get 3 free quotes for your move",
+    "about_us":{
+      "title": "About Us",
+      "Why choose us": "Why choose us?"
+    }
   }
 }

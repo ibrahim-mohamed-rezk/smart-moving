@@ -3,17 +3,35 @@
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import ServiceForm from "./ServiceForm";
+import { cookies } from "next/headers";
+import { getData } from "@/libs/axios/server";
+import { AxiosHeaders } from "axios";
+import { ServiceTypes } from "@/libs/types/types";
 
-const MovingFormPage = async ({ searchParams }: { searchParams: Promise<{ service: string }> }) => {
-  const tabs = [
-    { title: "Private Moving", slug: "private-moving" },
-    { title: "Company Relocation", slug: "company-relocation" },
-    { title: "Moving Inventory Goods", slug: "moving-inventory-goods" },
-    { title: "Storage", slug: "storage" },
-    { title: "Taxi", slug: "taxi" },
-  ];
-  const { service } = await searchParams;
-  
+const MovingFormPage = async ({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ service: string, service_id: string }>;
+}) => {
+  const { service, service_id } = await searchParams;
+  const token = (await cookies()).get("token")?.value;
+  const { locale } = await params;
+
+
+  const feachData = async () => {
+    try {
+      const response = await getData('services', {}, new AxiosHeaders({
+        lang: locale,
+      }));
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+  const tabs = await feachData()
+
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
@@ -34,9 +52,9 @@ const MovingFormPage = async ({ searchParams }: { searchParams: Promise<{ servic
 
             {/* Tabs Container */}
             <div className="w-full flex items-center justify-center rounded-xl relative translate-y-1/2 bg-white p-[clamp(5px,0.833vw,106px)]">
-              {tabs.map((tab) => (
+              {tabs.map((tab: ServiceTypes) => (
                 <Link
-                  href={`/services?service=${tab.slug}`}
+                  href={`/services?service=${tab.slug}&service_id=${tab.id}`}
                   key={tab.slug}
                   className={`px-[clamp(5px,1.25vw,50px)] font-["libre_baskerville"] py-3 text-[clamp(8px,1.146vw,52px)] font-medium whitespace-nowrap transition-all duration-200 ${
                     service === tab.slug
@@ -53,7 +71,7 @@ const MovingFormPage = async ({ searchParams }: { searchParams: Promise<{ servic
       </div>
 
       {/* Form Container */}
-      <ServiceForm />
+      <ServiceForm token={token} service={service} service_id={service_id} />
     </div>
   );
 };

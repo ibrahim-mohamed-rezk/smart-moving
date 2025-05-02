@@ -5,11 +5,13 @@ import { ReviewTypes } from "@/libs/types/types";
 const LatestReviews = ({ reviews }: { reviews: ReviewTypes[] }) => {
   return (
     <section className="px-[clamp(1rem,5vw,4rem)] pb-[clamp(2rem,6vw,4rem)]">
-      <h3 className="text-2xl font-bold mb-4">Latest reviews</h3>
+      <h3 className="text-[clamp(14px,3.333vw,64px)] text-[#192953] w-full text-center font-bold mb-4">
+        Latest reviews
+      </h3>
       <div className="relative">
         <div
           id="review-slider"
-          className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth"
+          className="flex gap-6 items-center justify-center overflow-x-auto scrollbar-hide scroll-smooth"
         >
           {reviews.map((review, i) => (
             <div

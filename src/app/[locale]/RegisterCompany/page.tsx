@@ -16,6 +16,7 @@ interface FormData {
     firstName: string;
     lastName: string;
     email: string;
+    CVR: string;
     phone: string;
     password: string;
     confirmPassword: string;
@@ -56,6 +57,7 @@ const AccountCreationForm = () => {
     const [formData, setFormData] = useState<FormData>({
         firstName: '',
         lastName: '',
+        CVR: '',
         email: '',
         phone: '',
         password: '',
@@ -428,6 +430,21 @@ const AccountCreationForm = () => {
                                 </div>
 
                                 <div>
+                                    <label htmlFor="email" className="blocktext-xl text-bold font-medium text-gray-700 mb-1">CVR</label>
+                                    <div className="relative">
+                                        <input
+                                            type="text"
+                                            id="CVR"
+                                            name="CVR"
+                                            placeholder="Enter CVR"
+                                            value={formData.CVR}
+                                            onChange={handleInputChange}
+                                            className={`w-full px-4 py-4 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all pr-10`}
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div>
                                     <label htmlFor="email" className="blocktext-xl text-bold font-medium text-gray-700 mb-1">Email</label>
                                     <div className="relative">
                                         <input
@@ -512,7 +529,7 @@ const AccountCreationForm = () => {
                                     </div>
 
                                     {formData.password && (
-                                        <div className="mt-3 bg-gray-50 p-3 rounded-full border border-gray-200">
+                                        <div className="mt-3 bg-gray-50 p-3">
                                             <h4 className="text-sm font-medium mb-2 flex items-center">
                                                 <AlertTriangle size={16} className="mr-2 text-amber-500" />
                                                 Password Requirements
