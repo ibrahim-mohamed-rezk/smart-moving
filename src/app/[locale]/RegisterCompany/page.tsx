@@ -911,7 +911,8 @@ const AccountCreationForm = () => {
                   <div className="bg-gray-50 rounded-2xl border border-gray-200 p-1">
                     <div className="grid grid-cols-1 gap-2">
                       {services.map((service) => (
-                        <div
+                          <div
+                          key={service.id}
                           className={`p-3 rounded-2xl flex items-center ${
                             formData.services.includes(service.id)
                               ? "bg-blue-50 border border-blue-200"
