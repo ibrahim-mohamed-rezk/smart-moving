@@ -282,7 +282,7 @@ const ServiceForm = ({
                                       [input.name]: option.value,
                                     }))
                                   }
-                                  className="form-radio text-blue-600 h-4 w-4"
+                                  className="form-radio text-[#192953] h-4 w-4"
                                 />
                                 <span className="text-sm">{option.title}</span>
                               </label>

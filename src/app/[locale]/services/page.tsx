@@ -51,14 +51,14 @@ const MovingFormPage = async ({
             </h1>
 
             {/* Tabs Container */}
-            <div className="w-full flex items-center justify-center rounded-xl relative translate-y-1/2 bg-white p-[clamp(5px,0.833vw,106px)]">
+            <div className="w-full shadow-[2px_4px_8px_1px_rgba(0,0,0,0.08)] flex items-center justify-center rounded-xl relative translate-y-1/2 bg-white p-[clamp(5px,0.833vw,106px)]">
               {tabs.map((tab: ServiceTypes) => (
                 <Link
                   href={`/services?service=${tab.slug}&service_id=${tab.id}`}
                   key={tab.slug}
                   className={`px-[clamp(5px,1.25vw,50px)] font-["libre_baskerville"] py-3 text-[clamp(8px,1.146vw,52px)] font-medium whitespace-nowrap transition-all duration-200 ${
                     service === tab.slug
-                      ? "bg-blue-600 text-white rounded-lg shadow-md"
+                      ? "bg-[#192953] text-white rounded-lg shadow-md"
                       : "text-black/40 hover:bg-white/20 rounded-lg"
                   }`}
                 >

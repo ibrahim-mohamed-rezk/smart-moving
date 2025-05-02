@@ -61,7 +61,7 @@ const HomePage = async ({
             alt="Smart Moving"
             width={700}
             height={400}
-            className="object-contain w-[clamp(300px,42.448vw,12007px)] h-[clamp(270px,21.458vw,1508px)]"
+            className="object-contain w-[clamp(300px,42.448vw,1007px)] h-[clamp(270px,21.458vw,508px)]"
           />
         </div>
       </section>
