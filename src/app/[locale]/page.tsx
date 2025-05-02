@@ -41,18 +41,18 @@ const HomePage = async ({
           <div>
             <h2
               dangerouslySetInnerHTML={{ __html: hero_section?.name }}
-              className="text-[clamp(25px,3.333vw,164px)] capitalize font-bold leading-snug font-['franklin-gothic-heavy']"
+              className="text-[clamp(25px,3.333vw,64px)] capitalize font-bold leading-snug font-['franklin-gothic-heavy']"
             />
 
             <p
               dangerouslySetInnerHTML={{
                 __html: hero_section?.description || "",
               }}
-              className="list-disc hero-list pl-6 mt-6 space-y-2 text-[clamp(18px,1.458vw,128px)] text-gray font-['franklin-gothic-heavy'] font-bold"
+              className="list-disc hero-list pl-6 mt-6 space-y-2 text-[clamp(18px,1.458vw,28px)] text-gray font-['franklin-gothic-heavy'] font-bold"
             />
 
             <button className="mt-6 inline-flex items-center text-[clamp(18px,1.042vw,120px)] gap-[clamp(4px,0.417vw,18px)] px-[clamp(5px,1.25vw,124px)] py-[clamp(4px,0.625vw,112px)] font-['libre-baskerville'] bg-[#0E1B4D] text-white text-sm rounded-full hover:bg-[#1c2a63] transition">
-              <MoveRight className="w-[clamp(15px,0.833vw,106px)] h-[clamp(15px,0.833vw,106px)] " />
+              <MoveRight className="w-[clamp(15px,0.833vw,16px)] h-[clamp(15px,0.833vw,106px)] " />
               Select your move now
             </button>
           </div>
