@@ -1,7 +1,7 @@
 import { getRequestConfig } from "next-intl/server";
 import { routing } from "./routing";
 
-type Locale = "en" | "ar" | "dk";
+type Locale =  "dk"| "en" | "ar";
 
 export default getRequestConfig(async ({ requestLocale }) => {
   // This typically corresponds to the `[locale]` segment
