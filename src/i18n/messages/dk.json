@@ -26,6 +26,7 @@
     },
     "footer": {
         "Safe and Reliable": "Sikker og pålidelig",
+        "Copyright": "© {year} Smart Moving. All rights reserved.",
         "Fast and Easy": "Hurtigt og nemt",
         "Live Support": "Live support",
         "We make getting around easy": "Vi gør det nemt at komme rundt! Pålidelige, sikre og hurtige transporttjenester i hele byen.",
@@ -40,8 +41,7 @@
         "Storage": "Opbevaring",
         "Company": "Virksomhed",
         "Terms & Conditions": "Vilkår og betingelser",
-        "Privacy Policy": "Privatlivspolitik",
-        "Copyright": "© {{year}} Ophavsret@"
+        "Privacy Policy": "Privatlivspolitik"
     },
     "auth": {
         "Email": "Email",
