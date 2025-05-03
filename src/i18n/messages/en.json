@@ -187,7 +187,23 @@
     "I help myself with reading.": "I help myself with reading.",
     "There is an elevator at the departure address.": "There is an elevator at the departure address.",
     "There is an elevator at the move-in address.": "There is an elevator at the move-in address."
+},
+"infoWebsite":{
+  "title": "Platform Info",
+  "tabs": {
+    "about": "About Us",
+    "terms": "Terms & Conditions",
+    "privacy": "Privacy Policy",
+    "contact": "Contact Us"
+  },
+  "content": {
+    "about": "Welcome to Smart Moving! We are an online platform offering safe and efficient shipping services through our smart application. We aim to simplify shipping between clients and service providers while ensuring top quality and reliability.",
+    "terms": "A. Customer obligations:\n- Provide accurate and updated information.\n- Use the app in accordance with laws and terms.\n- Pay service fees as shown.\n- Ensure shipments do not contain prohibited or dangerous items.\n\nB. Provider obligations:\n- Submit required documents such as licenses and insurance.\n- Commit to timing and shipment protection.\n- Maintain clean and safe vehicles.\n- Do not reject service without valid reason.\n\nC. Shipping responsibilities:\n- Smart Moving connects users and providers but is not responsible for lost or damaged shipments.\n- We do not guarantee delivery times but provide tracking tools.\n- Providers are responsible to deliver per contract and legal compliance.",
+    "privacy": "A. Collected Data:\n- Account data such as name, email, phone, and address.\n- Transaction data like shipment details and costs.\n- Location data during app use for accurate service.\n- Communication data to enhance experience.\n\nB. Data Usage:\n- Improve service quality.\n- Enhance safety and trust.\n- Provide support and send important notifications.\n- Protect privacy using encryption.\n\nC. Data Sharing:\n- No marketing sharing without consent.\n- May share with authorities upon request.\n- Shared with providers as needed to fulfill service.\n- We follow best practices in data security.\n\nD. Retention & Deletion:\n- Data is retained 5 years after last use.\n- Users may request deletion via app or support.\n- Tools available for privacy management.",
+    "contact": "You can reach us through the following:\n- Email: [enter email here]\n- Phone: [enter phone number here]\n- Via the app in the support section.\n- On our official social media channels."
+  }
 }
+
 
   
 }
