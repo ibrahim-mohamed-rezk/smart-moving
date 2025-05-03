@@ -178,5 +178,20 @@
         "I help myself with reading.": "Jeg hjælper selv med at læsse.",
         "There is an elevator at the departure address.": "Der er en elevator på fra-adressen.",
         "There is an elevator at the move-in address.": "Der er en elevator på til-adressen."
+    },
+    "infoWebsite": {
+        "title": "Platformoplysninger",
+        "tabs": {
+            "about": "Om os",
+            "terms": "Vilkår og betingelser",
+            "privacy": "Privatlivspolitik",
+            "contact": "Kontakt os"
+        },
+        "content": {
+            "about": "Velkommen til Smart Moving! Vi er en online platform, der tilbyder sikre og effektive leverings- og fragtløsninger gennem vores smarte app. Vores mål er at forenkle forsendelsesprocessen mellem kunder og tjenesteudbydere med fokus på høj kvalitet og pålidelighed.",
+            "terms": "A. Kunders forpligtelser:\n- Angiv korrekte og opdaterede oplysninger.\n- Brug appen i overensstemmelse med gældende lovgivning og vilkår.\n- Betal for tjenesten som angivet.\n- Sørg for, at forsendelser ikke indeholder forbudte eller farlige materialer.\n\nB. Udbyderes forpligtelser:\n- Indsend nødvendige dokumenter som licenser og forsikringer.\n- Overhold aftalte leveringstider og beskyt forsendelsen under transport.\n- Sikr rene og sikre transportmidler.\n- Må ikke afvise service uden gyldig grund.\n\nC. Ansvar for levering:\n- Smart Moving fungerer som en platform mellem kunde og udbyder og påtager sig ikke ansvar for beskadigede eller mistede forsendelser.\n- Vi garanterer ikke leveringstidspunkter, men tilbyder sporingsværktøjer og kommunikationsmuligheder.\n- Tjenesteudbyderen er ansvarlig for levering i henhold til aftalen og gældende lovgivning.",
+            "privacy": "A. Indsamlede data:\n- Kontooplysninger som navn, e-mail, telefonnummer og adresse.\n- Transaktionsoplysninger, fx detaljer om forsendelser og pris.\n- Placeringsdata under brug af appen for at sikre præcis service.\n- Kommunikationsdata i appen for en bedre brugeroplevelse.\n\nB. Brug af data:\n- Forbedre kvaliteten af vores service.\n- Øge sikkerhed og pålidelighed.\n- Tilbyde support og sende vigtige notifikationer.\n- Beskytte brugerdata med kryptering og digital sikkerhed.\n\nC. Datadeling:\n- Vi deler ikke personlige oplysninger til markedsføring uden brugerens samtykke.\n- Kan deles med myndigheder på anmodning.\n- Deles med tjenesteudbydere i nødvendigt omfang for at levere tjenesten.\n- Vi følger bedste praksis for databeskyttelse.\n\nD. Opbevaring og sletning:\n- Data opbevares i 5 år efter sidste brug af appen.\n- Brugere kan anmode om sletning af deres data via appen eller kundeservice.\n- Vi tilbyder gennemsigtige værktøjer til at administrere privatliv.",
+            "contact": "Du kan kontakte os via følgende kanaler:\n- E-mail: [indsæt e-mail her]\n- Telefon: [indsæt telefonnummer her]\n- Gennem appen under kundeserviceafsnittet.\n- På vores officielle sociale mediekanaler."
+        }
     }
 }
