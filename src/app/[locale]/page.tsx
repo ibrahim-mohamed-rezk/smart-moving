@@ -154,7 +154,7 @@ const HomePage = async ({
             </ul>
           </div>
           <div className="relative order-1 sm:order-2 w-[80%] mx-auto  sm:w-[clamp(200px,30.625vw,588px)] -mt-[clamp(100px,10.515vw,175px)]">
-            <Image
+            <img
               src={"/aboutImage.png"}
               alt="Or Section"
               width={700}
