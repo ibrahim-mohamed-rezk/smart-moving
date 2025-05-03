@@ -10,16 +10,17 @@ import {
   FaSnapchat,
   FaTiktok,
 } from "react-icons/fa6";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 
 const tickerItems = ["Safe and Reliable", "Fast and Easy", "Live Support"];
 
 export default function Footer() {
   const t = useTranslations("footer");
+  const locale = useLocale(); // ⬅️ Get current locale
 
   return (
     <footer className="text-black overflow-hidden max-w-full">
-      {/* Improved infinite marquee */}
+      {/* Ticker */}
       <div className="bg-sky-500 overflow-hidden py-[clamp(0.5rem,1vw,1rem)]">
         <div className="ticker-wrapper">
           <div className="ticker">
@@ -36,9 +37,10 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* main */}
+      {/* Main content */}
       <div className="relative bg-[#0F152F] px-[clamp(1rem,5vw,4rem)] py-[clamp(2rem,6vw,5rem)] overflow-hidden">
         <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-[clamp(1rem,2vw,2.5rem)] relative z-10">
+          {/* Logo + Contact */}
           <div>
             <Image
               src={"/logoFooter.png"}
@@ -57,70 +59,73 @@ export default function Footer() {
               support@smartmoving.com
             </p>
             <div className="flex flex-wrap items-center gap-4 mt-3 text-white">
-              <Facebook className="w-[clamp(1rem,2vw,1.25rem)] h-[clamp(1rem,2vw,1.25rem)]" />
-              <FaWhatsapp className="w-[clamp(1rem,2vw,1.25rem)] h-[clamp(1rem,2vw,1.25rem)]" />
-              <FaInstagram className="w-[clamp(1rem,2vw,1.25rem)] h-[clamp(1rem,2vw,1.25rem)]" />
-              <Youtube className="w-[clamp(1rem,2vw,1.25rem)] h-[clamp(1rem,2vw,1.25rem)]" />
-              <FaXTwitter className="w-[clamp(1rem,2vw,1.25rem)] h-[clamp(1rem,2vw,1.25rem)]" />
-              <FaSnapchat className="w-[clamp(1rem,2vw,1.25rem)] h-[clamp(1rem,2vw,1.25rem)]" />
-              <FaTiktok className="w-[clamp(1rem,2vw,1.25rem)] h-[clamp(1rem,2vw,1.25rem)]" />
+              <Facebook />
+              <FaWhatsapp />
+              <FaInstagram />
+              <Youtube />
+              <FaXTwitter />
+              <FaSnapchat />
+              <FaTiktok />
             </div>
           </div>
 
+          {/* Quick Help */}
           <div>
             <h4 className="font-semibold mb-4 text-white text-[clamp(1rem,1.5vw,1.25rem)]">
               {t("Quick Help")}
             </h4>
             <ul className="space-y-2 text-gray-300 text-[clamp(0.75rem,1vw,1rem)]">
               <li>
-                <Link href="/faq">{t("FAQ")}</Link>
+                <Link href={`/${locale}/faq`}>{t("FAQ")}</Link>
               </li>
               <li>
-                <Link href="/Info">{t("How it works")}</Link>
+                <Link href={`/${locale}/Info`}>{t("How it works")}</Link>
               </li>
               <li>
-                <Link href="/Info">{t("Contact us")}</Link>
+                <Link href={`/${locale}/Info`}>{t("Contact us")}</Link>
               </li>
             </ul>
           </div>
 
+          {/* Explore Services */}
           <div>
             <h4 className="font-semibold mb-4 text-white text-[clamp(1rem,1.5vw,1.25rem)]">
               {t("Explore Services")}
             </h4>
             <ul className="space-y-2 text-gray-300 text-[clamp(0.75rem,1vw,1rem)]">
               {[
-                [t("Private Moving"), "/login"],
-                [t("Company Relocation"), "/RegisterCompany"],
-                [t("Storage"), "/RegisterCompany"],
-              ].map(([label, href]) => (
-                <li key={href} className="flex items-center">
-                  <Link href={href} className="flex-1">
+                [t("Private Moving"), "login"],
+                [t("Company Relocation"), "RegisterCompany"],
+                [t("Storage"), "RegisterCompany"],
+              ].map(([label, path]) => (
+                <li key={path} className="flex items-center">
+                  <Link href={`/${locale}/${path}`} className="flex-1">
                     {label}
                   </Link>
-                  <ChevronRight className="w-[clamp(0.75rem,1vw,1rem)] h-[clamp(0.75rem,1vw,1rem)]" />
+                  <ChevronRight />
                 </li>
               ))}
             </ul>
           </div>
 
+          {/* Company */}
           <div>
             <h4 className="font-semibold mb-4 text-white text-[clamp(1rem,1.5vw,1.25rem)]">
               {t("Company")}
             </h4>
             <ul className="space-y-2 text-gray-300 text-[clamp(0.75rem,1vw,1rem)]">
               <li>
-                <Link href="/Info">{t("Terms & Conditions")}</Link>
+                <Link href={`/${locale}/Info`}>{t("Terms & Conditions")}</Link>
               </li>
               <li>
-                <Link href="/Info">{t("Privacy Policy")}</Link>
+                <Link href={`/${locale}/Info`}>{t("Privacy Policy")}</Link>
               </li>
             </ul>
           </div>
         </div>
       </div>
 
-      {/* bottom bar */}
+      {/* Bottom bar */}
       <div className="bg-sky-500 flex flex-col md:flex-row items-center justify-between px-[clamp(1rem,5vw,4rem)] py-[clamp(1rem,3vw,2rem)] text-gray-900 text-center">
         <span className="text-[clamp(0.8rem,1vw,1rem)]">
           {t("Copyright", { year: new Date().getFullYear() })}
@@ -132,19 +137,16 @@ export default function Footer() {
           width: 100%;
           overflow: hidden;
         }
-
         .ticker {
           display: inline-flex;
           white-space: nowrap;
           animation: ticker 30s linear infinite;
         }
-
         .ticker-item {
           display: inline-flex;
           align-items: center;
           padding: 0 clamp(1rem, 2vw, 2rem);
         }
-
         @keyframes ticker {
           0% {
             transform: translateX(0);
@@ -153,7 +155,6 @@ export default function Footer() {
             transform: translateX(-50%);
           }
         }
-
         .ticker-wrapper:hover .ticker {
           animation-play-state: paused;
         }
