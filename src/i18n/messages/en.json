@@ -189,6 +189,12 @@
     "There is an elevator at the move-in address.": "There is an elevator at the move-in address."
 },
 "infoWebsite":{
+  "form": {
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "submit": "Send"
+  },
   "title": "Platform Info",
   "tabs": {
     "about": "About Us",

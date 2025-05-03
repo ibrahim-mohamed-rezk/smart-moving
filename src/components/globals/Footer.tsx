@@ -76,10 +76,10 @@ export default function Footer() {
                 <Link href="/faq">{t("FAQ")}</Link>
               </li>
               <li>
-                <Link href="/how-it-works">{t("How it works")}</Link>
+                <Link href="/Info">{t("How it works")}</Link>
               </li>
               <li>
-                <Link href="/contact">{t("Contact us")}</Link>
+                <Link href="/Info">{t("Contact us")}</Link>
               </li>
             </ul>
           </div>
@@ -90,9 +90,9 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2 text-gray-300 text-[clamp(0.75rem,1vw,1rem)]">
               {[
-                [t("Private Moving"), "/private-moving"],
-                [t("Company Relocation"), "/company-relocation"],
-                [t("Storage"), "/storage"],
+                [t("Private Moving"), "/login"],
+                [t("Company Relocation"), "/RegisterCompany"],
+                [t("Storage"), "/RegisterCompany"],
               ].map(([label, href]) => (
                 <li key={href} className="flex items-center">
                   <Link href={href} className="flex-1">
@@ -110,10 +110,10 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2 text-gray-300 text-[clamp(0.75rem,1vw,1rem)]">
               <li>
-                <Link href="/terms">{t("Terms & Conditions")}</Link>
+                <Link href="/Info">{t("Terms & Conditions")}</Link>
               </li>
               <li>
-                <Link href="/privacy">{t("Privacy Policy")}</Link>
+                <Link href="/Info">{t("Privacy Policy")}</Link>
               </li>
             </ul>
           </div>

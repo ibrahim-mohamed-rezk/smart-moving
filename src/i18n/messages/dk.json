@@ -180,6 +180,12 @@
         "There is an elevator at the move-in address.": "Der er en elevator på til-adressen."
     },
     "infoWebsite": {
+        "form": {
+    "name": "Navn",
+    "email": "Email",
+    "message": "Besked",
+    "submit": "Send"
+  },
         "title": "Platformoplysninger",
         "tabs": {
             "about": "Om os",

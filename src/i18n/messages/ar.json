@@ -183,6 +183,12 @@
     "There is an elevator at the move-in address.": "يوجد مصعد في عنوان الانتقال."
   },
   "infoWebsite":{
+    "form": {
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "message": "الرسالة",
+      "submit": "إرسال"
+    },
     "title": "معلومات المنصة",
     "tabs": {
       "about": "من نحن",
