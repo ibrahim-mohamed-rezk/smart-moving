@@ -29,51 +29,117 @@ const MovingInfoPage = () => {
         {
             key: "contact",
             label: t("tabs.contact"),
-            content: t.raw("content.contact"),
+            content: null, // we'll render form manually
         },
     ];
 
-  return (
-      <div
-          className="flex flex-col min-h-screen bg-gray-50"
-          dir={isRTL ? "rtl" : "ltr"}
-      >
-          {/* Hero Section */}
-          <header className="relative w-full h-[250px] sm:h-[200px] md:h-[260px] bg-gradient-to-r from-[#0F1A36] to-[#192953] flex items-center justify-center text-white text-center px-4">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold z-10">
-                  {t("title")}
-              </h1>
-          </header>
+    const [form, setForm] = useState({
+        name: "",
+        email: "",
+        message: ""
+    });
 
-          {/* Tabs */}
-          <nav className="w-full max-w-3xl mx-auto -mt-12 z-10 px-4">
-              <div className="flex flex-wrap justify-center gap-3 bg-white rounded-2xl shadow-xl p-4 sm:p-6">
-                  {TABS.map((tab) => (
-                      <button
-                          key={tab.key}
-                          onClick={() => setActiveTab(tab.key)}
-                          className={`px-5 py-2 sm:px-6 sm:py-3 rounded-xl text-base sm:text-lg transition-all duration-200 font-medium ${activeTab === tab.key
-                              ? "bg-[#192953] text-white shadow-md"
-                              : "bg-white text-gray-600 hover:bg-gray-100"
-                              }`}
-                      >
-                          {tab.label}
-                      </button>
-                  ))}
-              </div>
-          </nav>
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setForm({ ...form, [e.target.name]: e.target.value });
+    };
 
-          {/* Content */}
-          <main className="w-full max-w-5xl mx-auto px-5 sm:px-6 lg:px-8 py-12">
-              <div
-                  className={`bg-white rounded-2xl shadow p-6 sm:p-8 text-[16px] sm:text-[18px] leading-8 whitespace-pre-wrap text-gray-800 ${isRTL ? "text-right" : "text-left"
-                      }`}
-              >
-                  {TABS.find((tab) => tab.key === activeTab)?.content}
-              </div>
-          </main>
-    </div>
-  );
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        console.log("Form submitted:", form);
+        // You can handle the form submission here (e.g. call an API)
+    };
+
+    return (
+        <div className="flex flex-col min-h-screen bg-gray-50" dir={isRTL ? "rtl" : "ltr"}>
+            {/* Hero Section */}
+            <header className="relative w-full h-[250px] sm:h-[200px] md:h-[260px] bg-gradient-to-r from-[#0F1A36] to-[#192953] flex items-center justify-center text-white text-center px-4">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold z-10">
+                    {t("title")}
+                </h1>
+            </header>
+
+            {/* Tabs */}
+            <nav className="w-full max-w-3xl mx-auto -mt-12 z-10 px-4">
+                <div className="flex flex-wrap justify-center gap-3 bg-white rounded-2xl shadow-xl p-4 sm:p-6">
+                    {TABS.map((tab) => (
+                        <button
+                            key={tab.key}
+                            onClick={() => setActiveTab(tab.key)}
+                            className={`px-5 py-2 sm:px-6 sm:py-3 rounded-xl text-base sm:text-lg transition-all duration-200 font-medium ${activeTab === tab.key
+                                ? "bg-[#192953] text-white shadow-md"
+                                : "bg-white text-gray-600 hover:bg-gray-100"
+                                }`}
+                        >
+                            {tab.label}
+                        </button>
+                    ))}
+                </div>
+            </nav>
+
+            {/* Content */}
+            <main className="w-full max-w-5xl mx-auto px-5 sm:px-6 lg:px-8 py-12">
+                <div
+                    className={`bg-white rounded-2xl shadow p-6 sm:p-8 text-[16px] sm:text-[18px] leading-8 whitespace-pre-wrap text-gray-800 ${isRTL ? "text-right" : "text-left"
+                        }`}
+                >
+                    {activeTab === "contact" ? (
+                        <form onSubmit={handleSubmit} className="space-y-6">
+                            <div>
+                                <label htmlFor="name" className="block font-semibold mb-1">
+                                    {t("form.name")}
+                                </label>
+                                <input
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    value={form.name}
+                                    onChange={handleChange}
+                                    required
+                                    className="w-full border border-gray-300 rounded-md px-4 py-2"
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="email" className="block font-semibold mb-1">
+                                    {t("form.email")}
+                                </label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    value={form.email}
+                                    onChange={handleChange}
+                                    required
+                                    className="w-full border border-gray-300 rounded-md px-4 py-2"
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="message" className="block font-semibold mb-1">
+                                    {t("form.message")}
+                                </label>
+                                <textarea
+                                    id="message"
+                                    name="message"
+                                    value={form.message}
+                                    onChange={handleChange}
+                                    rows={5}
+                                    required
+                                    className="w-full border border-gray-300 rounded-md px-4 py-2"
+                                />
+                            </div>
+                            <button
+                                type="submit"
+                                className="bg-[#192953] text-white px-6 py-2 rounded-md hover:bg-[#0f1a36]"
+                            >
+                                {t("form.submit")}
+                            </button>
+                        </form>
+                    ) : (
+                        TABS.find((tab) => tab.key === activeTab)?.content
+                    )}
+                </div>
+            </main>
+        </div>
+    );
 };
 
 export default MovingInfoPage;
