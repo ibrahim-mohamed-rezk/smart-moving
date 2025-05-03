@@ -10,11 +10,13 @@ import {
   FaSnapchat,
   FaTiktok,
 } from "react-icons/fa6";
-import { useTranslations } from "next-intl";
+import { useTranslations,useLocale } from "next-intl";
 
 const tickerItems = ["Safe and Reliable", "Fast and Easy", "Live Support"];
 
 export default function Footer() {
+  const locale = useLocale();
+
   const t = useTranslations("footer");
 
   return (
@@ -73,13 +75,13 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2 text-gray-300 text-[clamp(0.75rem,1vw,1rem)]">
               <li>
-                <Link href="/faq">{t("FAQ")}</Link>
+                <Link  href="/faq" locale={locale}>{t("FAQ")}</Link>
               </li>
               <li>
-                <Link href="/Info">{t("How it works")}</Link>
+                <Link href="/Info" locale={locale}>{t("How it works")}</Link>
               </li>
               <li>
-                <Link href="/Info">{t("Contact us")}</Link>
+                <Link href="/Info" locale={locale}>{t("Contact us")}</Link>
               </li>
             </ul>
           </div>
@@ -95,7 +97,7 @@ export default function Footer() {
                 [t("Storage"), "/RegisterCompany"],
               ].map(([label, href]) => (
                 <li key={href} className="flex items-center">
-                  <Link href={href} className="flex-1">
+                  <Link href={href} locale={locale} className="flex-1">
                     {label}
                   </Link>
                   <ChevronRight className="w-[clamp(0.75rem,1vw,1rem)] h-[clamp(0.75rem,1vw,1rem)]" />
@@ -110,10 +112,10 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2 text-gray-300 text-[clamp(0.75rem,1vw,1rem)]">
               <li>
-                <Link href="/Info">{t("Terms & Conditions")}</Link>
+                <Link href="/Info" locale={locale}>{t("Terms & Conditions")}</Link>
               </li>
               <li>
-                <Link href="/Info">{t("Privacy Policy")}</Link>
+                <Link href="/Info" locale={locale}>{t("Privacy Policy")}</Link>
               </li>
             </ul>
           </div>
