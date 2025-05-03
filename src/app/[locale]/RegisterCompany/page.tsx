@@ -17,6 +17,8 @@ import  { AxiosHeaders } from "axios";
 import { useParams } from "next/navigation";
 import { ServiceTypes } from "@/libs/types/types";
 import { useRouter } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
+
 
 interface FormData {
   first_name: string;
@@ -41,6 +43,8 @@ interface PasswordRequirements {
 }
 
 const AccountCreationForm = () => {
+  const t = useTranslations("company");
+
   const [currentTab, setCurrentTab] = useState(1);
   const [showPassword, setShowPassword] = useState(false);
   const [showpassword_confirmation, setShowpassword_confirmation] =
@@ -281,10 +285,10 @@ const AccountCreationForm = () => {
         }),
       });
         
-      toast.success("Company registered successfully");
+      toast.success(t("company_registered_successfully"));
       router.push("/");
     } catch (error) {
-      toast.error("something went wrong, please try again.");
+      toast.error(t("something_went_wrong"));
       console.error("Error submitting form:", error);
     } finally {
       setIsLoading(false);
@@ -298,7 +302,7 @@ const AccountCreationForm = () => {
         <div className="absolute inset-0">
           <Image
             src={sidebgimage}
-            alt="Background"
+            alt={t("background")}
             fill
             style={{ objectFit: "cover", objectPosition: "center" }}
             priority
@@ -307,7 +311,7 @@ const AccountCreationForm = () => {
 
         <div className="relative z-10 p-8 h-full flex flex-col">
           {/* Title with proper styling and spacing */}
-          <h1 className="text-3xl font-bold mb-6 text-white">Why Join Us?</h1>
+          <h1 className="text-3xl font-bold mb-6 text-white">{t("why_join_us")}</h1>
 
           {/* Bullet points with proper styling */}
           <ul className="space-y-8">
@@ -315,11 +319,10 @@ const AccountCreationForm = () => {
               <div className="text-white mr-3 text-lg font-bold">•</div>
               <div>
                 <p className="text-white font-medium text-lg">
-                  Get customer requests instantly!
+                  {t("get_customer_requests")}
                 </p>
                 <p className="text-gray-300 text-sm mt-1">
-                  Sign up today and start receiving job opportunities without
-                  delay.
+                  {t("sign_up_today")}
                 </p>
               </div>
             </li>
@@ -328,13 +331,12 @@ const AccountCreationForm = () => {
               <div className="text-white mr-3 text-lg font-bold">•</div>
               <div>
                 <p className="text-white font-medium text-lg">
-                  Too busy?
+                  {t("too_busy")}
                   <br />
-                  Let the customers find you!
+                  {t("let_customers_find_you")}
                 </p>
                 <p className="text-gray-300 text-sm mt-1">
-                  Create your price list and let new clients reach out to you
-                  directly.
+                  {t("create_price_list")}
                 </p>
               </div>
             </li>
@@ -343,10 +345,10 @@ const AccountCreationForm = () => {
               <div className="text-white mr-3 text-lg font-bold">•</div>
               <div>
                 <p className="text-white font-medium text-lg">
-                  Expand your reach to over 50,000 monthly visitors!
+                  {t("expand_reach")}
                 </p>
                 <p className="text-gray-300 text-sm mt-1">
-                  Tap into a massive network and grow your business with ease.
+                  {t("tap_into_network")}
                 </p>
               </div>
             </li>
@@ -379,7 +381,7 @@ const AccountCreationForm = () => {
                   >
                     1
                   </div>
-                  <span className="text-bold">Account Details</span>
+                  <span className="text-bold">{t("account_details")}</span>
                 </button>
               </div>
 
@@ -401,14 +403,14 @@ const AccountCreationForm = () => {
                   >
                     2
                   </div>
-                  <span>Address & Services</span>
+                  <span>{t("address_and_services")}</span>
                 </button>
               </div>
             </div>
           </div>
 
           <h1 className="text-2xl font-bold text-gray-800 mb-6">
-            Create Your Account
+            {t("create_your_account")}
           </h1>
 
           <form onSubmit={handleSubmit}>
@@ -421,14 +423,14 @@ const AccountCreationForm = () => {
                       htmlFor="first_name"
                       className="block text-xl text-bold font-medium text-gray-700 mb-1"
                     >
-                      First Name
+                      {t("first_name")}
                     </label>
                     <div className="relative">
                       <input
                         type="text"
                         id="first_name"
                         name="first_name"
-                        placeholder="Enter First Name"
+                        placeholder={t("enter_first_name")}
                         value={formData.first_name}
                         onChange={handleInputChange}
                         className={`w-full px-4 py-4 border ${
@@ -452,7 +454,7 @@ const AccountCreationForm = () => {
                     </div>
                     {validFirst_name === false && (
                       <p className="mt-1 text-sm text-red-500">
-                        First name is required
+                        {t("first_name_required")}
                       </p>
                     )}
                   </div>
@@ -461,14 +463,14 @@ const AccountCreationForm = () => {
                       htmlFor="sur_name"
                       className="block text-xl text-bold font-medium text-gray-700 mb-1"
                     >
-                      Last Name
+                      {t("last_name")}
                     </label>
                     <div className="relative">
                       <input
                         type="text"
                         id="sur_name"
                         name="sur_name"
-                        placeholder="Enter Last Name"
+                        placeholder={t("enter_last_name")}
                         value={formData.sur_name}
                         onChange={handleInputChange}
                         className={`w-full px-4 py-4 border rounded-full ${
@@ -492,7 +494,7 @@ const AccountCreationForm = () => {
                     </div>
                     {validsur_name === false && (
                       <p className="mt-1 text-sm text-red-500">
-                        Last name is required
+                        {t("last_name_required")}
                       </p>
                     )}
                   </div>
@@ -503,14 +505,14 @@ const AccountCreationForm = () => {
                     htmlFor="email"
                     className="blocktext-xl text-bold font-medium text-gray-700 mb-1"
                   >
-                    CVR
+                    {t("cvr")}
                   </label>
                   <div className="relative">
                     <input
                       type="text"
                       id="CVR"
                       name="CVR"
-                      placeholder="Enter CVR"
+                      placeholder={t("enter_cvr")}
                       value={formData.CVR}
                       onChange={handleInputChange}
                       className={`w-full px-4 py-4 border ${
@@ -534,7 +536,7 @@ const AccountCreationForm = () => {
                   </div>
                   {validCVR === false && (
                     <p className="mt-1 text-sm text-red-500">
-                      Please enter a valid CVR
+                      {t("enter_valid_cvr")}
                     </p>
                   )}
                 </div>
@@ -544,14 +546,14 @@ const AccountCreationForm = () => {
                     htmlFor="email"
                     className="blocktext-xl text-bold font-medium text-gray-700 mb-1"
                   >
-                    Email
+                    {t("email")}
                   </label>
                   <div className="relative">
                     <input
                       type="email"
                       id="email"
                       name="email"
-                      placeholder="Enter Email"
+                      placeholder={t("enter_email")}
                       value={formData.email}
                       onChange={handleInputChange}
                       className={`w-full px-4 py-4 border ${
@@ -575,7 +577,7 @@ const AccountCreationForm = () => {
                   </div>
                   {validEmail === false && (
                     <p className="mt-1 text-sm text-red-500">
-                      Please enter a valid email address
+                      {t("enter_valid_email")}
                     </p>
                   )}
                 </div>
@@ -584,14 +586,14 @@ const AccountCreationForm = () => {
                     htmlFor="contact_person"
                     className="blocktext-xl text-bold font-medium text-gray-700 mb-1"
                   >
-                    contact person
+                    {t("contact_person")}
                   </label>
                   <div className="relative">
                     <input
                       type="text"
                       id="contact_person"
                       name="contact_person"
-                      placeholder="Enter contact person"
+                      placeholder={t("enter_contact_person")}
                       value={formData.contact_person}
                       onChange={handleInputChange}
                       className={`w-full px-4 py-4 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all pr-10`}
@@ -605,14 +607,14 @@ const AccountCreationForm = () => {
                     htmlFor="phone"
                     className="block text-xl text-bold font-medium text-gray-700 mb-1"
                   >
-                    Phone Number
+                    {t("phone_number")}
                   </label>
                   <div className="relative">
                     <input
                       type="tel"
                       id="phone"
                       name="phone"
-                      placeholder="Enter Phone Number"
+                      placeholder={t("enter_phone_number")}
                       value={formData.phone}
                       onChange={handleInputChange}
                       className={`w-full px-4 py-4 border ${
@@ -636,7 +638,7 @@ const AccountCreationForm = () => {
                   </div>
                   {validPhone === false && (
                     <p className="mt-1 text-sm text-red-500">
-                      Please enter a valid phone number
+                      {t("enter_valid_phone")}
                     </p>
                   )}
                 </div>
@@ -646,14 +648,14 @@ const AccountCreationForm = () => {
                     htmlFor="password"
                     className="block text-xl text-bold font-medium text-gray-700 mb-1"
                   >
-                    Password
+                    {t("password")}
                   </label>
                   <div className="relative">
                     <input
                       type={showPassword ? "text" : "password"}
                       id="password"
                       name="password"
-                      placeholder="Create a strong password"
+                      placeholder={t("create_strong_password")}
                       value={formData.password}
                       onChange={handleInputChange}
                       className={`w-full px-4 py-3 border ${
@@ -685,7 +687,7 @@ const AccountCreationForm = () => {
                           size={16}
                           className="mr-2 text-amber-500"
                         />
-                        Password Requirements
+                        {t("password_requirements")}
                       </h4>
                       <ul className="space-y-1">
                         <li className="flex items-center text-sm">
@@ -707,7 +709,7 @@ const AccountCreationForm = () => {
                                 : "text-gray-600"
                             }
                           >
-                            At least 8 characters
+                            {t("min_length_req")}
                           </span>
                         </li>
                         <li className="flex items-center text-sm">
@@ -729,7 +731,7 @@ const AccountCreationForm = () => {
                                 : "text-gray-600"
                             }
                           >
-                            At least one uppercase letter
+                            {t("uppercase_req")}
                           </span>
                         </li>
                         <li className="flex items-center text-sm">
@@ -751,7 +753,7 @@ const AccountCreationForm = () => {
                                 : "text-gray-600"
                             }
                           >
-                            At least one number
+                            {t("number_req")}
                           </span>
                         </li>
                         <li className="flex items-center text-sm">
@@ -773,7 +775,7 @@ const AccountCreationForm = () => {
                                 : "text-gray-600"
                             }
                           >
-                            At least one special character
+                            {t("special_char_req")}
                           </span>
                         </li>
                       </ul>
@@ -786,14 +788,14 @@ const AccountCreationForm = () => {
                     htmlFor="password_confirmation"
                     className="block text-xl text-bold font-medium text-gray-700 mb-1"
                   >
-                    Confirm Password
+                    {t("confirm_password")}
                   </label>
                   <div className="relative">
                     <input
                       type={showpassword_confirmation ? "text" : "password"}
                       id="password_confirmation"
                       name="password_confirmation"
-                      placeholder="Confirm your password"
+                      placeholder={t("confirm_your_password")}
                       value={formData.password_confirmation}
                       onChange={handleInputChange}
                       className={`w-full px-4 py-4 border ${
@@ -821,7 +823,7 @@ const AccountCreationForm = () => {
                   </div>
                   {passwordMatch === false && (
                     <p className="mt-1 text-sm text-red-500">
-                      Passwords do not match
+                      {t("passwords_not_match")}
                     </p>
                   )}
                 </div>
@@ -837,7 +839,7 @@ const AccountCreationForm = () => {
                         : "bg-gray-300 cursor-not-allowed"
                     } transition-colors`}
                   >
-                    Next <ChevronRight size={18} className="ml-1" />
+                    {t("next")} <ChevronRight size={18} className="ml-1" />
                   </button>
                 </div>
               </div>
@@ -851,13 +853,13 @@ const AccountCreationForm = () => {
                     htmlFor="address"
                     className="block text-xl text-bold font-medium text-gray-700 mb-1"
                   >
-                    Address
+                    {t("address")}
                   </label>
                   <input
                     type="text"
                     id="address"
                     name="address"
-                    placeholder="Enter your full address"
+                    placeholder={t("enter_your_full_address")}
                     value={formData.address}
                     onChange={handleInputChange}
                     className="w-full px-4 py-4 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
@@ -871,13 +873,13 @@ const AccountCreationForm = () => {
                       htmlFor="postal_code"
                       className="block text-sm font-medium text-gray-700 mb-1"
                     >
-                      Postal Code
+                      {t("postal_code")}
                     </label>
                     <input
                       type="text"
                       id="postal_code"
                       name="postal_code"
-                      placeholder="Enter Postal Code"
+                      placeholder={t("enter_postal_code")}
                       value={formData.postal_code}
                       onChange={handleInputChange}
                       className="w-full px-4 py-4 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
@@ -889,13 +891,13 @@ const AccountCreationForm = () => {
                       htmlFor="city"
                       className="block text-sm font-medium text-gray-700 mb-1"
                     >
-                      City
+                      {t("city")}
                     </label>
                     <input
                       type="text"
                       id="city"
                       name="city"
-                      placeholder="Enter City Name"
+                      placeholder={t("enter_city_name")}
                       value={formData.city}
                       onChange={handleInputChange}
                       className="w-full px-4 py-4 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
@@ -906,7 +908,7 @@ const AccountCreationForm = () => {
 
                 <div className="mt-8">
                   <h3 className="text-lg font-medium text-gray-800 mb-4">
-                    Service Categories
+                    {t("service_categories")}
                   </h3>
                   <div className="bg-gray-50 rounded-2xl border border-gray-200 p-1">
                     <div className="grid grid-cols-1 gap-2">
@@ -946,7 +948,7 @@ const AccountCreationForm = () => {
                     className="w-full sm:w-auto px-5 py-4 border border-gray-300 rounded-2xl flex items-center justify-center text-gray-700 hover:bg-gray-50 transition-colors"
                   >
                     <ArrowLeft size={16} className="mr-2" />
-                    Back
+                    {t("back")}
                   </button>
 
                   <button
@@ -980,10 +982,10 @@ const AccountCreationForm = () => {
                             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                           ></path>
                         </svg>
-                        Processing...
+                        {t("processing")}
                       </>
                     ) : (
-                      "Create Account"
+                        t("create_account")
                     )}
                   </button>
                 </div>

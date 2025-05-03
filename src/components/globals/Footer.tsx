@@ -10,26 +10,26 @@ import {
   FaSnapchat,
   FaTiktok,
 } from "react-icons/fa6";
+import { useTranslations } from "next-intl";
 
 const tickerItems = ["Safe and Reliable", "Fast and Easy", "Live Support"];
 
 export default function Footer() {
+  const t = useTranslations("footer");
+
   return (
     <footer className="text-black overflow-hidden max-w-full">
       {/* Improved infinite marquee */}
       <div className="bg-sky-500 overflow-hidden py-[clamp(0.5rem,1vw,1rem)]">
         <div className="ticker-wrapper">
           <div className="ticker">
-            {Array(6) // Using more repetitions for smoother looping
+            {Array(6)
               .fill(tickerItems)
               .flat()
               .map((txt, i) => (
-                <span
-                  key={i}
-                  className="ticker-item"
-                >
+                <span key={i} className="ticker-item">
                   <Truck className="w-[clamp(1rem,2vw,1.25rem)] h-[clamp(1rem,2vw,1.25rem)] mr-2" />
-                  {txt}
+                  {t(txt)}
                 </span>
               ))}
           </div>
@@ -48,11 +48,10 @@ export default function Footer() {
               className="object-contain"
             />
             <p className="mt-4 text-[clamp(0.75rem,1vw,1rem)] text-gray-300">
-              We make getting around easy! Reliable, safe, and fast
-              transportation services throughout the city.
+              {t("We make getting around easy")}
             </p>
             <h4 className="mt-6 font-semibold text-white text-[clamp(1rem,1.5vw,1.25rem)]">
-              Stay Connected
+              {t("Stay Connected")}
             </h4>
             <p className="text-[clamp(0.75rem,1vw,1rem)] text-gray-400">
               support@smartmoving.com
@@ -70,30 +69,30 @@ export default function Footer() {
 
           <div>
             <h4 className="font-semibold mb-4 text-white text-[clamp(1rem,1.5vw,1.25rem)]">
-              Quick Help
+              {t("Quick Help")}
             </h4>
             <ul className="space-y-2 text-gray-300 text-[clamp(0.75rem,1vw,1rem)]">
               <li>
-                <Link href="/faq">FAQ</Link>
+                <Link href="/faq">{t("FAQ")}</Link>
               </li>
               <li>
-                <Link href="/how-it-works">How it works</Link>
+                <Link href="/how-it-works">{t("How it works")}</Link>
               </li>
               <li>
-                <Link href="/contact">Contact us</Link>
+                <Link href="/contact">{t("Contact us")}</Link>
               </li>
             </ul>
           </div>
 
           <div>
             <h4 className="font-semibold mb-4 text-white text-[clamp(1rem,1.5vw,1.25rem)]">
-              Explore Services
+              {t("Explore Services")}
             </h4>
             <ul className="space-y-2 text-gray-300 text-[clamp(0.75rem,1vw,1rem)]">
               {[
-                ["Private Moving", "/private-moving"],
-                ["Company Relocation", "/company-relocation"],
-                ["Storage", "/storage"],
+                [t("Private Moving"), "/private-moving"],
+                [t("Company Relocation"), "/company-relocation"],
+                [t("Storage"), "/storage"],
               ].map(([label, href]) => (
                 <li key={href} className="flex items-center">
                   <Link href={href} className="flex-1">
@@ -107,14 +106,14 @@ export default function Footer() {
 
           <div>
             <h4 className="font-semibold mb-4 text-white text-[clamp(1rem,1.5vw,1.25rem)]">
-              Company
+              {t("Company")}
             </h4>
             <ul className="space-y-2 text-gray-300 text-[clamp(0.75rem,1vw,1rem)]">
               <li>
-                <Link href="/terms">Terms & Conditions</Link>
+                <Link href="/terms">{t("Terms & Conditions")}</Link>
               </li>
               <li>
-                <Link href="/privacy">Privacy Policy</Link>
+                <Link href="/privacy">{t("Privacy Policy")}</Link>
               </li>
             </ul>
           </div>
@@ -124,7 +123,7 @@ export default function Footer() {
       {/* bottom bar */}
       <div className="bg-sky-500 flex flex-col md:flex-row items-center justify-between px-[clamp(1rem,5vw,4rem)] py-[clamp(1rem,3vw,2rem)] text-gray-900 text-center">
         <span className="text-[clamp(0.8rem,1vw,1rem)]">
-          © {new Date().getFullYear()} Copyright@
+          {t("Copyright", { year: new Date().getFullYear() })}
         </span>
       </div>
 
@@ -133,19 +132,19 @@ export default function Footer() {
           width: 100%;
           overflow: hidden;
         }
-        
+
         .ticker {
           display: inline-flex;
           white-space: nowrap;
           animation: ticker 30s linear infinite;
         }
-        
+
         .ticker-item {
           display: inline-flex;
           align-items: center;
           padding: 0 clamp(1rem, 2vw, 2rem);
         }
-        
+
         @keyframes ticker {
           0% {
             transform: translateX(0);
@@ -154,8 +153,7 @@ export default function Footer() {
             transform: translateX(-50%);
           }
         }
-        
-        /* Pause animation on hover for better accessibility */
+
         .ticker-wrapper:hover .ticker {
           animation-play-state: paused;
         }

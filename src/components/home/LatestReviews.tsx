@@ -1,13 +1,17 @@
 "use client";
 
 import { ReviewTypes } from "@/libs/types/types";
+import { useTranslations } from "next-intl";
 
 const LatestReviews = ({ reviews }: { reviews: ReviewTypes[] }) => {
+  const t = useTranslations("home");
+
   return (
     <section className="px-[clamp(1rem,5vw,4rem)] pb-[clamp(2rem,6vw,4rem)]">
       <h3 className="text-[clamp(14px,3.333vw,64px)] text-[#192953] w-full text-center font-bold mb-4">
-        Latest reviews
+        {t("latest_reviews")}
       </h3>
+
       <div className="relative">
         <div
           id="review-slider"
@@ -35,16 +39,21 @@ const LatestReviews = ({ reviews }: { reviews: ReviewTypes[] }) => {
                   ))}
                 </div>
               </div>
+
               <p className="text-sm text-gray-700 mt-1">
-                {`wrote a review for ${review.company}
-                about ${review.service} service.`}
+                {t("review_summary", {
+                  company: review.company,
+                  service: review.service,
+                })}
               </p>
-              <p className="text-sm font-semibold mt-4">Review:</p>
+
+              <p className="text-sm font-semibold mt-4">{t("review")}:</p>
               <p className="text-sm text-gray-700">{review.review}</p>
             </div>
           ))}
         </div>
-        {/* Navigation */}
+
+        {/* Navigation Arrows */}
         <button
           onClick={() =>
             document
@@ -52,6 +61,7 @@ const LatestReviews = ({ reviews }: { reviews: ReviewTypes[] }) => {
               ?.scrollBy({ left: -300, behavior: "smooth" })
           }
           className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white p-2 shadow rounded-full"
+          aria-label={t("scroll_left")}
         >
           ←
         </button>
@@ -62,6 +72,7 @@ const LatestReviews = ({ reviews }: { reviews: ReviewTypes[] }) => {
               ?.scrollBy({ left: 300, behavior: "smooth" })
           }
           className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white p-2 shadow rounded-full"
+          aria-label={t("scroll_right")}
         >
           →
         </button>
