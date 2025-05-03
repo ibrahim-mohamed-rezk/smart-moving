@@ -7,6 +7,7 @@ import { AxiosHeaders } from "axios";
 import { getTranslations } from "next-intl/server";
 import MobileServiceSwiper from "@/components/home/MobileServiceSwiper";
 
+
 const HomePage = async ({
   params,
 }: {
@@ -52,7 +53,7 @@ const HomePage = async ({
 
             <button className="mt-6 inline-flex items-center text-[clamp(18px,1.042vw,120px)] gap-[clamp(4px,0.417vw,18px)] px-[clamp(5px,1.25vw,124px)] py-[clamp(4px,0.625vw,112px)] font-['libre-baskerville'] bg-[#0E1B4D] text-white text-sm rounded-full hover:bg-[#1c2a63] transition">
               <MoveRight className="w-[clamp(15px,0.833vw,16px)] h-[clamp(15px,0.833vw,106px)] " />
-              Select your move now
+              {t("select_move_now")}
             </button>
           </div>
           <Image
@@ -68,7 +69,7 @@ const HomePage = async ({
       {/* Services Section */}
       <section className="text-center py-[clamp(2rem,6vw,4rem)] container mx-auto">
         <h3 className="text-[clamp(18px,3.333vw,64px)] text-[#192953] capitalize font-normal leading-[100%] tracking-[0] text-center font-['franklin-gothic-heavy'] mb-[clamp(20px,2.083vw,140px)]">
-          services of move
+          {t("services_of_move")}
         </h3>
        
         <MobileServiceSwiper services={services} />
@@ -166,8 +167,7 @@ const HomePage = async ({
           </div>
         </div>
         <p className="text-[clamp(16px,1.875vw,36px)] py-3 container mx-auto text-[#7FB63D] font-bold text-start w-full">
-          Let us handle the heavy lifting - you focus on the excitement of your
-          new beginning!
+          {t("handle_heavy_lifting")}
         </p>
       </section>
 

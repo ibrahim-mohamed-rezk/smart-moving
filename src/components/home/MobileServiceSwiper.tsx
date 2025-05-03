@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, A11y, Autoplay } from "swiper/modules";
 import Image from "next/image";
 import { ServiceTypes } from "@/libs/types/types";
+
 import { Link } from "@/i18n/routing";
 
 
@@ -65,6 +66,7 @@ const MobileServiceSwiper = ({ services }: { services: ServiceTypes[] } ) => {
 
 // ServiceCard component - extracted from your original code
 const ServiceCard = ({ service, idx }:{ service: ServiceTypes, idx: number}) => {
+
   return (
     <Link
       href={`/services?service=${service.slug}&service_id=${service.id}`}

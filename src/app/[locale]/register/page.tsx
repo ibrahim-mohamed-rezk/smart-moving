@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
 export default function RegisterPage() {
-  const t = useTranslations();
+  const t = useTranslations("register");
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

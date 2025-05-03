@@ -2,37 +2,43 @@
 
 import Image from "next/image";
 import { CompanyTypes } from "@/libs/types/types";
+import { useTranslations } from "next-intl";
 
 const BestCompanies = ({ companies }: { companies: CompanyTypes[] }) => {
+  const t = useTranslations("home"); // Namespace: "home"
+
   return (
     <section className="px-[clamp(1rem,5vw,4rem)] py-[clamp(2rem,6vw,4rem)]">
       <h3 className="text-[clamp(14px,3.333vw,64px)] text-[#192953] w-full text-center font-bold mb-4">
-        Best companies
+        {t("best_companies")}
       </h3>
+
       <div className="relative">
         <div
           id="company-slider"
           className="flex gap-6 items-center justify-center overflow-x-auto scrollbar-hide scroll-smooth"
         >
-          {companies.map((compane, i) => (
+          {companies.map((company, i) => (
             <div
               key={i}
               className="flex-shrink-0 p-4 w-[clamp(12rem,15vw,15rem)] text-center"
             >
               <Image
-                src={compane.image || "/worldCarIcon.png"}
-                alt="Company Logo"
+                src={company.image || "/worldCarIcon.png"}
+                alt={t("company_logo")}
                 width={200}
                 height={200}
-                className="mx-auto mb-2 "
+                className="mx-auto mb-2"
               />
+              {/* Optional: if you want to show company names */}
               {/* <h2 className="text-lg font-bold text-[#7FB63D] ">
-                {compane.name}
+                {company.name}
               </h2> */}
             </div>
           ))}
         </div>
-        {/* Navigation */}
+
+        {/* Navigation Arrows */}
         <button
           onClick={() =>
             document
@@ -40,6 +46,7 @@ const BestCompanies = ({ companies }: { companies: CompanyTypes[] }) => {
               ?.scrollBy({ left: -300, behavior: "smooth" })
           }
           className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white p-2 shadow rounded-full"
+          aria-label={t("scroll_left")}
         >
           ←
         </button>
@@ -50,6 +57,7 @@ const BestCompanies = ({ companies }: { companies: CompanyTypes[] }) => {
               ?.scrollBy({ left: 300, behavior: "smooth" })
           }
           className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white p-2 shadow rounded-full"
+          aria-label={t("scroll_right")}
         >
           →
         </button>
