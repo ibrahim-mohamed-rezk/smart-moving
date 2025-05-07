@@ -120,7 +120,9 @@
     "processing": "Processing...",
     "company_registered_successfully": "Company registered successfully",
     "something_went_wrong": "Something went wrong. Please try again.",
-    "background": "Side Background Image"
+    "background": "Side Background Image",
+    "showcvr": "Add CVR",
+    "hidecvr": "Hide CVR"
   },
   "services": {
     "Get a quote": "Get a quote",

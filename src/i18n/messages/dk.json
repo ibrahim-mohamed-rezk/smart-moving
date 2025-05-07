@@ -111,7 +111,10 @@
         "processing": "Behandler...",
         "company_registered_successfully": "Virksomhed registreret med succes",
         "something_went_wrong": "Noget gik galt. Prøv igen.",
-        "background": "Baggrundsbillede"
+        "background": "Baggrundsbillede",
+        "showcvr": "Tilføj CVR",
+        "hidecvr": "Skjul CVR"
+        
     },
     "services": {
         "Get a quote": "Få et tilbud",

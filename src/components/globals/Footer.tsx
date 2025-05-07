@@ -69,23 +69,6 @@ export default function Footer() {
 
           <div>
             <h4 className="font-semibold mb-4 text-white text-[clamp(1rem,1.5vw,1.25rem)]">
-              {t("Quick Help")}
-            </h4>
-            <ul className="space-y-2 text-gray-300 text-[clamp(0.75rem,1vw,1rem)]">
-              <li>
-                <Link href="/faq">{t("FAQ")}</Link>
-              </li>
-              <li>
-                <Link href="/how-it-works">{t("How it works")}</Link>
-              </li>
-              <li>
-                <Link href="/contact">{t("Contact us")}</Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-semibold mb-4 text-white text-[clamp(1rem,1.5vw,1.25rem)]">
               {t("Explore Services")}
             </h4>
             <ul className="space-y-2 text-gray-300 text-[clamp(0.75rem,1vw,1rem)]">
@@ -114,6 +97,9 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/privacy">{t("Privacy Policy")}</Link>
+              </li>
+              <li>
+                <Link href="/contact">{t("Contact us")}</Link>
               </li>
             </ul>
           </div>

@@ -93,7 +93,7 @@ export default function Header() {
               <div className="items-center justify-center hidden md:flex ms-auto gap-[clamp(5px,1.25vw,50px)] ">
                 {/* chat icon */}
                 {token ? (
-                  <div className="w-6 h-6 relative">
+                  <Link href="/chats" className="w-6 h-6 relative">
                     <svg
                       width="24"
                       height="24"
@@ -116,7 +116,7 @@ export default function Header() {
                         stroke-linejoin="round"
                       />
                     </svg>
-                  </div>
+                  </Link>
                 ) : (
                   <button
                     onClick={() => setAuthModalType("login")}
@@ -128,7 +128,10 @@ export default function Header() {
 
                 {/* user icon */}
                 {token ? (
-                  <div className="w-6 h-6 relative">
+                  <Link
+                    href={"/myprofile?page=personal-info"}
+                    className="w-6 h-6 relative"
+                  >
                     <svg
                       width="24"
                       height="24"
@@ -152,7 +155,7 @@ export default function Header() {
                         mask="url(#path-2-inside-1_107_998)"
                       />
                     </svg>
-                  </div>
+                  </Link>
                 ) : (
                   <Link href="/RegisterCompany">
                     <button className="text-white border-white rounded-[clamp(10px,0.833vw,20px)] border font-['Libre_Baskerville'] text-[clamp(14px,1.042vw,20px)] font-[400] py-[clamp(5px,0.417vw,8px)] px-[clamp(5px,1.562vw,30px)] text-sm transition-colors">
@@ -319,7 +322,10 @@ export default function Header() {
 
                 {/* user icon mobile */}
                 {token ? (
-                  <div className="w-6 h-6 mx-auto relative">
+                  <Link
+                    href="/myprofile?page=personal-info"
+                    className="w-6 h-6 mx-auto relative"
+                  >
                     <svg
                       width="24"
                       height="24"
@@ -343,7 +349,7 @@ export default function Header() {
                         mask="url(#path-2-inside-1_107_998)"
                       />
                     </svg>
-                  </div>
+                  </Link>
                 ) : (
                   <Link
                     href="/RegisterCompany"

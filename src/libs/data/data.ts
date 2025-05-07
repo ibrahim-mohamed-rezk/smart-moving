@@ -153,19 +153,7 @@ export const storageInputs = {
         { title: "On the following date", value: "custom" },
       ],
     },
-    {
-      title: "Get offers from",
-      name: "get_offers_from",
-      type: "select",
-      options: [
-        {
-          title:
-            "All companies on Flyttetilbud.dk are allowed to bid (recommended)",
-          value: "0",
-        },
-        { title: "Only companies I invite myself may bid.", value: "1" },
-      ],
-    },
+
     {
       title: "Task description",
       name: "task_description",
@@ -262,19 +250,7 @@ export const movingFurnitureInputs = {
         { title: "On the following date", value: "custom" },
       ],
     },
-    {
-      title: "Get offers from",
-      name: "get_offers_from",
-      type: "select",
-      options: [
-        {
-          title:
-            "All companies on Flyttetilbud.dk are allowed to bid (recommended)",
-          value: "0",
-        },
-        { title: "Only companies I invite myself may bid.", value: "1" },
-      ],
-    },
+
     
   ],
 };
@@ -353,16 +329,6 @@ export const companyRelocationInputs = {
         { title: "ASAP", value: "ASAP" },
         { title: "Within A Week", value: "week" },
         { title: "Later", value: "later" },
-      ],
-    },
-    {
-      title: "Get quotes from",
-      name: "when_do_want_begin",
-      type: "select",
-      options: [
-        { title: "1 company", value: "1 company" },
-        { title: "3 company", value: "3 company" },
-        { title: "All available", value: "all" },
       ],
     },
   ],

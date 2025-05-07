@@ -13,27 +13,15 @@ import sidebgimage from "../../../../public/side.svg";
 import HiddenIcon from "../../../../public/aye";
 import toast from "react-hot-toast";
 import { getData, postData } from "@/libs/axios/server";
-import  { AxiosHeaders } from "axios";
+import axios, { AxiosHeaders } from "axios";
 import { useParams } from "next/navigation";
-import { ServiceTypes } from "@/libs/types/types";
+import {
+  countryTypes,
+  registrationFormData,
+  ServiceTypes,
+} from "@/libs/types/types";
 import { useRouter } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
-
-
-interface FormData {
-  first_name: string;
-  sur_name: string;
-  email: string;
-  CVR: string;
-  phone: string;
-  password: string;
-  password_confirmation: string;
-  address: string;
-  postal_code: string;
-  city: string;
-  contact_person: string;
-  services: number[];
-}
 
 interface PasswordRequirements {
   minLength: boolean;
@@ -60,15 +48,18 @@ const AccountCreationForm = () => {
   const [validPhone, setValidPhone] = useState<boolean | null>(null);
   const [validFirst_name, setValidFirst_name] = useState<boolean | null>(null);
   const [validsur_name, setValidsur_name] = useState<boolean | null>(null);
-    const [services, setservices] = useState<ServiceTypes[]>([]);
-    const router = useRouter();
+  const [services, setservices] = useState<ServiceTypes[]>([]);
+  const router = useRouter();
+  const [showCVR, setShowCVR] = useState<boolean>(false);
+  const [countries, setCountries] = useState<countryTypes[]>([]);
 
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<registrationFormData>({
     first_name: "",
     sur_name: "",
     CVR: "",
     email: "",
     phone: "",
+    country_code: "+45",
     password: "",
     password_confirmation: "",
     address: "",
@@ -107,6 +98,24 @@ const AccountCreationForm = () => {
     feachData();
   }, [params?.locale]);
 
+  // get countries
+  useEffect(() => {
+    const feachCountries = async () => {
+      try {
+        const response = await axios.get("/api/countries", {
+          headers: {
+            lang: params?.locale,
+          },
+        });
+        setCountries(response.data);
+      } catch (error) {
+        throw error;
+      }
+    };
+
+    feachCountries();
+  }, [params?.locale]);
+
   // Validate name fields
   useEffect(() => {
     if (formData.first_name) {
@@ -141,7 +150,8 @@ const AccountCreationForm = () => {
       const cvrRegex = /^\d{8}$/;
       setValidCVR(cvrRegex.test(formData.CVR.trim()));
     } else {
-      setValidCVR(null);
+      // CVR is optional, so empty value is valid
+      setValidCVR(true);
     }
   }, [formData.CVR]);
 
@@ -276,15 +286,15 @@ const AccountCreationForm = () => {
         })
       );
 
-       await fetch("/api/auth/login", {
+      await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          token: response.token, 
-          user: response.data, 
+          token: response.token,
+          user: response.data,
         }),
       });
-        
+
       toast.success(t("company_registered_successfully"));
       router.push("/");
     } catch (error) {
@@ -311,7 +321,9 @@ const AccountCreationForm = () => {
 
         <div className="relative z-10 p-8 h-full flex flex-col">
           {/* Title with proper styling and spacing */}
-          <h1 className="text-3xl font-bold mb-6 text-white">{t("why_join_us")}</h1>
+          <h1 className="text-3xl font-bold mb-6 text-white">
+            {t("why_join_us")}
+          </h1>
 
           {/* Bullet points with proper styling */}
           <ul className="space-y-8">
@@ -500,46 +512,58 @@ const AccountCreationForm = () => {
                   </div>
                 </div>
 
+                {/* CVR */}
                 <div>
-                  <label
-                    htmlFor="email"
-                    className="blocktext-xl text-bold font-medium text-gray-700 mb-1"
+                  <button
+                    onClick={() => setShowCVR((prev) => !prev)}
+                    className="blocktext-xl text-bold rounded-full bg-gray-500 py-2 px-4 font-medium text-white mb-1"
                   >
-                    {t("cvr")}
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      id="CVR"
-                      name="CVR"
-                      placeholder={t("enter_cvr")}
-                      value={formData.CVR}
-                      onChange={handleInputChange}
-                      className={`w-full px-4 py-4 border ${
-                        validCVR === true
-                          ? "border-green-500"
-                          : validCVR === false
-                          ? "border-red-500"
-                          : "border-gray-300"
-                      } rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all pr-10`}
-                      required
-                    />
-                    {validCVR !== null && (
-                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                        {validCVR ? (
-                          <CheckCircle2 className="w-5 h-5 text-green-500" />
-                        ) : (
-                          <XCircle className="w-5 h-5 text-red-500" />
-                        )}
-                      </div>
+                    {showCVR ? t("hidecvr") : t("showcvr")}
+                  </button>
+                </div>
+
+                {showCVR && (
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="blocktext-xl text-bold font-medium text-gray-700 mb-1"
+                    >
+                      {t("cvr")}
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="text"
+                        id="CVR"
+                        name="CVR"
+                        placeholder={t("enter_cvr")}
+                        value={formData.CVR}
+                        onChange={handleInputChange}
+                        className={`w-full px-4 py-4 border ${
+                          validCVR === true
+                            ? "border-green-500"
+                            : validCVR === false
+                            ? "border-red-500"
+                            : "border-gray-300"
+                        } rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all pr-10`}
+                        required
+                      />
+                      {validCVR !== null && (
+                        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                          {validCVR ? (
+                            <CheckCircle2 className="w-5 h-5 text-green-500" />
+                          ) : (
+                            <XCircle className="w-5 h-5 text-red-500" />
+                          )}
+                        </div>
+                      )}
+                    </div>
+                    {validCVR === false && (
+                      <p className="mt-1 text-sm text-red-500">
+                        {t("enter_valid_cvr")}
+                      </p>
                     )}
                   </div>
-                  {validCVR === false && (
-                    <p className="mt-1 text-sm text-red-500">
-                      {t("enter_valid_cvr")}
-                    </p>
-                  )}
-                </div>
+                )}
 
                 <div>
                   <label
@@ -610,22 +634,51 @@ const AccountCreationForm = () => {
                     {t("phone_number")}
                   </label>
                   <div className="relative">
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      placeholder={t("enter_phone_number")}
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      className={`w-full px-4 py-4 border ${
+                    <div
+                      className={`w-full border ${
                         validPhone === true
                           ? "border-green-500"
                           : validPhone === false
                           ? "border-red-500"
                           : "border-gray-300"
-                      } rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all pr-10`}
-                      required
-                    />
+                      } rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all`}
+                    >
+                      <select
+                        className=" outline-none focus:border-transparent transition-all px-4 py-4 max-w-[150px] text-ellipsis overflow-hidden whitespace-nowrap"
+                        value={formData.country_code}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            country_code: e.target.value,
+                          })
+                        }
+                      >
+                        {countries.map((country) => (
+                          <option
+                            key={country.code}
+                            value={country.phone}
+                          >
+                            {`${country.name} ${country.phone}`}
+                          </option>
+                        ))}
+                      </select>
+                      <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        placeholder={t("enter_phone_number")}
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        required
+                        className={`border-s-2 ${
+                          validPhone === true
+                            ? "border-s-green-500"
+                            : validPhone === false
+                            ? "border-s-red-500"
+                            : "border-s-gray-300"
+                        } outline-none px-4 py-4`}
+                      />
+                    </div>
                     {validPhone !== null && (
                       <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
                         {validPhone ? (
@@ -913,7 +966,7 @@ const AccountCreationForm = () => {
                   <div className="bg-gray-50 rounded-2xl border border-gray-200 p-1">
                     <div className="grid grid-cols-1 gap-2">
                       {services.map((service) => (
-                          <div
+                        <div
                           key={service.id}
                           className={`p-3 rounded-2xl flex items-center ${
                             formData.services.includes(service.id)
@@ -985,7 +1038,7 @@ const AccountCreationForm = () => {
                         {t("processing")}
                       </>
                     ) : (
-                        t("create_account")
+                      t("create_account")
                     )}
                   </button>
                 </div>

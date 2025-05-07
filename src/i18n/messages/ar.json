@@ -114,7 +114,9 @@
     "processing": "جاري المعالجة...",
     "company_registered_successfully": "تم تسجيل الشركة بنجاح",
     "something_went_wrong": "حدث خطأ، يرجى المحاولة مرة أخرى",
-    "background": "صورة خلفية"
+    "background": "صورة خلفية",
+    "showcvr": "إضافة رقم السجل التجاري",
+    "hidecvr": "إخفاء رقم السجل التجاري"
   },
   "services": {
     "Get a quote": "احصل على عرض سعر",

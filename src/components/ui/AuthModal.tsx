@@ -70,6 +70,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
           password: "",
         });
         onClose();
+        window.location.href = "/";
       } catch (error) {
         toast.error("Login failed, please try again.");
         throw error;
