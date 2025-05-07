@@ -45,6 +45,7 @@
   },
   "footer": {
     "Safe and Reliable": "آمن وموثوق",
+    "Copyright": "© {year} Smart Moving. All rights reserved.",
     "Fast and Easy": "سريع وسهل",
     "Live Support": "دعم مباشر",
     "We make getting around easy": "نجعل التنقل سهلاً! خدمات نقل موثوقة وآمنة وسريعة في جميع أنحاء المدينة.",
@@ -59,8 +60,7 @@
     "Storage": "التخزين",
     "Company": "الشركة",
     "Terms & Conditions": "الشروط والأحكام",
-    "Privacy Policy": "سياسة الخصوصية",
-    "Copyright": "© {{year}} جميع الحقوق محفوظة"
+    "Privacy Policy": "سياسة الخصوصية"
   },
   "company": {
     "why_join_us": "لماذا تنضم إلينا؟",
@@ -185,6 +185,12 @@
     "There is an elevator at the move-in address.": "يوجد مصعد في عنوان الانتقال."
   },
   "infoWebsite":{
+    "form": {
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "message": "الرسالة",
+      "submit": "إرسال"
+    },
     "title": "معلومات المنصة",
     "tabs": {
       "about": "من نحن",

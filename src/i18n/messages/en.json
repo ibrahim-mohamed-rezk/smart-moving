@@ -66,7 +66,7 @@
     "Company": "Company",
     "Terms & Conditions": "Terms & Conditions",
     "Privacy Policy": "Privacy Policy",
-    "Copyright": "© {{year}} Copyright@"
+    "Copyright": "© {year} Smart Moving. All rights reserved."
   },
   "company": {
     "why_join_us": "Why join us?",
@@ -191,6 +191,12 @@
     "There is an elevator at the move-in address.": "There is an elevator at the move-in address."
 },
 "infoWebsite":{
+  "form": {
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "submit": "Send"
+  },
   "title": "Platform Info",
   "tabs": {
     "about": "About Us",

@@ -1,5 +1,5 @@
 export const navigatons = [
-  { name: "Get a quote", href: "/" },
+  { name: "Get a quote", href: "/services" },
   { name: "Search price lists", href: "/services" },
   { name: "Ratings", href: "/about" },
 ];
