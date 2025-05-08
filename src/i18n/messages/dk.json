@@ -4,7 +4,9 @@
         "Search price lists": "Søg i prislister",
         "Ratings": "Bedømmelser",
         "Login": "Log ind",
-        "Register Moving Company": "Registrer flyttefirma"
+        "Register Moving Company": "Registrer flyttefirma",
+        "My Profile": "Min Profil",
+        "Logout": "Log ud"
     },
     "home": {
         "welcome": "Velkommen til Smart Moving!",

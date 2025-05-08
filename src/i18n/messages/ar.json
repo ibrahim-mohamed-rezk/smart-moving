@@ -4,7 +4,9 @@
     "Search price lists": "البحث في قوائم الأسعار",
     "Ratings": "التقييمات",
     "Login": "تسجيل الدخول",
-    "Register Moving Company": "تسجيل شركة نقل"
+    "Register Moving Company": "تسجيل شركة نقل",
+    "My Profile": "الملف الشخصي",
+    "Logout": "تسجيل الخروج"
   },
   "auth": {
     "Email": "البريد الإلكتروني",

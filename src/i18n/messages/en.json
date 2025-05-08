@@ -4,7 +4,9 @@
     "Search price lists": "Search price lists",
     "Ratings": "Ratings",
     "Login": "Login",
-    "Register Moving Company": "Register Moving Company"
+    "Register Moving Company": "Register Moving Company",
+    "My Profile": "My Profile",
+    "Logout": "Logout"
   },
   "auth": {
     "Email": "Email",

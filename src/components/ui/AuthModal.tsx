@@ -6,8 +6,10 @@ import { Eye, X } from "lucide-react";
 import HiddenIcon from "../../../public/aye";
 import Image from "next/image";
 import { postData } from "@/libs/axios/server";
-import axios, { AxiosHeaders } from "axios";
+import axios, { AxiosError, AxiosHeaders } from "axios";
 import toast from "react-hot-toast";
+import { countryTypes } from "@/libs/types/types";
+import { useParams } from "next/navigation";
 
 interface AuthModalProps {
   type: "login" | "register";
@@ -18,6 +20,8 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
   const [modalType, setModalType] = useState(type);
   const [showPassword, setShowPassword] = useState(false);
   const modalRef = useRef<HTMLDivElement | null>(null);
+  const [countries, setCountries] = useState<countryTypes[]>([]);
+  const params = useParams();
   const [formData, setFormData] = useState({
     login: "",
     password: "",
@@ -29,7 +33,26 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
     phone: "",
     password: "",
     password_confirmation: "",
+    country_code: "+45",
   });
+
+  // get countries
+  useEffect(() => {
+    const feachCountries = async () => {
+      try {
+        const response = await axios.get("/api/countries", {
+          headers: {
+            lang: params?.locale,
+          },
+        });
+        setCountries(response.data);
+      } catch (error) {
+        throw error;
+      }
+    };
+
+    feachCountries();
+  }, [params]);
 
   // Close when clicking outside
   useEffect(() => {
@@ -53,8 +76,8 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
           "customer/login-api",
           formData,
           new AxiosHeaders({
-            Authorization: `Bearer token`,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
+            lang: params?.locale as string,
           })
         );
 
@@ -72,7 +95,11 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
         onClose();
         window.location.href = "/";
       } catch (error) {
-        toast.error("Login failed, please try again.");
+        if (axios.isAxiosError(error)) {
+          toast.error(error.response?.data?.msg || "An error occurred");
+        } else {
+          toast.error("An unexpected error occurred");
+        }
         throw error;
       }
     } else if (modalType === "register") {
@@ -81,8 +108,8 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
           "customer/register-api",
           registerformData,
           new AxiosHeaders({
-            Authorization: `Bearer token`,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
+            lang: params?.locale as string,
           })
         );
 
@@ -100,10 +127,15 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
           first_name: "",
           sur_name: "",
           phone: "",
+          country_code: "+45",
         });
         onClose();
       } catch (error) {
-        toast.error("Registration failed, please try again.");
+        if (axios.isAxiosError(error)) {
+          toast.error(error.response?.data?.msg || "An error occurred");
+        } else {
+          toast.error("An unexpected error occurred");
+        }
         throw error;
       }
     }
@@ -178,18 +210,43 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
             className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           {modalType === "register" && (
-            <input
-              type={"text"}
-              placeholder="Phone Number"
-              value={registerformData.phone}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setRegisterFormData({
-                  ...registerformData,
-                  phone: e.target.value,
-                });
-              }}
-              className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <div>
+              <div className="relative">
+                <div className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <select
+                    className=" outline-none focus:border-transparent transition-all px-4 py-2 max-w-[150px] text-ellipsis overflow-hidden whitespace-nowrap"
+                    value={registerformData.country_code}
+                    onChange={(e) =>
+                      setRegisterFormData({
+                        ...registerformData,
+                        country_code: e.target.value,
+                      })
+                    }
+                  >
+                    {countries.map((country) => (
+                      <option key={country.code} value={country.phone}>
+                        {`${country.name} ${country.phone}`}
+                      </option>
+                    ))}
+                  </select>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    placeholder={`enter phone number`}
+                    value={registerformData.phone}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      setRegisterFormData({
+                        ...registerformData,
+                        phone: e.target.value,
+                      });
+                    }}
+                    required
+                    className=" p-2 outline-none h-full"
+                  />
+                </div>
+              </div>
+            </div>
           )}
 
           {/* Password with toggle */}

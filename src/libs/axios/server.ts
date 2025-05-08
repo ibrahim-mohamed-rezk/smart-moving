@@ -31,7 +31,7 @@ export const postData = async (
 ) => {
   try {
     const response = await backendServer.post(endpoint, data, {
-      headers: { ...headers },
+      headers
     });
     return response.data;
   } catch (error) {

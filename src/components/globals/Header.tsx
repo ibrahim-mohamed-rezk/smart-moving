@@ -24,6 +24,7 @@ export default function Header() {
   >(null);
   const t = useTranslations("header");
   const [token, setToken] = useState<string | null>(null);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   const [menuOpen, setMenuOpen] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
@@ -55,6 +56,15 @@ export default function Header() {
     document.addEventListener("mousedown", onClick);
     return () => document.removeEventListener("mousedown", onClick);
   }, []);
+
+  const logout = async () => {
+    try {
+      await axios.post("/api/auth/logout");
+      setToken(null);
+    } catch (error) {
+      throw error;
+    }
+  }
 
   return (
     <>
@@ -128,34 +138,62 @@ export default function Header() {
 
                 {/* user icon */}
                 {token ? (
-                  <Link
-                    href={"/myprofile?page=personal-info"}
-                    className="w-6 h-6 relative"
-                  >
-                    <svg
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+                  <div className="relative">
+                    <button
+                      onClick={() => setUserMenuOpen((open) => !open)}
+                      className="w-6 h-6 relative"
                     >
-                      <path
-                        d="M17 8.5C17 5.73858 14.7614 3.5 12 3.5C9.23858 3.5 7 5.73858 7 8.5C7 11.2614 9.23858 13.5 12 13.5C14.7614 13.5 17 11.2614 17 8.5Z"
-                        stroke="white"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <mask id="path-2-inside-1_107_998" fill="white">
-                        <path d="M19 20.5C19 16.634 15.866 13.5 12 13.5C8.13401 13.5 5 16.634 5 20.5" />
-                      </mask>
-                      <path
-                        d="M17.5 20.5C17.5 21.3284 18.1716 22 19 22C19.8284 22 20.5 21.3284 20.5 20.5H17.5ZM3.5 20.5C3.5 21.3284 4.17157 22 5 22C5.82843 22 6.5 21.3284 6.5 20.5H3.5ZM19 20.5H20.5C20.5 15.8056 16.6944 12 12 12V13.5V15C15.0376 15 17.5 17.4624 17.5 20.5H19ZM12 13.5V12C7.30558 12 3.5 15.8056 3.5 20.5H5H6.5C6.5 17.4624 8.96244 15 12 15V13.5Z"
-                        fill="white"
-                        mask="url(#path-2-inside-1_107_998)"
-                      />
-                    </svg>
-                  </Link>
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M17 8.5C17 5.73858 14.7614 3.5 12 3.5C9.23858 3.5 7 5.73858 7 8.5C7 11.2614 9.23858 13.5 12 13.5C14.7614 13.5 17 11.2614 17 8.5Z"
+                          stroke="white"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <mask id="path-2-inside-1_107_998" fill="white">
+                          <path d="M19 20.5C19 16.634 15.866 13.5 12 13.5C8.13401 13.5 5 16.634 5 20.5" />
+                        </mask>
+                        <path
+                          d="M17.5 20.5C17.5 21.3284 18.1716 22 19 22C19.8284 22 20.5 21.3284 20.5 20.5H17.5ZM3.5 20.5C3.5 21.3284 4.17157 22 5 22C5.82843 22 6.5 21.3284 6.5 20.5H3.5ZM19 20.5H20.5C20.5 15.8056 16.6944 12 12 12V13.5V15C15.0376 15 17.5 17.4624 17.5 20.5H19ZM12 13.5V12C7.30558 12 3.5 15.8056 3.5 20.5H5H6.5C6.5 17.4624 8.96244 15 12 15V13.5Z"
+                          fill="white"
+                          mask="url(#path-2-inside-1_107_998)"
+                        />
+                      </svg>
+                    </button>
+                    <div
+                      className={`absolute -start-full mt-2 w-48 bg-white rounded-xl shadow-lg z-10 transition-all duration-150 ${
+                        userMenuOpen
+                          ? "opacity-100 scale-100 pointer-events-auto"
+                          : "opacity-0 scale-95 pointer-events-none"
+                      }`}
+                    >
+                      <div className="py-1 flex gap-2 items-center justify-center flex-col">
+                        <Link
+                          href="/myprofile?page=personal-info"
+                          className=" px-4 py-2 flex  text-sm text-gray-700 hover:bg-gray-100 font-['Libre_Baskerville']"
+                          onClick={() => setUserMenuOpen(false)}
+                        >
+                          {t("My Profile")}
+                        </Link>
+                        <button
+                          onClick={() => {
+                            setUserMenuOpen(false);
+                            logout();
+                          }}
+                          className="block text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-['Libre_Baskerville']"
+                        >
+                          {t("Logout")}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 ) : (
                   <Link href="/RegisterCompany">
                     <button className="text-white border-white rounded-[clamp(10px,0.833vw,20px)] border font-['Libre_Baskerville'] text-[clamp(14px,1.042vw,20px)] font-[400] py-[clamp(5px,0.417vw,8px)] px-[clamp(5px,1.562vw,30px)] text-sm transition-colors">

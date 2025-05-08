@@ -96,7 +96,7 @@ const AccountCreationForm = () => {
     };
 
     feachData();
-  }, [params?.locale]);
+  }, [params]);
 
   // get countries
   useEffect(() => {
@@ -114,7 +114,7 @@ const AccountCreationForm = () => {
     };
 
     feachCountries();
-  }, [params?.locale]);
+  }, [params]);
 
   // Validate name fields
   useEffect(() => {
@@ -281,8 +281,8 @@ const AccountCreationForm = () => {
         "company/register-api",
         formData,
         new AxiosHeaders({
-          Authorization: `Bearer token`,
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
+          lang: params?.locale as string,
         })
       );
 
@@ -298,8 +298,12 @@ const AccountCreationForm = () => {
       toast.success(t("company_registered_successfully"));
       router.push("/");
     } catch (error) {
-      toast.error(t("something_went_wrong"));
-      console.error("Error submitting form:", error);
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.msg || "An error occurred");
+      } else {
+        toast.error("An unexpected error occurred");
+      }
+      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -654,10 +658,7 @@ const AccountCreationForm = () => {
                         }
                       >
                         {countries.map((country) => (
-                          <option
-                            key={country.code}
-                            value={country.phone}
-                          >
+                          <option key={country.code} value={country.phone}>
                             {`${country.name} ${country.phone}`}
                           </option>
                         ))}
