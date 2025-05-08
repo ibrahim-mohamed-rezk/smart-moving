@@ -29,9 +29,9 @@ export default async function PersonalInfoPage({
       {/* Right Panel - Form */}
       <div className="w-full md:w-2/3 lg:w-3/4 p-4 sm:p-6 mt-4 md:mt-0">
         {page === "personal-info" && (
-          <PersonalInfoForm initialData={userData} />
+          <PersonalInfoForm initialData={userData} token={token} />
         )}
-        {page === "change-password" && <ChangePassword />}
+        {page === "change-password" && <ChangePassword token={token} userData={userData} />}
         {page === "tasks" && <Tasks />}
       </div>
     </div>

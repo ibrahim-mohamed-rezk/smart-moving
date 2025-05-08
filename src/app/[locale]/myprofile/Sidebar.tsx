@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { UserDataTypes } from "@/libs/types/types";
 import { useRouter } from "@/i18n/routing";
 import { useSearchParams } from "next/navigation";
+import { UserIcon } from "lucide-react";
 
 const Sidebar = ({ userData }: { userData: UserDataTypes }) => {
   const t = useTranslations("company");
@@ -12,6 +13,7 @@ const Sidebar = ({ userData }: { userData: UserDataTypes }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const params = useSearchParams();
   const [activeRoute, setActiveRoute] = useState(params.get("page"));
+
 
   // Navigation handlers for sidebar
   const handleNavigation = (route: string) => {
@@ -46,11 +48,12 @@ const Sidebar = ({ userData }: { userData: UserDataTypes }) => {
           <div className="w-full max-w-96 inline-flex flex-col justify-center items-center gap-8 lg:gap-14">
             <div className="inline-flex justify-start items-center gap-2 lg:gap-4">
               <div className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 relative bg-white rounded-full outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden flex items-center justify-center">
-                <img
+                {/* <img
                   className="w-12 h-10 md:w-16 md:h-12 lg:w-20 lg:h-14 object-contain"
                   src="https://placehold.co/75x57"
                   alt="User avatar"
-                />
+                /> */}
+                <UserIcon className="w-[65%] h-[65%] text-[#192953]" />
               </div>
               <div className="flex flex-col justify-center items-start gap-1">
                 <div className="text-white text-lg md:text-xl lg:text-3xl font-bold font-['Libre_Baskerville'] break-words">

@@ -87,16 +87,17 @@ export interface countryTypes {
 }
 
 export interface UserDataTypes {
-  id: number;
-  name: string;
+  id?: number;
+  name?: string;
   email: string;
   phone: string;
-  provider_id: string;
-  image: string;
-  device_token: string;
-  email_verified_at: string;
+  provider_id?: string;
+  image?: string;
+  device_token?: string;
+  email_verified_at?: string;
   first_name?: string;
-  last_name?: string;
+  sur_name?: string;
+  role?: string;
 }
 
 export interface TaskTypes {

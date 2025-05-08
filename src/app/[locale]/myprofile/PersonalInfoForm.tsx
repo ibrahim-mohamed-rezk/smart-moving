@@ -2,8 +2,18 @@
 import { useState } from "react";
 // import { useTranslations } from "next-intl";
 import { UserDataTypes } from "@/libs/types/types";
+import { UserIcon } from "lucide-react";
+import { postData } from "@/libs/axios/server";
+import axios, { AxiosHeaders } from "axios";
+import toast from "react-hot-toast";
 
-const PersonalInfoForm = ({ initialData }:{initialData: UserDataTypes}) => {
+const PersonalInfoForm = ({
+  initialData,
+  token,
+}: {
+  initialData: UserDataTypes;
+  token: string;
+}) => {
   // const t = useTranslations("company");
 
   // Form state with validation
@@ -11,8 +21,8 @@ const PersonalInfoForm = ({ initialData }:{initialData: UserDataTypes}) => {
 
   // Validation state
   const [errors, setErrors] = useState({
-    firstName: "",
-    lastName: "",
+    first_name: "",
+    sur_name: "",
     email: "",
     phone: "",
   });
@@ -35,21 +45,21 @@ const PersonalInfoForm = ({ initialData }:{initialData: UserDataTypes}) => {
   const validateForm = () => {
     let valid = true;
     const newErrors = {
-      firstName: "",
-      lastName: "",
+      first_name: "",
+      sur_name: "",
       email: "",
       phone: "",
     };
 
     // First name validation
     if (!formData.first_name?.trim()) {
-      newErrors.firstName = "First name is required";
+      newErrors.first_name = "First name is required";
       valid = false;
     }
 
     // Last name validation
-    if (!formData.last_name?.trim()) {
-      newErrors.lastName = "Last name is required";
+    if (!formData.sur_name?.trim()) {
+      newErrors.sur_name = "Last name is required";
       valid = false;
     }
 
@@ -93,20 +103,38 @@ const PersonalInfoForm = ({ initialData }:{initialData: UserDataTypes}) => {
     setIsSubmitting(true);
 
     try {
-      // Simulate API call with timeout
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+       const response = await postData(
+        `${initialData.role}/update-profile-api`,
+        formData,
+        new AxiosHeaders({
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        })
+      );
+      
+      // Update user in cookies
+      if (response.data) {
+        document.cookie = `user=${JSON.stringify(response.data)}; path=/`;
+        // Reload the window to reflect updated user data
+        window.location.reload();
+      }
 
       // Mock successful save
-      console.log("Form submitted successfully:", formData);
+      toast.success("Profile updated successfully");
       setSubmitSuccess(true);
+
 
       // Reset submission state after showing success message
       setTimeout(() => {
         setSubmitSuccess(false);
       }, 3000);
     } catch (error) {
-      console.error("Error submitting form:", error);
-      setSubmitError("Failed to save changes. Please try again.");
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.msg || "An error occurred");
+      } else {
+        toast.error("An unexpected error occurred");
+      }
+      throw error;
     } finally {
       setIsSubmitting(false);
     }
@@ -118,17 +146,18 @@ const PersonalInfoForm = ({ initialData }:{initialData: UserDataTypes}) => {
       className="w-full max-w-6xl mx-auto px-4 sm:px-6 md:px-8 py-8 flex flex-col justify-center items-start gap-8 md:gap-12"
     >
       {/* Header - Profile Image and Name */}
-      <div className="w-full flex flex-col sm:flex-row justify-start items-center sm:items-start gap-6 md:gap-12">
+      <div className="w-full flex flex-col sm:flex-row justify-start items-center gap-6 md:gap-12">
         <div className="w-32 h-32 md:w-44 md:h-44 mx-auto md:mx-0 relative bg-white rounded-full outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden flex items-center justify-center">
-          <img
+          {/* <img
             className="w-24 h-20 md:w-32 md:h-24"
             src="/api/placeholder/136/103"
             alt="Profile"
-          />
+          /> */}
+          <UserIcon className="w-[65%] h-[65%] text-[#192953]" />
         </div>
-        <div className="p-2.5 flex flex-col justify-center items-center sm:items-start gap-2.5">
+        <div className="p-2.5 flex flex-col justify-center items-center sm:items-start gap-5">
           <div className="text-black text-3xl md:text-5xl font-bold font-['Libre_Baskerville'] text-center sm:text-left">
-            {formData.first_name} {formData.last_name} 
+            {formData.name}
           </div>
           <div className="text-black/60 text-base md:text-lg font-bold font-['Libre_Baskerville']">
             {formData.email}
@@ -148,18 +177,18 @@ const PersonalInfoForm = ({ initialData }:{initialData: UserDataTypes}) => {
               <div className="self-stretch relative w-full">
                 <input
                   type="text"
-                  name="firstName"
+                  name="first_name"
                   value={formData.first_name}
                   onChange={handleChange}
                   className={`self-stretch h-12 md:h-16 p-3 md:p-4 bg-zinc-100 rounded-3xl outline ${
-                    errors.firstName
+                    errors.first_name
                       ? "outline-red-500"
                       : "outline-1 outline-offset-[-1px] outline-zinc-300"
                   } w-full text-black text-base md:text-lg font-normal font-['Libre_Baskerville']`}
                 />
-                {errors.firstName && (
+                {errors.first_name && (
                   <p className="text-red-500 text-sm mt-1 ml-2">
-                    {errors.firstName}
+                    {errors.first_name}
                   </p>
                 )}
               </div>
@@ -171,18 +200,18 @@ const PersonalInfoForm = ({ initialData }:{initialData: UserDataTypes}) => {
               <div className="self-stretch relative w-full">
                 <input
                   type="text"
-                  name="lastName"
-                  value={formData.last_name}
+                  name="sur_name"
+                  value={formData.sur_name}
                   onChange={handleChange}
                   className={`self-stretch h-12 md:h-16 p-3 md:p-4 bg-zinc-100 rounded-3xl outline ${
-                    errors.lastName
+                    errors.sur_name
                       ? "outline-red-500"
                       : "outline-1 outline-offset-[-1px] outline-zinc-300"
                   } w-full text-black text-base md:text-lg font-normal font-['Libre_Baskerville']`}
                 />
-                {errors.lastName && (
+                {errors.sur_name && (
                   <p className="text-red-500 text-sm mt-1 ml-2">
-                    {errors.lastName}
+                    {errors.sur_name}
                   </p>
                 )}
               </div>

@@ -1,20 +1,30 @@
 "use client";
 
+import { postData } from "@/libs/axios/server";
+import { UserDataTypes } from "@/libs/types/types";
+import axios, { AxiosHeaders } from "axios";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
-const ChangePassword = () => {
+const ChangePassword = ({
+  token,
+  userData,
+}: {
+  token: string;
+  userData: UserDataTypes;
+}) => {
   // Form state with validation
   const [formData, setFormData] = useState({
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
+    current_password: "",
+    new_password: "",
+    new_password_confirmation: "",
   });
 
   // Validation state
   const [errors, setErrors] = useState({
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
+    current_password: "",
+    new_password: "",
+    new_password_confirmation: "",
   });
 
   // Form submission state
@@ -22,9 +32,9 @@ const ChangePassword = () => {
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [showPassword, setShowPassword] = useState({
-    currentPassword: false,
-    newPassword: false,
-    confirmPassword: false,
+    current_password: false,
+    new_password: false,
+    new_password_confirmation: false,
   });
 
   // Handle input changes
@@ -48,32 +58,32 @@ const ChangePassword = () => {
   const validateForm = () => {
     let valid = true;
     const newErrors = {
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
+      current_password: "",
+      new_password: "",
+      new_password_confirmation: "",
     };
 
     // Current password validation
-    if (!formData.currentPassword.trim()) {
-      newErrors.currentPassword = "Current password is required";
+    if (!formData.current_password.trim()) {
+      newErrors.current_password = "Current password is required";
       valid = false;
     }
 
     // New password validation
-    if (!formData.newPassword.trim()) {
-      newErrors.newPassword = "New password is required";
+    if (!formData.new_password.trim()) {
+      newErrors.new_password = "New password is required";
       valid = false;
-    } else if (formData.newPassword.length < 8) {
-      newErrors.newPassword = "Password must be at least 8 characters";
+    } else if (formData.new_password.length < 8) {
+      newErrors.new_password = "Password must be at least 8 characters";
       valid = false;
     }
 
     // Confirm password validation
-    if (!formData.confirmPassword.trim()) {
-      newErrors.confirmPassword = "Please confirm your new password";
+    if (!formData.new_password_confirmation.trim()) {
+      newErrors.new_password_confirmation = "Please confirm your new password";
       valid = false;
-    } else if (formData.newPassword !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match";
+    } else if (formData.new_password !== formData.new_password_confirmation) {
+      newErrors.new_password_confirmation = "Passwords do not match";
       valid = false;
     }
 
@@ -97,18 +107,24 @@ const ChangePassword = () => {
     setIsSubmitting(true);
 
     try {
-      // Simulate API call with timeout
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+       await postData(
+        `${userData.role}/change-password-api`,
+        formData,
+        new AxiosHeaders({
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        })
+      );
 
       // Mock successful save
-      console.log("Password changed successfully");
+      toast.success("Password changed successfully");
       setSubmitSuccess(true);
 
       // Reset form data
       setFormData({
-        currentPassword: "",
-        newPassword: "",
-        confirmPassword: "",
+        current_password: "",
+        new_password: "",
+        new_password_confirmation: "",
       });
 
       // Reset submission state after showing success message
@@ -116,8 +132,12 @@ const ChangePassword = () => {
         setSubmitSuccess(false);
       }, 3000);
     } catch (error) {
-      console.error("Error changing password:", error);
-      setSubmitError("Failed to change password. Please try again.");
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.msg || "An error occurred");
+      } else {
+        toast.error("An unexpected error occurred");
+      }
+      throw error;
     } finally {
       setIsSubmitting(false);
     }
@@ -137,19 +157,19 @@ const ChangePassword = () => {
           <div className="self-stretch relative">
             <div className="self-stretch h-16 p-4 bg-zinc-100 rounded-[30px] outline-1 outline-offset-[-1px] outline-zinc-300 inline-flex justify-between items-center w-full">
               <input
-                type={showPassword.currentPassword ? "text" : "password"}
-                name="currentPassword"
-                value={formData.currentPassword}
+                type={showPassword.current_password ? "text" : "password"}
+                name="current_password"
+                value={formData.current_password}
                 onChange={handleChange}
                 placeholder="Enter Password"
                 className="bg-transparent border-none outline-none flex-1 text-black text-lg font-normal font-['Libre_Baskerville']"
               />
               <button
                 type="button"
-                onClick={() => togglePasswordVisibility("currentPassword")}
+                onClick={() => togglePasswordVisibility("current_password")}
                 className="w-6 h-6 relative flex items-center justify-center focus:outline-none"
               >
-                {showPassword.currentPassword ? (
+                {showPassword.current_password ? (
                   // Eye icon (visible)
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -190,9 +210,9 @@ const ChangePassword = () => {
                 )}
               </button>
             </div>
-            {errors.currentPassword && (
+            {errors.current_password && (
               <p className="text-red-500 text-sm mt-1 ml-2">
-                {errors.currentPassword}
+                {errors.current_password}
               </p>
             )}
           </div>
@@ -206,19 +226,19 @@ const ChangePassword = () => {
           <div className="self-stretch relative">
             <div className="self-stretch h-16 p-4 bg-zinc-100 rounded-[30px] outline outline-1 outline-offset-[-1px] outline-zinc-300 inline-flex justify-between items-center w-full">
               <input
-                type={showPassword.newPassword ? "text" : "password"}
-                name="newPassword"
-                value={formData.newPassword}
+                type={showPassword.new_password ? "text" : "password"}
+                name="new_password"
+                value={formData.new_password}
                 onChange={handleChange}
                 placeholder="Enter Password"
                 className="bg-transparent border-none outline-none flex-1 text-black text-lg font-normal font-['Libre_Baskerville']"
               />
               <button
                 type="button"
-                onClick={() => togglePasswordVisibility("newPassword")}
+                onClick={() => togglePasswordVisibility("new_password")}
                 className="w-6 h-6 relative flex items-center justify-center focus:outline-none"
               >
-                {showPassword.newPassword ? (
+                {showPassword.new_password ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -257,9 +277,9 @@ const ChangePassword = () => {
                 )}
               </button>
             </div>
-            {errors.newPassword && (
+            {errors.new_password && (
               <p className="text-red-500 text-sm mt-1 ml-2">
-                {errors.newPassword}
+                {errors.new_password}
               </p>
             )}
           </div>
@@ -273,19 +293,23 @@ const ChangePassword = () => {
           <div className="self-stretch relative">
             <div className="self-stretch h-16 p-4 bg-zinc-100 rounded-[30px] outline outline-1 outline-offset-[-1px] outline-zinc-300 inline-flex justify-between items-center w-full">
               <input
-                type={showPassword.confirmPassword ? "text" : "password"}
-                name="confirmPassword"
-                value={formData.confirmPassword}
+                type={
+                  showPassword.new_password_confirmation ? "text" : "password"
+                }
+                name="new_password_confirmation"
+                value={formData.new_password_confirmation}
                 onChange={handleChange}
                 placeholder="Enter Password"
                 className="bg-transparent border-none outline-none flex-1 text-black text-lg font-normal font-['Libre_Baskerville']"
               />
               <button
                 type="button"
-                onClick={() => togglePasswordVisibility("confirmPassword")}
+                onClick={() =>
+                  togglePasswordVisibility("new_password_confirmation")
+                }
                 className="w-6 h-6 relative flex items-center justify-center focus:outline-none"
               >
-                {showPassword.confirmPassword ? (
+                {showPassword.new_password_confirmation ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -324,9 +348,9 @@ const ChangePassword = () => {
                 )}
               </button>
             </div>
-            {errors.confirmPassword && (
+            {errors.new_password_confirmation && (
               <p className="text-red-500 text-sm mt-1 ml-2">
-                {errors.confirmPassword}
+                {errors.new_password_confirmation}
               </p>
             )}
           </div>
@@ -350,6 +374,7 @@ const ChangePassword = () => {
       <button
         type="submit"
         disabled={isSubmitting}
+        onClick={handleSubmit}
         className={`px-36 py-4 bg-blue-950 rounded-2xl inline-flex justify-center items-center gap-2 ${
           isSubmitting ? "opacity-70 cursor-not-allowed" : "hover:bg-blue-900"
         }`}
