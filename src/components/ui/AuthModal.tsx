@@ -6,7 +6,7 @@ import { Eye, X } from "lucide-react";
 import HiddenIcon from "../../../public/aye";
 import Image from "next/image";
 import { postData } from "@/libs/axios/server";
-import axios, { AxiosError, AxiosHeaders } from "axios";
+import axios, { AxiosHeaders } from "axios";
 import toast from "react-hot-toast";
 import { countryTypes } from "@/libs/types/types";
 import { useParams } from "next/navigation";
