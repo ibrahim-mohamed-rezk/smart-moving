@@ -1,6 +1,6 @@
 import { TaskTypes } from "@/libs/types/types";
 
-const TaskCard: React.FC<TaskTypes> = ({ task }) => {
+const TaskCard = ({ task }:{task:TaskTypes}) => {
   return (
     <div className="w-full p-4 md:p-6 bg-white rounded-2xl inline-flex flex-col justify-center items-start gap-4 md:gap-6 shadow-sm hover:shadow-md transition-shadow">
       <div className="self-stretch inline-flex justify-between items-center">

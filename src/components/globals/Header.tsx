@@ -168,7 +168,7 @@ export default function Header() {
                       </svg>
                     </button>
                     <div
-                      className={`absolute -start-full mt-2 w-48 bg-white rounded-xl shadow-lg z-10 transition-all duration-150 ${
+                      className={`absolute -start-full mt-2 w-32 bg-white rounded-xl shadow-lg z-10 transition-all duration-150 ${
                         userMenuOpen
                           ? "opacity-100 scale-100 pointer-events-auto"
                           : "opacity-0 scale-95 pointer-events-none"
@@ -177,7 +177,7 @@ export default function Header() {
                       <div className="py-1 flex gap-2 items-center justify-center flex-col">
                         <Link
                           href="/myprofile?page=personal-info"
-                          className=" px-4 py-2 flex  text-sm text-gray-700 hover:bg-gray-100 font-['Libre_Baskerville']"
+                          className=" w-full text-center py-2 flex justify-center text-sm text-gray-700 hover:bg-gray-100 font-['Libre_Baskerville']"
                           onClick={() => setUserMenuOpen(false)}
                         >
                           {t("My Profile")}
@@ -187,7 +187,7 @@ export default function Header() {
                             setUserMenuOpen(false);
                             logout();
                           }}
-                          className="block text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-['Libre_Baskerville']"
+                          className="block w-full text-center py-2 text-sm text-gray-700 hover:bg-gray-100 font-['Libre_Baskerville']"
                         >
                           {t("Logout")}
                         </button>

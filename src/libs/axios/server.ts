@@ -40,4 +40,21 @@ export const postData = async (
   }
 };
 
+// Example of a PATCH request
+export const patchData = async (
+  endpoint: string,
+  data: unknown,
+  headers?: AxiosHeaders
+) => {
+  try {
+    const response = await backendServer.patch(endpoint, data, {
+      headers
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error updating data:", error);
+    throw error;
+  }
+};
+
 export default backendServer;

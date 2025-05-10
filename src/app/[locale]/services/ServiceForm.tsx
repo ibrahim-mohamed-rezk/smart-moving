@@ -2,10 +2,16 @@
 
 import { postData } from "@/libs/axios/server";
 import { useState } from "react";
-import { AxiosHeaders } from "axios";
+import axios, { AxiosHeaders } from "axios";
 import toast from "react-hot-toast";
 import { ServiceFormData } from "@/libs/types/types";
-import { companyRelocationInputs, movingFurnitureInputs, privateMovingInputs, storageInputs } from "@/libs/data/data";
+import {
+  companyRelocationInputs,
+  movingFurnitureInputs,
+  privateMovingInputs,
+  storageInputs,
+} from "@/libs/data/data";
+import { useRouter } from "@/i18n/routing";
 
 const forms: Record<string, ServiceFormData> = {
   "private-moving": privateMovingInputs,
@@ -24,6 +30,7 @@ const ServiceForm = ({
   token: string | undefined;
 }) => {
   const [squareMeters, setSquareMeters] = useState<number>();
+  const router = useRouter();
   const [formData, setFormData] = useState({
     service_id,
     square_meters: squareMeters,
@@ -31,7 +38,7 @@ const ServiceForm = ({
   });
   const handleSubmit = async () => {
     try {
-      const response = await postData(
+      await postData(
         "request/service",
         formData,
         new AxiosHeaders({
@@ -39,15 +46,19 @@ const ServiceForm = ({
           "Content-Type": "application/json",
         })
       );
+      router.push("/myprofile?page=tasks");
       toast.success("Request sent successfully");
-      return response.data;
     } catch (error) {
-      toast.error("something went wrong");
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.msg || "An error occurred");
+      } else {
+        toast.error("An unexpected error occurred");
+      }
       throw error;
     }
   };
 
-  if(!forms[service]) {
+  if (!forms[service]) {
     return (
       <div className="bg-white container mx-auto mt-[clamp(20px,5vw,120px)] text-center rounded-2xl shadow-md p-6 sm:p-8 hover:shadow-lg transition-shadow">
         Comming soon
@@ -78,7 +89,10 @@ const ServiceForm = ({
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                           setFormData((prev) => ({
                             ...prev,
-                            [e.target.name]: e.target.value,
+                            details: {
+                              ...prev.details,
+                              [e.target.name]: e.target.value,
+                            },
                           }))
                         }
                         className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
@@ -96,7 +110,7 @@ const ServiceForm = ({
                         onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                           setFormData((prev) => ({
                             ...prev,
-                            [e.target.name]: e.target.value,
+                            details: { [e.target.name]: e.target.value },
                           }))
                         }
                         name={input.name}
@@ -117,7 +131,7 @@ const ServiceForm = ({
                           onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                             setFormData((prev) => ({
                               ...prev,
-                              [e.target.name]: e.target.value,
+                              details: { [e.target.name]: e.target.value },
                             }))
                           }
                           className="w-full p-3 pr-10 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all appearance-none bg-white"
@@ -230,7 +244,7 @@ const ServiceForm = ({
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             setFormData((prev) => ({
                               ...prev,
-                              [e.target.name]: e.target.value,
+                              details: { [e.target.name]: e.target.value },
                             }))
                           }
                           className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
@@ -250,7 +264,7 @@ const ServiceForm = ({
                           ) =>
                             setFormData((prev) => ({
                               ...prev,
-                              [e.target.name]: e.target.value,
+                              details: { [e.target.name]: e.target.value },
                             }))
                           }
                           name={input.name}
@@ -273,7 +287,7 @@ const ServiceForm = ({
                             ) =>
                               setFormData((prev) => ({
                                 ...prev,
-                                [e.target.name]: e.target.value,
+                                details: { [e.target.name]: e.target.value },
                               }))
                             }
                             className="w-full p-3 pr-10 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all appearance-none bg-white"

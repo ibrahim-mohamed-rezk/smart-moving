@@ -101,9 +101,7 @@ export interface UserDataTypes {
 }
 
 export interface TaskTypes {
-  task: {
     title: string;
     description: string;
     status: string;
-  };
 }

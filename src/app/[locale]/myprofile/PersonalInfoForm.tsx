@@ -3,7 +3,7 @@ import { useState } from "react";
 // import { useTranslations } from "next-intl";
 import { UserDataTypes } from "@/libs/types/types";
 import { UserIcon } from "lucide-react";
-import { postData } from "@/libs/axios/server";
+import { patchData, postData } from "@/libs/axios/server";
 import axios, { AxiosHeaders } from "axios";
 import toast from "react-hot-toast";
 
@@ -17,7 +17,11 @@ const PersonalInfoForm = ({
   // const t = useTranslations("company");
 
   // Form state with validation
-  const [formData, setFormData] = useState(initialData);
+  const [formData, setFormData] = useState({
+    ...initialData,
+    first_name: initialData.name?.split(" ")[0],
+    sur_name: initialData.name?.split(" ")[1],
+  });
 
   // Validation state
   const [errors, setErrors] = useState({
@@ -25,12 +29,16 @@ const PersonalInfoForm = ({
     sur_name: "",
     email: "",
     phone: "",
+    code: "",
   });
 
   // Form submission state
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const [showVerification, setShowVerification] = useState(false);
+  const [verificationCode, setVerificationCode] = useState<string | undefined>();
+  const [sendingCode, setSendingCode] = useState(false);
 
   // Handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,6 +47,49 @@ const PersonalInfoForm = ({
       ...prev,
       [name]: value,
     }));
+
+    // Reset verification when phone changes
+    if (name === "phone") {
+      setShowVerification(false);
+      setVerificationCode("");
+    }
+  };
+
+  // Handle sending verification code
+  const handleSendVerificationCode = async () => {
+    // Validate phone number first
+    const phoneRegex = /^\d{10,15}$/;
+    if (!formData.phone.trim() || !phoneRegex.test(formData.phone)) {
+      setErrors((prev) => ({
+        ...prev,
+        phone: "Please enter a valid phone number (10-15 digits)",
+      }));
+      return;
+    }
+
+    setSendingCode(true);
+    try {
+       await postData(
+        `${initialData.role}/send-verfiy-api`,
+        { phone: formData.phone },
+        new AxiosHeaders({
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        })
+      );
+
+      setShowVerification(true);
+      toast.success("Verification code sent to your phone");
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.msg || "An error occurred");
+      } else {
+        toast.error("An unexpected error occurred");
+      }
+      throw error;
+    } finally {
+      setSendingCode(false);
+    }
   };
 
   // Validate form fields
@@ -49,6 +100,7 @@ const PersonalInfoForm = ({
       sur_name: "",
       email: "",
       phone: "",
+      code: "",
     };
 
     // First name validation
@@ -83,6 +135,12 @@ const PersonalInfoForm = ({
       valid = false;
     }
 
+    // Verification code validation if shown
+    if (showVerification && !verificationCode?.trim()) {
+      newErrors.code = "Verification code is required";
+      valid = false;
+    }
+
     setErrors(newErrors);
     return valid;
   };
@@ -103,15 +161,15 @@ const PersonalInfoForm = ({
     setIsSubmitting(true);
 
     try {
-       const response = await postData(
+      const response = await patchData(
         `${initialData.role}/update-profile-api`,
-        formData,
+        { ...formData, code: verificationCode },
         new AxiosHeaders({
           Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
         })
       );
-      
+
       // Update user in cookies
       if (response.data) {
         document.cookie = `user=${JSON.stringify(response.data)}; path=/`;
@@ -122,7 +180,6 @@ const PersonalInfoForm = ({
       // Mock successful save
       toast.success("Profile updated successfully");
       setSubmitSuccess(true);
-
 
       // Reset submission state after showing success message
       setTimeout(() => {
@@ -247,19 +304,66 @@ const PersonalInfoForm = ({
               Phone number
             </div>
             <div className="self-stretch relative w-full">
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                className={`self-stretch h-12 md:h-16 p-3 md:p-4 bg-zinc-100 rounded-3xl outline ${
-                  errors.phone
-                    ? "outline-red-500"
-                    : "outline-1 outline-offset-[-1px] outline-zinc-300"
-                } w-full text-black text-base md:text-lg font-normal font-['Libre_Baskerville']`}
-              />
-              {errors.phone && (
-                <p className="text-red-500 text-sm mt-1 ml-2">{errors.phone}</p>
+              <div className="flex flex-col sm:flex-row gap-3 w-full">
+                <div className="flex-1 relative">
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className={`self-stretch h-12 md:h-16 p-3 md:p-4 bg-zinc-100 rounded-3xl outline ${
+                      errors.phone
+                        ? "outline-red-500"
+                        : "outline-1 outline-offset-[-1px] outline-zinc-300"
+                    } w-full text-black text-base md:text-lg font-normal font-['Libre_Baskerville']`}
+                  />
+                  {errors.phone && (
+                    <p className="text-red-500 text-sm mt-1 ml-2">
+                      {errors.phone}
+                    </p>
+                  )}
+                </div>
+                {formData.phone !== initialData.phone && (
+                  <button
+                    type="button"
+                    onClick={handleSendVerificationCode}
+                    disabled={sendingCode}
+                    className={`h-12 md:h-16 px-4 sm:px-6 bg-blue-950 rounded-3xl flex justify-center items-center transition-all ${
+                      sendingCode
+                        ? "opacity-70 cursor-not-allowed"
+                        : "hover:bg-blue-900"
+                    }`}
+                  >
+                    <span className="text-white text-sm md:text-base font-normal font-['Libre_Baskerville']">
+                      {sendingCode ? "Sending..." : "Verify Phone"}
+                    </span>
+                  </button>
+                )}
+              </div>
+
+              {/* Verification Code Input */}
+              {showVerification && (
+                <div className="mt-3">
+                  <div className="self-stretch text-blue-950 text-base font-bold font-['Libre_Baskerville'] mb-1">
+                    Verification Code
+                  </div>
+                  <input
+                    type="text"
+                    value={verificationCode}
+                    onChange={(e) => setVerificationCode(e.target.value)}
+                    placeholder="Enter verification code"
+                    className={`self-stretch h-12 md:h-16 p-3 md:p-4 bg-zinc-100 rounded-3xl outline ${
+                      errors.code
+                        ? "outline-red-500"
+                        : "outline-1 outline-offset-[-1px] outline-zinc-300"
+                    } w-full text-black text-base md:text-lg font-normal font-['Libre_Baskerville']`}
+                  />
+                  {errors.code && (
+                    <p className="text-red-500 text-sm mt-1 ml-2">
+                      {errors.code}
+                    </p>
+                  )}
+                </div>
               )}
             </div>
           </div>
