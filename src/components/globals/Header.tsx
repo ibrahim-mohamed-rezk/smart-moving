@@ -61,10 +61,11 @@ export default function Header() {
     try {
       await axios.post("/api/auth/logout");
       setToken(null);
+      router.push("/");
     } catch (error) {
       throw error;
     }
-  }
+  };
 
   return (
     <>

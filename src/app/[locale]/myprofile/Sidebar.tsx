@@ -14,7 +14,6 @@ const Sidebar = ({ userData }: { userData: UserDataTypes }) => {
   const params = useSearchParams();
   const [activeRoute, setActiveRoute] = useState(params.get("page"));
 
-
   // Navigation handlers for sidebar
   const handleNavigation = (route: string) => {
     setActiveRoute(route);
@@ -69,9 +68,9 @@ const Sidebar = ({ userData }: { userData: UserDataTypes }) => {
             <div className="self-stretch flex flex-col justify-start items-start gap-4 lg:gap-8">
               <button
                 onClick={() => handleNavigation("personal-info")}
-                className={`self-stretch p-3 lg:p-4 ${
+                className={`self-stretch p-3 lg:p-4 cursor-pointer ${
                   activeRoute === "personal-info" ? "bg-white/90" : ""
-                } rounded-2xl inline-flex justify-center items-center gap-2.5 w-full transition-all hover:bg-white`}
+                } rounded-2xl inline-flex justify-center items-center gap-2.5 w-full transition-all hover:bg-white/30`}
               >
                 <div
                   className={`flex-1 justify-start ${
@@ -85,7 +84,7 @@ const Sidebar = ({ userData }: { userData: UserDataTypes }) => {
               </button>
               <button
                 onClick={() => handleNavigation("change-password")}
-                className={`${
+                className={`cursor-pointer ${
                   activeRoute === "change-password" ? "bg-white/90" : ""
                 } self-stretch rounded-2xl p-3 lg:p-4 inline-flex justify-center items-center gap-2.5 w-full transition-all hover:bg-white/30`}
               >
@@ -101,7 +100,7 @@ const Sidebar = ({ userData }: { userData: UserDataTypes }) => {
               </button>
               <button
                 onClick={() => handleNavigation("tasks")}
-                className={`${
+                className={`cursor-pointer ${
                   activeRoute === "tasks" ? "bg-white/90" : ""
                 } self-stretch rounded-2xl p-3 lg:p-4 inline-flex justify-center items-center gap-2.5 w-full transition-all hover:bg-white/30`}
               >
@@ -110,7 +109,9 @@ const Sidebar = ({ userData }: { userData: UserDataTypes }) => {
                     activeRoute === "tasks" ? "text-blue-950" : "text-stone-300"
                   } text-base  lg:text-xl font-bold font-['Libre_Baskerville']`}
                 >
-                  Your Tasks
+                  {userData.role === "customer"
+                    ? "Your Tasks"
+                    : "Services Requests"}
                 </div>
               </button>
             </div>
@@ -176,7 +177,7 @@ const Sidebar = ({ userData }: { userData: UserDataTypes }) => {
             <button
               type="button"
               onClick={() => handleNavigation("change-password")}
-              className={`p-4 text-center ${
+              className={`p-4 text-center cursor-pointer ${
                 activeRoute === "change-password" ? "bg-white/10" : ""
               } border-t border-white/20`}
             >
@@ -189,14 +190,16 @@ const Sidebar = ({ userData }: { userData: UserDataTypes }) => {
             <button
               type="button"
               onClick={() => handleNavigation("tasks")}
-              className={`p-4 text-center ${
+              className={`p-4 text-center cursor-pointer ${
                 activeRoute === "tasks" ? "bg-white/10" : ""
               } border-t border-white/20`}
             >
               <span
                 className={`text-base font-bold font-['Libre_Baskerville']`}
               >
-                Your Tasks
+                {userData.role === "customer"
+                  ? "Your Tasks"
+                  : "Services Requests"}
               </span>
             </button>
           </div>

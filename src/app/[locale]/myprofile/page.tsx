@@ -5,14 +5,18 @@ import { redirect } from "next/navigation";
 import ChangePassword from "./ChangePassword";
 import Tasks from "./Tasks";
 import TaskOffersTable from "./TaskOffersTable";
+import ServicesRequests from "./ServicesRequests";
 
 // This is now a server component
 export default async function PersonalInfoPage({
   searchParams,
+  params,
 }: {
-  searchParams: Promise<{ page: string; task: string }>;
+    searchParams: Promise<{ page: string; task: string }>;
+    params: Promise<{ locale: string }>;
 }) {
-  const params = await searchParams;
+  const paramsData = await searchParams;
+  const { locale } = await params;
   const cookiesData = await cookies();
   const userData = JSON.parse(cookiesData.get("user")?.value || "{}");
   const token = cookiesData.get("token")?.value;
@@ -28,15 +32,25 @@ export default async function PersonalInfoPage({
 
       {/* Right Panel - Form */}
       <div className="w-full md:w-2/3 lg:w-3/4 p-4 sm:p-6 mt-4 md:mt-0">
-        {params.page === "personal-info" && (
+        {/* gerneral tabs */}
+        {paramsData.page === "personal-info" && (
           <PersonalInfoForm initialData={userData} token={token} />
         )}
-        {params.page === "change-password" && (
+        {paramsData.page === "change-password" && (
           <ChangePassword token={token} userData={userData} />
         )}
-        {params.page === "tasks" && <Tasks />}
-        {params.page === "task-offers" && (
-          <TaskOffersTable params={params} />
+
+        {/* customer tabs */}
+        {userData.role === "customer" && paramsData.page === "tasks" && (
+          <Tasks />
+        )}
+        {userData.role === "customer" && paramsData.page === "task-offers" && (
+          <TaskOffersTable locale={locale} params={paramsData} />
+        )}
+
+        {/* company tabs */}
+        {userData.role === "company" && paramsData.page === "tasks" && (
+          <ServicesRequests locale={locale} />
         )}
       </div>
     </div>
