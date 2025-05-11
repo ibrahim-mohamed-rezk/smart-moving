@@ -134,3 +134,36 @@ export interface OfferTypes {
   offer: string;
   status: string;
 }
+
+
+export interface ChatTypes {
+  id: number;
+  created_by: number;
+  name: string;
+  is_private: number;
+  image: string;
+  created_at: string;
+  updated_at: string;
+  unread_messages_count: number;
+  last_message?:  MessageTypes;
+  message_count: number;
+  participants: {
+    id: number;
+    chat_id: number;
+    user_id: number;
+    created_at: string;
+    updated_at: string;
+    user: UserDataTypes;
+  }[];
+}
+
+export interface MessageTypes {
+  id: number;
+  chat_id: number;
+  user_id: number;
+  message: string;
+  read_at: string | null;
+  created_at: string;
+  updated_at: string;
+  user: UserDataTypes;
+}

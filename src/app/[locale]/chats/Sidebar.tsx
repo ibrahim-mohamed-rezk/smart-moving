@@ -1,12 +1,38 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import { UserDataTypes } from "@/libs/types/types";
 import { useRouter } from "@/i18n/routing";
-import { Menu, X } from "lucide-react";
+import { Menu, UserIcon, X } from "lucide-react";
+import { getData } from "@/libs/axios/server";
+import { AxiosHeaders } from "axios";
+import { ChatTypes } from "@/libs/types/types";
 
-const Sidebar = () => {
+const Sidebar = ({ locale, token }: { locale: string; token: string }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const router = useRouter();
+  const [chats, setChats] = useState<ChatTypes[]>([]);
+
+  console.log(chats);
+
+  useEffect(() => {
+    const feachData = async () => {
+      try {
+        const response = await getData(
+          "chat?page=1",
+          {},
+          new AxiosHeaders({
+            lang: locale || "en",
+            authorization: `Bearer ${token}`,
+          })
+        );
+        setChats(response.data);
+      } catch (error) {
+        throw error;
+      }
+    };
+
+    feachData();
+  }, []);
 
   return (
     <>
@@ -42,7 +68,7 @@ const Sidebar = () => {
               </div>
               <div className="px-2 py-0.5 bg-zinc-100 rounded-3xl flex flex-col justify-start items-start gap-2.5">
                 <div className="text-black text-xs font-semibold font-['Inter'] leading-none">
-                  12
+                  {chats.length}
                 </div>
               </div>
             </div>
@@ -57,105 +83,52 @@ const Sidebar = () => {
         </div>
 
         <div className="p-3 md:p-6 flex flex-col justify-center items-start gap-4 w-full overflow-y-auto">
-          {/* Chat item 1 */}
-          <div
-            className="w-full p-2 bg-zinc-100 rounded-2xl flex flex-col justify-start items-start gap-4 cursor-pointer hover:bg-zinc-200 transition-colors"
-            onClick={() => {
-              router.push("/chats?id=1");
-              setIsMobileMenuOpen(false);
-            }}
-          >
-            <div className="self-stretch flex justify-between items-start w-full">
-              <div className="flex justify-start items-center gap-2">
-                <div className="w-10 h-10 md:w-16 md:h-16 relative bg-white rounded-[100px] outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden">
-                  <img
-                    className="w-8 h-7 md:w-12 md:h-10 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
-                    src="https://placehold.co/51x39"
-                    alt="Company logo"
-                  />
+          {chats.map((chat) => (
+            <>
+              <div
+                className="w-full p-2 bg-zinc-100 rounded-2xl flex flex-col justify-start items-start gap-4 cursor-pointer hover:bg-zinc-200 transition-colors"
+                onClick={() => {
+                  router.push("/chats?id=1");
+                  setIsMobileMenuOpen(false);
+                }}
+              >
+                <div className="self-stretch flex justify-between items-start w-full">
+                  <div className="flex justify-start items-center gap-2">
+                    <div className="w-10 h-10 md:w-16 flex items-center justify-center md:h-16 relative bg-white rounded-[100px] outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden">
+                      {/* <img
+                      className="w-8 h-7 md:w-12 md:h-10 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                      src={}
+                      alt="Company logo"
+                    /> */}
+                      <UserIcon className="w-8 h-7 md:w-12 md:h-10" />
+                    </div>
+                    <div className="text-blue-950 text-base md:text-lg font-normal font-['Libre_Baskerville']">
+                      {chat.name}
+                    </div>
+                  </div>
+                  <div className="opacity-30 text-black text-xs md:text-sm font-normal font-['Libre_Baskerville']">
+                    {chat.last_message?.updated_at
+                      ? new Date(
+                          chat.last_message.updated_at
+                        ).toLocaleDateString([], {
+                          weekday: 'short',
+                          month: 'short',
+                          day: 'numeric',
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })
+                      : ""}
+                  </div>
                 </div>
-                <div className="text-blue-950 text-base md:text-lg font-normal font-['Libre_Baskerville']">
-                  FastMove Denmark
-                </div>
-              </div>
-              <div className="opacity-30 text-black text-xs md:text-sm font-normal font-['Libre_Baskerville']">
-                12m
-              </div>
-            </div>
-            <div className="self-stretch pl-3 md:pl-6 flex justify-center items-center gap-2.5">
-              <div className="flex-1 text-black/60 text-sm md:text-lg font-normal font-['Libre_Baskerville'] truncate">
-                You : I accepted your offer and I want ...
-              </div>
-            </div>
-          </div>
-
-          <div className="self-stretch h-0 outline-1 outline-offset-[-0.50px] outline-zinc-300 w-full"></div>
-
-          {/* Chat item 2 */}
-          <div
-            className="w-full p-2 flex flex-col justify-start items-start gap-4 cursor-pointer hover:bg-zinc-100 transition-colors"
-            onClick={() => {
-              router.push("/chats?id=2");
-              setIsMobileMenuOpen(false);
-            }}
-          >
-            <div className="self-stretch flex justify-between items-start w-full">
-              <div className="flex justify-start items-center gap-2">
-                <div className="w-10 h-10 md:w-16 md:h-16 relative bg-white rounded-[100px] outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden">
-                  <img
-                    className="w-8 h-7 md:w-12 md:h-10 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
-                    src="https://placehold.co/51x39"
-                    alt="Company logo"
-                  />
-                </div>
-                <div className="text-blue-950 text-base md:text-lg font-normal font-['Libre_Baskerville']">
-                  FastMove Denmark
+                <div className="self-stretch pl-3 md:pl-6 flex justify-center items-center gap-2.5">
+                  <div className="flex-1 text-black/60 text-sm md:text-lg font-normal font-['Libre_Baskerville'] truncate">
+                    {chat.last_message?.message}
+                  </div>
                 </div>
               </div>
-              <div className="opacity-30 text-black text-xs md:text-sm font-normal font-['Libre_Baskerville']">
-                12m
-              </div>
-            </div>
-            <div className="self-stretch pl-3 md:pl-6 flex justify-center items-center gap-2.5">
-              <div className="flex-1 text-black/60 text-sm md:text-lg font-normal font-['Libre_Baskerville'] truncate">
-                You : I accepted your offer and I want ...
-              </div>
-            </div>
-          </div>
-
-          <div className="self-stretch h-0 outline-1 outline-offset-[-0.50px] outline-zinc-300 w-full"></div>
-
-          {/* Chat item 3 */}
-          <div
-            className="w-full p-2 flex flex-col justify-start items-start gap-4 cursor-pointer hover:bg-zinc-100 transition-colors"
-            onClick={() => {
-              router.push("/chats?id=3");
-              setIsMobileMenuOpen(false);
-            }}
-          >
-            <div className="self-stretch flex justify-between items-start w-full">
-              <div className="flex justify-start items-center gap-2">
-                <div className="w-10 h-10 md:w-16 md:h-16 relative bg-white rounded-[100px] outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden">
-                  <img
-                    className="w-8 h-7 md:w-12 md:h-10 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
-                    src="https://placehold.co/51x39"
-                    alt="Company logo"
-                  />
-                </div>
-                <div className="text-blue-950 text-base md:text-lg font-normal font-['Libre_Baskerville']">
-                  FastMove Denmark
-                </div>
-              </div>
-              <div className="opacity-30 text-black text-xs md:text-sm font-normal font-['Libre_Baskerville']">
-                12m
-              </div>
-            </div>
-            <div className="self-stretch pl-3 md:pl-6 flex justify-center items-center gap-2.5">
-              <div className="flex-1 text-black/60 text-sm md:text-lg font-normal font-['Libre_Baskerville'] truncate">
-                You : I accepted your offer and I want ...
-              </div>
-            </div>
-          </div>
+              <div className="self-stretch h-0 outline-1 outline-offset-[-0.50px] outline-zinc-300 w-full"></div>
+            </>
+          ))}
         </div>
       </div>
 

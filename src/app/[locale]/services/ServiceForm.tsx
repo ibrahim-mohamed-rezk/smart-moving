@@ -65,8 +65,8 @@ const ServiceForm = ({
 
   if (!forms[service]) {
     return (
-      <div className="bg-white container mx-auto mt-[clamp(20px,5vw,120px)] text-center rounded-2xl shadow-md p-6 sm:p-8 hover:shadow-lg transition-shadow">
-        Comming soon
+      <div className=" w-fit  mx-auto flex items-center justify-center mt-[clamp(20px,5vw,120px)] text-center">
+        <img src="/soon.png" alt="comming soon" className="w-[80%] md:w-[60%]" />
       </div>
     );
   }
