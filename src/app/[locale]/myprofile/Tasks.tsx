@@ -4,10 +4,16 @@ import { AxiosHeaders } from "axios";
 import { cookies } from "next/headers";
 import { TaskTypes } from "@/libs/types/types";
 import { Link } from "@/i18n/routing";
+import { redirect } from "next/navigation";
 
 const Tasks = async () => {
   const cookiesData = await cookies();
   const token = cookiesData.get("token")?.value;
+  const user = JSON.parse(cookiesData.get("user")?.value || "{}");
+
+  if (!token || user.role !== "customer") {
+    redirect("/");
+  }
 
   // get tasks from api
   const feachData = async () => {

@@ -33,8 +33,13 @@ const ServiceForm = ({
   const router = useRouter();
   const [formData, setFormData] = useState({
     service_id,
-    square_meters: squareMeters,
-    details: {},
+    details: {
+      square_meters: squareMeters,
+      moving_address:{},
+      title: service
+        .replace("-", " ")
+        .replace(/\b\w/g, (char) => char.toUpperCase()),
+    },
   });
   const handleSubmit = async () => {
     try {
@@ -110,7 +115,10 @@ const ServiceForm = ({
                         onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                           setFormData((prev) => ({
                             ...prev,
-                            details: { [e.target.name]: e.target.value },
+                            details: {
+                              ...prev.details,
+                              [e.target.name]: e.target.value,
+                            },
                           }))
                         }
                         name={input.name}
@@ -131,7 +139,10 @@ const ServiceForm = ({
                           onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                             setFormData((prev) => ({
                               ...prev,
-                              details: { [e.target.name]: e.target.value },
+                              details: {
+                                ...prev.details,
+                                [e.target.name]: e.target.value,
+                              },
                             }))
                           }
                           className="w-full p-3 pr-10 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all appearance-none bg-white"
@@ -178,7 +189,10 @@ const ServiceForm = ({
                               onChange={() =>
                                 setFormData((prev) => ({
                                   ...prev,
-                                  [input.name]: option.value,
+                                  details: {
+                                    ...prev.details,
+                                    [input.name]: option.value,
+                                  },
                                 }))
                               }
                               className="w-4 h-4 text-[#192953] border-gray-300 focus:ring-blue-500"
@@ -244,7 +258,13 @@ const ServiceForm = ({
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             setFormData((prev) => ({
                               ...prev,
-                              details: { [e.target.name]: e.target.value },
+                              details: {
+                                ...prev.details,
+                                moving_address: {
+                                  ...prev.details.moving_address,
+                                  [e.target.name]: e.target.value,
+                                },
+                              },
                             }))
                           }
                           className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
@@ -264,7 +284,13 @@ const ServiceForm = ({
                           ) =>
                             setFormData((prev) => ({
                               ...prev,
-                              details: { [e.target.name]: e.target.value },
+                              details: {
+                                ...prev.details,
+                                moving_address: {
+                                  ...prev.details.moving_address,
+                                  [e.target.name]: e.target.value,
+                                },
+                              },
                             }))
                           }
                           name={input.name}
@@ -287,7 +313,13 @@ const ServiceForm = ({
                             ) =>
                               setFormData((prev) => ({
                                 ...prev,
-                                details: { [e.target.name]: e.target.value },
+                                details: {
+                                  ...prev.details,
+                                  moving_address: {
+                                    ...prev.details.moving_address,
+                                    [e.target.name]: e.target.value,
+                                  },
+                                },
                               }))
                             }
                             className="w-full p-3 pr-10 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all appearance-none bg-white"
@@ -331,10 +363,16 @@ const ServiceForm = ({
                                 type="radio"
                                 name={input.name}
                                 value={option.value}
-                                onChange={() =>
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                   setFormData((prev) => ({
                                     ...prev,
-                                    [input.name]: option.value,
+                                    details: {
+                                      ...prev.details,
+                                      moving_address: {
+                                        ...prev.details.moving_address,
+                                        [e.target.name]: e.target.value,
+                                      },
+                                    },
                                   }))
                                 }
                                 className="w-4 h-4 text-[#192953] border-gray-300 focus:ring-blue-500"

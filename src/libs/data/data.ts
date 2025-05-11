@@ -44,6 +44,11 @@ export const privateMovingInputs = {
         { title: "not furnished", value: "not_furnished" },
       ],
     },
+    {
+      title: "Task description",
+      name: "description",
+      type: "textarea",
+    },
   ],
 
   moving_address: [
@@ -156,7 +161,7 @@ export const storageInputs = {
 
     {
       title: "Task description",
-      name: "task_description",
+      name: "description",
       type: "textarea",
     },
   ],
@@ -250,8 +255,11 @@ export const movingFurnitureInputs = {
         { title: "On the following date", value: "custom" },
       ],
     },
-
-    
+    {
+      title: "Task description",
+      name: "description",
+      type: "textarea",
+    },
   ],
 };
 
@@ -293,6 +301,11 @@ export const companyRelocationInputs = {
         { title: "semi furnished", value: "semi_furnished" },
         { title: "not furnished", value: "not_furnished" },
       ],
+    },
+    {
+      title: "Task description",
+      name: "description",
+      type: "textarea",
     },
   ],
 

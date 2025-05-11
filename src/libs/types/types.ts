@@ -101,7 +101,36 @@ export interface UserDataTypes {
 }
 
 export interface TaskTypes {
-    title: string;
+  status: string;
+  id: number;
+  details: {
     description: string;
-    status: string;
+    FRA_address?: string;
+    moving_out_address?: string;
+    service_level?: string;
+    the_topic_is_moved_OFF?: string;
+    the_topic_is_moved_TO?: string;
+    title?: string;
+    to_address?: string;
+    what_needs_to_be_moved?: string;
+    when_do_want_begin?: string;
+    square_meters?: number;
+    Address_possibly_floor?: string;
+    elevator?: string;
+    furnishing?: string;
+    moving_address?: {
+      to_address?: string;
+      Address_possibly_floor?: string;
+      elevator?: string;
+      service_level?: string;
+      when_do_want_begin?: string;
+    };
+  };
+  offers?: OfferTypes[];
+}
+
+export interface OfferTypes {
+  id: number;
+  offer: string;
+  status: string;
 }
