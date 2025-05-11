@@ -291,7 +291,7 @@ const AccountCreationForm = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           token: response.token,
-          user: response.data,
+          user: JSON.stringify(response.data),
         }),
       });
 
