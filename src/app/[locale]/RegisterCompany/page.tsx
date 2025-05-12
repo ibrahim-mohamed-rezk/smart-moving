@@ -20,7 +20,6 @@ import {
   registrationFormData,
   ServiceTypes,
 } from "@/libs/types/types";
-import { useRouter } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 
 interface PasswordRequirements {
@@ -49,7 +48,6 @@ const AccountCreationForm = () => {
   const [validFirst_name, setValidFirst_name] = useState<boolean | null>(null);
   const [validsur_name, setValidsur_name] = useState<boolean | null>(null);
   const [services, setservices] = useState<ServiceTypes[]>([]);
-  const router = useRouter();
   const [showCVR, setShowCVR] = useState<boolean>(false);
   const [countries, setCountries] = useState<countryTypes[]>([]);
 
@@ -296,7 +294,7 @@ const AccountCreationForm = () => {
       });
 
       toast.success(t("company_registered_successfully"));
-      router.push("/");
+      window.location.href = "/";
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data?.msg || "An error occurred");
