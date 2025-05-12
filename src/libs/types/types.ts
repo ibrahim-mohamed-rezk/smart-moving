@@ -65,7 +65,6 @@ export interface registrationFormData {
   address: string;
   postal_code: string;
   city: string;
-  contact_person: string;
   services: number[];
 }
 

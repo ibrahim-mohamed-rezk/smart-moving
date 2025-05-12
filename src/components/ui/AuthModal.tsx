@@ -10,6 +10,8 @@ import axios, { AxiosHeaders } from "axios";
 import toast from "react-hot-toast";
 import { countryTypes } from "@/libs/types/types";
 import { useParams } from "next/navigation";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { app } from "@/libs/firebase/config";
 
 interface AuthModalProps {
   type: "login" | "register";
@@ -21,6 +23,9 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
   const [showPassword, setShowPassword] = useState(false);
   const modalRef = useRef<HTMLDivElement | null>(null);
   const [countries, setCountries] = useState<countryTypes[]>([]);
+  const [openOTP, setOpenOTP] = useState(false);
+  const [otpDigits, setOtpDigits] = useState(["", "", "", ""]);
+  const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const params = useParams();
   const [formData, setFormData] = useState({
     login: "",
@@ -68,6 +73,31 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
   const handleSwitchType = () =>
     setModalType((prev) => (prev === "login" ? "register" : "login"));
 
+  const handleOtpChange = (index: number, value: string) => {
+    if (value.length > 1) {
+      value = value.slice(0, 1);
+    }
+
+    const newOtpDigits = [...otpDigits];
+    newOtpDigits[index] = value;
+    setOtpDigits(newOtpDigits);
+
+    // Auto focus next input
+    if (value && index < 3) {
+      otpInputRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleKeyDown = (
+    index: number,
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    // Move to previous input on backspace if current input is empty
+    if (e.key === "Backspace" && !otpDigits[index] && index > 0) {
+      otpInputRefs.current[index - 1]?.focus();
+    }
+  };
+
   const handelSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (modalType === "login") {
@@ -104,7 +134,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
       }
     } else if (modalType === "register") {
       try {
-        const response = await postData(
+        await postData(
           "customer/register-api",
           registerformData,
           new AxiosHeaders({
@@ -113,23 +143,8 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
           })
         );
 
-        await axios.post("/api/auth/login", {
-          token: response.token,
-          user: JSON.stringify(response.data),
-          remember: true,
-        });
-
         toast.success("account created successfully");
-        setRegisterFormData({
-          email: "",
-          password: "",
-          password_confirmation: "",
-          first_name: "",
-          sur_name: "",
-          phone: "",
-          country_code: "+45",
-        });
-        onClose();
+        setOpenOTP(true);
       } catch (error) {
         if (axios.isAxiosError(error)) {
           toast.error(error.response?.data?.msg || "An error occurred");
@@ -138,6 +153,92 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
         }
         throw error;
       }
+    }
+  };
+
+  const handleVerifyOTP = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const otpCode = otpDigits.join("");
+
+    if (otpCode.length !== 4) {
+      toast.error("Please enter all 4 digits");
+      return;
+    }
+
+    try {
+      const response = await postData(
+        "customer/verify-code-register",
+        { code: otpCode, phone: registerformData.phone },
+        new AxiosHeaders({
+          "Content-Type": "application/json",
+          lang: params?.locale as string,
+        })
+      );
+
+      toast.success("OTP verified successfully");
+
+      await axios.post("/api/auth/login", {
+        token: response.token,
+        user: JSON.stringify(response.data),
+        remember: true,
+      });
+      setOpenOTP(false);
+      onClose();
+      window.location.href = "/";
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.msg || "Invalid OTP");
+      } else {
+        toast.error("An unexpected error occurred");
+      }
+    }
+  };
+
+  const handleGoogleAuth = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const auth = getAuth(app);
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const accessToken = credential?.accessToken;
+      // The signed-in user info.
+      const user = result.user;
+      
+      // Call your API with the token
+      const response = await postData(
+        "customer/login/google",
+        { device_token: accessToken, id: user.uid, displayName: user.displayName, email: user.email,  },
+        new AxiosHeaders({
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "multipart/form-data",
+        })
+      );
+      
+      toast.success("Google login successful");
+      
+      // Handle successful login
+      await axios.post("/api/auth/login", {
+        token: response.token,
+        user: JSON.stringify(response.data),
+        remember: true,
+      });
+      
+      onClose();
+      window.location.href = "/";
+      
+    } catch (error) {
+      // Handle Errors here.
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.msg || "An error occurred");
+      } else {
+        const errorMessage = (error as Error).message;
+        toast.error("Google authentication failed: " + errorMessage);
+      }
+      console.error("Google auth error:", error);
     }
   };
 
@@ -155,193 +256,274 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
           <X className="w-6 h-6" />
         </button>
 
-        {/* Title */}
-        <h2 className="text-lg font-semibold mb-6 text-center text-[#192953]">
-          Please login first to request a moving
-        </h2>
-
-        {/* Form */}
-        <form className="flex flex-col gap-4">
-          {modalType === "register" && (
-            <>
-              <input
-                type="text"
-                placeholder="First Name"
-                value={registerformData.first_name}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setRegisterFormData({
-                    ...registerformData,
-                    first_name: e.target.value,
-                  });
-                }}
-                className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <input
-                type="text"
-                placeholder="Second Name"
-                value={registerformData.sur_name}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setRegisterFormData({
-                    ...registerformData,
-                    sur_name: e.target.value,
-                  });
-                }}
-                className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </>
-          )}
-          {/* Email */}
-          <input
-            type="email"
-            placeholder="Enter Email Address"
-            value={
-              modalType === "login" ? formData.login : registerformData.email
-            }
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              if (modalType === "login") {
-                setFormData({ ...formData, login: e.target.value });
-              } else {
-                setRegisterFormData({
-                  ...registerformData,
-                  email: e.target.value,
-                });
-              }
-            }}
-            className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          {modalType === "register" && (
-            <div>
-              <div className="relative">
-                <div className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
-                  <select
-                    className=" outline-none focus:border-transparent transition-all px-4 py-2 max-w-[150px] text-ellipsis overflow-hidden whitespace-nowrap"
-                    value={registerformData.country_code}
-                    onChange={(e) =>
-                      setRegisterFormData({
-                        ...registerformData,
-                        country_code: e.target.value,
-                      })
-                    }
-                  >
-                    {countries.map((country) => (
-                      <option key={country.code} value={country.phone}>
-                        {`${country.name} ${country.phone}`}
-                      </option>
-                    ))}
-                  </select>
+        {openOTP ? (
+          <>
+            <h2 className="text-lg font-semibold mb-6 text-center text-[#192953]">
+              Verify Your Account
+            </h2>
+            <p className="text-center text-gray-600 mb-4">
+              Please enter the verification code sent to your email/phone
+            </p>
+            <form className="flex flex-col gap-4">
+              <div className="flex justify-center gap-4 my-4">
+                {[0, 1, 2, 3].map((index) => (
                   <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    placeholder={`enter phone number`}
-                    value={registerformData.phone}
+                    key={index}
+                    type="text"
+                    maxLength={1}
+                    value={otpDigits[index]}
+                    onChange={(e) => handleOtpChange(index, e.target.value)}
+                    onKeyDown={(e) => handleKeyDown(index, e)}
+                    ref={(el) => {
+                      otpInputRefs.current[index] = el;
+                    }}
+                    className="w-14 h-14 text-center text-xl font-bold bg-gray-100 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:outline-none"
+                  />
+                ))}
+              </div>
+              <button
+                type="submit"
+                onClick={handleVerifyOTP}
+                className="mt-2 bg-[#192953] hover:bg-[#14203d] transition-colors text-white font-semibold rounded-full py-3"
+              >
+                Verify
+              </button>
+            </form>
+          </>
+        ) : (
+          <>
+            {/* Title */}
+            <h2 className="text-lg font-semibold mb-6 text-center text-[#192953]">
+              Please login first to request a moving
+            </h2>
+
+            {/* Form */}
+            <form className="flex flex-col gap-4">
+              {modalType === "register" && (
+                <>
+                  <input
+                    type="text"
+                    placeholder="First Name"
+                    value={registerformData.first_name}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       setRegisterFormData({
                         ...registerformData,
-                        phone: e.target.value,
+                        first_name: e.target.value,
                       });
                     }}
-                    required
-                    className=" p-2 outline-none h-full"
+                    className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Password with toggle */}
-          <div className="relative">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Enter Password"
-              value={
-                modalType === "login"
-                  ? formData.password
-                  : registerformData.password
-              }
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                if (modalType === "login") {
-                  setFormData({ ...formData, password: e.target.value });
-                } else {
-                  setRegisterFormData({
-                    ...registerformData,
-                    password: e.target.value,
-                  });
-                }
-              }}
-              className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword((v) => !v)}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500"
-            >
-              {showPassword ? (
-                <HiddenIcon className="w-5 h-5" />
-              ) : (
-                <Eye className="w-5 h-5" />
+                  <input
+                    type="text"
+                    placeholder="Second Name"
+                    value={registerformData.sur_name}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      setRegisterFormData({
+                        ...registerformData,
+                        sur_name: e.target.value,
+                      });
+                    }}
+                    className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </>
               )}
-            </button>
-          </div>
-
-          {/* Forget password link (login only) */}
-          {modalType === "login" ? (
-            <div className="text-right">
-              <a href="#" className="text-sm text-blue-600 hover:underline">
-                Forget Password?
-              </a>
-            </div>
-          ) : (
-            <>
+              {/* Email */}
               <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Confirm Password"
-                value={registerformData.password_confirmation}
+                type="email"
+                placeholder="Enter Email Address or Phone Number"
+                value={
+                  modalType === "login"
+                    ? formData.login
+                    : registerformData.email
+                }
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setRegisterFormData({
-                    ...registerformData,
-                    password_confirmation: e.target.value,
-                  });
+                  if (modalType === "login") {
+                    setFormData({ ...formData, login: e.target.value });
+                  } else {
+                    setRegisterFormData({
+                      ...registerformData,
+                      email: e.target.value,
+                    });
+                  }
                 }}
-                className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-            </>
-          )}
+              {modalType === "register" && (
+                <div>
+                  <div className="relative">
+                    <div className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                      <select
+                        className=" outline-none focus:border-transparent transition-all px-4 py-2 max-w-[150px] text-ellipsis overflow-hidden whitespace-nowrap"
+                        value={registerformData.country_code}
+                        onChange={(e) =>
+                          setRegisterFormData({
+                            ...registerformData,
+                            country_code: e.target.value,
+                          })
+                        }
+                      >
+                        {countries.map((country) => (
+                          <option key={country.code} value={country.phone}>
+                            {`${country.name} ${country.phone}`}
+                          </option>
+                        ))}
+                      </select>
+                      <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        placeholder={`enter phone number`}
+                        value={registerformData.phone}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                          setRegisterFormData({
+                            ...registerformData,
+                            phone: e.target.value,
+                          });
+                        }}
+                        required
+                        className=" p-2 outline-none h-full"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
 
-          {/* Submit */}
-          <button
-            type="submit"
-            onClick={handelSubmit}
-            className="mt-2 bg-[#192953] hover:bg-[#14203d] transition-colors text-white font-semibold rounded-full py-3"
-          >
-            {modalType === "login" ? "Login" : "Signup"}
-          </button>
-        </form>
+              {/* Password with toggle */}
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter Password"
+                  value={
+                    modalType === "login"
+                      ? formData.password
+                      : registerformData.password
+                  }
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    if (modalType === "login") {
+                      setFormData({ ...formData, password: e.target.value });
+                    } else {
+                      setRegisterFormData({
+                        ...registerformData,
+                        password: e.target.value,
+                      });
+                    }
+                  }}
+                  className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500"
+                >
+                  {showPassword ? (
+                    <HiddenIcon className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
+                </button>
+              </div>
 
-        {/* Switch link */}
-        <div className="text-center text-sm text-gray-500 mt-4">
-          {modalType === "login" ? (
-            <>
-              Don’t have an account yet?{" "}
-              <span
-                onClick={handleSwitchType}
-                className="text-blue-600 hover:underline cursor-pointer"
+              {/* Forget password link (login only) */}
+              {modalType === "login" ? (
+                <div className="text-right">
+                  <a href="#" className="text-sm text-blue-600 hover:underline">
+                    Forget Password?
+                  </a>
+                </div>
+              ) : (
+                <>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Confirm Password"
+                    value={registerformData.password_confirmation}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      setRegisterFormData({
+                        ...registerformData,
+                        password_confirmation: e.target.value,
+                      });
+                    }}
+                    className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </>
+              )}
+
+              {/* google auth */}
+              <div className="flex items-center justify-center">
+                <button
+                  onClick={handleGoogleAuth}
+                  className="flex items-center justify-center p-2 transition-colors rounded-full shadow-[5px_5px_15px_0px_rgba(74,74,74,0.15)] "
+                >
+                  <svg
+                    viewBox="-3 0 262 262"
+                    xmlns="http://www.w3.org/2000/svg"
+                    preserveAspectRatio="xMidYMid"
+                    fill="#000000"
+                    className="w-6 h-6"
+                  >
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g
+                      id="SVGRepo_tracerCarrier"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></g>
+                    <g id="SVGRepo_iconCarrier">
+                      <path
+                        d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027"
+                        fill="#4285F4"
+                      ></path>
+                      <path
+                        d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.055-45.257 13.055-34.523 0-63.824-22.773-74.269-54.25l-1.531.13-40.298 31.187-.527 1.465C35.393 231.798 79.49 261.1 130.55 261.1"
+                        fill="#34A853"
+                      ></path>
+                      <path
+                        d="M56.281 156.37c-2.756-8.123-4.351-16.827-4.351-25.82 0-8.994 1.595-17.697 4.206-25.82l-.073-1.73L15.26 71.312l-1.335.635C5.077 89.644 0 109.517 0 130.55s5.077 40.905 13.925 58.602l42.356-32.782"
+                        fill="#FBBC05"
+                      ></path>
+                      <path
+                        d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0 79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251"
+                        fill="#EB4335"
+                      ></path>
+                    </g>
+                  </svg>
+                </button>
+              </div>
+
+              {/* Submit */}
+              <button
+                type="submit"
+                onClick={handelSubmit}
+                className="mt-2 bg-[#192953] hover:bg-[#14203d] transition-colors text-white font-semibold rounded-full py-3"
               >
-                Signup
-              </span>
-            </>
-          ) : (
-            <>
-              Already have an account?{" "}
-              <span
-                onClick={handleSwitchType}
-                className="text-blue-600 hover:underline cursor-pointer"
-              >
-                Login
-              </span>
-            </>
-          )}
-        </div>
+                {modalType === "login" ? "Login" : "Signup"}
+              </button>
+            </form>
+
+            {/* Switch link */}
+            <div className="text-center text-sm text-gray-500 mt-4">
+              {modalType === "login" ? (
+                <>
+                  Don&apos;t have an account yet?{" "}
+                  <span
+                    onClick={handleSwitchType}
+                    className="text-blue-600 hover:underline cursor-pointer"
+                  >
+                    Signup
+                  </span>
+                </>
+              ) : (
+                <>
+                  Already have an account?{" "}
+                  <span
+                    onClick={handleSwitchType}
+                    className="text-blue-600 hover:underline cursor-pointer"
+                  >
+                    Login
+                  </span>
+                </>
+              )}
+            </div>
+          </>
+        )}
 
         {/* Corner background image */}
         <div

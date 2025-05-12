@@ -109,7 +109,10 @@ export default function Header() {
               <div className="items-center justify-center hidden md:flex ms-auto gap-[clamp(5px,1.25vw,50px)] ">
                 {/* chat icon */}
                 {token ? (
-                  <Link href="/chats" className="w-6 h-6 relative">
+                  <Link
+                    href="/chats"
+                    className="w-6 h-6 hover:opacity-70 relative"
+                  >
                     <svg
                       width="24"
                       height="24"
@@ -144,10 +147,10 @@ export default function Header() {
 
                 {/* user icon */}
                 {token ? (
-                  <div className="relative">
+                  <div className="relative ">
                     <button
                       onClick={() => setUserMenuOpen((open) => !open)}
-                      className="w-6 h-6 relative"
+                      className="w-6 h-6 hover:opacity-70 relative"
                     >
                       <svg
                         width="24"
@@ -174,13 +177,13 @@ export default function Header() {
                       </svg>
                     </button>
                     <div
-                      className={`absolute -start-full mt-2 w-32 bg-white rounded-xl shadow-lg z-10 transition-all duration-150 ${
+                      className={`absolute overflow-hidden -start-full mt-2 w-32 bg-white rounded-xl shadow-lg z-10 transition-all duration-150 ${
                         userMenuOpen
                           ? "opacity-100 scale-100 pointer-events-auto"
                           : "opacity-0 scale-95 pointer-events-none"
                       }`}
                     >
-                      <div className="py-1 flex gap-2 items-center justify-center flex-col">
+                      <div className="py-1 flex items-center justify-center flex-col">
                         <Link
                           href="/myprofile?page=personal-info"
                           className=" w-full text-center py-2 flex justify-center text-sm text-gray-700 hover:bg-gray-100 font-['Libre_Baskerville']"

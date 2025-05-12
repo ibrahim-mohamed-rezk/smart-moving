@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   ChevronRight,
   Eye,
@@ -38,6 +38,9 @@ const AccountCreationForm = () => {
     useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const params = useParams<{ locale: string }>();
+  const [openOTP, setOpenOTP] = useState(false);
+  const [otpDigits, setOtpDigits] = useState(["", "", "", ""]);
+  const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   // Form validation states
   const [validEmail, setValidEmail] = useState<boolean | null>(null);
@@ -62,7 +65,6 @@ const AccountCreationForm = () => {
     password_confirmation: "",
     address: "",
     postal_code: "",
-    contact_person: "",
     city: "",
     services: [],
   });
@@ -158,7 +160,7 @@ const AccountCreationForm = () => {
     if (formData.phone) {
       // Validate phone number (only digits, between 8-15 characters)
       const phoneDigits = formData.phone.replace(/\D/g, "");
-      const phoneRegex = /^\d{8,15}$/;
+      const phoneRegex = /^\d{4,20}$/;
       setValidPhone(phoneRegex.test(phoneDigits));
     } else {
       setValidPhone(null);
@@ -268,6 +270,31 @@ const AccountCreationForm = () => {
     window.scrollTo(0, 0);
   };
 
+  const handleOtpChange = (index: number, value: string) => {
+    if (value.length > 1) {
+      value = value.slice(0, 1);
+    }
+
+    const newOtpDigits = [...otpDigits];
+    newOtpDigits[index] = value;
+    setOtpDigits(newOtpDigits);
+
+    // Auto focus next input
+    if (value && index < 3) {
+      otpInputRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleKeyDown = (
+    index: number,
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    // Move to previous input on backspace if current input is empty
+    if (e.key === "Backspace" && !otpDigits[index] && index > 0) {
+      otpInputRefs.current[index - 1]?.focus();
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!canSubmitForm()) return;
@@ -275,7 +302,7 @@ const AccountCreationForm = () => {
     setIsLoading(true);
 
     try {
-      const response = await postData(
+      await postData(
         "company/register-api",
         formData,
         new AxiosHeaders({
@@ -284,31 +311,152 @@ const AccountCreationForm = () => {
         })
       );
 
-      await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          token: response.token,
-          user: JSON.stringify(response.data),
-        }),
-      });
-
-      toast.success(t("company_registered_successfully"));
-      window.location.href = "/";
+      toast.success(t("account_created_successfully"));
+      setOpenOTP(true);
+      setIsLoading(false);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data?.msg || "An error occurred");
       } else {
         toast.error("An unexpected error occurred");
       }
+      setIsLoading(false);
       throw error;
-    } finally {
+    }
+  };
+
+  const handleVerifyOTP = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const otpCode = otpDigits.join("");
+
+    if (otpCode.length !== 4) {
+      toast.error(t("please_enter_all_4_digits"));
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const response = await postData(
+        "company/verify-code-register",
+        { code: otpCode, phone: formData.phone },
+        new AxiosHeaders({
+          "Content-Type": "application/json",
+          lang: params?.locale as string,
+        })
+      );
+
+      toast.success(t("otp_verified_successfully"));
+
+      await axios.post("/api/auth/login", {
+        token: response.token,
+        user: JSON.stringify(response.data),
+        remember: true,
+      });
+
+      setOpenOTP(false);
+      window.location.href = "/";
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.msg || t("invalid_otp"));
+      } else {
+        toast.error(t("an_unexpected_error_occurred"));
+      }
       setIsLoading(false);
     }
   };
 
   return (
     <div className="flex min-h-screen bg-gray-50 font-['libre-baskerville']">
+      {openOTP && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 bg-opacity-50">
+          <div className="bg-white w-full max-w-xl p-8 rounded-3xl shadow-xl overflow-hidden relative">
+            <h2 className="text-lg font-semibold mb-6 text-center text-[#192953]">
+              {t("verify_your_account")}
+            </h2>
+            <p className="text-center text-gray-600 mb-4">
+              {t("please_enter_verification_code")}
+            </p>
+            <form className="flex flex-col gap-4">
+              <div className="flex justify-center gap-4 my-4">
+                {[0, 1, 2, 3].map((index) => (
+                  <input
+                    key={index}
+                    type="text"
+                    maxLength={1}
+                    value={otpDigits[index]}
+                    onChange={(e) => handleOtpChange(index, e.target.value)}
+                    onKeyDown={(e) => handleKeyDown(index, e)}
+                    ref={(el) => {
+                      otpInputRefs.current[index] = el;
+                    }}
+                    className="w-14 h-14 text-center text-xl font-bold bg-gray-100 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:outline-none"
+                  />
+                ))}
+              </div>
+              <button
+                type="submit"
+                onClick={handleVerifyOTP}
+                disabled={isLoading}
+                className="mt-2 bg-[#192953] hover:bg-[#14203d] transition-colors text-white font-semibold rounded-full py-3"
+              >
+                {isLoading ? (
+                  <>
+                    <svg
+                      className="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    {t("verifying")}
+                  </>
+                ) : (
+                  t("verify")
+                )}
+              </button>
+              <button
+                type="button"
+                onClick={() => setOpenOTP(false)}
+                className="mt-2 border border-gray-300 hover:bg-gray-100 transition-colors text-gray-700 font-semibold rounded-full py-3"
+              >
+                {t("cancel")}
+              </button>
+            </form>
+
+            {/* Corner background image */}
+            <div
+              className={`
+              absolute 
+              bottom-0 left-0  
+              w-1/2 h-1/2 
+              opacity-50 
+              -z-10
+            `}
+            >
+              <Image
+                src={"/image0.png"}
+                alt="Background decoration"
+                layout="fill"
+                objectFit="cover"
+              />
+            </div>
+          </div>
+        </div>
+      )}
       {/* Left Panel with Background Image */}
       <div className="hidden md:block md:w-1/3 lg:w-1/4 bg-[#192953] text-white relative">
         <div className="absolute inset-0">
@@ -369,7 +517,6 @@ const AccountCreationForm = () => {
           </ul>
         </div>
       </div>
-
       {/* Right Panel - Form */}
       <div className="w-full md:w-2/3 lg:w-3/4 p-4 sm:p-6">
         <div className="max-w-5xl mx-auto md:p-8">
@@ -606,26 +753,6 @@ const AccountCreationForm = () => {
                       {t("enter_valid_email")}
                     </p>
                   )}
-                </div>
-                <div>
-                  <label
-                    htmlFor="contact_person"
-                    className="blocktext-xl text-bold font-medium text-gray-700 mb-1"
-                  >
-                    {t("contact_person")}
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      id="contact_person"
-                      name="contact_person"
-                      placeholder={t("enter_contact_person")}
-                      value={formData.contact_person}
-                      onChange={handleInputChange}
-                      className={`w-full px-4 py-4 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all pr-10`}
-                      required
-                    />
-                  </div>
                 </div>
 
                 <div>
