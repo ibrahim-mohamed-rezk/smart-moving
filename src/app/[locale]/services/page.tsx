@@ -1,7 +1,7 @@
 // pages/MovingFormPage.tsx
 
 import Image from "next/image";
-import { Link } from "@/i18n/routing";
+import { Link, redirect } from "@/i18n/routing";
 import ServiceForm from "./ServiceForm";
 import { cookies } from "next/headers";
 import { getData } from "@/libs/axios/server";
@@ -13,25 +13,34 @@ const MovingFormPage = async ({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ service: string, service_id: string }>;
+  searchParams: Promise<{ service: string; service_id: string }>;
 }) => {
   const { service, service_id } = await searchParams;
   const token = (await cookies()).get("token")?.value;
   const { locale } = await params;
 
+  if (!service || !service_id) {
+    return redirect({
+      href: "/services?service=private-moving&service_id=4",
+      locale,
+    });
+  }
 
   const feachData = async () => {
     try {
-      const response = await getData('services', {}, new AxiosHeaders({
-        lang: locale,
-      }));
+      const response = await getData(
+        "services",
+        {},
+        new AxiosHeaders({
+          lang: locale,
+        })
+      );
       return response.data;
     } catch (error) {
       throw error;
     }
-  }
-  const tabs = await feachData()
-
+  };
+  const tabs = await feachData();
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">

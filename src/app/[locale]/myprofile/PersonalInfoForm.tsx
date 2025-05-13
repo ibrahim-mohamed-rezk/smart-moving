@@ -1,8 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 // import { useTranslations } from "next-intl";
 import { UserDataTypes } from "@/libs/types/types";
-import { UserIcon } from "lucide-react";
+import { UserIcon, Camera, Edit } from "lucide-react";
 import { patchData, postData } from "@/libs/axios/server";
 import axios, { AxiosHeaders } from "axios";
 import toast from "react-hot-toast";
@@ -23,6 +23,13 @@ const PersonalInfoForm = ({
     sur_name: initialData.name?.split(" ")[1],
   });
 
+  // Profile image state
+  const [profileImage, setProfileImage] = useState<File | null>(null);
+  const [profileImageUrl, setProfileImageUrl] = useState<string | null>(
+    initialData.image || null
+  );
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   // Validation state
   const [errors, setErrors] = useState({
     first_name: "",
@@ -37,7 +44,9 @@ const PersonalInfoForm = ({
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [showVerification, setShowVerification] = useState(false);
-  const [verificationCode, setVerificationCode] = useState<string | undefined>();
+  const [verificationCode, setVerificationCode] = useState<
+    string | undefined
+  >();
   const [sendingCode, setSendingCode] = useState(false);
 
   // Handle input changes
@@ -55,6 +64,22 @@ const PersonalInfoForm = ({
     }
   };
 
+  // Handle profile image selection
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setProfileImage(file);
+      setProfileImageUrl(URL.createObjectURL(file));
+
+      console.log(URL.createObjectURL(file));
+    }
+  };
+
+  // Trigger file input click
+  const handleImageClick = () => {
+    fileInputRef.current?.click();
+  };
+
   // Handle sending verification code
   const handleSendVerificationCode = async () => {
     // Validate phone number first
@@ -69,7 +94,7 @@ const PersonalInfoForm = ({
 
     setSendingCode(true);
     try {
-       await postData(
+      await postData(
         `${initialData.role}/send-verfiy-api`,
         { phone: formData.phone },
         new AxiosHeaders({
@@ -161,12 +186,30 @@ const PersonalInfoForm = ({
     setIsSubmitting(true);
 
     try {
+      // Create form data for multipart submission
+      const submitData = new FormData();
+
+      // Add form fields
+      submitData.append("first_name", formData.first_name || "");
+      submitData.append("sur_name", formData.sur_name || "");
+      submitData.append("email", formData.email);
+      submitData.append("phone", formData.phone);
+
+      if (verificationCode) {
+        submitData.append("code", verificationCode);
+      }
+
+      // Add profile image if selected
+      if (profileImage) {
+        submitData.append("image", profileImage);
+      }
+
       const response = await patchData(
         `${initialData.role}/update-profile-api`,
-        { ...formData, code: verificationCode },
+        submitData,
         new AxiosHeaders({
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
         })
       );
 
@@ -204,13 +247,53 @@ const PersonalInfoForm = ({
     >
       {/* Header - Profile Image and Name */}
       <div className="w-full flex flex-col sm:flex-row justify-start items-center gap-6 md:gap-12">
-        <div className="w-32 h-32 md:w-44 md:h-44 mx-auto md:mx-0 relative bg-white rounded-full outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden flex items-center justify-center">
-          {/* <img
-            className="w-24 h-20 md:w-32 md:h-24"
-            src="/api/placeholder/136/103"
-            alt="Profile"
-          /> */}
-          <UserIcon className="w-[65%] h-[65%] text-[#192953]" />
+        <div
+          className="w-32 h-32 md:w-44 md:h-44 mx-auto md:mx-0 relative bg-white rounded-full outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden flex items-center justify-center cursor-pointer group"
+          onClick={handleImageClick}
+        >
+          {profileImageUrl ? (
+            typeof profileImageUrl === "string" &&
+            profileImageUrl.match(/\.(jpeg|jpg|gif|png|webp)$|blob:http/i) ? (
+              <div className="relative w-full h-full">
+                <img
+                  src={profileImageUrl.toString()}
+                  alt="Profile"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute bottom-0 mx-auto bg-[#192953] p-1.5 rounded-full m-1 cursor-pointer">
+                  <Edit className="w-4 h-4 text-white" />
+                </div>
+              </div>
+            ) : (
+              <div className="w-full h-full flex items-center justify-center relative">
+                <UserIcon className="w-[65%] h-[65%] text-[#192953]" />
+                <div className="absolute bottom-0 mx-auto bg-[#192953] p-1.5 rounded-full m-1 cursor-pointer">
+                  <Edit className="w-4 h-4 text-white" />
+                </div>
+              </div>
+            )
+          ) : (
+            <div className="w-full h-full flex items-center justify-center relative">
+              <UserIcon className="w-[65%] h-[65%] text-[#192953]" />
+              <div className="absolute bottom-0 mx-auto bg-[#192953] p-1.5 rounded-full m-1 cursor-pointer">
+                <Edit className="w-4 h-4 text-white" />
+              </div>
+            </div>
+          )}
+
+          {/* Overlay on hover */}
+          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+            <Camera className="w-8 h-8 text-white" />
+          </div>
+
+          {/* Hidden file input */}
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleImageChange}
+            accept="image/*"
+            className="hidden"
+          />
         </div>
         <div className="p-2.5 flex flex-col justify-center items-center sm:items-start gap-5">
           <div className="text-black text-3xl md:text-5xl font-bold font-['Libre_Baskerville'] text-center sm:text-left">

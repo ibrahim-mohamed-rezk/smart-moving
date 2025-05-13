@@ -1,7 +1,10 @@
 export const navigatons = [
-  { name: "Get a quote", href: "/services" },
-  { name: "Search price lists", href: "/services" },
-  { name: "Ratings", href: "/about" },
+  {
+    name: "Get a quote",
+    href: "/services?service=private-moving&service_id=4",
+  },
+  { name: "Search price lists", href: "/companies" },
+  { name: "Ratings", href: "/ratings" },
 ];
 
 // services inputs
