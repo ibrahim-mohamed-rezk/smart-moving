@@ -1,29 +1,7 @@
-const CompanyOffers = () => {
-  const services = [
-    {
-      title: "Private Moving",
-      description:
-        "Safe and smooth home moving with full protection for your furniture",
-    },
-    {
-      title: "Company Relocation",
-      description: "Professional office moving with zero business disruption",
-    },
-    {
-      title: "Moving individual furniture/white goods",
-      description:
-        "Flexible transport for single items or large home appliances.",
-    },
-    {
-      title: "Storage",
-      description: "Secure and monitored storage spaces available anytime.",
-    },
-    {
-      title: "Taxi",
-      description: "Quick and easy taxi service for your daily city rides.",
-    },
-  ];
+import { Link } from "@/i18n/routing";
+import { ServiceTypes } from "@/libs/types/types";
 
+const CompanyOffers = ({ services }: { services: ServiceTypes[] }) => {
   return (
     <div className="flex flex-col bg-[#F0F0F0] rounded-[16px] w-full">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -46,7 +24,10 @@ const CompanyOffers = () => {
                     {service.description}
                   </div>
                 </div>
-                <div className="p-4 bg-white rounded-[100px] flex justify-center items-center gap-2.5">
+                <Link
+                  href={`/services?service=${service.slug}&service_id=${service.id}`}
+                  className="p-4 bg-white rounded-[100px] flex justify-center items-center gap-2.5"
+                >
                   <svg
                     width="40"
                     height="40"
@@ -69,7 +50,7 @@ const CompanyOffers = () => {
                       stroke-linejoin="round"
                     />
                   </svg>
-                </div>
+                </Link>
               </div>
             ))}
           </div>

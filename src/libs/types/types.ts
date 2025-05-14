@@ -18,6 +18,7 @@ export interface ReviewTypes {
 
 export interface CompanyTypes {
   id: number;
+  user_id?: number;
   image: string;
   name: string;
   email: string;

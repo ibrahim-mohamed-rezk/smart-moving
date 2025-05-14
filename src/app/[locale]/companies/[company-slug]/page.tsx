@@ -1,9 +1,13 @@
-import { Link } from "@/i18n/routing";
+import { Link, redirect } from "@/i18n/routing";
 import { User, Phone, MapPin } from "lucide-react";
 import AboutCompany from "./AboutCompany";
 import CompanyFeedbacks from "./CompanyFeedbacks";
 import CompanyOffers from "./CompanyOffers";
 import CompanyPriceList from "./CompanyPriceList";
+import { getData } from "@/libs/axios/server";
+import axios, { AxiosHeaders } from "axios";
+import toast from "react-hot-toast";
+import { ReviewTypes } from "@/libs/types/types";
 
 interface Tab {
   id: string;
@@ -14,11 +18,43 @@ const CompanyHero = async ({
   searchParams,
   params,
 }: {
-  params: Promise<{ "company-slug": string }>;
+  params: Promise<{ "company-slug": string; locale: string }>;
   searchParams: Promise<{ page: string }>;
 }) => {
-  const { "company-slug": companySlug } = await params;
+  const { "company-slug": companySlug, locale } = await params;
   const { page } = await searchParams;
+
+  if (!page) {
+    return redirect({
+      href: `/companies/${companySlug}?page=about%20us`,
+      locale,
+    });
+  }
+
+  const feachData = async () => {
+    try {
+      const response = await getData(
+        `show/${companySlug}`,
+        {},
+        new AxiosHeaders({})
+      );
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.msg || "An error occurred");
+      } else {
+        toast.error("An unexpected error occurred");
+      }
+      throw error;
+    }
+  };
+
+  const companyData = await feachData();
+  const reviewsRate =
+    companyData.reviews.reduce(
+      (acc: number, review: ReviewTypes) => acc + review.rating,
+      0
+    ) / companyData.reviews.length;
 
   const tabs: Tab[] = [
     { id: "about", label: "About Us" },
@@ -112,11 +148,11 @@ const CompanyHero = async ({
                     </svg>
 
                     <span className="text-xl sm:text-2xl lg:text-3xl font-bold font-['Libre_Baskerville'] text-yellow-400/40">
-                      4.5
+                      {reviewsRate || 0}
                     </span>
                   </div>
                   <span className="text-base sm:text-lg lg:text-xl font-bold font-['Libre_Baskerville'] text-stone-300">
-                    ( 119 ratings )
+                    ( {companyData.reviews?.length} ratings )
                   </span>
                 </div>
               </div>
@@ -174,8 +210,12 @@ const CompanyHero = async ({
       </div>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-6 md:pt-12 pb-5">
         {page === "about us" && <AboutCompany />}
-        {page === "feedbacks" && <CompanyFeedbacks />}
-        {page === "get an offer" && <CompanyOffers />}
+        {page === "feedbacks" && (
+          <CompanyFeedbacks reviews={companyData.reviews} />
+        )}
+        {page === "get an offer" && (
+          <CompanyOffers services={companyData.services} />
+        )}
         {page === "price lists" && <CompanyPriceList />}
       </div>
     </header>

@@ -1,7 +1,9 @@
 "use client";
+import { ReviewTypes } from "@/libs/types/types";
 import { useState } from "react";
+import ReviewCard from "./ReviewCard";
 
-const CompanyFeedbacks = () => {
+const CompanyFeedbacks = ({ reviews }: { reviews: ReviewTypes[] }) => {
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
 
   const openFeedbackForm = () => {
@@ -27,93 +29,27 @@ const CompanyFeedbacks = () => {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div
+          className={`${
+            reviews.length > 0 ? "grid" : "flex"
+          } grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6`}
+        >
           {/* Feedback Card 1 */}
-          {[1, 2, 3, 4, 5].map((index) => (
-            <div
-              key={index}
-              className="self-stretch h-[532px] relative bg-white rounded-lg shadow-md"
-            >
-              <div className="w-96 h-[527px] left-0 top-[2px] absolute bg-white blur-md" />
-              <div className="left-[24px] top-[24px] absolute inline-flex flex-col justify-start items-start gap-2.5">
-                <div className="justify-start text-black text-xl font-bold font-['Libre_Baskerville']">
-                  Grethe
-                </div>
-                <div className="inline-flex justify-start items-center gap-2">
-                  {[1, 2, 3].map(() => (
-                    <svg
-                      key={index}
-                      width="26"
-                      height="26"
-                      viewBox="0 0 26 26"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M14.8716 3.73152L16.7781 7.57594C17.0381 8.1111 17.7313 8.62441 18.3163 8.7227L21.7717 9.30155C23.9815 9.6729 24.5015 11.2893 22.9091 12.8839L20.2228 15.5924C19.7678 16.0511 19.5187 16.9357 19.6594 17.5693L20.4286 20.9222C21.0352 23.5761 19.6378 24.6028 17.3089 23.2157L14.0701 21.2826C13.4852 20.9331 12.5211 20.9331 11.9253 21.2826L8.68654 23.2157C6.36846 24.6028 4.96028 23.5652 5.56689 20.9222L6.33597 17.5693C6.47678 16.9357 6.22764 16.0511 5.77269 15.5924L3.08632 12.8839C1.50483 11.2893 2.01394 9.6729 4.22369 9.30155L7.67915 8.7227C8.25325 8.62441 8.94651 8.1111 9.20648 7.57594L11.1129 3.73152C12.1528 1.64548 13.8426 1.64548 14.8716 3.73152Z"
-                        fill="#FFC107"
-                        fill-opacity="0.4"
-                      />
-                    </svg>
-                  ))}
-                  {[1, 2].map(() => (
-                    <svg
-                      key={index}
-                      width="26"
-                      height="26"
-                      viewBox="0 0 26 26"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M14.8716 3.73152L16.7781 7.57594C17.0381 8.1111 17.7313 8.62441 18.3163 8.7227L21.7717 9.30155C23.9815 9.6729 24.5015 11.2893 22.9091 12.8839L20.2228 15.5924C19.7678 16.0511 19.5187 16.9357 19.6594 17.5693L20.4286 20.9222C21.0352 23.5761 19.6378 24.6028 17.3089 23.2157L14.0701 21.2826C13.4852 20.9331 12.5211 20.9331 11.9253 21.2826L8.68654 23.2157C6.36846 24.6028 4.96028 23.5652 5.56689 20.9222L6.33597 17.5693C6.47678 16.9357 6.22764 16.0511 5.77269 15.5924L3.08632 12.8839C1.50483 11.2893 2.01394 9.6729 4.22369 9.30155L7.67915 8.7227C8.25325 8.62441 8.94651 8.1111 9.20648 7.57594L11.1129 3.73152C12.1528 1.64548 13.8426 1.64548 14.8716 3.73152Z"
-                        stroke="#D9D9D9"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                  ))}
-                </div>
+          {reviews.length > 0 ? (
+            reviews.map((review, index) => (
+              <ReviewCard key={index} review={review} />
+            ))
+          ) : (
+            <div className="w-full flex justify-center flex-col items-center p-8">
+              <div className="text-blue-950 text-2xl font-bold font-['Libre_Baskerville'] mb-4">
+                No Ratings Yet
               </div>
-              <div className="w-48 h-0 left-[107px] top-[103px] absolute outline-1 outline-offset-[-0.50px] outline-zinc-100"></div>
-              <div className="w-48 h-0 left-[107px] top-[172px] absolute outline-1 outline-offset-[-0.50px] outline-zinc-100"></div>
-              <div className="w-48 h-0 left-[107px] top-[404px] absolute outline-1 outline-offset-[-0.50px] outline-zinc-100"></div>
-              <div className="w-80 left-[24px] top-[119px] absolute justify-start">
-                <span className="text-black text-base font-normal font-['Libre_Baskerville']">
-                  Service :{" "}
-                </span>
-                <span className="text-black text-sm font-normal font-['Libre_Baskerville']">
-                  Private moving – From Aarhus to Copenhagen
-                </span>
-              </div>
-              <div className="w-80 left-[24px] top-[420px] absolute justify-start">
-                <span className="text-black text-base font-normal font-['Libre_Baskerville']">
-                  Company response :{" "}
-                </span>
-                <span className="text-black text-sm font-normal font-['Libre_Baskerville']">
-                  We always love to hear that our clients are happy&apos; We
-                  hope to see you again in other assignments, and whenever you
-                  need us, we&apos;re ready&apos;
-                </span>
-              </div>
-              <div className="w-80 left-[24px] top-[188px] absolute justify-start text-black text-base font-normal font-['Libre_Baskerville']">
-                Honestly, the experience was beyond expectations&apos; The guys
-                arrived on time, were very respectful, and handled the furniture
-                with care, as if they were moving their own belongings&apos;
-                Everything arrived intact and without a single scratch&apos;
-                Thank you from the bottom of my heart&apos; You&apos;re up to
-                it&apos; I will definitely recommend you to anyone in need of a
-                respectable moving company.
-              </div>
+              <p className="text-black/60 text-center text-lg font-normal font-['Libre_Baskerville']">
+                This company has not received any feedback yet. Be the first to
+                share your experience!
+              </p>
             </div>
-          ))}
-        </div>
-
-        <div className="flex justify-center mt-8">
-          <button className="px-6 py-3 bg-blue-950 text-white rounded-lg font-bold hover:bg-blue-900 transition-colors">
-            Load More Feedbacks
-          </button>
+          )}
         </div>
       </div>
 
