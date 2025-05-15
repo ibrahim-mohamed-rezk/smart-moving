@@ -9,14 +9,13 @@ import {
   FaSnapchat,
   FaTiktok,
 } from "react-icons/fa6";
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 
 const tickerItems = ["Safe and Reliable", "Fast and Easy", "Live Support"];
 
 export default function Footer() {
   const t = useTranslations("footer");
-  const locale = useLocale(); // ⬅️ Get current locale
 
   return (
     <footer className="text-black overflow-hidden max-w-full">
