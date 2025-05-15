@@ -8,6 +8,7 @@ import { getData } from "@/libs/axios/server";
 import axios, { AxiosHeaders } from "axios";
 import toast from "react-hot-toast";
 import { ReviewTypes } from "@/libs/types/types";
+import { cookies } from "next/headers";
 
 interface Tab {
   id: string;
@@ -23,6 +24,8 @@ const CompanyHero = async ({
 }) => {
   const { "company-slug": companySlug, locale } = await params;
   const { page } = await searchParams;
+  const cookiesData = await cookies();
+  const token = cookiesData.get("token")?.value;
 
   if (!page) {
     return redirect({
@@ -74,7 +77,7 @@ const CompanyHero = async ({
               <div className="w-32 h-32 sm:w-40 sm:h-40 lg:w-64 lg:h-64 bg-white rounded-2xl outline-1 outline-indigo-950 flex items-center justify-center overflow-hidden">
                 <img
                   className="w-3/4 h-auto"
-                  src="/api/placeholder/180/120"
+                  src={companyData.image}
                   alt="Company"
                 />
               </div>
@@ -82,7 +85,7 @@ const CompanyHero = async ({
               <div className="flex flex-col gap-2 sm:gap-4">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
                   <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold font-['Libre_Baskerville']">
-                    Name of company
+                    {companyData.name}
                   </h1>
                   <div className="flex items-center gap-2">
                     <svg
@@ -157,32 +160,6 @@ const CompanyHero = async ({
                 </div>
               </div>
             </div>
-
-            {/* Contact card */}
-            <div className="w-full sm:w-96 p-4 rounded-2xl  outline-1 outline-white flex flex-col gap-4">
-              <div className="flex items-center gap-2">
-                <User className="w-6 h-6 text-white" />
-                <span className="text-lg lg:text-xl font-bold font-['Libre_Baskerville']">
-                  Motasem Yousef
-                </span>
-              </div>
-
-              <div className="flex items-start gap-2">
-                <MapPin className="w-6 h-6 text-white" />
-                <span className="text-lg lg:text-xl font-bold font-['Libre_Baskerville']">
-                  Kjaerslund 5 - 8260 Viby Jutland
-                </span>
-              </div>
-
-              <div className="flex items-start gap-2">
-                <Phone className="w-6 h-6 text-white" />
-                <div className="flex flex-col">
-                  <span className="text-lg lg:text-xl font-bold font-['Libre_Baskerville']">
-                    Phone 4220 4145
-                  </span>
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* Tabs */}
@@ -209,14 +186,24 @@ const CompanyHero = async ({
         </div>
       </div>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-6 md:pt-12 pb-5">
-        {page === "about us" && <AboutCompany />}
+        {page === "about us" && <AboutCompany bio={companyData.bio} />}
         {page === "feedbacks" && (
-          <CompanyFeedbacks reviews={companyData.reviews} />
+          <CompanyFeedbacks
+            companySlug={companySlug}
+            reviews={companyData.reviews}
+            token={token}
+            services={companyData.services}
+          />
         )}
         {page === "get an offer" && (
           <CompanyOffers services={companyData.services} />
         )}
-        {page === "price lists" && <CompanyPriceList />}
+        {page === "price lists" && (
+          <CompanyPriceList
+            priceLists={companyData.price_listings}
+            companyName={companyData.name}
+          />
+        )}
       </div>
     </header>
   );

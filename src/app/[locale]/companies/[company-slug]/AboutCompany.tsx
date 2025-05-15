@@ -1,21 +1,9 @@
-const AboutCompany = () => {
+const AboutCompany = ({ bio }: { bio: string }) => {
   return (
     <div className="flex flex-col w-full">
       <div className="self-stretch p-4 md:p-6 lg:p-8 bg-white flex flex-col md:flex-row justify-start items-center md:items-start gap-4 md:gap-8 lg:gap-16">
         <div className="w-full md:flex-1 justify-start text-blue-950 text-xl sm:text-2xl lg:text-3xl font-bold font-['Libre_Baskerville'] mb-4 md:mb-0">
-          At MA Transport og Flytning, we understand that both private and
-          commercial moves can be extensive and stressful. With our many years
-          of experience as a moving company, we have gained extensive experience
-          in moving work and handling heavy lifting, such as moving pianos. We
-          always carry out the work with a focus on safety and security
-          throughout the move, which has resulted in many satisfied and
-          returning customers.
-          <br />
-          We offer safe, fast and cheap moving. Contact us for a free and
-          non-binding moving quote. No move is too big or small for us. You can
-          send us pictures of your belongings at matransportogflyt@gmail.com.
-          The price includes VAT and insurance. Please contact us on 42 20 41 45
-          for further information.
+          {!bio || bio === "" ? "Moving company" : bio}
         </div>
         {/* <div className="flex flex-row flex-wrap justify-center gap-4">
           <img

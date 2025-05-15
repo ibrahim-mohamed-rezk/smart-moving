@@ -4,7 +4,7 @@ export const navigatons = [
     href: "/services?service=private-moving&service_id=4",
   },
   { name: "Search price lists", href: "/companies" },
-  { name: "Ratings", href: "/ratings" },
+  // { name: "Ratings", href: "/ratings" },
 ];
 
 // services inputs
@@ -23,15 +23,15 @@ export const privateMovingInputs = {
       name: "Address_possibly_floor",
       type: "text",
     },
-    {
-      title: "Elevator",
-      name: "elevator",
-      type: "radio",
-      options: [
-        { title: "Yes", value: "true" },
-        { title: "No", value: "false" },
-      ],
-    },
+    // {
+    //   title: "Elevator",
+    //   name: "elevator",
+    //   type: "radio",
+    //   options: [
+    //     { title: "Yes", value: "true" },
+    //     { title: "No", value: "false" },
+    //   ],
+    // },
     {
       title: "Number of square meters",
       name: "number_of_square_meters",
@@ -52,6 +52,18 @@ export const privateMovingInputs = {
       name: "description",
       type: "textarea",
     },
+    {
+      title: "Parking distance to door",
+      type: "select",
+      name: "parking_distance_to_door",
+      options: [
+        { title: "10 meters", value: "10 meters" },
+        { title: "20 meters", value: "20 meters" },
+        { title: "30 meters", value: "30 meters" },
+        { title: "40 meters", value: "40 meters" },
+        { title: "more than 50 meters", value: "more than 50 meters" },
+      ],
+    },
   ],
 
   moving_address: [
@@ -61,15 +73,15 @@ export const privateMovingInputs = {
       name: "Address_possibly_floor",
       type: "text",
     },
-    {
-      title: "Elevator",
-      name: "elevator",
-      type: "radio",
-      options: [
-        { title: "Yes", value: "true" },
-        { title: "No", value: "false" },
-      ],
-    },
+    // {
+    //   title: "Elevator",
+    //   name: "elevator",
+    //   type: "radio",
+    //   options: [
+    //     { title: "Yes", value: "true" },
+    //     { title: "No", value: "false" },
+    //   ],
+    // },
     {
       title: "Service level",
       name: "service_level",
@@ -89,14 +101,26 @@ export const privateMovingInputs = {
         { title: "Later", value: "later" },
       ],
     },
+    // {
+    //   title: "Get quotes from",
+    //   name: "when_do_want_begin",
+    //   type: "select",
+    //   options: [
+    //     { title: "1 company", value: "1 company" },
+    //     { title: "3 company", value: "3 company" },
+    //     { title: "All available", value: "all" },
+    //   ],
+    // },
     {
-      title: "Get quotes from",
-      name: "when_do_want_begin",
+      title: "Parking distance to door",
       type: "select",
+      name: "parking_distance_to_door",
       options: [
-        { title: "1 company", value: "1 company" },
-        { title: "3 company", value: "3 company" },
-        { title: "All available", value: "all" },
+        { title: "10 meters", value: "10 meters" },
+        { title: "20 meters", value: "20 meters" },
+        { title: "30 meters", value: "30 meters" },
+        { title: "40 meters", value: "40 meters" },
+        { title: "more than 50 meters", value: "more than 50 meters" },
       ],
     },
   ],
@@ -105,7 +129,7 @@ export const privateMovingInputs = {
 export const storageInputs = {
   isDivided: false,
   firstPart: {
-    title: "Storage - without transport - Get a quote",
+    title: "Storage - Get a quote",
   },
   out_address: [
     {
@@ -166,6 +190,15 @@ export const storageInputs = {
       title: "Task description",
       name: "description",
       type: "textarea",
+    },
+    {
+      title: "With transport",
+      name: "with_transport",
+      type: "radio",
+      options: [
+        { title: "Yes", value: "yes" },
+        { title: "No", value: "no" },
+      ],
     },
   ],
 };

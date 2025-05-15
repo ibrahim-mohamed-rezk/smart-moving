@@ -222,8 +222,8 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
       
       // Handle successful login
       await axios.post("/api/auth/login", {
-        token: response.token,
-        user: JSON.stringify(response.data),
+        token: response.data.token,
+        user: JSON.stringify(response.data.data),
         remember: true,
       });
       
