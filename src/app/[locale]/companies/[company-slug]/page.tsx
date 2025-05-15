@@ -1,5 +1,4 @@
 import { Link, redirect } from "@/i18n/routing";
-import { User, Phone, MapPin } from "lucide-react";
 import AboutCompany from "./AboutCompany";
 import CompanyFeedbacks from "./CompanyFeedbacks";
 import CompanyOffers from "./CompanyOffers";
