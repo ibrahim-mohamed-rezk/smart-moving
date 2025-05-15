@@ -1,9 +1,9 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 // import { useTranslations } from "next-intl";
-import { UserDataTypes } from "@/libs/types/types";
+import { ServiceTypes, UserDataTypes } from "@/libs/types/types";
 import { UserIcon, Camera, Edit } from "lucide-react";
-import { postData } from "@/libs/axios/server";
+import { getData, postData } from "@/libs/axios/server";
 import axios, { AxiosHeaders } from "axios";
 import toast from "react-hot-toast";
 
@@ -15,14 +15,16 @@ const PersonalInfoForm = ({
   token: string;
 }) => {
   // const t = useTranslations("company");
+  const [services, setServices] = useState([]);
 
   // Form state with validation
   const [formData, setFormData] = useState({
     ...initialData,
     first_name: initialData.name?.split(" ")[0],
     sur_name: initialData.name?.split(" ")[1],
-    price_listings: initialData.company?.price_listings || '',
-    bio: initialData.company?.bio || '',
+    price_listings: initialData.company?.price_listings || "",
+    bio: initialData.company?.bio || "",
+    services: initialData.company?.services?.map((s) => s.id) || [],
   });
 
   // Profile image state
@@ -65,6 +67,19 @@ const PersonalInfoForm = ({
       setVerificationCode("");
     }
   };
+
+  // get services
+  useEffect(() => {
+    const getServices = async () => {
+      const response = await getData(
+        `services`,
+        {},
+        new AxiosHeaders({ Authorization: `Bearer ${token}` })
+      );
+      setServices(response.data);
+    };
+    getServices();
+  }, []);
 
   // Handle profile image selection
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -197,6 +212,9 @@ const PersonalInfoForm = ({
       submitData.append("bio", formData.bio || "");
       submitData.append("price_listings", formData.price_listings || "");
 
+      // Send services as array of numbers
+      submitData.append("services", JSON.stringify(formData.services));
+
       if (verificationCode) {
         submitData.append("code", verificationCode);
       }
@@ -219,7 +237,7 @@ const PersonalInfoForm = ({
       if (response.data) {
         document.cookie = `user=${JSON.stringify(response.data)}; path=/`;
         // Reload the window to reflect updated user data
-        window.location.reload();
+        // window.location.reload();
       }
 
       // Mock successful save
@@ -464,13 +482,66 @@ const PersonalInfoForm = ({
                   <textarea
                     name="bio"
                     value={formData.bio || ""}
-                    onChange={(e) => setFormData(prev => ({ ...prev, bio: e.target.value }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({ ...prev, bio: e.target.value }))
+                    }
                     className={`self-stretch p-3 md:p-4 bg-zinc-100 rounded-3xl outline-1 outline-offset-[-1px] outline-zinc-300 w-full text-black text-base md:text-lg font-normal font-['Libre_Baskerville'] min-h-[120px]`}
                     placeholder="Tell us about your company..."
                     minLength={100}
                   >
                     {formData.bio || ""}
                   </textarea>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Services Checklist */}
+          {initialData.role === "company" && (
+            <div className="self-stretch flex flex-col justify-center items-start gap-2 w-full">
+              <div className="self-stretch text-blue-950 text-lg md:text-xl font-bold font-['Libre_Baskerville']">
+                Available Services
+              </div>
+              <div className="self-stretch w-full space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {services?.map((service: ServiceTypes, index: number) => {
+                    return (
+                      <div
+                        key={index}
+                        className="flex items-center gap-3 p-4 bg-zinc-50 rounded-xl"
+                      >
+                        <input
+                          type="checkbox"
+                          id={`service-${index}`}
+                          checked={formData.services?.includes(service.id)}
+                          onChange={(e) => {
+                            const currentServices = [
+                              ...(formData.services || []),
+                            ];
+                            if (e.target.checked) {
+                              currentServices.push(service.id);
+                            } else {
+                              const index = currentServices.indexOf(service.id);
+                              if (index > -1) {
+                                currentServices.splice(index, 1);
+                              }
+                            }
+                            setFormData((prev) => ({
+                              ...prev,
+                              services: currentServices,
+                            }));
+                          }}
+                          className="w-5 h-5 text-blue-950 rounded border-zinc-300 focus:ring-blue-950"
+                        />
+                        <label
+                          htmlFor={`service-${index}`}
+                          className="text-black text-base font-normal font-['Libre_Baskerville'] cursor-pointer"
+                        >
+                          {service.title}
+                        </label>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -483,19 +554,32 @@ const PersonalInfoForm = ({
                 Price Listings
               </div>
               <div className="self-stretch w-full space-y-4">
-                {formData.price_listings?.split(',').map((item, index) => {
-                  const [title, price] = item.split(':').map(i => i.trim());
+                {formData.price_listings?.split(",").map((item, index) => {
+                  const [title, price] = item.split(":").map((i) => i.trim());
                   return (
-                    <div key={index} className="flex flex-col sm:flex-row gap-3 w-full">
+                    <div
+                      key={index}
+                      className="flex flex-col sm:flex-row gap-3 w-full"
+                    >
                       <div className="flex-1">
                         <input
                           type="text"
-                          value={title || ''}
+                          value={title || ""}
                           onChange={(e) => {
-                            const newListings = formData.price_listings?.split(',').map((i, idx) => 
-                              idx === index ? `${e.target.value}:${item.split(':')[1] || ''}` : i
-                            ).join(',');
-                            setFormData(prev => ({ ...prev, price_listings: newListings }));
+                            const newListings = formData.price_listings
+                              ?.split(",")
+                              .map((i, idx) =>
+                                idx === index
+                                  ? `${e.target.value}:${
+                                      item.split(":")[1] || ""
+                                    }`
+                                  : i
+                              )
+                              .join(",");
+                            setFormData((prev) => ({
+                              ...prev,
+                              price_listings: newListings,
+                            }));
                           }}
                           className="p-3 md:p-4 bg-zinc-100 rounded-3xl outline-1 outline-offset-[-1px] outline-zinc-300 w-full text-black text-base md:text-lg font-normal font-['Libre_Baskerville']"
                           placeholder="Service title (e.g., 1 man with van - approx. 10 m3)"
@@ -504,12 +588,22 @@ const PersonalInfoForm = ({
                       <div className="w-full sm:w-1/3">
                         <input
                           type="text"
-                          value={price || ''}
+                          value={price || ""}
                           onChange={(e) => {
-                            const newListings = formData.price_listings?.split(',').map((i, idx) => 
-                              idx === index ? `${item.split(':')[0] || ''}:${e.target.value}` : i
-                            ).join(',');
-                            setFormData(prev => ({ ...prev, price_listings: newListings }));
+                            const newListings = formData.price_listings
+                              ?.split(",")
+                              .map((i, idx) =>
+                                idx === index
+                                  ? `${item.split(":")[0] || ""}:${
+                                      e.target.value
+                                    }`
+                                  : i
+                              )
+                              .join(",");
+                            setFormData((prev) => ({
+                              ...prev,
+                              price_listings: newListings,
+                            }));
                           }}
                           className="p-3 md:p-4 bg-zinc-100 rounded-3xl outline-1 outline-offset-[-1px] outline-zinc-300 w-full text-black text-base md:text-lg font-normal font-['Libre_Baskerville']"
                           placeholder="Price (e.g., 700$)"
@@ -518,19 +612,24 @@ const PersonalInfoForm = ({
                     </div>
                   );
                 })}
-                
-                <button
-                  type="button"
-                  onClick={() => {
-                    const currentListings = formData.price_listings || '';
-                    const newListing = currentListings ? `${currentListings}, :` : ':';
-                    setFormData(prev => ({ ...prev, price_listings: newListing }));
-                  }}
-                  className="px-4 py-2 bg-blue-950 rounded-xl text-white font-normal font-['Libre_Baskerville'] hover:bg-blue-900 transition-all"
-                >
-                  Add Price Listing
-                </button>
               </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  const currentListings = formData.price_listings || "";
+                  const newListing = currentListings
+                    ? `${currentListings}, :`
+                    : ":";
+                  setFormData((prev) => ({
+                    ...prev,
+                    price_listings: newListing,
+                  }));
+                }}
+                className="px-4 py-2 bg-blue-950 rounded-xl text-white font-normal font-['Libre_Baskerville'] hover:bg-blue-900 transition-all"
+              >
+                Add Price Listing
+              </button>
             </div>
           )}
         </div>
