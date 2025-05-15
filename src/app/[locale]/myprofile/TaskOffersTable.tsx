@@ -110,6 +110,7 @@ const TaskOffersTable = async ({
                       locale={locale}
                       id={offer.id}
                       token={token}
+                      offer={offer}
                     />
                   </td>
                 </tr>

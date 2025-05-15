@@ -1,10 +1,11 @@
 "use client";
 
 import { getData, postData } from "@/libs/axios/server";
-import { TaskTypes, UserDataTypes } from "@/libs/types/types";
+import { OfferTypes, TaskTypes, UserDataTypes } from "@/libs/types/types";
 import axios, { AxiosHeaders } from "axios";
 import toast from "react-hot-toast";
 import { useState, useRef, useEffect } from "react";
+import { useRouter } from "@/i18n/routing";
 
 const TableActionButtons = ({
   id,
@@ -12,18 +13,21 @@ const TableActionButtons = ({
   user,
   task,
   locale,
+  offer,
 }: {
   id: number;
   token: string;
   user?: UserDataTypes;
   task?: TaskTypes;
   locale?: string;
+  offer?: OfferTypes;
 }) => {
   const [showDetails, setShowDetails] = useState(false);
   const [showOfferPopup, setShowOfferPopup] = useState(false);
   const [offerPrice, setOfferPrice] = useState("");
   const popupRef = useRef<HTMLDivElement>(null);
   const offerPopupRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   const acceptOffer = async () => {
     try {
@@ -32,11 +36,22 @@ const TableActionButtons = ({
         {},
         new AxiosHeaders({
           "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-            lang: locale || "en",
+          Authorization: `Bearer ${token}`,
+          lang: locale || "en",
         })
       );
+
+      const chat = await postData(
+        "chat",
+        { user_id: offer?.user_id },
+        new AxiosHeaders({
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        })
+      );
+
       toast.success("Offer accepted successfully");
+      router.push(`/chats?id=${chat.data.id}`);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data?.msg || "An error occurred");
@@ -54,8 +69,8 @@ const TableActionButtons = ({
         {},
         new AxiosHeaders({
           "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-            lang: locale || "en",
+          Authorization: `Bearer ${token}`,
+          lang: locale || "en",
         })
       );
       toast.success("Offer declined successfully");
@@ -93,6 +108,7 @@ const TableActionButtons = ({
           lang: locale || "en",
         })
       );
+
       toast.success("Offer submitted successfully");
       setShowOfferPopup(false);
       setOfferPrice("");

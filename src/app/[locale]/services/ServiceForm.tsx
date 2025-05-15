@@ -35,7 +35,7 @@ const ServiceForm = ({
     service_id,
     details: {
       square_meters: squareMeters,
-      moving_address:{},
+      moving_address: {},
       title: service
         .replace("-", " ")
         .replace(/\b\w/g, (char) => char.toUpperCase()),
@@ -51,6 +51,7 @@ const ServiceForm = ({
           "Content-Type": "application/json",
         })
       );
+
       router.push("/myprofile?page=tasks");
       toast.success("Request sent successfully");
     } catch (error) {
@@ -66,7 +67,11 @@ const ServiceForm = ({
   if (!forms[service]) {
     return (
       <div className=" w-fit  mx-auto flex items-center justify-center mt-[clamp(20px,5vw,120px)] text-center">
-        <img src="/soon.png" alt="comming soon" className="w-[80%] md:w-[60%]" />
+        <img
+          src="/soon.png"
+          alt="comming soon"
+          className="w-[80%] md:w-[60%]"
+        />
       </div>
     );
   }
@@ -363,7 +368,9 @@ const ServiceForm = ({
                                 type="radio"
                                 name={input.name}
                                 value={option.value}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                onChange={(
+                                  e: React.ChangeEvent<HTMLInputElement>
+                                ) =>
                                   setFormData((prev) => ({
                                     ...prev,
                                     details: {

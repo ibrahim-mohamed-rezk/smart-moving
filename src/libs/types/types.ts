@@ -108,6 +108,9 @@ export interface UserDataTypes {
 export interface TaskTypes {
   status: string;
   id: number;
+  user_id: number;
+  company_id?: number;
+  service_id?: number;
   details: {
     description: string;
     FRA_address?: string;
@@ -132,14 +135,18 @@ export interface TaskTypes {
     };
   };
   offers?: OfferTypes[];
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface OfferTypes {
   id: number;
   offer: string;
-  status: string;
+  status: "hold" | "accept" | "refuse";
+  user_id?: number;
+  created_at?: string;
+  updated_at?: string;
 }
-
 
 export interface ChatTypes {
   id: number;
@@ -150,7 +157,7 @@ export interface ChatTypes {
   created_at: string;
   updated_at: string;
   unread_messages_count: number;
-  last_message?:  MessageTypes;
+  last_message?: MessageTypes;
   message_count: number;
   participants: {
     id: number;
