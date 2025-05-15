@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import { Truck, ChevronRight, Youtube, Facebook } from "lucide-react";
 import {
@@ -11,6 +10,7 @@ import {
   FaTiktok,
 } from "react-icons/fa6";
 import { useTranslations, useLocale } from "next-intl";
+import { Link } from "@/i18n/routing";
 
 const tickerItems = ["Safe and Reliable", "Fast and Easy", "Live Support"];
 
@@ -91,12 +91,18 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2 text-gray-300 text-[clamp(0.75rem,1vw,1rem)]">
               {[
-                [t("Private Moving"), "login"],
-                [t("Company Relocation"), "RegisterCompany"],
-                [t("Storage"), "RegisterCompany"],
+                [
+                  t("Private Moving"),
+                  "/services?service=private-moving&service_id=4",
+                ],
+                [
+                  t("Company Relocation"),
+                  "/services?service=company-relocation&service_id=2",
+                ],
+                [t("Storage"), "/services?service=storage&service_id=3"],
               ].map(([label, path]) => (
                 <li key={path} className="flex items-center">
-                  <Link href={`/${locale}/${path}`} className="flex-1">
+                  <Link href={`/${path}`} className="flex-1">
                     {label}
                   </Link>
                   <ChevronRight />
