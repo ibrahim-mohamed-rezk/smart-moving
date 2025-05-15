@@ -79,7 +79,9 @@ const Sidebar = ({ userData }: { userData: UserDataTypes }) => {
                       : "text-stone-300"
                   } text-base lg:text-xl font-bold font-['Libre_Baskerville']`}
                 >
-                  Personal Information
+                  {userData.role === "customer"
+                    ? "Personal Information"
+                    : "Company Information"}
                 </div>
               </button>
               <button

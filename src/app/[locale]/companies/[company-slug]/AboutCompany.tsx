@@ -17,7 +17,7 @@ const AboutCompany = () => {
           The price includes VAT and insurance. Please contact us on 42 20 41 45
           for further information.
         </div>
-        <div className="flex flex-row flex-wrap justify-center gap-4">
+        {/* <div className="flex flex-row flex-wrap justify-center gap-4">
           <img
             className="w-40 h-56 sm:w-52 sm:h-72 object-cover"
             src="https://placehold.co/208x298"
@@ -33,9 +33,9 @@ const AboutCompany = () => {
             src="https://placehold.co/285x220"
             alt="Company image 3"
           />
-        </div>
+        </div> */}
       </div>
-      <div className="self-stretch  flex flex-col lg:flex-row justify-center items-stretch gap-4 pt-4">
+      {/* <div className="self-stretch  flex flex-col lg:flex-row justify-center items-stretch gap-4 pt-4">
         <div className="flex-1 p-4 bg-white rounded-2xl flex flex-col justify-start items-start gap-4 md:gap-6">
           <div className="self-stretch justify-start text-blue-950 text-2xl sm:text-3xl lg:text-4xl font-bold font-['Libre_Baskerville']">
             Categories
@@ -84,7 +84,7 @@ const AboutCompany = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

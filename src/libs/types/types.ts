@@ -33,6 +33,8 @@ export interface CompanyTypes {
   possible_website: string;
   services: ServiceTypes[];
   reviews: ReviewTypes[];
+  bio: string;
+  price_listings: string;
 }
 
 export interface ServiceInput {
@@ -98,6 +100,9 @@ export interface UserDataTypes {
   first_name?: string;
   sur_name?: string;
   role?: string;
+  bio?: string;
+  price_listings?: string;
+  company?: CompanyTypes;
 }
 
 export interface TaskTypes {

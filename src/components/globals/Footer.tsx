@@ -39,7 +39,7 @@ export default function Footer() {
 
       {/* Main content */}
       <div className="relative bg-[#0F152F] px-[clamp(1rem,5vw,4rem)] py-[clamp(2rem,6vw,5rem)] overflow-hidden">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-[clamp(1rem,2vw,2.5rem)] relative z-10">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-[clamp(1rem,2vw,2.5rem)] relative z-10">
           {/* Logo + Contact */}
           <div>
             <Image
@@ -69,7 +69,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div>
+          {/* <div>
             <h4 className="font-semibold mb-4 text-white text-[clamp(1rem,1.5vw,1.25rem)]">
               {t("Quick Help")}
             </h4>
@@ -84,7 +84,7 @@ export default function Footer() {
                 <Link href="/contact">{t("Contact us")}</Link>
               </li>
             </ul>
-          </div>
+          </div> */}
           <div>
             <h4 className="font-semibold mb-4 text-white text-[clamp(1rem,1.5vw,1.25rem)]">
               {t("Explore Services")}
