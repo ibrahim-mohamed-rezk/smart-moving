@@ -20,7 +20,7 @@ export default async function PersonalInfoPage({
   }
 
   return (
-    <div className="flex items-stretch sm:p-6 mt-4 md:mt-0 md:justify-center flex-col md:flex-row bg-gray-50 font-['libre-baskerville']">
+    <div className="flex items-stretch sm:p-6 mt-4 md:mt-0 md:justify-center flex-col md:flex-row h-[calc(100vh-100px)] bg-gray-50 font-['libre-baskerville']">
       {/* Sidebar Component - Handles both mobile and desktop views */}
       <Sidebar user={userData} token={token} locale={locale} />
 

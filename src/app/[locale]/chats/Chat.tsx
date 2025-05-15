@@ -217,6 +217,17 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
     );
   };
 
+  if (!id) return (
+    <div className="w-full h-full flex items-center justify-center">
+      <div className="text-blue-950 text-lg md:text-xl font-normal font-['Libre_Baskerville'] text-center p-8">
+        <p>No conversation selected</p>
+        <p className="text-black/60 text-sm md:text-base mt-2">
+          Please select a conversation from the sidebar or start a new one
+        </p>
+      </div>
+    </div>
+  );
+
   return (
     <div className="w-full h-full bg-white rounded-tr-2xl rounded-br-2xl border-l border-zinc-300 flex flex-col">
       {/* Chat Header */}
@@ -246,7 +257,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
       </div>
 
       {/* Chat Messages - Scrollable Section */}
-      <div className="flex-1 overflow-hidden max-h-[calc(100vh-300px)] relative">
+      <div className="flex-1 overflow-hidden max-h-screen relative">
         <div
           ref={messagesContainerRef}
           className="h-full scrollbar-hide p-3 md:p-6 flex flex-col justify-start items-start gap-4 md:gap-8 overflow-y-auto"
