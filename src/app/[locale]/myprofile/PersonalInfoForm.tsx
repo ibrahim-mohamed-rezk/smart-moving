@@ -237,7 +237,7 @@ const PersonalInfoForm = ({
       if (response.data) {
         document.cookie = `user=${JSON.stringify(response.data)}; path=/`;
         // Reload the window to reflect updated user data
-        window.location.reload();
+        window.location.reload() ;
       }
 
       // Mock successful save
