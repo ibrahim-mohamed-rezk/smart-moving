@@ -11,7 +11,6 @@
   "auth": {
     "Email": "البريد الإلكتروني",
     "Password": "كلمة المرور",
-    "Login": "تسجيل الدخول",
     "Register": "إنشاء حساب",
     "Submit": "إرسال",
     "Logout": "تسجيل الخروج",
@@ -19,7 +18,23 @@
     "RegisterFailed": "فشل إنشاء الحساب، حاول مرة أخرى.",
     "ForgotPassword": "نسيت كلمة المرور؟",
     "LoginTitle": "تسجيل الدخول",
-    "RegisterTitle": "انشاء حساب"
+    "RegisterTitle": "انشاء حساب",
+    "Please login first to request a moving": "يرجى تسجيل الدخول أولاً لطلب النقل",
+    "First Name": "الاسم الأول",
+    "Second Name": "الاسم الثاني",
+    "Enter Email Address or Phone Number": "أدخل البريد الإلكتروني أو رقم الهاتف",
+    "Enter Password": "أدخل كلمة المرور",
+    "Confirm Password": "تأكيد كلمة المرور",
+    "Postal Code": "الرمز البريدي",
+    "Forget Password?": "نسيت كلمة المرور؟",
+    "Don't have an account yet?": "ليس لديك حساب بعد؟",
+    "Signup": "إنشاء حساب",
+    "Already have an account?": "هل لديك حساب بالفعل؟",
+    "Login": "تسجيل الدخول",
+    "Verify Your Account": "تحقق من حسابك",
+    "Please enter the verification code sent to your email/phone": "يرجى إدخال رمز التحقق المرسل إلى بريدك الإلكتروني/هاتفك",
+    "Verify": "تحقق",
+    "login": "تسجيل الدخول"
   },
   "register": {
     "Email": "البريد الإلكتروني",

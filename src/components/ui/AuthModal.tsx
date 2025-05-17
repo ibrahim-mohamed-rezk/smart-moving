@@ -12,6 +12,7 @@ import { countryTypes } from "@/libs/types/types";
 import { useParams } from "next/navigation";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { app } from "@/libs/firebase/config";
+import { useTranslations } from "next-intl";
 
 interface AuthModalProps {
   type: "login" | "register";
@@ -19,6 +20,7 @@ interface AuthModalProps {
 }
 
 const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
+  const t = useTranslations("auth");
   const [modalType, setModalType] = useState(type);
   const [showPassword, setShowPassword] = useState(false);
   const modalRef = useRef<HTMLDivElement | null>(null);
@@ -39,6 +41,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
     password: "",
     password_confirmation: "",
     country_code: "+45",
+    postal_code: "",
   });
 
   // get countries
@@ -259,10 +262,10 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
         {openOTP ? (
           <>
             <h2 className="text-lg font-semibold mb-6 text-center text-[#192953]">
-              Verify Your Account
+              {t("Verify Your Account")}
             </h2>
             <p className="text-center text-gray-600 mb-4">
-              Please enter the verification code sent to your email/phone
+              {t("Please enter the verification code sent to your email/phone")}
             </p>
             <form className="flex flex-col gap-4">
               <div className="flex justify-center gap-4 my-4">
@@ -294,7 +297,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
           <>
             {/* Title */}
             <h2 className="text-lg font-semibold mb-6 text-center text-[#192953]">
-              Please login first to request a moving
+              {t("Please login first to request a moving")}
             </h2>
 
             {/* Form */}
@@ -303,7 +306,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
                 <>
                   <input
                     type="text"
-                    placeholder="First Name"
+                    placeholder={t("First Name")}
                     value={registerformData.first_name}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       setRegisterFormData({
@@ -315,7 +318,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
                   />
                   <input
                     type="text"
-                    placeholder="Second Name"
+                    placeholder={t("Second Name")}
                     value={registerformData.sur_name}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       setRegisterFormData({
@@ -330,7 +333,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
               {/* Email */}
               <input
                 type="email"
-                placeholder="Enter Email Address or Phone Number"
+                placeholder={t("Enter Email Address or Phone Number")}
                 value={
                   modalType === "login"
                     ? formData.login
@@ -392,7 +395,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
-                  placeholder="Enter Password"
+                  placeholder={t("Enter Password")}
                   value={
                     modalType === "login"
                       ? formData.password
@@ -422,19 +425,21 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
                   )}
                 </button>
               </div>
+              {/* postal code for register only  */}
+             
 
               {/* Forget password link (login only) */}
               {modalType === "login" ? (
                 <div className="text-right">
                   <a href="#" className="text-sm text-blue-600 hover:underline">
-                    Forget Password?
+                    {t("Forget Password?")} 
                   </a>
                 </div>
               ) : (
                 <>
                   <input
                     type={showPassword ? "text" : "password"}
-                    placeholder="Confirm Password"
+                    placeholder={t("Confirm Password")}
                     value={registerformData.password_confirmation}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       setRegisterFormData({
@@ -446,6 +451,20 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
                   />
                 </>
               )}
+               {modalType === "register" && (
+                <input
+                  type="text"
+                  placeholder={t("Postal Code")}
+                  value={registerformData.postal_code}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    setRegisterFormData({
+                      ...registerformData,
+                      postal_code: e.target.value,
+                    });
+                  }}
+                  className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              )}  
 
               {/* google auth */}
               <div className="flex items-center justify-center">
@@ -494,7 +513,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
                 onClick={handelSubmit}
                 className="mt-2 bg-[#192953] hover:bg-[#14203d] transition-colors text-white font-semibold rounded-full py-3"
               >
-                {modalType === "login" ? "Login" : "Signup"}
+                {modalType === "login" ? t("login") : t("Signup")}
               </button>
             </form>
 
@@ -502,22 +521,22 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
             <div className="text-center text-sm text-gray-500 mt-4">
               {modalType === "login" ? (
                 <>
-                  Don&apos;t have an account yet?{" "}
+                  {t("Don't have an account yet?")}
                   <span
                     onClick={handleSwitchType}
                     className="text-blue-600 hover:underline cursor-pointer"
                   >
-                    Signup
+                    {t("Signup")}
                   </span>
                 </>
               ) : (
                 <>
-                  Already have an account?{" "}
+                  {t("Already have an account?")}
                   <span
                     onClick={handleSwitchType}
                     className="text-blue-600 hover:underline cursor-pointer"
                   >
-                    Login
+                    {t("login")}
                   </span>
                 </>
               )}

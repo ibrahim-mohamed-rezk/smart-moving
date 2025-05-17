@@ -756,6 +756,29 @@ const AccountCreationForm = () => {
                 </div>
 
                 <div>
+                  {/* postal code   */}
+                  <div>
+                    <label
+                      htmlFor="postal_code*"
+                      className="block text-xl text-bold font-medium text-gray-700 mb-1"
+                    >
+                      {t("postal_code")}
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="text"
+                        id="postal_code"
+                        name="postal_code"
+                        placeholder={t("enter_postal_code")}
+                        value={formData.postal_code}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-4 border rounded-full"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div>
                   <label
                     htmlFor="phone"
                     className="block text-xl text-bold font-medium text-gray-700 mb-1"
