@@ -121,6 +121,87 @@
     "hidecvr": "إخفاء رقم السجل التجاري"
   },
   "services": {
+    "TO address": "إلى العنوان",
+    "Street plan": "الشارع",
+    "With transport": "مع النقل",
+    "Copenhagen County": "محافظة كوبنهاغن",
+    "Frederiksborg County": "محافظة فريدريكسبورغ",
+    "Roskild County": "محافظة روسكيلد",
+    "West Zealaland County": "محافظة زيلاند الغربية",
+    "Storstrom County": "محافظة ستورستروم",
+    "County of Funen": "محافظة فونين",
+    "South Jutland County": "محافظة جنوب يوتلاند",
+    "Vejle County": "محافظة فييل",
+    "Ribe County": "محافظة ريبه",
+    "Ringkobing County": "محافظة رينكوبينج",
+    "Aarhus County": "محافظة آرهوس",
+    "Viborg County": "محافظة فيبورج",
+    "North Jutland County": "محافظة شمال يوتلاند",
+    "Bornholm County": "محافظة بورنهولم",
+    "Storage - Get a quote": "تخزين - احصل على عرض",
+    "Submit Request": "إرسال",
+    "Parking distance to door": "مسافة الموقف إلى الباب",
+    "10 meters": "10 أمتار",
+    "20 meters": "20 مترًا",
+    "30 meters": "30 مترًا",
+    "40 meters": "40 مترًا",
+    "more than 50 meters": "أكثر من 50 مترًا",
+    "m²": "م²",
+    "Enter": "أدخل",
+    "0 m²": "0 م²",
+    "200 m²": "200 م²",
+    "firstPartTitle": "عنوان المغادرة",
+    "secondPartTitle": "عنوان الوصول",
+    "out_address": {
+      "FRA_address": {
+        "title": "عنوان FRA",
+        "placeholder": "أدخل عنوان FRA"
+      },
+      "Address_possibly_floor": {
+        "title": "العنوان – ربما الطابق",
+        "placeholder": "أدخل العنوان – ربما الطابق"
+      },
+      "number_of_square_meters": {
+        "title": "عدد الأمتار المربعة"
+      },
+      "furnishing": {
+        "title": "التأثيث",
+        "options": {
+          "fully furnished": "مفروشة بالكامل",
+          "semi furnished": "نصف مفروشة",
+          "not furnished": "غير مفروشة"
+        }
+      },
+      "description": {
+        "title": "وصف المهمة",
+        "placeholder": "أدخل وصف المهمة"
+      },
+      "title": "مسافة الموقف إلى الباب"
+    },
+    "moving_address": {
+      "to_address": {
+        "title": "إلى العنوان",
+        "placeholder": "أدخل العنوان"
+      },
+      "Address_possibly_floor": {
+        "title": "العنوان – ربما الطابق",
+        "placeholder": "أدخل العنوان – ربما الطابق"
+      },
+      "when_do_want_begin": {
+        "title": "متى تريد بدء المهمة؟",
+        "options": {
+          "ASAP": "في أقرب وقت",
+          "week": "خلال أسبوع",
+          "later": "في وقت لاحق"
+        }
+      }
+    },
+    "requestSentSuccessfully": "تم إرسال الطلب بنجاح",
+    "errorOccurred": "حدث خطأ",
+    "unexpectedErrorOccurred": "حدث خطأ غير متوقع",
+    "comingSoon": "قريبًا",
+    "submitRequest": "إرسال الطلب",
+    "Services of Move": "خدمات النقل",
     "Get a quote": "احصل على عرض سعر",
     "Search price lists": "البحث في قوائم الأسعار",
     "Ratings": "التقييمات",
@@ -186,7 +267,7 @@
     "There is an elevator at the departure address.": "يوجد مصعد في العنوان المغادر.",
     "There is an elevator at the move-in address.": "يوجد مصعد في عنوان الانتقال."
   },
-  "infoWebsite":{
+  "infoWebsite": {
     "form": {
       "name": "الاسم",
       "email": "البريد الإلكتروني",
@@ -207,5 +288,4 @@
       "contact": "يمكنك التواصل معنا عبر القنوات التالية:\n- البريد الإلكتروني: [أدخل البريد الإلكتروني هنا]\n- رقم الهاتف: [أدخل رقم الهاتف هنا]\n- عبر التطبيق من خلال قسم خدمة العملاء.\n- مواقع التواصل الاجتماعي الخاصة بنا."
     }
   }
-  
 }

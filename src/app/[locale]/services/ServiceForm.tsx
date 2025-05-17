@@ -5,6 +5,7 @@ import { useState } from "react";
 import axios, { AxiosHeaders } from "axios";
 import toast from "react-hot-toast";
 import { ServiceFormData } from "@/libs/types/types";
+import { useTranslations } from "next-intl";
 import {
   companyRelocationInputs,
   movingFurnitureInputs,
@@ -12,6 +13,7 @@ import {
   storageInputs,
 } from "@/libs/data/data";
 import { useRouter } from "@/i18n/routing";
+import Image from "next/image";
 
 const forms: Record<string, ServiceFormData> = {
   "private-moving": privateMovingInputs,
@@ -29,6 +31,7 @@ const ServiceForm = ({
   service: string;
   token: string | undefined;
 }) => {
+  const t = useTranslations("services");
   const [squareMeters, setSquareMeters] = useState<number>();
   const router = useRouter();
   const [formData, setFormData] = useState({
@@ -67,9 +70,11 @@ const ServiceForm = ({
   if (!forms[service]) {
     return (
       <div className=" w-fit  mx-auto flex items-center justify-center mt-[clamp(20px,5vw,120px)] text-center">
-        <img
+        <Image
           src="/soon.png"
           alt="comming soon"
+          width={100}
+          height={100}
           className="w-[80%] md:w-[60%]"
         />
       </div>
@@ -82,7 +87,7 @@ const ServiceForm = ({
         {/* first part */}
         <div className="bg-white rounded-2xl shadow-md p-6 sm:p-8 hover:shadow-lg transition-shadow">
           <h2 className="text-xl font-semibold mb-6 text-[#192953] flex items-center">
-            {forms[service]?.firstPart?.title}
+            {t(forms[service]?.firstPart?.title || "")}
           </h2>
           <div className="space-y-5">
             {forms[service]?.out_address?.map((input) => {
@@ -91,11 +96,11 @@ const ServiceForm = ({
                   return (
                     <div className="flex flex-col space-y-2 mb-4">
                       <label className="text-sm font-medium text-gray-700 md:text-base">
-                        {input.title}
+                        {t(input.title)}
                       </label>
                       <input
                         type="text"
-                        name={input.name}
+                        name={t(input.name)}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                           setFormData((prev) => ({
                             ...prev,
@@ -106,7 +111,9 @@ const ServiceForm = ({
                           }))
                         }
                         className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                        placeholder={`Enter ${input.title.toLowerCase()}`}
+                        placeholder={`${t("Enter")} ${t(
+                          input.title
+                        ).toLowerCase()}`}
                       />
                     </div>
                   );
@@ -114,7 +121,7 @@ const ServiceForm = ({
                   return (
                     <div className="flex flex-col space-y-2 mb-4">
                       <label className="text-sm font-medium text-gray-700 md:text-base">
-                        {input.title}
+                        {t(input.title)}
                       </label>
                       <textarea
                         onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
@@ -126,9 +133,11 @@ const ServiceForm = ({
                             },
                           }))
                         }
-                        name={input.name}
+                        name={t(input.name)}
                         className="w-full p-3 min-h-32 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-y"
-                        placeholder={`Enter ${input.title.toLowerCase()}`}
+                        placeholder={`${t("Enter")} ${t(
+                          input.title
+                        ).toLowerCase()}`}
                       ></textarea>
                     </div>
                   );
@@ -136,11 +145,11 @@ const ServiceForm = ({
                   return (
                     <div className="flex flex-col space-y-2 mb-4">
                       <label className="text-sm font-medium text-gray-700 md:text-base">
-                        {input.title}
+                        {t(input.title)}
                       </label>
                       <div className="relative">
                         <select
-                          name={input.name}
+                          name={t(input.name)}
                           onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                             setFormData((prev) => ({
                               ...prev,
@@ -154,7 +163,7 @@ const ServiceForm = ({
                         >
                           {input.options?.map((option) => (
                             <option key={option.value} value={option.value}>
-                              {option.title}
+                              {t(option.title)}
                             </option>
                           ))}
                         </select>
@@ -179,7 +188,7 @@ const ServiceForm = ({
                   return (
                     <div className="flex flex-col space-y-2 mb-4">
                       <label className="text-sm font-medium text-gray-700 md:text-base">
-                        {input.title}
+                        {t(input.title)}
                       </label>
                       <div className="flex flex-wrap gap-4">
                         {input.options?.map((option) => (
@@ -189,7 +198,7 @@ const ServiceForm = ({
                           >
                             <input
                               type="radio"
-                              name={input.name}
+                              name={t(input.name)}
                               value={option.value}
                               onChange={() =>
                                 setFormData((prev) => ({
@@ -203,7 +212,7 @@ const ServiceForm = ({
                               className="w-4 h-4 text-[#192953] border-gray-300 focus:ring-blue-500"
                             />
                             <span className="text-sm text-gray-700">
-                              {option.title}
+                              {t(option.title)}
                             </span>
                           </label>
                         ))}
@@ -216,10 +225,10 @@ const ServiceForm = ({
                     <div className="flex flex-col space-y-2 mb-4">
                       <div className="flex justify-between items-center">
                         <label className="text-sm font-medium text-gray-700 md:text-base">
-                          {input.title}
+                          {t(input.title)}
                         </label>
                         <span className="text-sm font-medium text-[#192953]">
-                          {squareMeters} m²
+                          {squareMeters} {t("m²")}
                         </span>
                       </div>
                       <input
@@ -246,7 +255,7 @@ const ServiceForm = ({
         {forms[service]?.isDivided && (
           <div className="bg-white rounded-2xl shadow-md p-6 sm:p-8 hover:shadow-lg transition-shadow">
             <h2 className="text-xl font-semibold mb-6 text-[#192953] flex items-center">
-              {forms[service]?.secondPart?.title}
+              {t(forms[service]?.secondPart?.title || "")}
             </h2>
             <div className="space-y-5">
               {forms[service]?.moving_address?.map((input) => {
@@ -255,11 +264,11 @@ const ServiceForm = ({
                     return (
                       <div className="flex flex-col space-y-2 mb-4">
                         <label className="text-sm font-medium text-gray-700 md:text-base">
-                          {input.title}
+                          {t(input.title)}
                         </label>
                         <input
-                          type="text"
-                          name={input.name}
+                          type={t("text")}
+                          name={t(input.name)}
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             setFormData((prev) => ({
                               ...prev,
@@ -273,7 +282,9 @@ const ServiceForm = ({
                             }))
                           }
                           className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                          placeholder={`Enter ${input.title.toLowerCase()}`}
+                          placeholder={`${t("Enter")} ${t(
+                            input.title
+                          ).toLowerCase()}`}
                         />
                       </div>
                     );
@@ -281,7 +292,7 @@ const ServiceForm = ({
                     return (
                       <div className="flex flex-col space-y-2 mb-4">
                         <label className="text-sm font-medium text-gray-700 md:text-base">
-                          {input.title}
+                          {t(input.title)}
                         </label>
                         <textarea
                           onChange={(
@@ -298,9 +309,11 @@ const ServiceForm = ({
                               },
                             }))
                           }
-                          name={input.name}
+                          name={t(input.name)}
                           className="w-full p-3 min-h-32 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-y"
-                          placeholder={`Enter ${input.title.toLowerCase()}`}
+                          placeholder={`${t("Enter")} ${t(
+                            input.title
+                          ).toLowerCase()}`}
                         ></textarea>
                       </div>
                     );
@@ -308,11 +321,11 @@ const ServiceForm = ({
                     return (
                       <div className="flex flex-col space-y-2 mb-4">
                         <label className="text-sm font-medium text-gray-700 md:text-base">
-                          {input.title}
+                          {t(input.title)}
                         </label>
                         <div className="relative">
                           <select
-                            name={input.name}
+                            name={t(input.name)}
                             onChange={(
                               e: React.ChangeEvent<HTMLSelectElement>
                             ) =>
@@ -331,7 +344,7 @@ const ServiceForm = ({
                           >
                             {input.options?.map((option) => (
                               <option key={option.value} value={option.value}>
-                                {option.title}
+                                {t(option.title)}
                               </option>
                             ))}
                           </select>
@@ -356,7 +369,7 @@ const ServiceForm = ({
                     return (
                       <div className="flex flex-col space-y-2 mb-4">
                         <label className="text-sm font-medium text-gray-700 md:text-base">
-                          {input.title}
+                          {t(input.title)}
                         </label>
                         <div className="flex flex-wrap gap-4">
                           {input.options?.map((option) => (
@@ -366,8 +379,8 @@ const ServiceForm = ({
                             >
                               <input
                                 type="radio"
-                                name={input.name}
-                                value={option.value}
+                                name={t(input.name)}
+                                value={t(option.value)}
                                 onChange={(
                                   e: React.ChangeEvent<HTMLInputElement>
                                 ) =>
@@ -385,7 +398,7 @@ const ServiceForm = ({
                                 className="w-4 h-4 text-[#192953] border-gray-300 focus:ring-blue-500"
                               />
                               <span className="text-sm text-gray-700">
-                                {option.title}
+                                {t(option.title)}
                               </span>
                             </label>
                           ))}
@@ -398,10 +411,10 @@ const ServiceForm = ({
                       <div className="flex flex-col space-y-2 mb-4">
                         <div className="flex justify-between items-center">
                           <label className="text-sm font-medium text-gray-700 md:text-base">
-                            {input.title}
+                            {t(input.title)}
                           </label>
                           <span className="text-sm font-medium text-[#192953]">
-                            {squareMeters} m²
+                            {squareMeters} {t("m²")}
                           </span>
                         </div>
                         <input
@@ -413,8 +426,12 @@ const ServiceForm = ({
                           className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#192953]"
                         />
                         <div className="flex justify-between mt-1">
-                          <span className="text-xs text-gray-500">0 m²</span>
-                          <span className="text-xs text-gray-500">200 m²</span>
+                          <span className="text-xs text-gray-500">
+                            {t("0 m²")}
+                          </span>
+                          <span className="text-xs text-gray-500">
+                            {t("200 m²")}
+                          </span>
                         </div>
                       </div>
                     );
@@ -433,7 +450,7 @@ const ServiceForm = ({
           type="submit"
           className="bg-[#192953] text-white font-semibold px-12 py-3 rounded-lg shadow-md hover:shadow-lg transition-all flex items-center gap-2"
         >
-          Submit Request
+          {t("Submit Request")}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5"

@@ -7,6 +7,7 @@ import { cookies } from "next/headers";
 import { getData } from "@/libs/axios/server";
 import { AxiosHeaders } from "axios";
 import { ServiceTypes } from "@/libs/types/types";
+import { getTranslations } from "next-intl/server";
 
 const MovingFormPage = async ({
   params,
@@ -41,6 +42,7 @@ const MovingFormPage = async ({
     }
   };
   const tabs = await feachData();
+  const t = await getTranslations("services");
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
@@ -56,7 +58,7 @@ const MovingFormPage = async ({
         <div className="absolute left-1/2 transform -translate-x-1/2 bottom-0 flex flex-col justify-center items-center px-4 z-10">
           <div className=" w-full mx-auto flex flex-col items-center">
             <h1 className="text-white text-2xl sm:text-3xl md:text-4xl font-bold uppercase text-center mb-8">
-              Services of Move
+              {t("Services of Move")}
             </h1>
 
             {/* Tabs Container */}

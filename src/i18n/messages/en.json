@@ -127,6 +127,87 @@
     "hidecvr": "Hide CVR"
   },
   "services": {
+    "TO address": "To address",
+    "Street plan": "Street plan",
+    "With transport": "With transport",
+    "Copenhagen County": "Copenhagen County",
+    "Frederiksborg County": "Frederiksborg County",
+    "Roskild County": "Roskild County",
+    "West Zealaland County": "West Zealaland County",
+    "Storstrom County": "Storstrom County",
+    "County of Funen": "County of Funen",
+    "South Jutland County": "South Jutland County",
+    "Vejle County": "Vejle County",
+    "Ribe County": "Ribe County",
+    "Ringkobing County": "Ringkobing County",
+    "Aarhus County": "Aarhus County",
+    "Viborg County": "Viborg County",
+    "North Jutland County": "North Jutland County",
+    "Bornholm County": "Bornholm County",
+    "Storage - Get a quote": "Storage - Get a quote",
+    "Submit Request": "Submit Request",
+    "Parking distance to door": "Parking distance to door",
+    "10 meters": "10 meters",
+    "20 meters": "20 meters",
+    "30 meters": "30 meters",
+    "40 meters": "40 meters",
+    "more than 50 meters": "more than 50 meters",
+    "m²": "m²",
+    "Enter": "Enter",
+    "0 m²": "0 m²",
+    "200 m²": "200 m²",
+    "firstPartTitle": "Moving out address",
+    "secondPartTitle": "Moving address",
+    "out_address": {
+      "title": "Parking distance to door",
+      "FRA_address": {
+        "title": "FRA address",
+        "placeholder": "Enter FRA address"
+      },
+      "Address_possibly_floor": {
+        "title": "Address – possibly floor",
+        "placeholder": "Enter address – possibly floor"
+      },
+      "number_of_square_meters": {
+        "title": "Number of square meters"
+      },
+      "furnishing": {
+        "title": "Furnishing",
+        "options": {
+          "fully furnished": "fully furnished",
+          "semi furnished": "semi furnished",
+          "not furnished": "not furnished"
+        }
+      },
+      "description": {
+        "title": "Task description",
+        "placeholder": "Enter task description"
+      }
+    },
+    "moving_address": {
+      "to_address": {
+        "title": "To address",
+        "placeholder": "Enter address"
+      },
+      "Address_possibly_floor": {
+        "title": "Address – possibly floor",
+        "placeholder": "Enter address – possibly floor"
+      },
+      "when_do_want_begin": {
+        "title": "When do you want the task to begin?",
+        "options": {
+          "ASAP": "ASAP",
+          "week": "Within A Week",
+          "later": "Later"
+        }
+      }
+    },
+    "requestSentSuccessfully": "Request sent successfully",
+    "errorOccurred": "Error occurred",
+    "unexpectedErrorOccurred": "Unexpected error occurred",
+    "comingSoon": "Coming soon",
+    "submitRequest": "Submit request",
+    "Services of Move": "Services of Move",
     "Get a quote": "Get a quote",
     "Search price lists": "Search price lists",
     "Ratings": "Ratings",
@@ -155,8 +236,8 @@
     "3 company": "3 company",
     "All available": "All available",
     "Storage - without transport - Get a quote": "Storage - without transport - Get a quote",
-    "How long Should it be stored?": "How long Should it be stored?",
-    "over 12 montths/indefinite": "over 12 montths/indefinite",
+    "How long Should it be stored?": "How long should it be stored?",
+    "over 12 montths/indefinite": "over 12 months / indefinite",
     "1-12 months": "1-12 months",
     "under a month": "under a month",
     "Storage desired in": "Storage desired in",
@@ -191,7 +272,7 @@
     "I help myself with reading.": "I help myself with reading.",
     "There is an elevator at the departure address.": "There is an elevator at the departure address.",
     "There is an elevator at the move-in address.": "There is an elevator at the move-in address."
-},
+  },
 "infoWebsite":{
   "form": {
     "name": "Name",
