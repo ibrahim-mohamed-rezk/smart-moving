@@ -15,11 +15,11 @@ import toast from "react-hot-toast";
 import { getData, postData } from "@/libs/axios/server";
 import axios, { AxiosHeaders } from "axios";
 import { useParams } from "next/navigation";
-import {
-  countryTypes,
-  registrationFormData,
-  ServiceTypes,
-} from "@/libs/types/types";
+import PhoneInput from "react-phone-number-input";
+import type { Value } from "react-phone-number-input";
+import "react-phone-number-input/style.css";
+
+import { ServiceTypes } from "@/libs/types/types";
 import { useTranslations } from "next-intl";
 
 interface PasswordRequirements {
@@ -42,6 +42,8 @@ const AccountCreationForm = () => {
   const [otpDigits, setOtpDigits] = useState(["", "", "", ""]);
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
+  const [phone, setPhone] = useState<Value>();
+
   // Form validation states
   const [validEmail, setValidEmail] = useState<boolean | null>(null);
   const [validCVR, setValidCVR] = useState<boolean | null>(null);
@@ -52,21 +54,20 @@ const AccountCreationForm = () => {
   const [validsur_name, setValidsur_name] = useState<boolean | null>(null);
   const [services, setservices] = useState<ServiceTypes[]>([]);
   const [showCVR, setShowCVR] = useState<boolean>(false);
-  const [countries, setCountries] = useState<countryTypes[]>([]);
 
-  const [formData, setFormData] = useState<registrationFormData>({
+  const [formData, setFormData] = useState({
     first_name: "",
     sur_name: "",
     CVR: "",
     email: "",
-    phone: "",
+    phone: phone,
     country_code: "+45",
     password: "",
     password_confirmation: "",
     address: "",
     postal_code: "",
     city: "",
-    services: [],
+    services: [] as number[],
   });
 
   // Password requirements validation
@@ -96,24 +97,6 @@ const AccountCreationForm = () => {
     };
 
     feachData();
-  }, [params]);
-
-  // get countries
-  useEffect(() => {
-    const feachCountries = async () => {
-      try {
-        const response = await axios.get("/api/countries", {
-          headers: {
-            lang: params?.locale,
-          },
-        });
-        setCountries(response.data);
-      } catch (error) {
-        throw error;
-      }
-    };
-
-    feachCountries();
   }, [params]);
 
   // Validate name fields
@@ -209,11 +192,6 @@ const AccountCreationForm = () => {
           ? [...formData.services, parseInt(name)]
           : formData.services.filter((id) => id !== parseInt(name)),
       });
-    } else if (name === "phone") {
-      setFormData({
-        ...formData,
-        phone: value,
-      });
     } else {
       setFormData({
         ...formData,
@@ -237,7 +215,7 @@ const AccountCreationForm = () => {
       sur_name.trim() !== "" &&
       email.trim() !== "" &&
       validEmail === true &&
-      phone.trim() !== "" &&
+      phone?.trim() !== "" &&
       validPhone === true &&
       password.trim() !== "" &&
       validPassword === true &&
@@ -795,7 +773,7 @@ const AccountCreationForm = () => {
                           : "border-gray-300"
                       } rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all`}
                     >
-                      <select
+                      {/* <select
                         className=" outline-none focus:border-transparent transition-all px-4 py-4 max-w-[150px] text-ellipsis overflow-hidden whitespace-nowrap"
                         value={formData.country_code}
                         onChange={(e) =>
@@ -826,6 +804,13 @@ const AccountCreationForm = () => {
                             ? "border-s-red-500"
                             : "border-s-gray-300"
                         } outline-none px-4 py-4`}
+                      /> */}
+                      <PhoneInput
+                        international
+                        defaultCountry="DK"
+                        value={phone}
+                        onChange={setPhone}
+                        className="w-full px-4 py-4 border rounded-full"
                       />
                     </div>
                     {validPhone !== null && (
