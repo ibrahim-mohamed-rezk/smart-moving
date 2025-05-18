@@ -65,7 +65,7 @@ const AccountCreationForm = () => {
     password: "",
     password_confirmation: "",
     address: "",
-    postal_code: "",
+    postal_code: "", 
     city: "",
     services: [] as number[],
   });
@@ -79,6 +79,15 @@ const AccountCreationForm = () => {
       hasSpecial: false,
     });
 
+    useEffect(() => {
+      if (phone) {
+        setFormData(prevData => ({
+          ...prevData,
+          phone
+        }));
+      }
+    }, [phone]);
+    
   // get services
   useEffect(() => {
     const feachData = async () => {
@@ -149,6 +158,7 @@ const AccountCreationForm = () => {
       setValidPhone(null);
     }
   }, [formData.phone]);
+  
 
   // Validate password requirements
   useEffect(() => {
