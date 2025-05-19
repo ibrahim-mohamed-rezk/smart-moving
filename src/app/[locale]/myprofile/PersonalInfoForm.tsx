@@ -164,7 +164,9 @@ const PersonalInfoForm = ({
     } catch (error) {
       console.error("Error sending OTP:", error);
       toast.error(
-         "Failed to send verification code. Try again."
+        error instanceof Error
+          ? error.message
+          : "Failed to send verification code. Try again."
       );
     } finally {
       setSendingCode(false);
