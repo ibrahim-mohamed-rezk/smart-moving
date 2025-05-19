@@ -283,7 +283,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
         "recaptcha-container",
         {
           size: "invisible",
-          callback: (response: any) => {
+          callback: (response: string) => {
             console.log("reCAPTCHA solved", response);
           },
           "expired-callback": () => {
