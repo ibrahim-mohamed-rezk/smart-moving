@@ -83,7 +83,8 @@
     "Company": "Company",
     "Terms & Conditions": "Terms & Conditions",
     "Privacy Policy": "Privacy Policy",
-    "Copyright": "© {year} Smart Moving. All rights reserved."
+    "Copyright": "© {year} Smart Moving. All rights reserved.",
+    "About Us": "About Us"
   },
   "company": {
     "why_join_us": "Why join us?",
