@@ -10,7 +10,7 @@ import axios, { AxiosHeaders } from "axios";
 import toast from "react-hot-toast";
 import { countryTypes } from "@/libs/types/types";
 import { useParams } from "next/navigation";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithPhoneNumber, RecaptchaVerifier } from "firebase/auth";
 import { app } from "@/libs/firebase/config";
 import { useTranslations } from "next-intl";
 import PhoneInput from "react-phone-number-input";
@@ -33,6 +33,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const params = useParams();
   const [phone, setPhone] = useState<Value>();
+  const recaptchaContainerRef = useRef<HTMLDivElement>(null);
   const [formData, setFormData] = useState({
     login: "",
     password: "",
@@ -51,9 +52,9 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
   // Update the registerFormData when phone changes
   useEffect(() => {
     if (phone) {
-      setRegisterFormData(prevData => ({
+      setRegisterFormData((prevData) => ({
         ...prevData,
-        phone
+        phone,
       }));
     }
   }, [phone]);
@@ -74,7 +75,6 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
     };
 
     feachCountries();
-    
   }, [params]);
 
   // Close when clicking outside
@@ -186,7 +186,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
     try {
       const response = await postData(
         "customer/verify-code-register",
-        { code: otpCode, phone: registerformData.phone },
+        { status: true, phone: registerformData.phone },
         new AxiosHeaders({
           "Content-Type": "application/json",
           lang: params?.locale as string,
@@ -211,43 +211,47 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
       }
     }
   };
+  const auth = getAuth(app);
 
   const handleGoogleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const auth = getAuth(app);
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
-      
+
       // This gives you a Google Access Token. You can use it to access the Google API.
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const accessToken = credential?.accessToken;
       // The signed-in user info.
       const user = result.user;
-      
+
       // Call your API with the token
       const response = await postData(
         "customer/login/google",
-        { device_token: accessToken, id: user.uid, displayName: user.displayName, email: user.email,  },
+        {
+          device_token: accessToken,
+          id: user.uid,
+          displayName: user.displayName,
+          email: user.email,
+        },
         new AxiosHeaders({
           Authorization: `Bearer ${accessToken}`,
           "Content-Type": "multipart/form-data",
         })
       );
-      
+
       toast.success("Google login successful");
-      
+
       // Handle successful login
       await axios.post("/api/auth/login", {
         token: response.data.token,
         user: JSON.stringify(response.data.data),
         remember: true,
       });
-      
+
       onClose();
       window.location.href = "/";
-      
     } catch (error) {
       // Handle Errors here.
       if (axios.isAxiosError(error)) {
@@ -260,8 +264,112 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
     }
   };
 
+  // ////////////////////////////////
+  // firebase for verify phone
+
+  const setupRecaptcha = (): void => {
+    // Clear any existing reCAPTCHA to prevent duplicates
+    if (window.recaptchaVerifier) {
+      window.recaptchaVerifier.clear();
+    }
+
+    // Make sure the container exists
+    if (!recaptchaContainerRef.current) {
+      toast.error("reCAPTCHA container not found");
+      return;
+    }
+
+    try {
+      window.recaptchaVerifier = new RecaptchaVerifier(
+        auth,
+        recaptchaContainerRef.current,
+        {
+          size: "invisible",
+          callback: () => {
+            console.log("reCAPTCHA resolved");
+          },
+          "expired-callback": () => {
+            toast.error("reCAPTCHA expired. Please try again.");
+          },
+        }
+      );
+    } catch (error) {
+      console.error("Error creating reCAPTCHA:", error);
+      toast.error(
+        "Failed to set up verification. Please refresh and try again."
+      );
+    }
+  };
+
+  const sendOTP = async (): Promise<void> => {
+    if (!registerformData.phone) {
+      toast.error("Please enter a valid phone number");
+      return;
+    }
+
+    try {
+      setupRecaptcha();
+
+      // Format phone number to include "+" if it doesn't already
+      const formattedPhone = registerformData.phone.startsWith("+")
+        ? registerformData.phone
+        : `+${registerformData.phone}`;
+
+      const appVerifier = window.recaptchaVerifier;
+      if (!appVerifier) {
+        throw new Error("reCAPTCHA not initialized properly");
+      }
+
+      const confirmationResult = await signInWithPhoneNumber(
+        auth,
+        formattedPhone,
+        appVerifier
+      );
+
+      window.confirmationResult = confirmationResult;
+      setOpenOTP(true);
+      toast.success("Verification code sent to your phone");
+    } catch (error) {
+      console.error("Error sending OTP:", error);
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Failed to send verification code. Try again."
+      );
+    }
+  };
+
+  // Validate OTP
+  const validateOTP = async () => {
+    try {
+      if (!window.confirmationResult) {
+        throw new Error(
+          "Verification session expired. Please request a new code."
+        );
+      }
+
+      const result = await window.confirmationResult.confirm(
+        otpDigits.join("")
+      );
+      if (result.user) {
+        toast.success("Phone number verified successfully!");
+        setFormData((prev) => ({
+          ...prev,
+          verified_phone: true,
+        }));
+      }
+    } catch (error) {
+      console.error("Error verifying code:", error);
+
+      toast.error("Failed to verify code");
+    }
+  };
+
+
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+      <div ref={recaptchaContainerRef}></div>
       <div
         ref={modalRef}
         className="relative bg-white w-full max-w-xl p-8 rounded-3xl shadow-xl overflow-hidden"
@@ -420,7 +528,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
               {modalType === "login" ? (
                 <div className="text-right">
                   <a href="#" className="text-sm text-blue-600 hover:underline">
-                    {t("Forget Password?")} 
+                    {t("Forget Password?")}
                   </a>
                 </div>
               ) : (
@@ -439,7 +547,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
                   />
                 </>
               )}
-               {modalType === "register" && (
+              {modalType === "register" && (
                 <input
                   type="text"
                   placeholder={t("Postal Code")}
@@ -452,7 +560,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
                   }}
                   className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-              )}  
+              )}
 
               {/* google auth */}
               <div className="flex items-center justify-center">
