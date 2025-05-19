@@ -1,11 +1,24 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
-// import { useTranslations } from "next-intl";
 import { ServiceTypes, UserDataTypes } from "@/libs/types/types";
 import { UserIcon, Camera, Edit } from "lucide-react";
 import { getData, postData } from "@/libs/axios/server";
 import axios, { AxiosHeaders } from "axios";
 import toast from "react-hot-toast";
+import { app } from "@/libs/firebase/config";
+import {
+  ConfirmationResult,
+  getAuth,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+} from "firebase/auth";
+
+declare global {
+  interface Window {
+    recaptchaVerifier: RecaptchaVerifier;
+    confirmationResult: ConfirmationResult;
+  }
+}
 
 const PersonalInfoForm = ({
   initialData,
@@ -14,17 +27,17 @@ const PersonalInfoForm = ({
   initialData: UserDataTypes;
   token: string;
 }) => {
-  // const t = useTranslations("company");
   const [services, setServices] = useState([]);
 
   // Form state with validation
   const [formData, setFormData] = useState({
     ...initialData,
-    first_name: initialData.name?.split(" ")[0],
-    sur_name: initialData.name?.split(" ")[1],
+    first_name: initialData.name?.split(" ")[0] || "",
+    sur_name: initialData.name?.split(" ")[1] || "",
     price_listings: initialData.company?.price_listings || "",
     bio: initialData.company?.bio || "",
     services: initialData.company?.services?.map((s) => s.id) || [],
+    verified_phone: initialData.phone === initialData.verified_phone,
   });
 
   // Profile image state
@@ -33,6 +46,16 @@ const PersonalInfoForm = ({
     initialData.image || null
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const recaptchaContainerRef = useRef<HTMLDivElement>(null);
+
+  const auth = getAuth(app);
+
+  // Verification state
+  const [showVerification, setShowVerification] = useState(false);
+  const [verificationCode, setVerificationCode] = useState<string>("");
+  const [sendingCode, setSendingCode] = useState(false);
+  const [verifyingCode, setVerifyingCode] = useState(false);
+  const [verificationSuccess, setVerificationSuccess] = useState(false);
 
   // Validation state
   const [errors, setErrors] = useState({
@@ -47,11 +70,6 @@ const PersonalInfoForm = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState("");
-  const [showVerification, setShowVerification] = useState(false);
-  const [verificationCode, setVerificationCode] = useState<
-    string | undefined
-  >();
-  const [sendingCode, setSendingCode] = useState(false);
 
   // Handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,21 +83,151 @@ const PersonalInfoForm = ({
     if (name === "phone") {
       setShowVerification(false);
       setVerificationCode("");
+      setVerificationSuccess(false);
+      setFormData((prev) => ({
+        ...prev,
+        verified_phone: initialData.phone === value,
+      }));
+    }
+  };
+
+  // firebase for verify phone
+  const setupRecaptcha = (): void => {
+    // Clear any existing reCAPTCHA to prevent duplicates
+    if (window.recaptchaVerifier) {
+      window.recaptchaVerifier.clear();
+    }
+
+    // Make sure the container exists
+    if (!recaptchaContainerRef.current) {
+      toast.error("reCAPTCHA container not found");
+      return;
+    }
+
+    try {
+      window.recaptchaVerifier = new RecaptchaVerifier(
+        auth,
+        recaptchaContainerRef.current,
+        {
+          size: "invisible",
+          callback: () => {
+            console.log("reCAPTCHA resolved");
+          },
+          "expired-callback": () => {
+            toast.error("reCAPTCHA expired. Please try again.");
+          },
+        }
+      );
+    } catch (error) {
+      console.error("Error creating reCAPTCHA:", error);
+      toast.error(
+        "Failed to set up verification. Please refresh and try again."
+      );
+    }
+  };
+
+  const sendOTP = async (): Promise<void> => {
+    if (!formData.phone) {
+      toast.error("Please enter a valid phone number");
+      return;
+    }
+
+    setSendingCode(true);
+
+    try {
+      setupRecaptcha();
+
+      // Format phone number to include "+" if it doesn't already
+      const formattedPhone = formData.phone.startsWith("+")
+        ? formData.phone
+        : `+${formData.phone}`;
+
+      const appVerifier = window.recaptchaVerifier;
+      if (!appVerifier) {
+        throw new Error("reCAPTCHA not initialized properly");
+      }
+
+      const confirmationResult = await signInWithPhoneNumber(
+        auth,
+        formattedPhone,
+        appVerifier
+      );
+
+      window.confirmationResult = confirmationResult;
+      setShowVerification(true);
+      toast.success("Verification code sent to your phone");
+    } catch (error) {
+      console.error("Error sending OTP:", error);
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Failed to send verification code. Try again."
+      );
+    } finally {
+      setSendingCode(false);
+    }
+  };
+
+  // Validate OTP
+  const validateOTP = async () => {
+    if (!verificationCode) {
+      setErrors((prev) => ({
+        ...prev,
+        code: "Please enter the verification code",
+      }));
+      return;
+    }
+
+    setVerifyingCode(true);
+
+    try {
+      if (!window.confirmationResult) {
+        throw new Error(
+          "Verification session expired. Please request a new code."
+        );
+      }
+
+      const result = await window.confirmationResult.confirm(verificationCode);
+      if (result.user) {
+        toast.success("Phone number verified successfully!");
+        setVerificationSuccess(true);
+        setFormData((prev) => ({
+          ...prev,
+          verified_phone: true,
+        }));
+      }
+    } catch (error) {
+      console.error("Error verifying code:", error);
+      setErrors((prev) => ({
+        ...prev,
+        code: "Invalid verification code. Please try again.",
+      }));
+      toast.error("Failed to verify code");
+    } finally {
+      setVerifyingCode(false);
     }
   };
 
   // get services
   useEffect(() => {
     const getServices = async () => {
-      const response = await getData(
-        `services`,
-        {},
-        new AxiosHeaders({ Authorization: `Bearer ${token}` })
-      );
-      setServices(response.data);
+      try {
+        const response = await getData(
+          `services`,
+          {},
+          new AxiosHeaders({ Authorization: `Bearer ${token}` })
+        );
+        setServices(response.data);
+      } catch (error) {
+        console.error("Error fetching services:", error);
+        toast.error("Failed to load services");
+      }
     };
-    getServices();
-  }, []);
+
+    if (initialData.role === "company") {
+      getServices();
+    }
+  }, [token, initialData.role]);
 
   // Handle profile image selection
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,43 +241,6 @@ const PersonalInfoForm = ({
   // Trigger file input click
   const handleImageClick = () => {
     fileInputRef.current?.click();
-  };
-
-  // Handle sending verification code
-  const handleSendVerificationCode = async () => {
-    // Validate phone number first
-    const phoneRegex = /^\d{10,15}$/;
-    if (!formData.phone.trim() || !phoneRegex.test(formData.phone)) {
-      setErrors((prev) => ({
-        ...prev,
-        phone: "Please enter a valid phone number (10-15 digits)",
-      }));
-      return;
-    }
-
-    setSendingCode(true);
-    try {
-      await postData(
-        `${initialData.role}/send-verfiy-api`,
-        { phone: formData.phone },
-        new AxiosHeaders({
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        })
-      );
-
-      setShowVerification(true);
-      toast.success("Verification code sent to your phone");
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data?.msg || "An error occurred");
-      } else {
-        toast.error("An unexpected error occurred");
-      }
-      throw error;
-    } finally {
-      setSendingCode(false);
-    }
   };
 
   // Validate form fields
@@ -166,7 +277,7 @@ const PersonalInfoForm = ({
     }
 
     // Phone validation
-    const phoneRegex = /^\d{10,15}$/;
+    const phoneRegex = /^\+?\d{10,15}$/;
     if (!formData.phone.trim()) {
       newErrors.phone = "Phone number is required";
       valid = false;
@@ -175,9 +286,9 @@ const PersonalInfoForm = ({
       valid = false;
     }
 
-    // Verification code validation if shown
-    if (showVerification && !verificationCode?.trim()) {
-      newErrors.code = "Verification code is required";
+    // Verification code validation if phone changed
+    if (formData.phone !== initialData.phone && !formData.verified_phone) {
+      newErrors.phone = "Please verify your new phone number";
       valid = false;
     }
 
@@ -209,14 +320,17 @@ const PersonalInfoForm = ({
       submitData.append("sur_name", formData.sur_name || "");
       submitData.append("email", formData.email);
       submitData.append("phone", formData.phone);
-      submitData.append("bio", formData.bio || "");
-      submitData.append("price_listings", formData.price_listings || "");
 
-      // Send services as array of numbers
-      submitData.append("services", JSON.stringify(formData.services));
+      // Add verification status if phone was verified
+      if (formData.verified_phone) {
+        submitData.append("verified_phone", "true");
+      }
 
-      if (verificationCode) {
-        submitData.append("code", verificationCode);
+      if (initialData.role === "company") {
+        submitData.append("bio", formData.bio || "");
+        submitData.append("price_listings", formData.price_listings || "");
+        // Send services as array of numbers
+        submitData.append("services", JSON.stringify(formData.services));
       }
 
       // Add profile image if selected
@@ -237,24 +351,24 @@ const PersonalInfoForm = ({
       if (response.data) {
         document.cookie = `user=${JSON.stringify(response.data)}; path=/`;
         // Reload the window to reflect updated user data
-        window.location.reload() ;
+        toast.success("Profile updated successfully");
+        setSubmitSuccess(true);
+
+        // Delay reload to allow toast to be seen
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       }
-
-      // Mock successful save
-      toast.success("Profile updated successfully");
-      setSubmitSuccess(true);
-
-      // Reset submission state after showing success message
-      setTimeout(() => {
-        setSubmitSuccess(false);
-      }, 3000);
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data?.msg || "An error occurred");
+        const errorMessage = error.response?.data?.msg || "An error occurred";
+        setSubmitError(errorMessage);
+        toast.error(errorMessage);
       } else {
+        setSubmitError("An unexpected error occurred");
         toast.error("An unexpected error occurred");
       }
-      throw error;
+      console.error("Error updating profile:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -425,23 +539,41 @@ const PersonalInfoForm = ({
                       {errors.phone}
                     </p>
                   )}
+
+                  {/* Verification Status Indicator */}
+                  {formData.phone && !showVerification && (
+                    <div
+                      className={`text-sm mt-1 ml-2 ${
+                        formData.verified_phone
+                          ? "text-green-600"
+                          : "text-amber-600"
+                      }`}
+                    >
+                      {formData.verified_phone ? "✓ Verified" : "Not verified"}
+                    </div>
+                  )}
                 </div>
-                {formData.phone !== initialData.phone && (
-                  <button
-                    type="button"
-                    onClick={handleSendVerificationCode}
-                    disabled={sendingCode}
-                    className={`h-12 md:h-16 px-4 sm:px-6 bg-blue-950 rounded-3xl flex justify-center items-center transition-all ${
-                      sendingCode
-                        ? "opacity-70 cursor-not-allowed"
-                        : "hover:bg-blue-900"
-                    }`}
-                  >
-                    <span className="text-white text-sm md:text-base font-normal font-['Libre_Baskerville']">
-                      {sendingCode ? "Sending..." : "Verify Phone"}
-                    </span>
-                  </button>
-                )}
+
+                {/* Only show Verify Phone button if phone number has changed and not already verified */}
+                {formData.phone &&
+                  formData.phone !== initialData.phone &&
+                  !formData.verified_phone &&
+                  !showVerification && (
+                    <button
+                      type="button"
+                      onClick={sendOTP}
+                      disabled={sendingCode}
+                      className={`h-12 md:h-16 px-4 sm:px-6 bg-blue-950 rounded-3xl flex justify-center items-center transition-all ${
+                        sendingCode
+                          ? "opacity-70 cursor-not-allowed"
+                          : "hover:bg-blue-900"
+                      }`}
+                    >
+                      <span className="text-white text-sm md:text-base font-normal font-['Libre_Baskerville']">
+                        {sendingCode ? "Sending..." : "Verify Phone"}
+                      </span>
+                    </button>
+                  )}
               </div>
 
               {/* Verification Code Input */}
@@ -450,21 +582,62 @@ const PersonalInfoForm = ({
                   <div className="self-stretch text-blue-950 text-base font-bold font-['Libre_Baskerville'] mb-1">
                     Verification Code
                   </div>
-                  <input
-                    type="text"
-                    value={verificationCode}
-                    onChange={(e) => setVerificationCode(e.target.value)}
-                    placeholder="Enter verification code"
-                    className={`self-stretch h-12 md:h-16 p-3 md:p-4 bg-zinc-100 rounded-3xl ${
-                      errors.code
-                        ? "outline-red-500"
-                        : "outline-1 outline-offset-[-1px] outline-zinc-300"
-                    } w-full text-black text-base md:text-lg font-normal font-['Libre_Baskerville']`}
-                  />
-                  {errors.code && (
-                    <p className="text-red-500 text-sm mt-1 ml-2">
-                      {errors.code}
-                    </p>
+                  <div className="flex flex-col sm:flex-row gap-3 w-full">
+                    <div className="flex-1">
+                      <input
+                        type="text"
+                        value={verificationCode}
+                        onChange={(e) => {
+                          setVerificationCode(e.target.value);
+                          // Clear error when user types
+                          setErrors((prev) => ({ ...prev, code: "" }));
+                        }}
+                        placeholder="Enter verification code"
+                        className={`self-stretch h-12 md:h-16 p-3 md:p-4 bg-zinc-100 rounded-3xl ${
+                          errors.code
+                            ? "outline-red-500"
+                            : "outline-1 outline-offset-[-1px] outline-zinc-300"
+                        } w-full text-black text-base md:text-lg font-normal font-['Libre_Baskerville']`}
+                      />
+                      {errors.code && (
+                        <p className="text-red-500 text-sm mt-1 ml-2">
+                          {errors.code}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Verify Code Button */}
+                    <button
+                      type="button"
+                      onClick={validateOTP}
+                      disabled={verifyingCode || !verificationCode}
+                      className={`h-12 md:h-16 px-4 sm:px-6 bg-blue-950 rounded-3xl flex justify-center items-center transition-all ${
+                        verifyingCode || !verificationCode
+                          ? "opacity-70 cursor-not-allowed"
+                          : "hover:bg-blue-900"
+                      }`}
+                    >
+                      <span className="text-white text-sm md:text-base font-normal font-['Libre_Baskerville']">
+                        {verifyingCode ? "Verifying..." : "Verify Code"}
+                      </span>
+                    </button>
+                  </div>
+
+                  {/* Resend Code option */}
+                  <button
+                    type="button"
+                    onClick={sendOTP}
+                    disabled={sendingCode}
+                    className="text-blue-950 text-sm font-normal font-['Libre_Baskerville'] mt-2 hover:underline"
+                  >
+                    {sendingCode ? "Sending..." : "Resend Code"}
+                  </button>
+
+                  {/* Success message when verified */}
+                  {verificationSuccess && (
+                    <div className="text-green-600 text-sm mt-2">
+                      ✓ Phone number verified successfully!
+                    </div>
                   )}
                 </div>
               )}

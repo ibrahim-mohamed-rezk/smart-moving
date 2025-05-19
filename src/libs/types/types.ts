@@ -69,6 +69,7 @@ export interface registrationFormData {
   postal_code: string;
   city: string;
   services: number[];
+    
 }
 
 export interface countryTypes {
@@ -103,6 +104,7 @@ export interface UserDataTypes {
   bio?: string;
   price_listings?: string;
   company?: CompanyTypes;
+  verified_phone?: string;
 }
 
 export interface TaskTypes {
