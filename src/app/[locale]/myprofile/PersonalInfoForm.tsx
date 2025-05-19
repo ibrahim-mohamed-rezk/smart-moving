@@ -379,6 +379,8 @@ const PersonalInfoForm = ({
       onSubmit={handleSubmit}
       className="w-full max-w-6xl mx-auto px-4 sm:px-6 md:px-8 py-8 flex flex-col justify-center items-start gap-8 md:gap-12"
     >
+      {/* Hidden recaptcha container */}
+      <div ref={recaptchaContainerRef} id="recaptcha-container"></div>
       {/* Header - Profile Image and Name */}
       <div className="w-full flex flex-col sm:flex-row justify-start items-center gap-6 md:gap-12">
         <div
