@@ -76,7 +76,7 @@ const CompanyHero = async ({
               <div className="w-32 h-32 sm:w-40 sm:h-40 lg:w-64 lg:h-64 bg-white rounded-2xl outline-1 outline-indigo-950 flex items-center justify-center overflow-hidden">
                 <img
                   className="w-3/4 h-auto"
-                  src={companyData.image}
+                  src={companyData.image === "" ? "/image0.png" : companyData.image}
                   alt="Company"
                 />
               </div>

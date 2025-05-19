@@ -43,10 +43,11 @@ const CompaniesPage = async ({ params }: { params: Promise<{ locale: string }> }
             >
               <div className="relative h-48 w-full">
                 <Image
-                  src={company.image || "/placeholder-company.jpg"}
+                  src={company.image === "" ? "/logo.png" : company.image}
                   alt={company.name}
-                  fill
-                  className="object-cover"
+                  width={10000}
+                  height={1000}
+                  className="wfull h-full" 
                 />
               </div>
 
