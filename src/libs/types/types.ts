@@ -148,6 +148,7 @@ export interface OfferTypes {
   user_id?: number;
   created_at?: string;
   updated_at?: string;
+  company?: CompanyTypes;
 }
 
 export interface ChatTypes {
