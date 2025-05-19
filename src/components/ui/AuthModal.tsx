@@ -10,7 +10,13 @@ import axios, { AxiosHeaders } from "axios";
 import toast from "react-hot-toast";
 import { countryTypes } from "@/libs/types/types";
 import { useParams } from "next/navigation";
-import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithPhoneNumber, RecaptchaVerifier } from "firebase/auth";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signInWithPhoneNumber,
+  RecaptchaVerifier,
+} from "firebase/auth";
 import { app } from "@/libs/firebase/config";
 import { useTranslations } from "next-intl";
 import PhoneInput from "react-phone-number-input";
@@ -161,7 +167,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
           })
         );
 
-        sendOTP()
+        sendOTP();
 
         toast.success("account created successfully");
         setOpenOTP(true);
@@ -270,36 +276,20 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
   // ////////////////////////////////
   // firebase for verify phone
 
-  const setupRecaptcha = (): void => {
-    // Clear any existing reCAPTCHA to prevent duplicates
-    if (window.recaptchaVerifier) {
-      window.recaptchaVerifier.clear();
-    }
-
-    // Make sure the container exists
-    if (!recaptchaContainerRef.current) {
-      toast.error("reCAPTCHA container not found");
-      return;
-    }
-
-    try {
+  const setupRecaptcha = () => {
+    if (!window.recaptchaVerifier) {
       window.recaptchaVerifier = new RecaptchaVerifier(
-        auth,
-        recaptchaContainerRef.current,
+        "recaptcha-container", // ✅ ID للعنصر داخل الصفحة
         {
           size: "invisible",
-          callback: () => {
-            console.log("reCAPTCHA resolved");
+          callback: (response: any) => {
+            console.log("reCAPTCHA solved", response);
           },
           "expired-callback": () => {
             toast.error("reCAPTCHA expired. Please try again.");
           },
-        }
-      );
-    } catch (error) {
-      console.error("Error creating reCAPTCHA:", error);
-      toast.error(
-        "Failed to set up verification. Please refresh and try again."
+        },
+        auth // ✅ object من getAuth(app)
       );
     }
   };
@@ -368,11 +358,9 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
     }
   };
 
-
-
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
-      <div ref={recaptchaContainerRef}></div>
+      <div id="recaptcha-container" ref={recaptchaContainerRef}></div>
       <div
         ref={modalRef}
         className="relative bg-white w-full max-w-xl p-8 rounded-3xl shadow-xl overflow-hidden"
