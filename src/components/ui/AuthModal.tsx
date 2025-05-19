@@ -161,6 +161,8 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
           })
         );
 
+        sendOTP()
+
         toast.success("account created successfully");
         setOpenOTP(true);
       } catch (error) {
@@ -175,6 +177,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
   };
 
   const handleVerifyOTP = async (e: React.FormEvent) => {
+    validateOTP();
     e.preventDefault();
     const otpCode = otpDigits.join("");
 
