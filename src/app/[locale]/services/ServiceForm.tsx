@@ -1,7 +1,7 @@
 "use client";
 
 import { postData } from "@/libs/axios/server";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios, { AxiosHeaders } from "axios";
 import toast from "react-hot-toast";
 import { ServiceFormData } from "@/libs/types/types";
@@ -14,6 +14,7 @@ import {
 } from "@/libs/data/data";
 import { useRouter } from "@/i18n/routing";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 
 const forms: Record<string, ServiceFormData> = {
   "private-moving": privateMovingInputs,
@@ -23,19 +24,20 @@ const forms: Record<string, ServiceFormData> = {
 };
 
 const ServiceForm = ({
-  service_id,
   service,
   token,
+  service_id,
 }: {
-  service_id: string;
   service: string;
-  token: string | undefined;
+    token: string | undefined;
+    service_id: string | null;
 }) => {
   const t = useTranslations("services");
   const [squareMeters, setSquareMeters] = useState<number>();
   const router = useRouter();
+  const params = useSearchParams();
   const [formData, setFormData] = useState({
-    service_id,
+    service_id: params?.get("service_id"),
     details: {
       square_meters: squareMeters,
       moving_address: {},
@@ -44,6 +46,13 @@ const ServiceForm = ({
         .replace(/\b\w/g, (char) => char.toUpperCase()),
     },
   });
+
+  useEffect(() => {
+    setFormData({
+      ...formData,
+      service_id: service_id,
+    });
+  }, [params, service_id]);
   const handleSubmit = async () => {
     try {
       await postData(
