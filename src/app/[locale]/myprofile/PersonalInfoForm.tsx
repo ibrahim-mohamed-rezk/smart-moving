@@ -42,6 +42,7 @@ const PersonalInfoForm = ({
     bio: initialData.company?.bio || "",
     services: initialData.company?.services?.map((s) => s.id) || [],
     verified_phone: initialData.phone === initialData.verified_phone,
+    phone: phone,
   });
 
   // Profile image state
