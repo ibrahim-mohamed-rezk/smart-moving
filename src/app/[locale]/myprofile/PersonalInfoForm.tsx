@@ -543,7 +543,7 @@ const PersonalInfoForm = ({
                       setPhone(value as Value);
                       setFormData((prev) => ({
                         ...prev,
-                        phone: value as string,
+                        phone: value as Value,
                       }));
                     }}
                   />
