@@ -13,6 +13,9 @@ import { useParams } from "next/navigation";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { app } from "@/libs/firebase/config";
 import { useTranslations } from "next-intl";
+import PhoneInput from "react-phone-number-input";
+import type { Value } from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 interface AuthModalProps {
   type: "login" | "register";
@@ -29,6 +32,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
   const [otpDigits, setOtpDigits] = useState(["", "", "", ""]);
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const params = useParams();
+  const [phone, setPhone] = useState<Value>();
   const [formData, setFormData] = useState({
     login: "",
     password: "",
@@ -37,12 +41,22 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
     first_name: "",
     sur_name: "",
     email: "",
-    phone: "",
+    phone: phone,
     password: "",
     password_confirmation: "",
     country_code: "+45",
     postal_code: "",
   });
+  console.log(countries);
+  // Update the registerFormData when phone changes
+  useEffect(() => {
+    if (phone) {
+      setRegisterFormData(prevData => ({
+        ...prevData,
+        phone
+      }));
+    }
+  }, [phone]);
 
   // get countries
   useEffect(() => {
@@ -60,6 +74,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
     };
 
     feachCountries();
+    
   }, [params]);
 
   // Close when clicking outside
@@ -355,36 +370,12 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
                 <div>
                   <div className="relative">
                     <div className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
-                      <select
-                        className=" outline-none focus:border-transparent transition-all px-4 py-2 max-w-[150px] text-ellipsis overflow-hidden whitespace-nowrap"
-                        value={registerformData.country_code}
-                        onChange={(e) =>
-                          setRegisterFormData({
-                            ...registerformData,
-                            country_code: e.target.value,
-                          })
-                        }
-                      >
-                        {countries.map((country) => (
-                          <option key={country.code} value={country.phone}>
-                            {`${country.name} ${country.phone}`}
-                          </option>
-                        ))}
-                      </select>
-                      <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        placeholder={`enter phone number`}
-                        value={registerformData.phone}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                          setRegisterFormData({
-                            ...registerformData,
-                            phone: e.target.value,
-                          });
-                        }}
-                        required
-                        className=" p-2 outline-none h-full"
+                      <PhoneInput
+                        international
+                        defaultCountry="DK"
+                        value={phone}
+                        onChange={setPhone}
+                        className="w-full"
                       />
                     </div>
                   </div>
@@ -425,9 +416,6 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
                   )}
                 </button>
               </div>
-              {/* postal code for register only  */}
-             
-
               {/* Forget password link (login only) */}
               {modalType === "login" ? (
                 <div className="text-right">

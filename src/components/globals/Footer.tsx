@@ -68,22 +68,36 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* <div>
+          {/* Info Page Links */}
+          <div>
             <h4 className="font-semibold mb-4 text-white text-[clamp(1rem,1.5vw,1.25rem)]">
               {t("Quick Help")}
             </h4>
             <ul className="space-y-2 text-gray-300 text-[clamp(0.75rem,1vw,1rem)]">
               <li>
-                <Link href="/faq">{t("FAQ")}</Link>
+                <Link href="/Info?tab=about">
+                  {t("About Us")}
+                </Link>
               </li>
               <li>
-                <Link href="/how-it-works">{t("How it works")}</Link>
+                <Link href="/Info?tab=terms">
+                  {t("Terms & Conditions")}
+                </Link>
               </li>
               <li>
-                <Link href="/contact">{t("Contact us")}</Link>
+                <Link href="/Info?tab=privacy">
+                  {t("Privacy Policy")}
+                </Link>
+              </li>
+              {/* Info?tab=contact */}
+              <li>
+                <Link href="/Info?tab=contact">
+                  {t("Contact us")}
+                </Link>
               </li>
             </ul>
-          </div> */}
+          </div>
+          
           <div>
             <h4 className="font-semibold mb-4 text-white text-[clamp(1rem,1.5vw,1.25rem)]">
               {t("Explore Services")}
@@ -107,21 +121,6 @@ export default function Footer() {
                   <ChevronRight />
                 </li>
               ))}
-            </ul>
-          </div>
-
-          {/* Company */}
-          <div>
-            <h4 className="font-semibold mb-4 text-white text-[clamp(1rem,1.5vw,1.25rem)]">
-              {t("Company")}
-            </h4>
-            <ul className="space-y-2 text-gray-300 text-[clamp(0.75rem,1vw,1rem)]">
-              <li>
-                <Link href="/terms">{t("Terms & Conditions")}</Link>
-              </li>
-              <li>
-                <Link href="/privacy">{t("Privacy Policy")}</Link>
-              </li>
             </ul>
           </div>
         </div>

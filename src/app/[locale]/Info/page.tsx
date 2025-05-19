@@ -1,12 +1,40 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslations, useLocale } from "next-intl";
+import { useSearchParams } from "next/navigation";
 
 const MovingInfoPage = () => {
     const t = useTranslations("infoWebsite");
     const locale = useLocale();
-    const [activeTab, setActiveTab] = useState("about");
+    // const router = useRouter();
+    const searchParams = useSearchParams();
+    
+    // Get the tab from URL or default to "about"
+    const tabFromUrl = searchParams.get("tab");
+    const [activeTab, setActiveTab] = useState(
+        tabFromUrl && ["about", "terms", "privacy", "contact"].includes(tabFromUrl) 
+            ? tabFromUrl 
+            : "about"
+    );
+
+    // Update the URL when tab changes
+    const handleTabChange = (tab: string) => {
+        setActiveTab(tab);
+        
+        // Update URL without refreshing the page
+        const url = new URL(window.location.href);
+        url.searchParams.set("tab", tab);
+        window.history.pushState({}, "", url.toString());
+    };
+
+    // Listen for URL changes
+    useEffect(() => {
+        const tab = searchParams.get("tab");
+        if (tab && ["about", "terms", "privacy", "contact"].includes(tab)) {
+            setActiveTab(tab);
+        }
+    }, [searchParams]);
 
     const isRTL = locale === "ar";
 
@@ -64,7 +92,7 @@ const MovingInfoPage = () => {
                     {TABS.map((tab) => (
                         <button
                             key={tab.key}
-                            onClick={() => setActiveTab(tab.key)}
+                            onClick={() => handleTabChange(tab.key)}
                             className={`px-5 py-2 sm:px-6 sm:py-3 rounded-xl text-base sm:text-lg transition-all duration-200 font-medium ${activeTab === tab.key
                                 ? "bg-[#192953] text-white shadow-md"
                                 : "bg-white text-gray-600 hover:bg-gray-100"
