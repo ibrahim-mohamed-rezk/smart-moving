@@ -6,6 +6,9 @@ import { getData, postData } from "@/libs/axios/server";
 import axios, { AxiosHeaders } from "axios";
 import toast from "react-hot-toast";
 import { app } from "@/libs/firebase/config";
+import PhoneInput from "react-phone-number-input";
+import type { Value } from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 import {
   ConfirmationResult,
   getAuth,
@@ -28,6 +31,7 @@ const PersonalInfoForm = ({
   token: string;
 }) => {
   const [services, setServices] = useState([]);
+  const [phone, setPhone] = useState<Value>(initialData.phone as Value);
 
   // Form state with validation
   const [formData, setFormData] = useState({
@@ -525,16 +529,22 @@ const PersonalInfoForm = ({
             <div className="self-stretch relative w-full">
               <div className="flex flex-col sm:flex-row gap-3 w-full">
                 <div className="flex-1 relative">
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
+                  <PhoneInput
+                    international
+                    defaultCountry="RU"
                     className={`self-stretch h-12 md:h-16 p-3 md:p-4 bg-zinc-100 rounded-3xl ${
                       errors.phone
                         ? "outline-red-500"
                         : "outline-1 outline-offset-[-1px] outline-zinc-300"
-                    } w-full text-black text-base md:text-lg font-normal font-['Libre_Baskerville']`}
+                    } w-full text-black text-base md:text-lg font-bold font-['Libre_Baskerville']`}
+                    value={formData.phone}
+                    onChange={(value) => {
+                      setPhone(value as Value);
+                      setFormData((prev) => ({
+                        ...prev,
+                        phone: value as string,
+                      }));
+                    }}
                   />
                   {errors.phone && (
                     <p className="text-red-500 text-sm mt-1 ml-2">
