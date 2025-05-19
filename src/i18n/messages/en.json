@@ -177,8 +177,8 @@
     "out_address": {
       "title": "Parking distance to door",
       "FRA_address": {
-        "title": "FRA address",
-        "placeholder": "Enter FRA address"
+        "title": "From address",
+        "placeholder": "Enter From address"
       },
       "Address_possibly_floor": {
         "title": "Address – possibly floor",
