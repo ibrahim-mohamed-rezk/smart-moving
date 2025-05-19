@@ -279,7 +279,8 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
   const setupRecaptcha = () => {
     if (!window.recaptchaVerifier) {
       window.recaptchaVerifier = new RecaptchaVerifier(
-        "recaptcha-container", // ✅ ID للعنصر داخل الصفحة
+        auth,
+        "recaptcha-container",
         {
           size: "invisible",
           callback: (response: any) => {
@@ -288,8 +289,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
           "expired-callback": () => {
             toast.error("reCAPTCHA expired. Please try again.");
           },
-        },
-        auth // ✅ object من getAuth(app)
+        }
       );
     }
   };
