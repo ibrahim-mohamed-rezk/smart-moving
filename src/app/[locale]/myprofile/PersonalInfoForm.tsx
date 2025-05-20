@@ -43,6 +43,7 @@ const PersonalInfoForm = ({
     services: initialData.company?.services?.map((s) => s.id) || [],
     verified_phone: initialData.phone === initialData.verified_phone,
     phone: phone,
+    status: true,
   });
 
   // Profile image state
