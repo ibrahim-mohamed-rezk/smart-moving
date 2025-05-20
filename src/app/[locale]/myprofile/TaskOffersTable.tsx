@@ -105,6 +105,9 @@ const TaskOffersTable = async ({
                       </div>
                     </div>
                   </td>
+                  <td className="p-2.5 border border-zinc-300 text-black text-xl font-bold font-['Libre_Baskerville']">
+                    {offer.company?.name}
+                  </td>
                   <td className="p-2.5 border w-fit border-zinc-300 text-black text-xl font-bold font-['Libre_Baskerville']">
                     <TableActionButtons
                       locale={locale}
