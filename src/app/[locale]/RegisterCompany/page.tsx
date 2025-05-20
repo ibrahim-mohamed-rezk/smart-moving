@@ -480,7 +480,7 @@ const AccountCreationForm = () => {
             </p>
             <form className="flex flex-col gap-4">
               <div className="flex justify-center gap-4 my-4">
-                {[0, 1, 2, 3].map((index) => (
+                {[0, 1, 2, 3, 4, 5].map((index) => (
                   <input
                     key={index}
                     type="text"

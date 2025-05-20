@@ -141,7 +141,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
           password: "",
         });
         onClose();
-        window.location.href = "/";
+        window.location.reload();
       } catch (error) {
         if (axios.isAxiosError(error)) {
           toast.error(error.response?.data?.msg || "An error occurred");
@@ -205,7 +205,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
       });
       setOpenOTP(false);
       onClose();
-      window.location.href = "/";
+      window.location.reload();
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data?.msg || "Invalid OTP");
@@ -254,7 +254,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
       });
 
       onClose();
-      window.location.href = "/";
+      window.location.reload();
     } catch (error) {
       // Handle Errors here.
       if (axios.isAxiosError(error)) {
@@ -278,7 +278,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
 
     // Make sure the container exists
     if (!recaptchaContainerRef.current) {
-      toast.error("reCAPTCHA container not found");
+      console.log("reCAPTCHA container not found");
       return;
     }
 
@@ -332,6 +332,9 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
       window.confirmationResult = confirmationResult;
       setOpenOTP(true);
       toast.success("Verification code sent to your phone");
+      if (window.recaptchaVerifier) {
+        window.recaptchaVerifier.clear();
+      }
     } catch (error) {
       console.error("Error sending OTP:", error);
       toast.error(
@@ -360,6 +363,9 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
           ...prev,
           verified_phone: true,
         }));
+        if (window.recaptchaVerifier) {
+          window.recaptchaVerifier.clear();
+        }
       }
     } catch (error) {
       console.error("Error verifying code:", error);
@@ -395,7 +401,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
             </p>
             <form className="flex flex-col gap-4">
               <div className="flex justify-center gap-4 my-4">
-                {[0, 1, 2, 3].map((index) => (
+                {[0, 1, 2, 3,4,5].map((index) => (
                   <input
                     key={index}
                     type="text"
