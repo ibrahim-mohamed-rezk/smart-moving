@@ -181,7 +181,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
     e.preventDefault();
     const otpCode = otpDigits.join("");
 
-    if (otpCode.length !== 4) {
+    if (otpCode.length !== 6) {
       toast.error("Please enter all 4 digits");
       return;
     }

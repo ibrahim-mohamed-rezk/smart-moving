@@ -426,7 +426,7 @@ const AccountCreationForm = () => {
     e.preventDefault();
     const otpCode = otpDigits.join("");
 
-    if (otpCode.length !== 4) {
+    if (otpCode.length !== 6) {
       toast.error(t("please_enter_all_4_digits"));
       return;
     }
