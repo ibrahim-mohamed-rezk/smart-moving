@@ -131,7 +131,8 @@
     "something_went_wrong": "Noget gik galt. Prøv igen.",
     "background": "Baggrundsbillede",
     "showcvr": "Tilføj CVR",
-    "hidecvr": "Skjul CVR"
+    "hidecvr": "Skjul CVR",
+    "cancel": "Annuller"
   },
   "services": {
     "TO address": "Til adresse",

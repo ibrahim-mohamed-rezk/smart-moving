@@ -140,7 +140,8 @@
     "something_went_wrong": "Something went wrong. Please try again.",
     "background": "Side Background Image",
     "showcvr": "Add CVR",
-    "hidecvr": "Hide CVR"
+    "hidecvr": "Hide CVR",
+    "cancel": "Cancel"
   },
   "services": {
     "TO address": "To address",
@@ -230,7 +231,7 @@
     "Ratings": "Ratings",
     "Moving out address": "Moving out address",
     "Moving address": "Moving address",
-    "FRA address": "FRA address",
+    "FRA address": "From address",
     "Address possibly floor": "Address possibly floor",
     "Elevator": "Elevator",
     "Yes": "Yes",
