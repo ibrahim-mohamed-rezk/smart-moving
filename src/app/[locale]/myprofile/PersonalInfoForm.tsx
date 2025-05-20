@@ -140,7 +140,9 @@ const PersonalInfoForm = ({
     setSendingCode(true);
 
     try {
-      setupRecaptcha();
+      if (!window.recaptchaVerifier) {
+        setupRecaptcha();
+      }
 
       // Format phone number to include "+" if it doesn't already
       const formattedPhone = formData.phone.startsWith("+")
