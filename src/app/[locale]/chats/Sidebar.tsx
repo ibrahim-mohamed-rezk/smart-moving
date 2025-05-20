@@ -89,7 +89,7 @@ const Sidebar = ({ locale, token, user }: { locale: string; token: string, user:
                 <div
                   className="w-full p-2 bg-zinc-100 rounded-2xl flex flex-col justify-start items-start gap-4 cursor-pointer hover:bg-zinc-200 transition-colors"
                   onClick={() => {
-                    router.push("/chats?id=1");
+                    router.push(`/chats?id=${chat.id}`);
                     setIsMobileMenuOpen(false);
                   }}
                 >

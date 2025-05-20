@@ -47,6 +47,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
 
   // Fetch chat data
   useEffect(() => {
+    alert(id);
     const fetchChat = async () => {
       if (!id) return;
 
@@ -61,9 +62,11 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
           })
         );
         setChat(response.data);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching chat:", error);
         toast.error("Failed to load chat information");
+        setLoading(false);
       } finally {
         setLoading(false);
       }
@@ -103,7 +106,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
     fetchMessages();
 
     // Set up polling interval
-    const intervalId = setInterval(fetchMessages, 30000);
+    const intervalId = setInterval(fetchMessages, 10000);
 
     // Clean up interval
     return () => clearInterval(intervalId);

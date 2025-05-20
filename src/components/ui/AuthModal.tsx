@@ -313,7 +313,6 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
     try {
       if (!window.recaptchaVerifier) {
         setupRecaptcha();
-        
       }
 
       // Format phone number to include "+" if it doesn't already
