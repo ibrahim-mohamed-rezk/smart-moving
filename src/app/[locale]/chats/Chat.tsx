@@ -47,7 +47,6 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
 
   // Fetch chat data
   useEffect(() => {
-    alert(id);
     const fetchChat = async () => {
       if (!id) return;
 
@@ -220,16 +219,17 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
     );
   };
 
-  if (!id) return (
-    <div className="w-full h-full flex items-center justify-center">
-      <div className="text-blue-950 text-lg md:text-xl font-normal font-['Libre_Baskerville'] text-center p-8">
-        <p>No conversation selected</p>
-        <p className="text-black/60 text-sm md:text-base mt-2">
-          Please select a conversation from the sidebar or start a new one
-        </p>
+  if (!id)
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <div className="text-blue-950 text-lg md:text-xl font-normal font-['Libre_Baskerville'] text-center p-8">
+          <p>No conversation selected</p>
+          <p className="text-black/60 text-sm md:text-base mt-2">
+            Please select a conversation from the sidebar or start a new one
+          </p>
+        </div>
       </div>
-    </div>
-  );
+    );
 
   return (
     <div className="w-full h-full bg-white rounded-tr-2xl rounded-br-2xl border-l border-zinc-300 flex flex-col">
@@ -240,17 +240,26 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
             <div className="w-10 h-10 md:w-16 md:h-16 relative bg-white rounded-[100px] outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden">
               <img
                 className="w-8 h-7 md:w-12 md:h-10 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
-                src={chat?.image || "https://placehold.co/51x39"}
+                src={
+                  chat?.participants.filter((p) => p.user.id !== user.id)[0]
+                    .user.image || "https://placehold.co/51x39"
+                }
                 alt="Company logo"
               />
             </div>
             <div className="flex flex-col justify-center items-start gap-1">
               <div className="text-blue-950 text-sm md:text-lg font-normal font-['Libre_Baskerville']">
-                {chat?.name || "Loading..."}
+                {
+                  chat?.participants.filter((p) => p.user.id !== user.id)[0]
+                    .user.name
+                }
               </div>
-              <div className="px-2 py-0.5 md:py-1 bg-green-500/40 rounded-[30px] flex justify-center items-center gap-2.5">
+              <div className="px-2 py-0.5 md:py-1 rounded-[30px] flex justify-center items-center gap-2.5">
                 <div className="text-black text-xs font-normal font-['Libre_Baskerville']">
-                  Online
+                  {
+                    chat?.participants.filter((p) => p.id !== user.id)[0].user
+                      .phone
+                  }
                 </div>
               </div>
             </div>
