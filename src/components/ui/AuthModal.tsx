@@ -29,7 +29,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
   const modalRef = useRef<HTMLDivElement | null>(null);
   const [countries, setCountries] = useState<countryTypes[]>([]);
   const [openOTP, setOpenOTP] = useState(false);
-  const [otpDigits, setOtpDigits] = useState(["", "", "", ""]);
+  const [otpDigits, setOtpDigits] = useState(["", "", "", "", "", ""]);
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const params = useParams();
   const [phone, setPhone] = useState<Value>();
@@ -101,7 +101,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
     setOtpDigits(newOtpDigits);
 
     // Auto focus next input
-    if (value && index < 3) {
+    if (value && index < 5) {
       otpInputRefs.current[index + 1]?.focus();
     }
   };

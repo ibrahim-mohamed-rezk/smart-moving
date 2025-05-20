@@ -45,7 +45,7 @@ const AccountCreationForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const params = useParams<{ locale: string }>();
   const [openOTP, setOpenOTP] = useState(false);
-  const [otpDigits, setOtpDigits] = useState(["", "", "", ""]);
+  const [otpDigits, setOtpDigits] = useState(["", "", "", "","",""]);
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   const [phone, setPhone] = useState<Value>();
@@ -275,7 +275,7 @@ const AccountCreationForm = () => {
     setOtpDigits(newOtpDigits);
 
     // Auto focus next input
-    if (value && index < 3) {
+    if (value && index < 5) {
       otpInputRefs.current[index + 1]?.focus();
     }
   };
