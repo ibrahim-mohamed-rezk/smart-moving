@@ -565,7 +565,7 @@ const PersonalInfoForm = ({
                           : "text-amber-600"
                       }`}
                     >
-                      {formData.verified_phone ? "✓ Verified" : "Not verified"}
+                      {formData.verified_phone ? "✓ Verified" : ""}
                     </div>
                   )}
                 </div>
