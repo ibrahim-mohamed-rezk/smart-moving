@@ -45,7 +45,7 @@ const AccountCreationForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const params = useParams<{ locale: string }>();
   const [openOTP, setOpenOTP] = useState(false);
-  const [otpDigits, setOtpDigits] = useState(["", "", "", "","",""]);
+  const [otpDigits, setOtpDigits] = useState(["", "", "", "", "", ""]);
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   const [phone, setPhone] = useState<Value>();
@@ -334,7 +334,9 @@ const AccountCreationForm = () => {
     }
 
     try {
-      setupRecaptcha();
+      if (!window.recaptchaVerifier) {
+        setupRecaptcha();
+      }
 
       // Format phone number to include "+" if it doesn't already
       const formattedPhone = formData.phone.startsWith("+")
