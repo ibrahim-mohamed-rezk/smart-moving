@@ -43,10 +43,10 @@ const Sidebar = ({ userData }: { userData: UserDataTypes }) => {
           />
         </div>
 
-        <div className="relative z-10 p-4 lg:p-8 h-full flex flex-col">
+        <div className="relative z-10 p-4 w-full lg:p-8 h-full flex flex-col">
           <div className="w-full max-w-96 inline-flex flex-col justify-center items-center gap-8 lg:gap-14">
-            <div className="inline-flex justify-start items-center gap-2 lg:gap-4">
-              <div className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 relative bg-white rounded-full outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden flex items-center justify-center">
+            <div className="inline-flex justify-start w-full items-center gap-2 lg:gap-4">
+              <div className="w-16 h-16 md:w-18 md:h-18 relative bg-white rounded-full outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden flex items-center justify-center">
                 {/* <img
                   className="w-12 h-10 md:w-16 md:h-12 lg:w-20 lg:h-14 object-contain"
                   src="https://placehold.co/75x57"
@@ -54,12 +54,12 @@ const Sidebar = ({ userData }: { userData: UserDataTypes }) => {
                 /> */}
                 <UserIcon className="w-[65%] h-[65%] text-[#192953]" />
               </div>
-              <div className="flex flex-col justify-center items-start gap-1">
-                <div className="text-white text-lg md:text-xl lg:text-3xl font-bold font-['Libre_Baskerville'] break-words">
+              <div className="flex  flex-col justify-center items-start gap-1">
+                <div className="text-white text-lg md:text-xl font-bold font-['Libre_Baskerville'] break-words">
                   {userData.name}
                 </div>
-                <div className="justify-start max-w-full overflow-hidden text-ellipsis">
-                  <span className="text-white/60 text-xs md:text-sm lg:text-lg font-bold font-['Libre_Baskerville'] truncate max-w-[180px] md:max-w-[220px] lg:max-w-full block">
+                <div className="justify-start overflow-hidden ">
+                  <span className="text-white/60 text-xs line-clamp-1 text-ellipsis overflow-hidden md:text-sm  font-bold font-['Libre_Baskerville'] truncate max-w-[180px] md:max-w-[220px] lg:max-w-full block">
                     {userData.email}
                   </span>
                 </div>
@@ -192,7 +192,7 @@ const Sidebar = ({ userData }: { userData: UserDataTypes }) => {
             <button
               type="button"
               onClick={() => handleNavigation("tasks")}
-              className={`p-4 text-center cursor-pointer ${
+              className={`p-4 text-center cursor-pointer relative ${
                 activeRoute === "tasks" ? "bg-white/10" : ""
               } border-t border-white/20`}
             >
@@ -203,6 +203,7 @@ const Sidebar = ({ userData }: { userData: UserDataTypes }) => {
                   ? "Your Tasks"
                   : "Services Requests"}
               </span>
+              <div className="absolute top-2 right-2 w-3 h-3 bg-red-500 rounded-full"></div>
             </button>
           </div>
         </div>

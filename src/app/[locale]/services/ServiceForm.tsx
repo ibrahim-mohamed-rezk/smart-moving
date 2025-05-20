@@ -15,6 +15,7 @@ import {
 import { useRouter } from "@/i18n/routing";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
+import AuthModal from "@/components/ui/AuthModal";
 
 const forms: Record<string, ServiceFormData> = {
   "private-moving": privateMovingInputs,
@@ -29,13 +30,17 @@ const ServiceForm = ({
   service_id,
 }: {
   service: string;
-    token: string | undefined;
-    service_id: string | null;
+  token: string | undefined;
+  service_id: string | null;
 }) => {
   const t = useTranslations("services");
   const [squareMeters, setSquareMeters] = useState<number>();
   const router = useRouter();
   const params = useSearchParams();
+  const [authModalType, setAuthModalType] = useState<
+    "login" | "register" | null
+  >(null);
+
   const [formData, setFormData] = useState({
     service_id: params?.get("service_id"),
     details: {
@@ -54,6 +59,11 @@ const ServiceForm = ({
     });
   }, [params, service_id]);
   const handleSubmit = async () => {
+    if (!token) {
+      setAuthModalType("login");
+      toast.error(t("Please login to request a service"));
+      return;
+    }
     try {
       await postData(
         "request/service",
@@ -92,6 +102,12 @@ const ServiceForm = ({
 
   return (
     <div className="container mx-auto mt-[clamp(20px,5vw,120px)] w-full flex-grow py-10 sm:py-12">
+      {authModalType && (
+        <AuthModal
+          type={authModalType}
+          onClose={() => setAuthModalType(null)}
+        />
+      )}
       <div className="grid grid-cols-1 gap-8">
         {/* first part */}
         <div className="bg-white rounded-2xl shadow-md p-6 sm:p-8 hover:shadow-lg transition-shadow">
