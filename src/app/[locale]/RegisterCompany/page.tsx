@@ -856,8 +856,7 @@ const AccountCreationForm = () => {
                   )}
                 </div>
 
-                <div>
-                  {/* postal code   */}
+                {/* <div>
                   <div>
                     <label
                       htmlFor="postal_code*"
@@ -877,7 +876,7 @@ const AccountCreationForm = () => {
                       />
                     </div>
                   </div>
-                </div>
+                </div> */}
 
                 <div>
                   <label
