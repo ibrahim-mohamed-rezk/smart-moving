@@ -4,13 +4,14 @@ import { postData } from "@/libs/axios/server";
 import { TaskTypes } from "@/libs/types/types";
 import axios, { AxiosHeaders } from "axios";
 import { useLocale, useTranslations } from "next-intl";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const TaskCard = ({ task, token }: { task: TaskTypes; token: string }) => {
   const t = useTranslations("profile");
   const locale = useLocale();
   const [status, setStatus] = useState(task.status);
+  const [count, setCount] = useState(0);
 
   const ChangeStatus = async (status: string) => {
     try {
@@ -33,6 +34,14 @@ const TaskCard = ({ task, token }: { task: TaskTypes; token: string }) => {
       throw error;
     }
   };
+
+  useEffect(() => {
+    task?.offers?.forEach((offer) => {
+      if (offer.status === "hold") {
+        setCount((prevCount) => prevCount + 1);
+      }
+    });
+  }, [task]);
 
   return (
     <div className="w-full p-4 md:p-6 bg-white rounded-2xl inline-flex flex-col justify-center items-start gap-4 md:gap-6 shadow-sm hover:shadow-md transition-shadow">
@@ -96,27 +105,13 @@ const TaskCard = ({ task, token }: { task: TaskTypes; token: string }) => {
               </select>
             </div>
           </div>
-          {/* <div className="flex justify-start items-center gap-1">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M12.6668 3.33301L3.3335 12.6664M3.3335 3.33301L12.6668 12.6664"
-                stroke="#DC3545"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-
-            <div className="justify-start text-red-500 text-xs md:text-sm font-normal font-['Libre_Baskerville']">
-              Close task
+          {count > 0 && (
+            <div className="flex justify-start items-center gap-1">
+              <div className="border rounded-full border-red-500 w-6 h-6 flex items-center justify-center text-red-500 text-xs md:text-sm font-normal font-['Libre_Baskerville']">
+                {count}
+              </div>
             </div>
-          </div> */}
+          )}
         </div>
       </div>
     </div>
