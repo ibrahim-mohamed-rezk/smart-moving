@@ -8,6 +8,12 @@
     "My Profile": "الملف الشخصي",
     "Logout": "تسجيل الخروج"
   },
+  "profile": {
+    "processing": "قيد التنفيذ",
+    "pending": "قيد الانتظار",
+    "done": "مكتمل",
+    "Status changed successfully": "تم تغيير الحالة بنجاح"
+  },
   "auth": {
     "Email": "البريد الإلكتروني",
     "Password": "كلمة المرور",
@@ -78,7 +84,7 @@
     "Company": "الشركة",
     "Terms & Conditions": "الشروط والأحكام",
     "Privacy Policy": "سياسة الخصوصية",
-    "About Us":"من نحن"
+    "About Us": "من نحن"
   },
   "company": {
     "why_join_us": "لماذا تنضم إلينا؟",

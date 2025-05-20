@@ -297,12 +297,14 @@ const TableActionButtons = ({
 
   return (
     <div className="flex mx-auto w-fit items-center justify-center gap-2 md:gap-4">
-      <button
-        onClick={acceptOffer}
-        className="w-full sm:w-auto px-3 py-1.5 sm:px-4 sm:py-2 text-sm sm:text-base bg-green-500 hover:bg-green-600 text-white font-bold rounded-md transition duration-300 ease-in-out"
-      >
-        Accept
-      </button>
+      {offer?.status !== "accept" && (
+        <button
+          onClick={acceptOffer}
+          className="w-full sm:w-auto px-3 py-1.5 sm:px-4 sm:py-2 text-sm sm:text-base bg-green-500 hover:bg-green-600 text-white font-bold rounded-md transition duration-300 ease-in-out"
+        >
+          Accept
+        </button>
+      )}
       <button
         onClick={declineOffer}
         className="w-full sm:w-auto px-3 py-1.5 sm:px-4 sm:py-2 text-sm sm:text-base bg-red-500 hover:bg-red-600 text-white font-bold rounded-md transition duration-300 ease-in-out"

@@ -8,6 +8,12 @@
     "My Profile": "My Profile",
     "Logout": "Logout"
   },
+  "profile": {
+    "processing": "Processing",
+    "pending": "Pending",
+    "done": "Done",
+    "Status changed successfully": "Status changed successfully"
+  },
   "auth": {
     "Email": "Email",
     "Password": "Password",

@@ -1,7 +1,39 @@
+"use client";
 import { Link } from "@/i18n/routing";
+import { postData } from "@/libs/axios/server";
 import { TaskTypes } from "@/libs/types/types";
+import axios, { AxiosHeaders } from "axios";
+import { useLocale, useTranslations } from "next-intl";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
-const TaskCard = ({ task }: { task: TaskTypes }) => {
+const TaskCard = ({ task, token }: { task: TaskTypes; token: string }) => {
+  const t = useTranslations("profile");
+  const locale = useLocale();
+  const [status, setStatus] = useState(task.status);
+
+  const ChangeStatus = async (status: string) => {
+    try {
+      await postData(
+        `customer/change-status/${task.id}`,
+        { status },
+        new AxiosHeaders({
+          lang: locale,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        })
+      );
+      toast.success(t("Status changed successfully"));
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.msg || "An error occurred");
+      } else {
+        toast.error("An unexpected error occurred");
+      }
+      throw error;
+    }
+  };
+
   return (
     <div className="w-full p-4 md:p-6 bg-white rounded-2xl inline-flex flex-col justify-center items-start gap-4 md:gap-6 shadow-sm hover:shadow-md transition-shadow">
       <div className="self-stretch inline-flex justify-between items-center">
@@ -40,7 +72,28 @@ const TaskCard = ({ task }: { task: TaskTypes }) => {
         <div className="self-stretch inline-flex justify-between items-center flex-wrap gap-2">
           <div className="px-3 py-1 md:px-5 bg-sky-500 rounded-[30px] flex justify-center items-center gap-2">
             <div className="justify-start text-white text-sm md:text-lg font-normal font-['Libre_Baskerville']">
-              {task.status}
+              <select
+                value={status}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                  setStatus(e.target.value);
+                  ChangeStatus(e.target.value);
+                }}
+                className="bg-transparent border-none outline-none cursor-pointer text-white text-sm md:text-lg font-normal font-['Libre_Baskerville'] hover:text-sky-200 transition-colors"
+              >
+                {[
+                  { title: t("pending"), value: "pending" },
+                  { title: t("processing"), value: "processing" },
+                  { title: t("done"), value: "done" },
+                ].map((status) => (
+                  <option
+                    key={status.value}
+                    value={status.value}
+                    className="bg-sky-500 text-white"
+                  >
+                    {status.title}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
           {/* <div className="flex justify-start items-center gap-1">

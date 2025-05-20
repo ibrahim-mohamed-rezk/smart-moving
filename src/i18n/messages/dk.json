@@ -8,6 +8,12 @@
     "My Profile": "Min Profil",
     "Logout": "Log ud"
   },
+  "profile": {
+    "processing": "Under behandling",
+    "pending": "Afventer",
+    "done": "Færdig",
+    "Status changed successfully": "Status ændret med succes"
+  },
   "home": {
     "welcome": "Velkommen til Smart Moving!",
     "title": "Få 3 gratis tilbud på din flytning",
