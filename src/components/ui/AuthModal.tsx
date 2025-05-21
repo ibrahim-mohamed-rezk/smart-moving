@@ -8,9 +8,14 @@ import Image from "next/image";
 import { postData } from "@/libs/axios/server";
 import axios, { AxiosHeaders } from "axios";
 import toast from "react-hot-toast";
-import { countryTypes } from "@/libs/types/types";
 import { useParams } from "next/navigation";
-import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithPhoneNumber, RecaptchaVerifier } from "firebase/auth";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signInWithPhoneNumber,
+  RecaptchaVerifier,
+} from "firebase/auth";
 import { app } from "@/libs/firebase/config";
 import { useTranslations } from "next-intl";
 import PhoneInput from "react-phone-number-input";
@@ -23,20 +28,24 @@ interface AuthModalProps {
   setForgotPassword: (value: boolean) => void;
 }
 
-const AuthModal: FC<AuthModalProps> = ({ type, onClose, setForgotPassword }) => {
+const AuthModal: FC<AuthModalProps> = ({
+  type,
+  onClose,
+  setForgotPassword,
+}) => {
   const t = useTranslations("auth");
   const [modalType, setModalType] = useState(type);
   const [showPassword, setShowPassword] = useState(false);
   const modalRef = useRef<HTMLDivElement | null>(null);
-  const [countries, setCountries] = useState<countryTypes[]>([]);
   const [openOTP, setOpenOTP] = useState(false);
   const [otpDigits, setOtpDigits] = useState(["", "", "", "", "", ""]);
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const params = useParams();
   const [phone, setPhone] = useState<Value>();
+  const [isPhone, setIsPhone] = useState(false);
   const recaptchaContainerRef = useRef<HTMLDivElement>(null);
   const [formData, setFormData] = useState({
-    login: "",
+    login: phone || "",
     password: "",
   });
   const [registerformData, setRegisterFormData] = useState({
@@ -49,7 +58,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose, setForgotPassword }) => 
     country_code: "+45",
     postal_code: "",
   });
-  console.log(countries);
+
   // Update the registerFormData when phone changes
   useEffect(() => {
     if (phone) {
@@ -62,21 +71,13 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose, setForgotPassword }) => 
 
   // get countries
   useEffect(() => {
-    const feachCountries = async () => {
-      try {
-        const response = await axios.get("/api/countries", {
-          headers: {
-            lang: params?.locale,
-          },
-        });
-        setCountries(response.data);
-      } catch (error) {
-        throw error;
-      }
-    };
-
-    feachCountries();
-  }, [params]);
+    if (formData.login) {
+      const firstChar = formData.login.charAt(0);
+      setIsPhone(!isNaN(Number(firstChar)));
+    } else {
+      setIsPhone(false);
+    }
+  }, [isPhone, formData.login]);
 
   // Close when clicking outside
   useEffect(() => {
@@ -138,7 +139,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose, setForgotPassword }) => 
 
         toast.success("Login successful");
         setFormData({
-          login: "",
+          login: phone || "",
           password: "",
         });
         onClose();
@@ -162,7 +163,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose, setForgotPassword }) => 
           })
         );
 
-        sendOTP()
+        sendOTP();
 
         toast.success("account created successfully");
         setOpenOTP(true);
@@ -377,11 +378,9 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose, setForgotPassword }) => 
     }
   };
 
-
-
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
-      <div  ref={recaptchaContainerRef}></div>
+      <div ref={recaptchaContainerRef}></div>
       <div
         ref={modalRef}
         className="relative bg-white w-full max-w-xl p-8 rounded-3xl shadow-xl overflow-hidden"
@@ -404,7 +403,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose, setForgotPassword }) => 
             </p>
             <form className="flex flex-col gap-4">
               <div className="flex justify-center gap-4 my-4">
-                {[0, 1, 2, 3,4,5].map((index) => (
+                {[0, 1, 2, 3, 4, 5].map((index) => (
                   <input
                     key={index}
                     type="text"
@@ -466,26 +465,46 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose, setForgotPassword }) => 
                 </>
               )}
               {/* Email */}
-              <input
-                type="email"
-                placeholder={t("Enter Email Address or Phone Number")}
-                value={
-                  modalType === "login"
-                    ? formData.login
-                    : registerformData.email
-                }
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  if (modalType === "login") {
-                    setFormData({ ...formData, login: e.target.value });
-                  } else {
+              {modalType === "login" ? (
+                !isPhone ? (
+                  <input
+                    type="email"
+                    placeholder={t("Enter Email Address or Phone Number")}
+                    value={formData.login}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      setFormData({ ...formData, login: e.target.value });
+                    }}
+                    className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                ) : (
+                  <div>
+                    <div className="relative">
+                      <div className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <PhoneInput
+                          international
+                          defaultCountry="DK"
+                          value={phone}
+                          onChange={setPhone}
+                          className="w-full"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )
+              ) : (
+                <input
+                  type="email"
+                  placeholder={t("Enter Email Address or Phone Number")}
+                  value={registerformData.email}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     setRegisterFormData({
                       ...registerformData,
                       email: e.target.value,
                     });
-                  }
-                }}
-                className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+                  }}
+                  className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              )}
               {modalType === "register" && (
                 <div>
                   <div className="relative">
@@ -539,10 +558,13 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose, setForgotPassword }) => 
               {/* Forget password link (login only) */}
               {modalType === "login" ? (
                 <div className="text-right">
-                    <button onClick={() => {
+                  <button
+                    onClick={() => {
                       onClose();
                       setForgotPassword(true);
-                  }} className="text-sm text-blue-600 hover:underline">
+                    }}
+                    className="text-sm text-blue-600 hover:underline"
+                  >
                     {t("Forget Password?")}
                   </button>
                 </div>
