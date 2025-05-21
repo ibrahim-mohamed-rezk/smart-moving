@@ -1,7 +1,7 @@
 "use client";
 
-import { useLocale } from "next-intl";
-import { TaskDetailsTypes, TaskTypes, UserDataTypes } from "@/libs/types/types";
+import { useLocale, useTranslations } from "next-intl";
+import { TaskDetailsTypes, TaskTypes } from "@/libs/types/types";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import axios, { AxiosHeaders } from "axios";
@@ -15,6 +15,7 @@ const RequestsTable = ({
   token: string;
 }) => {
   const locale = useLocale();
+  const t = useTranslations();
   const [openCollapseId, setOpenCollapseId] = useState<number | null>(null);
   const [showOfferPopup, setShowOfferPopup] = useState(false);
   const [offerPrice, setOfferPrice] = useState("");
@@ -76,7 +77,7 @@ const RequestsTable = ({
             .map((key) => (
               <div key={key} className="flex flex-col">
                 <span className="text-black text-lg font-bold font-['Libre_Baskerville']">
-                  {key}:
+                  {t(key.replace(/_/g, " "))}:
                 </span>
                 <span className="text-black/60 text-base font-normal font-['Libre_Baskerville'] break-words">
                   {details[key]}
@@ -96,7 +97,7 @@ const RequestsTable = ({
                 {Object.keys(details.moving_address).map((key) => (
                   <div key={key} className="flex flex-col">
                     <span className="text-black text-lg font-bold font-['Libre_Baskerville']">
-                      {key}:
+                      {t(key.replace(/_/g, " "))}:
                     </span>
                     <span className="text-black/60 text-base font-normal font-['Libre_Baskerville'] break-words">
                       {details.moving_address![key]}
