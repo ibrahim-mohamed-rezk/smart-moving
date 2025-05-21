@@ -93,7 +93,7 @@ const ServiceForm = ({
 
   if (!forms[service]) {
     return (
-      <div className=" w-fit  mx-auto flex items-center justify-center mt-[clamp(20px,5vw,120px)] text-center">
+      <div className=" w-[80%]  mx-auto flex items-center justify-center mt-[clamp(20px,5vw,120px)] text-center">
         <Image
           src="/soon.png"
           alt="comming soon"
