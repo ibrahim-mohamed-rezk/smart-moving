@@ -48,9 +48,7 @@ const ServiceForm = ({
     details: {
       square_meters: squareMeters,
       moving_address: {},
-      title: service
-        .replace("-", " ")
-        .replace(/\b\w/g, (char) => char.toUpperCase()),
+      title: params?.get("service")?.replace("-", " ").replace(/\b\w/g, (char) => char.toUpperCase()),
     },
   });
 
@@ -76,7 +74,7 @@ const ServiceForm = ({
         })
       );
 
-      router.push("/myprofile?page=tasks");
+      // router.push("/myprofile?page=tasks");
       toast.success("Request sent successfully");
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -87,6 +85,8 @@ const ServiceForm = ({
       throw error;
     }
   };
+
+  console.log(service_id)
 
   if (!forms[service]) {
     return (
