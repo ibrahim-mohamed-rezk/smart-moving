@@ -51,7 +51,7 @@ export default async function PersonalInfoPage({
 
         {/* company tabs */}
         {userData.role === "company" && paramsData.page === "tasks" && (
-          <ServicesRequests locale={locale} />
+          <ServicesRequests/>
         )}
       </div>
     </div>

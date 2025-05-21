@@ -113,32 +113,35 @@ export interface TaskTypes {
   user_id: number;
   company_id?: number;
   service_id?: number;
-  details: {
-    description: string;
-    FRA_address?: string;
-    moving_out_address?: string;
-    service_level?: string;
-    the_topic_is_moved_OFF?: string;
-    the_topic_is_moved_TO?: string;
-    title?: string;
-    to_address?: string;
-    what_needs_to_be_moved?: string;
-    when_do_want_begin?: string;
-    square_meters?: number;
-    Address_possibly_floor?: string;
-    elevator?: string;
-    furnishing?: string;
-    moving_address?: {
-      to_address?: string;
-      Address_possibly_floor?: string;
-      elevator?: string;
-      service_level?: string;
-      when_do_want_begin?: string;
-    };
-  };
+  details: TaskDetailsTypes;
   offers?: OfferTypes[];
   created_at?: string;
   updated_at?: string;
+}
+
+export interface TaskDetailsTypes {
+  description: string;
+  FRA_address?: string;
+  moving_out_address?: string;
+  service_level?: string;
+  the_topic_is_moved_OFF?: string;
+  the_topic_is_moved_TO?: string;
+  title?: string;
+  to_address?: string;
+  what_needs_to_be_moved?: string;
+  when_do_want_begin?: string;
+  square_meters?: number;
+  Address_possibly_floor?: string;
+  elevator?: string;
+  furnishing?: string;
+  moving_address?: {
+    to_address?: string;
+    Address_possibly_floor?: string;
+    elevator?: string;
+    service_level?: string;
+    [key: string]: string | undefined;
+  };
+  [key: string]: any;
 }
 
 export interface OfferTypes {

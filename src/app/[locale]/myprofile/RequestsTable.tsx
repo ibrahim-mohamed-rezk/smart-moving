@@ -1,7 +1,7 @@
 "use client";
 
 import { useLocale } from "next-intl";
-import { TaskTypes, UserDataTypes } from "@/libs/types/types";
+import { TaskDetailsTypes, TaskTypes, UserDataTypes } from "@/libs/types/types";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import axios, { AxiosHeaders } from "axios";
@@ -9,11 +9,9 @@ import { postData } from "@/libs/axios/server";
 
 const RequestsTable = ({
   tasksData,
-  user,
   token,
 }: {
   tasksData: TaskTypes[];
-  user: UserDataTypes;
   token: string;
 }) => {
   const locale = useLocale();
@@ -66,7 +64,7 @@ const RequestsTable = ({
   };
 
   // Helper function to render task details
-  const renderTaskDetails = (details: any) => {
+  const renderTaskDetails = (details: TaskDetailsTypes) => {
     return (
       <div className="px-4 py-3 bg-gray-50">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -101,7 +99,7 @@ const RequestsTable = ({
                       {key}:
                     </span>
                     <span className="text-black/60 text-base font-normal font-['Libre_Baskerville'] break-words">
-                      {details.moving_address[key]}
+                      {details.moving_address![key]}
                     </span>
                   </div>
                 ))}
@@ -148,7 +146,7 @@ const RequestsTable = ({
             </tr>
           </thead>
           <tbody>
-            {tasksData?.map((task: TaskTypes, index: number) => (
+            {tasksData?.map((task: TaskTypes) => (
               <>
                 <tr key={`task-${task.id}`} className="bg-white">
                   <td className="p-2.5 text-center border border-zinc-300 text-black text-xl font-bold font-['Libre_Baskerville']">

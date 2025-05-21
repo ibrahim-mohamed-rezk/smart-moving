@@ -1,12 +1,10 @@
 import { getData } from "@/libs/axios/server";
-import { TaskTypes } from "@/libs/types/types";
 import { AxiosHeaders } from "axios";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import TableActionButtons from "./TableActionButtons";
 import RequestsTable from "./RequestsTable";
 
-const ServicesRequests = async ({ locale }: { locale: string }) => {
+const ServicesRequests = async () => {
   const cookiesData = await cookies();
   const token = cookiesData.get("token")?.value;
   const user = JSON.parse(cookiesData.get("user")?.value || "{}");
@@ -47,7 +45,7 @@ const ServicesRequests = async ({ locale }: { locale: string }) => {
       </div>
 
       {/* Responsive Table */}
-      <RequestsTable tasksData={tasksData} user={user} token={token} />
+      <RequestsTable tasksData={tasksData} token={token} />
     </div>
   );
 };
