@@ -21,7 +21,7 @@ const BestCompanies = ({ companies }: { companies: CompanyTypes[] }) => {
         >
           {companies.map((company, i) => (
             <Link
-              href={`/companies/${company.id}?page=about%20us}`}
+              href={`/companies/${company.id}?page=about%20us`}
               key={i}
               className="flex-shrink-0 p-4 w-[clamp(12rem,15vw,15rem)] text-center"
             >
