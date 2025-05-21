@@ -178,7 +178,7 @@ const AuthModal: FC<AuthModalProps> = ({
         if (response.data.role === "customer") {
           window.location.reload();
         } else {
-          router.push("/myprofile?page=tasks");
+          window.location.href = `${params?.locale}/myprofile?page=tasks`;
         } 
       } catch (error) {
         if (axios.isAxiosError(error)) {
