@@ -3,7 +3,7 @@ import { getData, postData } from "@/libs/axios/server";
 import { ChatTypes, MessageTypes, UserDataTypes } from "@/libs/types/types";
 import axios, { AxiosHeaders } from "axios";
 import { UserIcon } from "lucide-react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import toast from "react-hot-toast";
@@ -18,6 +18,8 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const prevMessagesLengthRef = useRef(0);
+  const t = useTranslations("profile");
+  const [status, setStatus] = useState("");
 
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
@@ -220,6 +222,28 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
     );
   };
 
+  const ChangeStatus = async (status: string) => {
+    try {
+      await postData(
+        `customer/change-status/${"task.id"}`,
+        { status },
+        new AxiosHeaders({
+          lang: locale,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        })
+      );
+      toast.success(t("Status changed successfully"));
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.msg || "An error occurred");
+      } else {
+        toast.error("An unexpected error occurred");
+      }
+      throw error;
+    }
+  };
+
   if (!id)
     return (
       <div className="w-full h-full flex items-center justify-center">
@@ -236,7 +260,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
     <div className="w-full h-full bg-white rounded-tr-2xl rounded-br-2xl border-l border-zinc-300 flex flex-col">
       {/* Chat Header */}
       <div className="flex-none">
-        <div className="w-full p-3 md:p-6 flex justify-start items-center">
+        <div className="w-full p-3 md:p-6 flex justify-between items-center">
           <div className="flex justify-start items-center gap-2">
             <div className="w-10 h-10 md:w-16 md:h-16 relative bg-white rounded-[100px] outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden">
               {chat?.participants.filter((p) => p.user.id !== user.id)[0].user
@@ -270,6 +294,36 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
                   }
                 </div>
               </div>
+            </div>
+          </div>
+          <div className="px-3 py-1 md:px-5 bg-sky-500 rounded-[30px] flex justify-center items-center gap-2">
+            <div className="justify-start text-white text-sm md:text-lg font-normal font-['Libre_Baskerville']">
+              {user.role === "customer" ? (
+                <select
+                  value={status}
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                    setStatus(e.target.value);
+                    ChangeStatus(e.target.value);
+                  }}
+                  className="bg-transparent border-none outline-none cursor-pointer text-white text-sm md:text-lg font-normal font-['Libre_Baskerville'] hover:text-sky-200 transition-colors"
+                >
+                  {[
+                    { title: t("pending"), value: "pending" },
+                    { title: t("processing"), value: "processing" },
+                    { title: t("done"), value: "done" },
+                  ].map((status) => (
+                    <option
+                      key={status.value}
+                      value={status.value}
+                      className="bg-sky-500 text-white"
+                    >
+                      {status.title}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                status
+              )}
             </div>
           </div>
         </div>
@@ -332,7 +386,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
                   <div className="w-8 h-8 md:w-10 md:h-10 relative bg-white rounded-[100px] outline outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden flex-shrink-0">
                     <img
                       className="w-full h-full absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
-                      src={message.user?.image }
+                      src={message.user?.image}
                       alt="User avatar"
                     />
                   </div>

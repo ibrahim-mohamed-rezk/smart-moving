@@ -13,7 +13,6 @@ import {
   storageInputs,
 } from "@/libs/data/data";
 import { useRouter } from "@/i18n/routing";
-import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import AuthModal from "@/components/ui/AuthModal";
 import ForgetPasswordModal from "@/components/ui/ForgetPasswordModal";
@@ -94,12 +93,9 @@ const ServiceForm = ({
   if (!forms[service]) {
     return (
       <div className=" w-[80%]  mx-auto flex items-center justify-center mt-[clamp(20px,5vw,120px)] text-center">
-        <Image
+        <img
           src="/soon.png"
           alt="comming soon"
-          width={100}
-          height={100}
-          className="w-[80%] md:w-[60%]"
         />
       </div>
     );
