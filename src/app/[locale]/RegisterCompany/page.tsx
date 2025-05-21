@@ -27,6 +27,7 @@ import {
   RecaptchaVerifier,
   signInWithPhoneNumber,
 } from "firebase/auth";
+import { useRouter } from "@/i18n/routing";
 
 interface PasswordRequirements {
   minLength: boolean;
@@ -62,6 +63,29 @@ const AccountCreationForm = () => {
   const [validsur_name, setValidsur_name] = useState<boolean | null>(null);
   const [services, setservices] = useState<ServiceTypes[]>([]);
   const [showCVR, setShowCVR] = useState<boolean>(false);
+  const [token, setToken] = useState<string>("");
+  const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const getToken = async () => {
+      try {
+        const res = await axios.get("/api/auth/getToken");
+        setToken(res.data.token);
+        if (res.data.token || token) {
+          router.push("/myprofile?page=tasks");
+        }
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        throw error;
+      }
+    };
+
+    getToken();
+  }, []);
+
+
 
   const [formData, setFormData] = useState({
     first_name: "",
@@ -245,11 +269,7 @@ const AccountCreationForm = () => {
     const { address, city, services } = formData;
     const hasSelectedService = Object.values(services).some((value) => value);
 
-    return (
-      address.trim() !== "" &&
-      city.trim() !== "" &&
-      hasSelectedService
-    );
+    return address.trim() !== "" && city.trim() !== "" && hasSelectedService;
   };
 
   const handleNext = () => {
@@ -465,6 +485,14 @@ const AccountCreationForm = () => {
       setIsLoading(false);
     }
   };
+
+    if (loading) {
+      return (
+        <div className="w-full min-h-screen flex items-center justify-center">
+          Loading...
+        </div>
+      );
+    }
 
   return (
     <div className="flex min-h-screen bg-gray-50 font-['libre-baskerville']">
