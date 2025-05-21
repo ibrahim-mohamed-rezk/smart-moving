@@ -242,7 +242,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
               {chat?.participants.filter((p) => p.user.id !== user.id)[0].user
                 .image ? (
                 <img
-                  className="w-full h-full md:w-12 md:h-10 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                  className="w-full h-full"
                   src={
                     chat?.participants.filter((p) => p.user.id !== user.id)[0]
                       .user.image
