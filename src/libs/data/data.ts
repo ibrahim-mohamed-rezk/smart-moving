@@ -282,13 +282,9 @@ export const movingFurnitureInputs = {
       name: "when_do_want_begin",
       type: "select",
       options: [
-        { title: "No matter", value: "no_matter" },
-        { title: "Within 2 days", value: "2days" },
-        { title: "Within 10 days", value: "10days" },
-        { title: "Within 30 days", value: "30days" },
-        { title: "Within 2 months", value: "2months" },
-        { title: "Within 6 months", value: "6months" },
-        { title: "On the following date", value: "custom" },
+        { title: "ASAP", value: "ASAP" },
+        { title: "Within A Week", value: "week" },
+        { title: "Later", value: "later" },
       ],
     },
     {

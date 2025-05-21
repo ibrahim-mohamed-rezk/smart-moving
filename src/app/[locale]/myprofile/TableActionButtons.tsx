@@ -14,6 +14,8 @@ const TableActionButtons = ({
   task,
   locale,
   offer,
+  openCollabse,
+  setOpenCollabse,
 }: {
   id: number;
   token: string;
@@ -21,8 +23,9 @@ const TableActionButtons = ({
   task?: TaskTypes;
   locale?: string;
   offer?: OfferTypes;
+  openCollabse?: boolean;
+  setOpenCollabse?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const [showDetails, setShowDetails] = useState(false);
   const [showOfferPopup, setShowOfferPopup] = useState(false);
   const [offerPrice, setOfferPrice] = useState("");
   const popupRef = useRef<HTMLDivElement>(null);
@@ -85,7 +88,9 @@ const TableActionButtons = ({
   };
 
   const toggleDetails = () => {
-    setShowDetails(!showDetails);
+    if (openCollabse && setOpenCollabse) {
+      setOpenCollabse(!openCollabse);
+    }
   };
 
   const toggleOfferPopup = () => {
@@ -125,12 +130,6 @@ const TableActionButtons = ({
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
-        popupRef.current &&
-        !popupRef.current.contains(event.target as Node)
-      ) {
-        setShowDetails(false);
-      }
-      if (
         offerPopupRef.current &&
         !offerPopupRef.current.contains(event.target as Node)
       ) {
@@ -138,14 +137,12 @@ const TableActionButtons = ({
       }
     };
 
-    if (showDetails || showOfferPopup) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
+
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [showDetails, showOfferPopup]);
+  }, [showOfferPopup]);
 
   if (user?.role === "company") {
     return (
@@ -206,7 +203,7 @@ const TableActionButtons = ({
         )}
 
         {/* Details Popup */}
-        {showDetails && (
+        {/* {showDetails && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
             <div
               ref={popupRef}
@@ -290,7 +287,7 @@ const TableActionButtons = ({
               </div>
             </div>
           </div>
-        )}
+        )} */}
       </>
     );
   }
