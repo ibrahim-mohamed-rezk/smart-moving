@@ -42,10 +42,10 @@ const AuthModal: FC<AuthModalProps> = ({
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const params = useParams();
   const [phone, setPhone] = useState<Value>();
-  const [isPhone, setIsPhone] = useState(false);
+  const [isPhoneInput, setIsPhoneInput] = useState(false);
   const recaptchaContainerRef = useRef<HTMLDivElement>(null);
   const [formData, setFormData] = useState({
-    login: phone || "",
+    login: "",
     password: "",
   });
   const [registerformData, setRegisterFormData] = useState({
@@ -69,15 +69,37 @@ const AuthModal: FC<AuthModalProps> = ({
     }
   }, [phone]);
 
-  // get countries
+  // Update formData.login when phone changes in login mode
   useEffect(() => {
-    if (formData.login) {
-      const firstChar = formData.login.charAt(0);
-      setIsPhone(!isNaN(Number(firstChar)));
-    } else {
-      setIsPhone(false);
+    if (phone && modalType === "login" && isPhoneInput) {
+      setFormData((prevData) => ({
+        ...prevData,
+        login: phone.toString(),
+      }));
     }
-  }, [isPhone, formData.login]);
+  }, [phone, modalType, isPhoneInput]);
+
+  // Handle login input type detection (email vs phone)
+  const handleLoginInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setFormData({ ...formData, login: value });
+
+    // Check if input looks like a phone number
+    const firstChar = value.charAt(0);
+    const isPhoneNumber =
+      firstChar === "+" ||
+      (!isNaN(Number(firstChar)) && /^[0-9+\s()-]+$/.test(value));
+
+    if (isPhoneNumber !== isPhoneInput) {
+      setIsPhoneInput(isPhoneNumber);
+
+      // If switching to phone input, initialize the phone state
+      if (isPhoneNumber) {
+        const formattedPhone = value.startsWith("+") ? value : `+${value}`;
+        setPhone(formattedPhone as Value);
+      }
+    }
+  };
 
   // Close when clicking outside
   useEffect(() => {
@@ -90,8 +112,16 @@ const AuthModal: FC<AuthModalProps> = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [onClose]);
 
-  const handleSwitchType = () =>
+  const handleSwitchType = () => {
     setModalType((prev) => (prev === "login" ? "register" : "login"));
+    // Reset form data when switching
+    setFormData({
+      login: "",
+      password: "",
+    });
+    setIsPhoneInput(false);
+    setPhone(undefined);
+  };
 
   const handleOtpChange = (index: number, value: string) => {
     if (value.length > 1) {
@@ -139,7 +169,7 @@ const AuthModal: FC<AuthModalProps> = ({
 
         toast.success("Login successful");
         setFormData({
-          login: phone || "",
+          login: "",
           password: "",
         });
         onClose();
@@ -184,7 +214,7 @@ const AuthModal: FC<AuthModalProps> = ({
     const otpCode = otpDigits.join("");
 
     if (otpCode.length !== 6) {
-      toast.error("Please enter all 4 digits");
+      toast.error("Please enter all 6 digits");
       return;
     }
 
@@ -464,37 +494,40 @@ const AuthModal: FC<AuthModalProps> = ({
                   />
                 </>
               )}
-              {/* Email */}
-              {modalType === "login" ? (
-                !isPhone ? (
-                  <input
-                    type="email"
-                    placeholder={t("Enter Email Address or Phone Number")}
-                    value={formData.login}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      setFormData({ ...formData, login: e.target.value });
-                    }}
-                    className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                ) : (
-                  <div>
-                    <div className="relative">
-                      <div className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <PhoneInput
-                          international
-                          defaultCountry="DK"
-                          value={phone}
-                          onChange={setPhone}
-                          className="w-full"
-                        />
-                      </div>
+
+              {/* Email/Phone Input for Login */}
+              {modalType === "login" && (
+                <>
+                  {!isPhoneInput ? (
+                    <input
+                      type="text"
+                      placeholder={t("Enter Email Address or Phone Number")}
+                      value={formData.login}
+                      onChange={handleLoginInputChange}
+                      className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  ) : (
+                    <div className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                      <PhoneInput
+                        international
+                        defaultCountry="DK"
+                        value={phone}
+                        onChange={(value) => {
+                          setPhone(value);
+                        }}
+                        className="w-full"
+                        id="loginPhone"
+                      />
                     </div>
-                  </div>
-                )
-              ) : (
+                  )}
+                </>
+              )}
+
+              {/* Email Input for Register */}
+              {modalType === "register" && (
                 <input
                   type="email"
-                  placeholder={t("Enter Email Address or Phone Number")}
+                  placeholder={t("Email Address")}
                   value={registerformData.email}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     setRegisterFormData({
@@ -505,19 +538,18 @@ const AuthModal: FC<AuthModalProps> = ({
                   className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               )}
+
+              {/* Phone Input for Register */}
               {modalType === "register" && (
-                <div>
-                  <div className="relative">
-                    <div className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
-                      <PhoneInput
-                        international
-                        defaultCountry="DK"
-                        value={phone}
-                        onChange={setPhone}
-                        className="w-full"
-                      />
-                    </div>
-                  </div>
+                <div className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <PhoneInput
+                    international
+                    defaultCountry="DK"
+                    value={phone}
+                    onChange={setPhone}
+                    className="w-full"
+                    placeholder={t("Phone Number")}
+                  />
                 </div>
               )}
 
@@ -555,10 +587,12 @@ const AuthModal: FC<AuthModalProps> = ({
                   )}
                 </button>
               </div>
+
               {/* Forget password link (login only) */}
               {modalType === "login" ? (
                 <div className="text-right">
                   <button
+                    type="button"
                     onClick={() => {
                       onClose();
                       setForgotPassword(true);
@@ -584,6 +618,7 @@ const AuthModal: FC<AuthModalProps> = ({
                   />
                 </>
               )}
+
               {modalType === "register" && (
                 <input
                   type="text"
@@ -602,6 +637,7 @@ const AuthModal: FC<AuthModalProps> = ({
               {/* google auth */}
               <div className="flex items-center justify-center">
                 <button
+                  type="button"
                   onClick={handleGoogleAuth}
                   className="flex items-center justify-center p-2 transition-colors rounded-full shadow-[5px_5px_15px_0px_rgba(74,74,74,0.15)] "
                 >
@@ -612,11 +648,11 @@ const AuthModal: FC<AuthModalProps> = ({
                     fill="#000000"
                     className="w-6 h-6"
                   >
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                     <g
                       id="SVGRepo_tracerCarrier"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     ></g>
                     <g id="SVGRepo_iconCarrier">
                       <path
@@ -654,7 +690,7 @@ const AuthModal: FC<AuthModalProps> = ({
             <div className="text-center text-sm text-gray-500 mt-4">
               {modalType === "login" ? (
                 <>
-                  {t("Don't have an account yet?")}
+                  {t("Don't have an account yet?")}{" "}
                   <span
                     onClick={handleSwitchType}
                     className="text-blue-600 hover:underline cursor-pointer"
@@ -664,7 +700,7 @@ const AuthModal: FC<AuthModalProps> = ({
                 </>
               ) : (
                 <>
-                  {t("Already have an account?")}
+                  {t("Already have an account?")}{" "}
                   <span
                     onClick={handleSwitchType}
                     className="text-blue-600 hover:underline cursor-pointer"
