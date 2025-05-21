@@ -4,6 +4,7 @@ import { AxiosHeaders } from "axios";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import TableActionButtons from "./TableActionButtons";
+import { Link } from "@/i18n/routing";
 
 const TaskOffersTable = async ({
   params,
@@ -106,7 +107,12 @@ const TaskOffersTable = async ({
                     </div>
                   </td>
                   <td className="p-2.5 border border-zinc-300 text-black text-xl font-bold font-['Libre_Baskerville']">
-                    {offer.company?.name}
+                    <Link
+                      href={`/companies/${offer?.company?.id}?page=about%20us`}
+                      className="text-blue-950 text-xl font-bold font-['Libre_Baskerville']"
+                    >
+                      {offer?.company?.name}
+                    </Link>
                   </td>
                   <td className="p-2.5 border w-fit border-zinc-300 text-black text-xl font-bold font-['Libre_Baskerville']">
                     <TableActionButtons
