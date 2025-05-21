@@ -42,7 +42,10 @@
     "Login": "Login",
     "Verify Your Account": "Verify Your Account",
     "Please enter the verification code sent to your email/phone": "Please enter the verification code sent to your email/phone",
-    "Verify": "Verify"
+    "Verify": "Verify",
+    "Forget password": "Forget password",
+    "Please enter the verification code sent to your email": "Please enter the verification code sent to your email",
+    "Verification Code": "Verification Code"
   },
   "register": {
     "Email": "Email",
@@ -94,6 +97,7 @@
   },
   "company": {
     "why_join_us": "Why join us?",
+    "view details": "View details",
     "get_customer_requests": "Get customer requests directly",
     "sign_up_today": "Sign up today to reach more clients",
     "too_busy": "Too busy?",
@@ -318,7 +322,5 @@
     "contact": "You can reach us through the following:\n- Email: [enter email here]\n- Phone: [enter phone number here]\n- Via the app in the support section.\n- On our official social media channels."
   }
 }
-
-
   
 }

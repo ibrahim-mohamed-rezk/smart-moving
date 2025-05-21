@@ -1,5 +1,4 @@
 import { ReviewTypes } from "@/libs/types/types";
-import React from "react";
 
 const ReviewCard = ({ review }: { review: ReviewTypes }) => {
   return (

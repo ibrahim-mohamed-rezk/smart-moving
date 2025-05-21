@@ -16,6 +16,7 @@ import { useRouter } from "@/i18n/routing";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import AuthModal from "@/components/ui/AuthModal";
+import ForgetPasswordModal from "@/components/ui/ForgetPasswordModal";
 
 const forms: Record<string, ServiceFormData> = {
   "private-moving": privateMovingInputs,
@@ -37,6 +38,7 @@ const ServiceForm = ({
   const [squareMeters, setSquareMeters] = useState<number>();
   const router = useRouter();
   const params = useSearchParams();
+  const [forgetpassword, setForgetPassword] = useState(false);
   const [authModalType, setAuthModalType] = useState<
     "login" | "register" | null
   >(null);
@@ -106,7 +108,11 @@ const ServiceForm = ({
         <AuthModal
           type={authModalType}
           onClose={() => setAuthModalType(null)}
+          setForgotPassword={setForgetPassword}
         />
+      )}
+      {forgetpassword && (
+        <ForgetPasswordModal onClose={() => setForgetPassword(false)} />
       )}
       <div className="grid grid-cols-1 gap-8">
         {/* first part */}

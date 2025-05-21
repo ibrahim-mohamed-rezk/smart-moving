@@ -75,7 +75,10 @@
     "Login": "Log ind",
     "Verify Your Account": "Bekræft din konto",
     "Please enter the verification code sent to your email/phone": "Indtast venligst bekræftelseskoden sendt til din e-mail/telefon",
-    "Verify": "Bekræft"
+    "Verify": "Bekræft",
+    "Forget password": "Glemt adgangskode",
+    "Please enter the verification code sent to your email": "Indtast venligst bekræftelseskoden sendt til din e-mail",
+    "Verification Code": "Bekræftelseskode"
   },
   "register": {
     "Email": "Email",
@@ -85,6 +88,7 @@
   },
   "company": {
     "why_join_us": "Hvorfor tilmelde dig?",
+    "view details": "Se detaljer",
     "get_customer_requests": "Modtag kundehenvendelser direkte",
     "sign_up_today": "Tilmeld dig i dag for at nå flere kunder",
     "too_busy": "For travlt?",

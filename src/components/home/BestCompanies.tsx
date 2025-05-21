@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { CompanyTypes } from "@/libs/types/types";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
 
 const BestCompanies = ({ companies }: { companies: CompanyTypes[] }) => {
   const t = useTranslations("home"); // Namespace: "home"
@@ -19,7 +20,8 @@ const BestCompanies = ({ companies }: { companies: CompanyTypes[] }) => {
           className="flex gap-6 items-center justify-center overflow-x-auto scrollbar-hide scroll-smooth"
         >
           {companies.map((company, i) => (
-            <div
+            <Link
+              href={`/companies/${company.id}?page=about%20us}`}
               key={i}
               className="flex-shrink-0 p-4 w-[clamp(12rem,15vw,15rem)] text-center"
             >
@@ -34,7 +36,7 @@ const BestCompanies = ({ companies }: { companies: CompanyTypes[] }) => {
               {/* <h2 className="text-lg font-bold text-[#7FB63D] ">
                 {company.name}
               </h2> */}
-            </div>
+            </Link>
           ))}
         </div>
 

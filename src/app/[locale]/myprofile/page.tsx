@@ -25,6 +25,7 @@ export default async function PersonalInfoPage({
     redirect("/");
   }
 
+
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-gray-50 font-['libre-baskerville']">
       {/* Sidebar Component - Handles both mobile and desktop views */}

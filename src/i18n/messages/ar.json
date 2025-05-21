@@ -40,7 +40,10 @@
     "Verify Your Account": "تحقق من حسابك",
     "Please enter the verification code sent to your email/phone": "يرجى إدخال رمز التحقق المرسل إلى بريدك الإلكتروني/هاتفك",
     "Verify": "تحقق",
-    "login": "تسجيل الدخول"
+    "login": "تسجيل الدخول",
+    "Forget password": "نسيت كلمة المرور",
+    "Please enter the verification code sent to your email": "يرجى إدخال رمز التحقق المرسل إلى بريدك الإلكتروني",
+    "Verification Code": "رمز التحقق"
   },
   "register": {
     "Email": "البريد الإلكتروني",
@@ -88,6 +91,7 @@
   },
   "company": {
     "why_join_us": "لماذا تنضم إلينا؟",
+    "view details": " رؤيه المزيد",
     "get_customer_requests": "استلم طلبات العملاء مباشرة",
     "sign_up_today": "سجل اليوم للوصول إلى المزيد من العملاء",
     "too_busy": "مشغول؟",

@@ -9,6 +9,7 @@ import AuthModal from "../ui/AuthModal";
 import { navigatons } from "@/libs/data/data";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
+import ForgetPasswordModal from "../ui/ForgetPasswordModal";
 
 const flagMap: Record<string, string> = {
   en: "gb",
@@ -19,6 +20,7 @@ export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const locale = useLocale();
+  const [openForgotPassword, setOpenForgotPassword] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [authModalType, setAuthModalType] = useState<
     "login" | "register" | null
@@ -442,7 +444,12 @@ export default function Header() {
           <AuthModal
             type={authModalType}
             onClose={() => setAuthModalType(null)}
+            setForgotPassword={setOpenForgotPassword}
           />
+        )}
+
+        {openForgotPassword && (
+          <ForgetPasswordModal onClose={() => setAuthModalType(null)} />
         )}
       </header>
     </>

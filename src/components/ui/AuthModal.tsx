@@ -18,11 +18,12 @@ import type { Value } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 
 interface AuthModalProps {
-  type: "login" | "register";
+  type: "login" | "register" | null;
   onClose: () => void;
+  setForgotPassword: (value: boolean) => void;
 }
 
-const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
+const AuthModal: FC<AuthModalProps> = ({ type, onClose, setForgotPassword }) => {
   const t = useTranslations("auth");
   const [modalType, setModalType] = useState(type);
   const [showPassword, setShowPassword] = useState(false);
@@ -121,7 +122,7 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
     if (modalType === "login") {
       try {
         const response = await postData(
-          "customer/login-api",
+          "company/login-api",
           formData,
           new AxiosHeaders({
             "Content-Type": "application/json",
@@ -538,9 +539,12 @@ const AuthModal: FC<AuthModalProps> = ({ type, onClose }) => {
               {/* Forget password link (login only) */}
               {modalType === "login" ? (
                 <div className="text-right">
-                  <a href="#" className="text-sm text-blue-600 hover:underline">
+                    <button onClick={() => {
+                      onClose();
+                      setForgotPassword(true);
+                  }} className="text-sm text-blue-600 hover:underline">
                     {t("Forget Password?")}
-                  </a>
+                  </button>
                 </div>
               ) : (
                 <>
