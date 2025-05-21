@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { CompanyTypes } from "@/libs/types/types";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
@@ -25,12 +24,12 @@ const BestCompanies = ({ companies }: { companies: CompanyTypes[] }) => {
               key={i}
               className="flex-shrink-0 p-4 w-[clamp(12rem,15vw,15rem)] text-center"
             >
-              <Image
+              <img
                 src={company.image || "/worldCarIcon.png"}
                 alt={t("company_logo")}
                 width={200}
                 height={200}
-                className="mx-auto mb-2"
+                className="mx-auto mb-2 w-[200px] h-[200px]"
               />
               {/* Optional: if you want to show company names */}
               {/* <h2 className="text-lg font-bold text-[#7FB63D] ">
