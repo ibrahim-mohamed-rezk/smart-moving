@@ -1,7 +1,6 @@
 import { getData } from "@/libs/axios/server";
 import axios, { AxiosHeaders } from "axios";
 import toast from "react-hot-toast";
-import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { CompanyTypes } from "@/libs/types/types";
 import { getTranslations } from "next-intl/server";
@@ -40,20 +39,17 @@ const CompaniesPage = async ({
     <div className="container mx-auto py-8 px-4">
       <h1 className="text-3xl font-bold mb-8 text-center">Moving Companies</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {companies &&
           companies.map((company: CompanyTypes) => (
             <div
               key={company.id}
               className="bg-white rounded-lg gap-4 shadow-md p-3 flex justify-between items-center hover:shadow-lg transition-shadow"
             >
-              <div className="w-32 h-32 rounded-full overflow-hidden flex-shrink-0 border border-gray-300">
-                <Image
+              <div className="w-36 h-36 rounded-full  flex items-center justify-center overflow-hidden flex-shrink-0 border border-gray-300">
+                <img
                   src={company.image === "" ? "/logo.png" : company.image}
                   alt={company.name}
-                  width={128}
-                  height={128}
-                  className="object-cover w-full h-full"
                 />
               </div>
 
