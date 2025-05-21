@@ -80,7 +80,7 @@ const RequestsTable = ({
                   {t(key.replace(/_/g, " "))}:
                 </span>
                 <span className="text-black/60 text-base font-normal font-['Libre_Baskerville'] break-words">
-                  {details[key]}
+                  {details[key] as string}
                 </span>
               </div>
             ))}

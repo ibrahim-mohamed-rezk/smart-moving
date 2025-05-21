@@ -134,15 +134,17 @@ export interface TaskDetailsTypes {
   Address_possibly_floor?: string;
   elevator?: string;
   furnishing?: string;
-  moving_address?: {
+  moving_address?: MovingAddressTypes;
+  [key: string]: string | undefined | number | MovingAddressTypes;
+}
+
+export interface MovingAddressTypes {
     to_address?: string;
     Address_possibly_floor?: string;
     elevator?: string;
     service_level?: string;
     [key: string]: string | undefined;
-  };
-  [key: string]: any;
-}
+  }
 
 export interface OfferTypes {
   id: number;
