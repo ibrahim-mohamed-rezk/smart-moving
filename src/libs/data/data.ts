@@ -96,21 +96,11 @@ export const privateMovingInputs = {
       name: "when_do_want_begin",
       type: "select",
       options: [
-        { title: "ASAP", value: "ASAP" },
         { title: "Within A Week", value: "week" },
         { title: "Later", value: "later" },
       ],
     },
-    // {
-    //   title: "Get quotes from",
-    //   name: "when_do_want_begin",
-    //   type: "select",
-    //   options: [
-    //     { title: "1 company", value: "1 company" },
-    //     { title: "3 company", value: "3 company" },
-    //     { title: "All available", value: "all" },
-    //   ],
-    // },
+
     {
       title: "Parking distance to door",
       type: "select",
@@ -176,13 +166,8 @@ export const storageInputs = {
       name: "when_do_want_begin",
       type: "select",
       options: [
-        { title: "No matter", value: "no_matter" },
-        { title: "Within 2 days", value: "2days" },
-        { title: "Within 10 days", value: "10days" },
-        { title: "Within 30 days", value: "30days" },
-        { title: "Within 2 months", value: "2months" },
-        { title: "Within 6 months", value: "6months" },
-        { title: "On the following date", value: "custom" },
+        { title: "Within A Week", value: "week" },
+        { title: "Later", value: "later" },
       ],
     },
 
@@ -282,7 +267,6 @@ export const movingFurnitureInputs = {
       name: "when_do_want_begin",
       type: "select",
       options: [
-        { title: "ASAP", value: "ASAP" },
         { title: "Within A Week", value: "week" },
         { title: "Later", value: "later" },
       ],
@@ -371,7 +355,6 @@ export const companyRelocationInputs = {
       name: "when_do_want_begin",
       type: "select",
       options: [
-        { title: "ASAP", value: "ASAP" },
         { title: "Within A Week", value: "week" },
         { title: "Later", value: "later" },
       ],
