@@ -10,6 +10,7 @@ import { navigatons } from "@/libs/data/data";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import ForgetPasswordModal from "../ui/ForgetPasswordModal";
+import { UserDataTypes } from "@/libs/types/types";
 
 const flagMap: Record<string, string> = {
   en: "gb",
@@ -29,6 +30,7 @@ export default function Header() {
   const [token, setToken] = useState<string | null>(null);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const searchParams = useSearchParams();
+  const [user, setUser] = useState<UserDataTypes | null>(null);
 
   const [menuOpen, setMenuOpen] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
@@ -46,6 +48,7 @@ export default function Header() {
       try {
         const response = await axios.get("/api/auth/getToken");
         setToken(response.data.token);
+        setUser(JSON.parse(response.data.user));
       } catch (error) {
         throw error;
       }
@@ -63,6 +66,8 @@ export default function Header() {
     document.addEventListener("mousedown", onClick);
     return () => document.removeEventListener("mousedown", onClick);
   }, []);
+
+  console.log(user);
 
   const logout = async () => {
     try {
@@ -193,6 +198,17 @@ export default function Header() {
                         >
                           {t("My Profile")}
                         </Link>
+
+                        <Link
+                          href="/myprofile?page=tasks"
+                          className=" w-full text-center py-2 flex justify-center text-sm text-gray-700 hover:bg-gray-100 font-['Libre_Baskerville']"
+                          onClick={() => setUserMenuOpen(false)}
+                        >
+                          {user?.role === "customer"
+                            ? t("Offers")
+                            : t("Requests")}
+                        </Link>
+
                         <button
                           onClick={() => {
                             setUserMenuOpen(false);

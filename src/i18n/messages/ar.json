@@ -6,7 +6,9 @@
     "Login": "تسجيل الدخول",
     "Register Moving Company": "تسجيل شركة نقل",
     "My Profile": "الملف الشخصي",
-    "Logout": "تسجيل الخروج"
+    "Logout": "تسجيل الخروج",
+    "Offers": "العروض",
+    "Requests": "الطلبات"
   },
   "profile": {
     "processing": "قيد التنفيذ",
@@ -233,7 +235,7 @@
     "comingSoon": "قريبًا",
     "submitRequest": "إرسال الطلب",
     "Services of Move": "خدمات النقل",
-    "Get a quote": "احصل على عرض سعر",
+    "Get a quote": "احصل على عرض سعر",    
     "Search price lists": "البحث في قوائم الأسعار",
     "Ratings": "التقييمات",
     "Moving out address": "عنوان الانتقال",

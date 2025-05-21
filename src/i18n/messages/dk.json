@@ -6,7 +6,9 @@
     "Login": "Log ind",
     "Register Moving Company": "Registrer flyttefirma",
     "My Profile": "Min Profil",
-    "Logout": "Log ud"
+    "Logout": "Log ud",
+    "Offers": "Tilbud",
+    "Requests": "Anmodninger"
   },
   "profile": {
     "processing": "Under behandling",

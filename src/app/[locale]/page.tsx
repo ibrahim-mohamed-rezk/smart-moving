@@ -6,7 +6,8 @@ import { getData } from "@/libs/axios/server";
 import { AxiosHeaders } from "axios";
 import { getTranslations } from "next-intl/server";
 import MobileServiceSwiper from "@/components/home/MobileServiceSwiper";
-
+import { redirect } from "@/i18n/routing";
+import { cookies } from "next/headers";
 
 const HomePage = async ({
   params,
@@ -15,6 +16,12 @@ const HomePage = async ({
 }) => {
   const { locale } = await params;
   const t = await getTranslations("home");
+
+  const coockieStore = await cookies();
+  const user = JSON.parse(coockieStore.get("user")?.value || "{}");
+
+  if (user.role === "company")
+    redirect({ href: "/myprofile?page=tasks", locale });
   const feachData = async () => {
     try {
       const response = await getData(
@@ -71,7 +78,7 @@ const HomePage = async ({
         <h3 className="text-[clamp(18px,3.333vw,64px)] text-[#192953] capitalize font-normal leading-[100%] tracking-[0] text-center font-['franklin-gothic-heavy'] mb-[clamp(20px,2.083vw,140px)]">
           {t("services_of_move")}
         </h3>
-       
+
         <MobileServiceSwiper services={services} />
       </section>
 

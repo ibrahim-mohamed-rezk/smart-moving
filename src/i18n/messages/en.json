@@ -6,7 +6,9 @@
     "Login": "Login",
     "Register Moving Company": "Register Moving Company",
     "My Profile": "My Profile",
-    "Logout": "Logout"
+    "Logout": "Logout",
+    "Offers": "Offers",
+    "Requests": "Requests"
   },
   "profile": {
     "processing": "Processing",
