@@ -2,6 +2,7 @@
 import { getData, postData } from "@/libs/axios/server";
 import { ChatTypes, MessageTypes, UserDataTypes } from "@/libs/types/types";
 import axios, { AxiosHeaders } from "axios";
+import { UserIcon } from "lucide-react";
 import { useLocale } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState, useRef, useCallback } from "react";
@@ -238,14 +239,21 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
         <div className="w-full p-3 md:p-6 flex justify-start items-center">
           <div className="flex justify-start items-center gap-2">
             <div className="w-10 h-10 md:w-16 md:h-16 relative bg-white rounded-[100px] outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden">
-              <img
-                className="w-8 h-7 md:w-12 md:h-10 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
-                src={
-                  chat?.participants.filter((p) => p.user.id !== user.id)[0]
-                    .user.image || "https://placehold.co/51x39"
-                }
-                alt="Company logo"
-              />
+              {chat?.participants.filter((p) => p.user.id !== user.id)[0].user
+                .image ? (
+                <img
+                  className="w-full h-full md:w-12 md:h-10 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                  src={
+                    chat?.participants.filter((p) => p.user.id !== user.id)[0]
+                      .user.image
+                  }
+                  alt="Company logo"
+                />
+              ) : (
+                <div className=" w-full h-full flex items-center justify-center">
+                  <UserIcon className="w-[80%] h-[80%]" />
+                </div>
+              )}
             </div>
             <div className="flex flex-col justify-center items-start gap-1">
               <div className="text-blue-950 text-sm md:text-lg font-normal font-['Libre_Baskerville']">
@@ -291,8 +299,8 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
                 {message.user_id !== user?.id && (
                   <div className="w-8 h-8 md:w-10 md:h-10 relative bg-white rounded-[100px] outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden flex-shrink-0">
                     <img
-                      className="w-6 h-5 md:w-8 md:h-6 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
-                      src={message.user?.image || "https://placehold.co/31x24"}
+                      className="w-full h-full "
+                      src={message.user?.image}
                       alt="User avatar"
                     />
                   </div>
@@ -323,8 +331,8 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
                 {message.user_id === user?.id && (
                   <div className="w-8 h-8 md:w-10 md:h-10 relative bg-white rounded-[100px] outline outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden flex-shrink-0">
                     <img
-                      className="w-6 h-5 md:w-8 md:h-6 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
-                      src={user?.image || "https://placehold.co/31x24"}
+                      className="w-full h-full absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                      src={message.user?.image }
                       alt="User avatar"
                     />
                   </div>

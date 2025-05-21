@@ -75,7 +75,7 @@ const CompanyHero = async ({
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 lg:gap-8">
               <div className="w-32 h-32 sm:w-40 sm:h-40 lg:w-64 lg:h-64 bg-white rounded-2xl outline-1 outline-indigo-950 flex items-center justify-center overflow-hidden">
                 <img
-                  className="w-3/4 h-auto"
+                  className="w-full h-full"
                   src={companyData.image === "" ? "/image0.png" : companyData.image}
                   alt="Company"
                 />
