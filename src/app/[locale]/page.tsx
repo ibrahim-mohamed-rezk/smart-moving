@@ -19,8 +19,9 @@ const HomePage = async ({
 
   const coockieStore = await cookies();
   const user = JSON.parse(coockieStore.get("user")?.value || "{}");
+  const token = coockieStore.get("token")?.value;
 
-  if (user.role === "company")
+  if (user.role === "company" && token)
     redirect({ href: "/myprofile?page=tasks", locale });
   const feachData = async () => {
     try {

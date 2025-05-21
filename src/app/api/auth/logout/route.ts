@@ -8,6 +8,11 @@ export async function POST() {
     expires: new Date(0),
     path: "/",
   });
+  cookieStore.set("user", "", {
+    httpOnly: true,
+    expires: new Date(0),
+    path: "/",
+  });
 
   return NextResponse.json({ message: "Logged out" });
 }

@@ -21,6 +21,7 @@ import { useTranslations } from "next-intl";
 import PhoneInput from "react-phone-number-input";
 import type { Value } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
+import { useRouter } from "@/i18n/routing";
 
 interface AuthModalProps {
   type: "login" | "register" | null;
@@ -44,6 +45,7 @@ const AuthModal: FC<AuthModalProps> = ({
   const [phone, setPhone] = useState<Value>();
   const [isPhoneInput, setIsPhoneInput] = useState(false);
   const recaptchaContainerRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
   const [formData, setFormData] = useState({
     login: "",
     password: "",
@@ -173,7 +175,11 @@ const AuthModal: FC<AuthModalProps> = ({
           password: "",
         });
         onClose();
-        window.location.reload();
+        if (response.data.role === "customer") {
+          window.location.reload();
+        } else {
+          router.push("/myprofile?page=tasks");
+        } 
       } catch (error) {
         if (axios.isAxiosError(error)) {
           toast.error(error.response?.data?.msg || "An error occurred");
