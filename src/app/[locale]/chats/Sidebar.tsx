@@ -97,7 +97,7 @@ const Sidebar = ({ locale, token, user }: { locale: string; token: string, user:
                     <div className="flex justify-start items-center gap-2">
                       <div className="w-10 h-10 md:w-16 flex items-center justify-center md:h-16 relative bg-white rounded-[100px] outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden">
                         <img
-                        className="w-8 h-7 md:w-12 md:h-10 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                        className="w-full h-full"
                         src={chat.participants.find(participant => participant.user_id !== user.id)?.user.image}
                         alt="user"
                       />
