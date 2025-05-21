@@ -11,7 +11,6 @@ const TableActionButtons = ({
   id,
   token,
   user,
-  task,
   locale,
   offer,
   openCollabse,
@@ -20,7 +19,6 @@ const TableActionButtons = ({
   id: number;
   token: string;
   user?: UserDataTypes;
-  task?: TaskTypes;
   locale?: string;
   offer?: OfferTypes;
   openCollabse?: boolean;
