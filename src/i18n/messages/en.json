@@ -155,6 +155,7 @@
   },
   "services": {
     "TO address": "To address",
+    "begining_date": "Begining date",
     "Please login to request a service": "Please login to request a service",
     "Street plan": "Street plan",
     "With transport": "With transport",

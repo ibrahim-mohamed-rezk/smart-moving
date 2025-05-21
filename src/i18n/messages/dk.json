@@ -146,6 +146,7 @@
   },
   "services": {
     "TO address": "Til adresse",
+    "begining_date": "Startdato",
     "Please login to request a service": "Log venligst ind for at anmode om en tjeneste",
     "Street plan": "Gadeplan",
     "With transport": "Med transport",

@@ -38,6 +38,8 @@ const ServiceForm = ({
   const [squareMeters, setSquareMeters] = useState<number>();
   const router = useRouter();
   const params = useSearchParams();
+  const [openCalendar, setOpenCalendar] = useState(false);
+  const [openCalendar2, setOpenCalendar2] = useState(false);
   const [forgetpassword, setForgetPassword] = useState(false);
   const [authModalType, setAuthModalType] = useState<
     "login" | "register" | null
@@ -48,7 +50,10 @@ const ServiceForm = ({
     details: {
       square_meters: squareMeters,
       moving_address: {},
-      title: params?.get("service")?.replace("-", " ").replace(/\b\w/g, (char) => char.toUpperCase()),
+      title: params
+        ?.get("service")
+        ?.replace("-", " ")
+        .replace(/\b\w/g, (char) => char.toUpperCase()),
     },
   });
 
@@ -74,7 +79,7 @@ const ServiceForm = ({
         })
       );
 
-      // router.push("/myprofile?page=tasks");
+      router.push("/myprofile?page=tasks");
       toast.success("Request sent successfully");
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -85,8 +90,6 @@ const ServiceForm = ({
       throw error;
     }
   };
-
-  console.log(service_id)
 
   if (!forms[service]) {
     return (
@@ -181,15 +184,22 @@ const ServiceForm = ({
                       <div className="relative">
                         <select
                           name={t(input.name)}
-                          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                          onChange={(
+                            e: React.ChangeEvent<HTMLSelectElement>
+                          ) => {
                             setFormData((prev) => ({
                               ...prev,
                               details: {
                                 ...prev.details,
                                 [e.target.name]: e.target.value,
                               },
-                            }))
-                          }
+                            }));
+                            if (e.target.value === "later") {
+                              setOpenCalendar(true);
+                            } else {
+                              setOpenCalendar(false);
+                            }
+                          }}
                           className="w-full p-3 pr-10 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all appearance-none bg-white"
                         >
                           {input.options?.map((option) => (
@@ -212,6 +222,26 @@ const ServiceForm = ({
                           </svg>
                         </div>
                       </div>
+                      {openCalendar && input.name === "when_do_want_begin" && (
+                        <div className="">
+                          <input
+                            onChange={(
+                              e: React.ChangeEvent<HTMLInputElement>
+                            ) =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                details: {
+                                  ...prev.details,
+                                  [e.target.name]: e.target.value,
+                                },
+                              }))
+                            }
+                            type="date"
+                            name={t("begining_date")}
+                            className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                          />
+                        </div>
+                      )}
                     </div>
                   );
                 }
@@ -359,18 +389,20 @@ const ServiceForm = ({
                             name={t(input.name)}
                             onChange={(
                               e: React.ChangeEvent<HTMLSelectElement>
-                            ) =>
+                            ) => {
                               setFormData((prev) => ({
                                 ...prev,
                                 details: {
                                   ...prev.details,
-                                  moving_address: {
-                                    ...prev.details.moving_address,
-                                    [e.target.name]: e.target.value,
-                                  },
+                                  [e.target.name]: e.target.value,
                                 },
-                              }))
-                            }
+                              }));
+                              if (e.target.value === "later") {
+                                setOpenCalendar2(true);
+                              } else {
+                                setOpenCalendar2(false);
+                              }
+                            }}
                             className="w-full p-3 pr-10 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all appearance-none bg-white"
                           >
                             {input.options?.map((option) => (
@@ -393,6 +425,30 @@ const ServiceForm = ({
                             </svg>
                           </div>
                         </div>
+                        {openCalendar2 &&
+                          input.name === "when_do_want_begin" && (
+                            <div className="">
+                              <input
+                                type="date"
+                                onChange={(
+                                  e: React.ChangeEvent<HTMLInputElement>
+                                ) => {
+                                  setFormData((prev) => ({
+                                    ...prev,
+                                    details: {
+                                      ...prev.details,
+                                      moving_address: {
+                                        ...prev.details.moving_address,
+                                        [e.target.name]: e.target.value,
+                                      },
+                                    },
+                                  }));
+                                }}
+                                name={t("begining_date")}
+                                className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                              />
+                            </div>
+                          )}
                       </div>
                     );
                   }
