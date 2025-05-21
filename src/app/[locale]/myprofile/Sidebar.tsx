@@ -13,6 +13,7 @@ const Sidebar = ({ userData }: { userData: UserDataTypes }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const params = useSearchParams();
   const [activeRoute, setActiveRoute] = useState(params.get("page"));
+  const [showNotification, setShowNotification] = useState(true);
 
   // Navigation handlers for sidebar
   const handleNavigation = (route: string) => {
@@ -101,10 +102,13 @@ const Sidebar = ({ userData }: { userData: UserDataTypes }) => {
                 </div>
               </button>
               <button
-                onClick={() => handleNavigation("tasks")}
+                onClick={() => {
+                  handleNavigation("tasks");
+                  setShowNotification(false);
+                }}
                 className={`cursor-pointer ${
                   activeRoute === "tasks" ? "bg-white/90" : ""
-                } self-stretch rounded-2xl p-3 lg:p-4 inline-flex justify-center items-center gap-2.5 w-full transition-all hover:bg-white/30`}
+                } self-stretch relative rounded-2xl p-3 lg:p-4 inline-flex justify-center items-center gap-2.5 w-full transition-all hover:bg-white/30`}
               >
                 <div
                   className={`flex-1 justify-start ${
@@ -115,6 +119,9 @@ const Sidebar = ({ userData }: { userData: UserDataTypes }) => {
                     ? "Your Tasks"
                     : "Services Requests"}
                 </div>
+                {showNotification && (
+                  <div className="absolute top-1/2 -translate-y-1/2 right-2 w-4 h-4 bg-red-500 rounded-full"></div>
+                )}
               </button>
             </div>
           </div>
@@ -191,7 +198,10 @@ const Sidebar = ({ userData }: { userData: UserDataTypes }) => {
             </button>
             <button
               type="button"
-              onClick={() => handleNavigation("tasks")}
+              onClick={() => {
+                handleNavigation("tasks");
+                setShowNotification(false);
+              }}
               className={`p-4 text-center cursor-pointer relative ${
                 activeRoute === "tasks" ? "bg-white/10" : ""
               } border-t border-white/20`}
@@ -203,7 +213,9 @@ const Sidebar = ({ userData }: { userData: UserDataTypes }) => {
                   ? "Your Tasks"
                   : "Services Requests"}
               </span>
-              <div className="absolute top-2 right-2 w-3 h-3 bg-red-500 rounded-full"></div>
+              {showNotification && (
+                <div className="absolute top-2 right-2 w-3 h-3 bg-red-500 rounded-full"></div>
+              )}
             </button>
           </div>
         </div>

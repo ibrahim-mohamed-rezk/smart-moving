@@ -34,6 +34,7 @@ export default function Header() {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
+  const [showNotification, setShowNotification] = useState(true);
 
   const changeLanguage = (l: string) => {
     const paramsString = searchParams.toString();
@@ -201,12 +202,18 @@ export default function Header() {
 
                         <Link
                           href="/myprofile?page=tasks"
-                          className=" w-full text-center py-2 flex justify-center text-sm text-gray-700 hover:bg-gray-100 font-['Libre_Baskerville']"
-                          onClick={() => setUserMenuOpen(false)}
+                          className=" w-full text-center py-2 flex  justify-center text-sm text-gray-700 hover:bg-gray-100 font-['Libre_Baskerville']"
+                          onClick={() => {
+                            setUserMenuOpen(false);
+                            setShowNotification(false);
+                          }}
                         >
                           {user?.role === "customer"
                             ? t("Offers")
                             : t("Requests")}
+                          {showNotification && (
+                            <div className="absolute top-1/2 -translate-y-1/2 right-5 w-2 h-2 bg-red-500 rounded-full"></div>
+                          )}
                         </Link>
 
                         <button
