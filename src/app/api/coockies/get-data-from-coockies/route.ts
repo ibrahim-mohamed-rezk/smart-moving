@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     return NextResponse.json(
-      { success: false, message: "Failed to get data from cookies" },
+      { success: false, message: "Failed to get data from cookies", error },
       { status: 400 }
     );
   }

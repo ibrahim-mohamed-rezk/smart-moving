@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     return response;
   } catch (error) {
     return NextResponse.json(
-      { success: false, message: "Failed to store data in cookies" },
+      { success: false, message: "Failed to store data in cookies", error },
       { status: 400 }
     );
   }
