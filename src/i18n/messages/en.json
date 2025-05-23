@@ -23,8 +23,8 @@
     "Submit": "Submit",
     "Logout": "Logout",
     "login": "Login",
-    "LoginFailed": "Login failed, please try again.",
-    "RegisterFailed": "Registration failed, please try again.",
+    "LoginFailed": "Login failed, please try again",
+    "RegisterFailed": "Registration failed, please try again",
     "ForgotPassword": "Forgot Password?",
     "LoginTitle": "Login",
     "RegisterTitle": "Register",
@@ -53,7 +53,7 @@
     "Email": "Email",
     "Password": "Password",
     "Register": "Register",
-    "RegisterFailed": "Registration failed, please try again."
+    "RegisterFailed": "Registration failed, please try again"
   },
   "hoeme": {
     "welcome": "Welcome"
@@ -70,8 +70,8 @@
     "scroll_right": "Scroll right",
     "latest_reviews": "Latest reviews",
     "review": "Review",
-    "review_summary": "wrote a review for {company} about {service} service.",
-    "about_us":{
+    "review_summary": "wrote a review for {company} about {service} service",
+    "about_us": {
       "title": "About Us",
       "Why choose us": "Why choose us?",
       "select_move_now": "Select your move now"
@@ -81,7 +81,7 @@
     "Safe and Reliable": "Safe and Reliable",
     "Fast and Easy": "Fast and Easy",
     "Live Support": "Live Support",
-    "We make getting around easy": "We make getting around easy! Reliable, safe, and fast transportation services throughout the city.",
+    "We make getting around easy": "We make getting around easy! Reliable, safe, and fast transportation services throughout the city",
     "Stay Connected": "Stay Connected",
     "Quick Help": "Quick Help",
     "FAQ": "FAQ",
@@ -94,7 +94,7 @@
     "Company": "Company",
     "Terms & Conditions": "Terms & Conditions",
     "Privacy Policy": "Privacy Policy",
-    "Copyright": "© {year} Smart Moving. All rights reserved.",
+    "Copyright": "© {year} Smart Moving All rights reserved",
     "About Us": "About Us"
   },
   "company": {
@@ -147,13 +147,66 @@
     "enter_city_name": "Enter city name",
     "service_categories": "Select your service categories",
     "create_account": "Create Account",
-    "processing": "Processing...",
+    "processing": "Processing",
     "company_registered_successfully": "Company registered successfully",
-    "something_went_wrong": "Something went wrong. Please try again.",
+    "something_went_wrong": "Something went wrong Please try again",
     "background": "Side Background Image",
     "showcvr": "Add CVR",
     "hidecvr": "Hide CVR",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "change_password": "Change password",
+    "personal_information": "Personal information",
+    "company_information": "Company information",
+    "personal_information_title": "Personal information",
+    "company_information_title": "Company information",
+    "tasks": "Tasks",
+    "task_offers": "Task offers",
+    "services_requests": "Services requests"
+  },
+  "personal_information": {
+    "first_name": "First name",
+    "last_name": "Last name",
+    "email": "Email",
+    "phone": "Phone",
+    "change_password": "Change password",
+    "personal_information": "Personal information",
+    "company_information": "Company information",
+    "tasks": "Tasks",
+    "task_offers": "Task offers",
+    "services_requests": "Services requests",
+    "verified": "Verified",
+    "sending": "Sending",
+    "sending_code": "Sending verification code",
+    "verify_phone": "Verify phone",
+    "verification_code": "Verification code",
+    "phone_verified": "Phone verified",
+    "company_bio": "Company bio",
+    "company_bio_placeholder": "Tell us about your company...",
+    "available_services": "Available services",
+    "price_listings": "Price listings",
+    "price_listings_placeholder": "Service address (e.g: 1 man with a car - approximately 10 m3)",
+    "price_listings_title": "Price (e.g: 700$)",
+    "add_price_listing": "Add price listing",
+    "profile_updated": "Profile updated successfully",
+    "saving": "Saving",
+    "save_changes": "Save changes",
+    "changePassword": {
+      "current_password_is_required": "Current password is required",
+      "new_password_is_required": "New password is required",
+      "password_must_be_at_least_8_characters": "Password must be at least 8 characters",
+      "passwords_must_match": "Passwords do not match",
+      "please_confirm_your_new_password": "Please confirm your new password",
+      "passwords_do_not_match": "Passwords do not match",
+      "password_changed_successfully": "Password changed successfully",
+      "an_error_occurred": "An error occurred",
+      "an_unexpected_error_occurred": "An unexpected error occurred",
+      "current_password": "Current password",
+      "enter_password": "Enter  password",
+      "new_password": "New password",
+      "confirm_new_password": "Confirm new password",
+      "saving": "Saving",
+      "save_changes": "Save changes"
+    }
   },
   "services": {
     "TO address": "To address",
@@ -288,8 +341,8 @@
     "Within 6 months": "Within 6 months",
     "On the following date": "On the following date",
     "Get offers from": "Get offers from",
-    "All companies on Flyttetilbud dk are allowed to bid (recommended)": "All companies on Flyttetilbud.dk are allowed to bid (recommended)",
-    "Only companies I invite myself may bid": "Only companies I invite myself may bid.",
+    "All companies on Flyttetilbud dk are allowed to bid (recommended)": "All companies on Flyttetilbuddk are allowed to bid (recommended)",
+    "Only companies I invite myself may bid": "Only companies I invite myself may bid",
     "Task description": "Task description",
     "description": "Task description",
     "Moving individual furniture/white goods - Get a quote": "Moving individual furniture/white goods - Get a quote",
@@ -301,7 +354,7 @@
     "Boat": "Boat",
     "Animal": "Animal",
     "Other": "Other",
-    "The topic is moved OFF": "The topic is moved OFF.",
+    "The topic is moved OFF": "The topic is moved OFF",
     "House/Floor Plan/Storage": "House/Floor Plan/Storage",
     "1st floor": "1st floor",
     "2nd floor": "2nd floor",
@@ -309,30 +362,29 @@
     "4th floor": "4th floor",
     "5th floor or above": "5th floor or above",
     "The topic is moved TO": "The topic is moved TO",
-    "I help myself with reading": "I help myself with reading.",
-    "There is an elevator at the departure address": "There is an elevator at the departure address.",
-    "There is an elevator at the move-in address": "There is an elevator at the move-in address."
-},
-"infoWebsite":{
-  "form": {
-    "name": "Name",
-    "email": "Email",
-    "message": "Message",
-    "submit": "Send"
+    "I help myself with reading": "I help myself with reading",
+    "There is an elevator at the departure address": "There is an elevator at the departure address",
+    "There is an elevator at the move-in address": "There is an elevator at the move-in address"
   },
-  "title": "Platform Info",
-  "tabs": {
-    "about": "About Us",
-    "terms": "Terms & Conditions",
-    "privacy": "Privacy Policy",
-    "contact": "Contact Us"
-  },
-  "content": {
-    "about": "Welcome to Smart Moving! We are an online platform offering safe and efficient shipping services through our smart application. We aim to simplify shipping between clients and service providers while ensuring top quality and reliability.",
-    "terms": "A. Customer obligations:\n- Provide accurate and updated information.\n- Use the app in accordance with laws and terms.\n- Pay service fees as shown.\n- Ensure shipments do not contain prohibited or dangerous items.\n\nB. Provider obligations:\n- Submit required documents such as licenses and insurance.\n- Commit to timing and shipment protection.\n- Maintain clean and safe vehicles.\n- Do not reject service without valid reason.\n\nC. Shipping responsibilities:\n- Smart Moving connects users and providers but is not responsible for lost or damaged shipments.\n- We do not guarantee delivery times but provide tracking tools.\n- Providers are responsible to deliver per contract and legal compliance.",
-    "privacy": "A. Collected Data:\n- Account data such as name, email, phone, and address.\n- Transaction data like shipment details and costs.\n- Location data during app use for accurate service.\n- Communication data to enhance experience.\n\nB. Data Usage:\n- Improve service quality.\n- Enhance safety and trust.\n- Provide support and send important notifications.\n- Protect privacy using encryption.\n\nC. Data Sharing:\n- No marketing sharing without consent.\n- May share with authorities upon request.\n- Shared with providers as needed to fulfill service.\n- We follow best practices in data security.\n\nD. Retention & Deletion:\n- Data is retained 5 years after last use.\n- Users may request deletion via app or support.\n- Tools available for privacy management.",
-    "contact": "You can reach us through the following:\n- Email: [enter email here]\n- Phone: [enter phone number here]\n- Via the app in the support section.\n- On our official social media channels."
+  "infoWebsite": {
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "submit": "Send"
+    },
+    "title": "Platform Info",
+    "tabs": {
+      "about": "About Us",
+      "terms": "Terms & Conditions",
+      "privacy": "Privacy Policy",
+      "contact": "Contact Us"
+    },
+    "content": {
+      "about": "Welcome to Smart Moving! We are an online platform offering safe and efficient shipping services through our smart application We aim to simplify shipping between clients and service providers while ensuring top quality and reliability",
+      "terms": "A Customer obligations:\n- Provide accurate and updated information\n- Use the app in accordance with laws and terms\n- Pay service fees as shown\n- Ensure shipments do not contain prohibited or dangerous items\n\nB Provider obligations:\n- Submit required documents such as licenses and insurance\n- Commit to timing and shipment protection\n- Maintain clean and safe vehicles\n- Do not reject service without valid reason\n\nC Shipping responsibilities:\n- Smart Moving connects users and providers but is not responsible for lost or damaged shipments\n- We do not guarantee delivery times but provide tracking tools\n- Providers are responsible to deliver per contract and legal compliance",
+      "privacy": "A Collected Data:\n- Account data such as name, email, phone, and address\n- Transaction data like shipment details and costs\n- Location data during app use for accurate service\n- Communication data to enhance experience\n\nB Data Usage:\n- Improve service quality\n- Enhance safety and trust\n- Provide support and send important notifications\n- Protect privacy using encryption\n\nC Data Sharing:\n- No marketing sharing without consent\n- May share with authorities upon request\n- Shared with providers as needed to fulfill service\n- We follow best practices in data security\n\nD Retention & Deletion:\n- Data is retained 5 years after last use\n- Users may request deletion via app or support\n- Tools available for privacy management",
+      "contact": "You can reach us through the following:\n- Email: [enter email here]\n- Phone: [enter phone number here]\n- Via the app in the support section\n- On our official social media channels"
+    }
   }
-}
-  
 }

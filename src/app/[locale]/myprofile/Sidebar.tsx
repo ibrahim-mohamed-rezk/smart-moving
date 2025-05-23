@@ -101,8 +101,8 @@ const Sidebar = ({ userData, token }: { userData: UserDataTypes, token: string }
                   } text-base lg:text-xl font-bold font-['Libre_Baskerville']`}
                 >
                   {userData.role === "customer"
-                    ? "Personal Information"
-                    : "Company Information"}
+                    ? t("personal_information")
+                    : t("company_information")}
                 </div>
               </button>
               <button
@@ -118,7 +118,7 @@ const Sidebar = ({ userData, token }: { userData: UserDataTypes, token: string }
                       : "text-stone-300"
                   } text-base lg:text-xl font-bold font-['Libre_Baskerville']`}
                 >
-                  Change Password
+                  {t("change_password")}
                 </div>
               </button>
               <button
@@ -132,8 +132,8 @@ const Sidebar = ({ userData, token }: { userData: UserDataTypes, token: string }
                   } text-base  lg:text-xl font-bold font-['Libre_Baskerville']`}
                 >
                   {userData.role === "customer"
-                    ? "Your Tasks"
-                    : "Services Requests"}
+                    ? t("personal_information_title")
+                    : t("company_information_title")}
                 </div>
                 {showNotification && (
                   <div className="absolute top-1/2 -translate-y-1/2 right-2 w-4 h-4 bg-red-500 rounded-full"></div>
@@ -196,7 +196,7 @@ const Sidebar = ({ userData, token }: { userData: UserDataTypes, token: string }
               <span
                 className={` text-base font-bold font-['Libre_Baskerville']`}
               >
-                Personal Information
+                {t("personal_information")}
               </span>
             </button>
             <button
@@ -209,7 +209,7 @@ const Sidebar = ({ userData, token }: { userData: UserDataTypes, token: string }
               <span
                 className={` text-base font-bold font-['Libre_Baskerville']`}
               >
-                Change Password
+                {t("change_password")}
               </span>
             </button>
             <button

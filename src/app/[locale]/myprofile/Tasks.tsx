@@ -5,8 +5,10 @@ import { cookies } from "next/headers";
 import { TaskTypes } from "@/libs/types/types";
 import { Link } from "@/i18n/routing";
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 
 const Tasks = async () => {
+  const t = getTranslations("tasks");
   const cookiesData = await cookies();
   const token = cookiesData.get("token")?.value;
   const user = JSON.parse(cookiesData.get("user")?.value || "{}");
@@ -40,17 +42,16 @@ const Tasks = async () => {
       {!tasksData || tasksData.length <= 0 ? (
         <div className="w-full flex flex-col items-center justify-center py-10">
           <div className="text-blue-950 text-xl md:text-2xl font-bold font-['Libre_Baskerville'] mb-4">
-            No Tasks Available
+            {t("no_tasks_available")}   
           </div>
           <p className="text-gray-600 text-center max-w-md">
-            You don&apos;t have any tasks yet. Your tasks will appear here once
-            you create them.
+            {t("You don&apos;t have any tasks yet. Your tasks will appear here once you create them.")}
           </p>
           <Link
             href="/services?service=private-moving&service_id=1"
             className="bg-blue-500 text-white px-4 py-2 rounded-md"
           >
-            Request Task
+            {t("request_task")} 
           </Link>
         </div>
       ) : (

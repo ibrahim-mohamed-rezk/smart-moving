@@ -18,7 +18,7 @@
         "scroll_right": "Rul til højre",
         "latest_reviews": "Seneste anmeldelser",
         "review": "Anmeldelse",
-        "review_summary": "skrev en anmeldelse for {company} om {service} tjenesten.",
+        "review_summary": "skrev en anmeldelse for {company} om {service} tjenesten",
         "about_us": {
             "title": "Om os",
             "Why choose us": "Hvorfor vælge os?"
@@ -28,7 +28,7 @@
         "Safe and Reliable": "Sikker og pålidelig",
         "Fast and Easy": "Hurtigt og nemt",
         "Live Support": "Live support",
-        "We make getting around easy": "Vi gør det nemt at komme rundt! Pålidelige, sikre og hurtige transporttjenester i hele byen.",
+        "We make getting around easy": "Vi gør det nemt at komme rundt! Pålidelige, sikre og hurtige transporttjenester i hele byen",
         "Stay Connected": "Hold kontakten",
         "Quick Help": "Hurtig hjælp",
         "FAQ": "Ofte stillede spørgsmål",
@@ -49,15 +49,15 @@
         "Login": "Log ind",
         "LoginTitle": "Log ind på din konto",
         "LoginSuccess": "Logget ind med succes!",
-        "LoginFailed": "Login mislykkedes, prøv igen.",
-        "NetworkError": "Netværksfejl, prøv igen.",
+        "LoginFailed": "Login mislykkedes, prøv igen",
+        "NetworkError": "Netværksfejl, prøv igen",
         "ForgotPassword": "Glemt adgangskode?"
     },
     "register": {
         "Email": "Email",
         "Password": "Adgangskode",
         "Register": "Registrer",
-        "RegisterFailed": "Registreringen mislykkedes, prøv igen."
+        "RegisterFailed": "Registreringen mislykkedes, prøv igen"
     },
     "company": {
         "why_join_us": "Hvorfor tilmelde dig?",
@@ -108,10 +108,63 @@
         "enter_city_name": "Indtast bynavn",
         "service_categories": "Vælg dine tjenestekategorier",
         "create_account": "Opret konto",
-        "processing": "Behandler...",
+        "processing": "Behandler",
         "company_registered_successfully": "Virksomhed registreret med succes",
-        "something_went_wrong": "Noget gik galt. Prøv igen.",
-        "background": "Baggrundsbillede"
+        "something_went_wrong": "Noget gik galt Prøv igen",
+        "background": "Baggrundsbillede",
+        "change_password":"Skift adgangskode",
+        "personal_information":"Personlige oplysninger",
+        "company_information":"Virksomhedsoplysninger",
+        "personal_information_title":"Personlige oplysninger",
+        "company_information_title":"Virksomhedsoplysninger",
+        "tasks":"Opgave",
+        "task_offers":"Opgave tilbud",
+        "services_requests":"Tjeneste anmodninger"
+    },
+    "personal_information": {
+      "first_name": "Fornavn",
+      "last_name": "Efternavn",
+      "email": "E-mail",
+      "phone": "Telefonnummer",
+      "change_password": "Skift adgangskode",
+      "personal_information": "Personlige oplysninger",
+      "company_information": "Virksomhedsoplysninger",
+      "tasks": "Opgave",
+      "task_offers": "Opgave tilbud",
+      "services_requests": "Tjeneste anmodninger",
+      "verified": "Verificeret",
+      "sending": "Sender",
+      "sending_code": "Sender kode",
+      "verify_phone": "Verificer telefonnummer",
+      "verification_code": "Verifikationskode",
+      "phone_verified": "Telefonnummer verificeret",
+      "company_bio": "Virksomhedens biografi",
+      "company_bio_placeholder": "Fortæl os om din virksomhed...",
+      "available_services": "Tjenester tilgængelige",
+      "price_listings": "Prisliste",
+      "price_listings_placeholder": "Tjenestenavn (f.eks. 1 mand med bil - omtrent 10 m3)",
+      "price_listings_title": "Pris (f.eks. 700$)",
+      "add_price_listing": "Tilføj prisliste",
+      "profile_updated": "Profil opdateret med succes",
+      "saving": "Gemmer",
+      "save_changes": "Gem ændringer",
+      "changePassword": {
+      "current_password_is_required": "Nuværende adgangskode er påkrævet",
+      "new_password_is_required": "Ny adgangskode er påkrævet",
+      "password_must_be_at_least_8_characters": "Adgangskoden skal være mindst 8 tegn lang",
+      "passwords_must_match": "Adgangskoderne matcher ikke",
+      "please_confirm_your_new_password": "Gentag venligst din nye adgangskode",
+      "passwords_do_not_match": "Adgangskoderne matcher ikke",
+        "password_changed_successfully": "Adgangskoden er ændret med succes",
+      "an_error_occurred": "En fejl opstod",
+      "an_unexpected_error_occurred": "En uventet fejl opstod",
+      "current_password": "Nuværende adgangskode",
+      "enter_password": "أدخل كلمة المرور",
+      "new_password": "Ny adgangskode",
+      "confirm_new_password": "Gentag ny adgangskode",
+      "saving": "Gemmer",
+      "save_changes": "Gem ændringer"
+    }
     },
     "services": {
         "Get a quote": "Få et tilbud",
@@ -147,7 +200,7 @@
         "1-12 months": "1-12 måneder",
         "under a month": "Under en måned",
         "Storage desired in": "Opbevaring ønskes i",
-        "Area approx": "Areal ca.",
+        "Area approx": "Areal ca",
         "No matter": "Ingen betydning",
         "Within 2 days": "Inden for 2 dage",
         "Within 10 days": "Inden for 10 dage",
@@ -156,7 +209,7 @@
         "Within 6 months": "Inden for 6 måneder",
         "On the following date": "På følgende dato",
         "Get offers from": "Få tilbud fra",
-        "All companies on Flyttetilbud dk are allowed to bid (recommended)": "Alle firmaer på Flyttetilbud.dk må byde (anbefales)",
+        "All companies on Flyttetilbud dk are allowed to bid (recommended)": "Alle firmaer på Flyttetilbuddk må byde (anbefales)",
         "Only companies I invite myself may bid ": "Kun firmaer jeg selv inviterer må byde",
         "Task description": "Opgavebeskrivelse",
         "Moving individual furniture/white goods - Get a quote": "Flytning af enkeltmøbler/hvidevarer - Få tilbud",
@@ -169,15 +222,15 @@
         "Other": "Andet",
         "The topic is moved OFF ": "Fra sted (etage)",
         "House/Floor Plan/Storage": "Hus/etage/Opbevaring",
-        "1st floor": "1. sal",
-        "2nd floor": "2. sal",
-        "3rd floor": "3. sal",
-        "4th floor": "4. sal",
-        "5th floor or above": "5. sal eller højere",
+        "1st floor": "1 sal",
+        "2nd floor": "2 sal",
+        "3rd floor": "3 sal",
+        "4th floor": "4 sal",
+        "5th floor or above": "5 sal eller højere",
         "The topic is moved TO": "Til sted",
-        "I help myself with reading ": "Jeg hjælper selv med at læsse.",
-        "There is an elevator at the departure address ": "Der er en elevator på fra-adressen.",
-        "There is an elevator at the move-in address ": "Der er en elevator på til-adressen."
+        "I help myself with reading ": "Jeg hjælper selv med at læsse",
+        "There is an elevator at the departure address ": "Der er en elevator på fra-adressen",
+        "There is an elevator at the move-in address ": "Der er en elevator på til-adressen"
     },
     "infoWebsite": {
         "form": {
@@ -204,7 +257,7 @@
     "scroll_right": "Rul til højre",
     "latest_reviews": "Seneste anmeldelser",
     "review": "Anmeldelse",
-    "review_summary": "skrev en anmeldelse for {company} om {service} tjenesten.",
+    "review_summary": "skrev en anmeldelse for {company} om {service} tjenesten",
     "about_us": {
       "title": "Om os",
       "Why choose us": "Hvorfor vælge os?"
@@ -212,10 +265,10 @@
   },
   "footer": {
     "Safe and Reliable": "Sikker og pålidelig",
-    "Copyright": "© {year} Smart Moving. All rights reserved.",
+    "Copyright": "© {year} Smart Moving All rights reserved",
     "Fast and Easy": "Hurtigt og nemt",
     "Live Support": "Live support",
-    "We make getting around easy": "Vi gør det nemt at komme rundt! Pålidelige, sikre og hurtige transporttjenester i hele byen.",
+    "We make getting around easy": "Vi gør det nemt at komme rundt! Pålidelige, sikre og hurtige transporttjenester i hele byen",
     "Stay Connected": "Hold kontakten",
     "Quick Help": "Hurtig hjælp",
     "FAQ": "Ofte stillede spørgsmål",
@@ -236,8 +289,8 @@
     "Password": "Adgangskode",
     "LoginTitle": "Log ind på din konto",
     "LoginSuccess": "Logget ind med succes!",
-    "LoginFailed": "Login mislykkedes, prøv igen.",
-    "NetworkError": "Netværksfejl, prøv igen.",
+    "LoginFailed": "Login mislykkedes, prøv igen",
+    "NetworkError": "Netværksfejl, prøv igen",
     "ForgotPassword": "Glemt adgangskode?",
     "Please login first to request a moving": "Log venligst ind for at anmode om en flytning",
     "First Name": "Fornavn",
@@ -262,7 +315,7 @@
     "Email": "Email",
     "Password": "Adgangskode",
     "Register": "Registrer",
-    "RegisterFailed": "Registreringen mislykkedes, prøv igen."
+    "RegisterFailed": "Registreringen mislykkedes, prøv igen"
   },
   "company": {
     "why_join_us": "Hvorfor tilmelde dig?",
@@ -314,9 +367,9 @@
     "enter_city_name": "Indtast bynavn",
     "service_categories": "Vælg dine tjenestekategorier",
     "create_account": "Opret konto",
-    "processing": "Behandler...",
+    "processing": "Behandler",
     "company_registered_successfully": "Virksomhed registreret med succes",
-    "something_went_wrong": "Noget gik galt. Prøv igen.",
+    "something_went_wrong": "Noget gik galt Prøv igen",
     "background": "Baggrundsbillede",
     "showcvr": "Tilføj CVR",
     "hidecvr": "Skjul CVR",
@@ -365,8 +418,8 @@
         "placeholder": "Indtast FRA-adresse"
       },
       "Address_possibly_floor": {
-        "title": "Adresse – evt. etage",
-        "placeholder": "Indtast adresse – evt. etage"
+        "title": "Adresse – evt etage",
+        "placeholder": "Indtast adresse – evt etage"
       },
       "number_of_square_meters": {
         "title": "Antal kvadratmeter"
@@ -390,8 +443,8 @@
         "placeholder": "Indtast adresse"
       },
       "Address_possibly_floor": {
-        "title": "Adresse – evt. etage",
-        "placeholder": "Indtast adresse – evt. etage"
+        "title": "Adresse – evt etage",
+        "placeholder": "Indtast adresse – evt etage"
       },
       "when_do_want_begin": {
         "title": "Hvornår vil du starte opgaven?",
@@ -416,7 +469,7 @@
     "Moving address": "Modtagelsesadresse",
     "moving address": "Modtagelsesadresse",
     "FRA address": "FRA-adresse",
-    "Address possibly floor": "Adresse – evt. etage",
+    "Address possibly floor": "Adresse – evt etage",
     "Elevator": "Elevator",
     "Yes": "Ja",
     "No": "Nej",
@@ -446,7 +499,7 @@
     "1-12 months": "1-12 måneder",
     "under a month": "under en måned",
     "Storage desired in": "Ønsket opbevaring i",
-    "Area approx": "Areal ca.",
+    "Area approx": "Areal ca",
     "No matter": "Ingen betydning",
     "Within 2 days": "Inden for 2 dage",
     "Within 10 days": "Inden for 10 dage",
@@ -455,8 +508,8 @@
     "Within 6 months": "Inden for 6 måneder",
     "On the following date": "På følgende dato",
     "Get offers from": "Hent tilbud fra",
-    "All companies on Flyttetilbud.dk are allowed to bid (recommended)": "Alle virksomheder på Flyttetilbud.dk må byde (anbefales)",
-    "Only companies I invite myself may bid.": "Kun virksomheder, jeg selv inviterer, kan byde.",
+    "All companies on Flyttetilbuddk are allowed to bid (recommended)": "Alle virksomheder på Flyttetilbuddk må byde (anbefales)",
+    "Only companies I invite myself may bid": "Kun virksomheder, jeg selv inviterer, kan byde",
     "Task description": "Opgavebeskrivelse",
     "description": "Opgavebeskrivelse",
     "Moving individual furniture/white goods - Get a quote": "Flytning af individuel møbler/hvidvarer - Få et tilbud",
@@ -468,19 +521,19 @@
     "Boat": "Båd",
     "Animal": "Dyr",
     "Other": "Andet",
-    "The topic is moved OFF.": "Afsendelsessted",
+    "The topic is moved OFF": "Afsendelsessted",
     "the topic is moved OFF": "Afsendelsessted",
     "House/Floor Plan/Storage": "Hus/etageplan/opbevaring",
-    "1st floor": "1. sal",
-    "2nd floor": "2. sal",
-    "3rd floor": "3. sal",
-    "4th floor": "4. sal",
-    "5th floor or above": "5. sal eller derover",
+    "1st floor": "1 sal",
+    "2nd floor": "2 sal",
+    "3rd floor": "3 sal",
+    "4th floor": "4 sal",
+    "5th floor or above": "5 sal eller derover",
     "The topic is moved TO": "Modtagelsessted",
     "the topic is moved TO": "Modtagelsessted",
-    "I help myself with reading.": "Jeg hjælper mig selv med at læse.",
-    "There is an elevator at the departure address.": "Der er elevator på afsendelsesadressen.",
-    "There is an elevator at the move-in address.": "Der er elevator på modtagelsesadressen."
+    "I help myself with reading": "Jeg hjælper mig selv med at læse",
+    "There is an elevator at the departure address": "Der er elevator på afsendelsesadressen",
+    "There is an elevator at the move-in address": "Der er elevator på modtagelsesadressen"
   },
   "infoWebsite": {
     "form": {
@@ -497,10 +550,10 @@
       "contact": "Kontakt os"
     },
     "content": {
-      "about": "Velkommen til Smart Moving! Vi er en online platform, der tilbyder sikre og effektive leverings- og fragtløsninger gennem vores smarte app. Vores mål er at forenkle forsendelsesprocessen mellem kunder og tjenesteudbydere med fokus på høj kvalitet og pålidelighed.",
-      "terms": "A. Kunders forpligtelser:\n- Angiv korrekte og opdaterede oplysninger.\n- Brug appen i overensstemmelse med gældende lovgivning og vilkår.\n- Betal for tjenesten som angivet.\n- Sørg for, at forsendelser ikke indeholder forbudte eller farlige materialer.\n\nB. Udbyderes forpligtelser:\n- Indsend nødvendige dokumenter som licenser og forsikringer.\n- Overhold aftalte leveringstider og beskyt forsendelsen under transport.\n- Sikr rene og sikre transportmidler.\n- Må ikke afvise service uden gyldig grund.\n\nC. Ansvar for levering:\n- Smart Moving fungerer som en platform mellem kunde og udbyder og påtager sig ikke ansvar for beskadigede eller mistede forsendelser.\n- Vi garanterer ikke leveringstidspunkter, men tilbyder sporingsværktøjer og kommunikationsmuligheder.\n- Tjenesteudbyderen er ansvarlig for levering i henhold til aftalen og gældende lovgivning.",
-      "privacy": "A. Indsamlede data:\n- Kontooplysninger som navn, e-mail, telefonnummer og adresse.\n- Transaktionsoplysninger, fx detaljer om forsendelser og pris.\n- Placeringsdata under brug af appen for at sikre præcis service.\n- Kommunikationsdata i appen for en bedre brugeroplevelse.\n\nB. Brug af data:\n- Forbedre kvaliteten af vores service.\n- Øge sikkerhed og pålidelighed.\n- Tilbyde support og sende vigtige notifikationer.\n- Beskytte brugerdata med kryptering og digital sikkerhed.\n\nC. Datadeling:\n- Vi deler ikke personlige oplysninger til markedsføring uden brugerens samtykke.\n- Kan deles med myndigheder på anmodning.\n- Deles med tjenesteudbydere i nødvendigt omfang for at levere tjenesten.\n- Vi følger bedste praksis for databeskyttelse.\n\nD. Opbevaring og sletning:\n- Data opbevares i 5 år efter sidste brug af appen.\n- Brugere kan anmode om sletning af deres data via appen eller kundeservice.\n- Vi tilbyder gennemsigtige værktøjer til at administrere privatliv.",
-      "contact": "Du kan kontakte os via følgende kanaler:\n- E-mail: [indsæt e-mail her]\n- Telefon: [indsæt telefonnummer her]\n- Gennem appen under kundeserviceafsnittet.\n- På vores officielle sociale mediekanaler."
+      "about": "Velkommen til Smart Moving! Vi er en online platform, der tilbyder sikre og effektive leverings- og fragtløsninger gennem vores smarte app Vores mål er at forenkle forsendelsesprocessen mellem kunder og tjenesteudbydere med fokus på høj kvalitet og pålidelighed",
+      "terms": "A Kunders forpligtelser:\n- Angiv korrekte og opdaterede oplysninger\n- Brug appen i overensstemmelse med gældende lovgivning og vilkår\n- Betal for tjenesten som angivet\n- Sørg for, at forsendelser ikke indeholder forbudte eller farlige materialer\n\nB Udbyderes forpligtelser:\n- Indsend nødvendige dokumenter som licenser og forsikringer\n- Overhold aftalte leveringstider og beskyt forsendelsen under transport\n- Sikr rene og sikre transportmidler\n- Må ikke afvise service uden gyldig grund\n\nC Ansvar for levering:\n- Smart Moving fungerer som en platform mellem kunde og udbyder og påtager sig ikke ansvar for beskadigede eller mistede forsendelser\n- Vi garanterer ikke leveringstidspunkter, men tilbyder sporingsværktøjer og kommunikationsmuligheder\n- Tjenesteudbyderen er ansvarlig for levering i henhold til aftalen og gældende lovgivning",
+      "privacy": "A Indsamlede data:\n- Kontooplysninger som navn, e-mail, telefonnummer og adresse\n- Transaktionsoplysninger, fx detaljer om forsendelser og pris\n- Placeringsdata under brug af appen for at sikre præcis service\n- Kommunikationsdata i appen for en bedre brugeroplevelse\n\nB Brug af data:\n- Forbedre kvaliteten af vores service\n- Øge sikkerhed og pålidelighed\n- Tilbyde support og sende vigtige notifikationer\n- Beskytte brugerdata med kryptering og digital sikkerhed\n\nC Datadeling:\n- Vi deler ikke personlige oplysninger til markedsføring uden brugerens samtykke\n- Kan deles med myndigheder på anmodning\n- Deles med tjenesteudbydere i nødvendigt omfang for at levere tjenesten\n- Vi følger bedste praksis for databeskyttelse\n\nD Opbevaring og sletning:\n- Data opbevares i 5 år efter sidste brug af appen\n- Brugere kan anmode om sletning af deres data via appen eller kundeservice\n- Vi tilbyder gennemsigtige værktøjer til at administrere privatliv",
+      "contact": "Du kan kontakte os via følgende kanaler:\n- E-mail: [indsæt e-mail her]\n- Telefon: [indsæt telefonnummer her]\n- Gennem appen under kundeserviceafsnittet\n- På vores officielle sociale mediekanaler"
     }
   }
 }}

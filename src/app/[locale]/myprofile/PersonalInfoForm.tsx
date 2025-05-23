@@ -9,12 +9,15 @@ import { app } from "@/libs/firebase/config";
 import PhoneInput from "react-phone-number-input";
 import type { Value } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
+import { useTranslations } from "next-intl";
+
 import {
   ConfirmationResult,
   getAuth,
   RecaptchaVerifier,
   signInWithPhoneNumber,
 } from "firebase/auth";
+import Image from "next/image";
 
 declare global {
   interface Window {
@@ -30,6 +33,7 @@ const PersonalInfoForm = ({
   initialData: UserDataTypes;
   token: string;
 }) => {
+  const t = useTranslations("personal_information");
   const [services, setServices] = useState([]);
   const [phone, setPhone] = useState<Value>(initialData.phone as Value);
 
@@ -399,7 +403,9 @@ const PersonalInfoForm = ({
             typeof profileImageUrl === "string" &&
             profileImageUrl.match(/\.(jpeg|jpg|gif|png|webp)$|blob:http/i) ? (
               <div className="relative w-full h-full">
-                <img
+                <Image
+                  width={100}
+                  height={100}
                   src={profileImageUrl.toString()}
                   alt="Profile"
                   className="w-full h-full object-cover"
@@ -456,7 +462,7 @@ const PersonalInfoForm = ({
           <div className="self-stretch flex flex-col sm:flex-row justify-start items-start gap-6 md:gap-12 w-full">
             <div className="flex-1 flex flex-col justify-center items-start gap-2 w-full">
               <div className="self-stretch text-blue-950 text-lg md:text-xl font-bold font-['Libre_Baskerville']">
-                First Name
+                {t("first_name")}
               </div>
               <div className="self-stretch relative w-full">
                 <input
@@ -472,14 +478,14 @@ const PersonalInfoForm = ({
                 />
                 {errors.first_name && (
                   <p className="text-red-500 text-sm mt-1 ml-2">
-                    {errors.first_name}
+                    {t(errors.first_name)}
                   </p>
                 )}
               </div>
             </div>
             <div className="flex-1 flex flex-col justify-center items-start gap-2 w-full">
               <div className="self-stretch text-blue-950 text-lg md:text-xl font-bold font-['Libre_Baskerville']">
-                Last Name
+                {t("last_name")}
               </div>
               <div className="self-stretch relative w-full">
                 <input
@@ -505,7 +511,7 @@ const PersonalInfoForm = ({
           {/* Email Field */}
           <div className="self-stretch flex flex-col justify-center items-start gap-2 w-full">
             <div className="self-stretch text-blue-950 text-lg md:text-xl font-bold font-['Libre_Baskerville']">
-              Email
+              {t("email")}
             </div>
             <div className="self-stretch relative w-full">
               <input
@@ -528,7 +534,7 @@ const PersonalInfoForm = ({
           {/* Phone Field */}
           <div className="self-stretch flex flex-col justify-center items-start gap-2 w-full">
             <div className="self-stretch text-blue-950 text-lg md:text-xl font-bold font-['Libre_Baskerville']">
-              Phone number
+              {t("phone")}
             </div>
             <div className="self-stretch relative w-full">
               <div className="flex flex-col sm:flex-row gap-3 w-full">
@@ -565,7 +571,7 @@ const PersonalInfoForm = ({
                           : "text-amber-600"
                       }`}
                     >
-                      {formData.verified_phone ? "✓ Verified" : ""}
+                      {formData.verified_phone ? t("verified") : ""}
                     </div>
                   )}
                 </div>
@@ -586,7 +592,7 @@ const PersonalInfoForm = ({
                       }`}
                     >
                       <span className="text-white text-sm md:text-base font-normal font-['Libre_Baskerville']">
-                        {sendingCode ? "Sending..." : "Verify Phone"}
+                        {sendingCode ? t("sending") : t("verify_phone")}
                       </span>
                     </button>
                   )}
@@ -596,7 +602,7 @@ const PersonalInfoForm = ({
               {showVerification && (
                 <div className="mt-3">
                   <div className="self-stretch text-blue-950 text-base font-bold font-['Libre_Baskerville'] mb-1">
-                    Verification Code
+                    {t("verification_code")}
                   </div>
                   <div className="flex flex-col sm:flex-row gap-3 w-full">
                     <div className="flex-1">
@@ -617,7 +623,7 @@ const PersonalInfoForm = ({
                       />
                       {errors.code && (
                         <p className="text-red-500 text-sm mt-1 ml-2">
-                          {errors.code}
+                          {t(errors.code)}
                         </p>
                       )}
                     </div>
@@ -634,7 +640,7 @@ const PersonalInfoForm = ({
                       }`}
                     >
                       <span className="text-white text-sm md:text-base font-normal font-['Libre_Baskerville']">
-                        {verifyingCode ? "Verifying..." : "Verify Code"}
+                        {verifyingCode ? t("verifying") : t("verify_code")}
                       </span>
                     </button>
                   </div>
@@ -646,13 +652,13 @@ const PersonalInfoForm = ({
                     disabled={sendingCode}
                     className="text-blue-950 text-sm font-normal font-['Libre_Baskerville'] mt-2 hover:underline"
                   >
-                    {sendingCode ? "Sending..." : "Resend Code"}
+                    {sendingCode ? t("sending") : t("resend_code")}
                   </button>
 
                   {/* Success message when verified */}
                   {verificationSuccess && (
                     <div className="text-green-600 text-sm mt-2">
-                      ✓ Phone number verified successfully!
+                      {t("phone_verified")}
                     </div>
                   )}
                 </div>
@@ -664,7 +670,7 @@ const PersonalInfoForm = ({
           {initialData.role === "company" && (
             <div className="self-stretch flex flex-col justify-center items-start gap-2 w-full">
               <div className="self-stretch text-blue-950 text-lg md:text-xl font-bold font-['Libre_Baskerville']">
-                Company Bio
+                {t("company_bio")}
               </div>
               <div className="self-stretch relative w-full">
                 <div className="flex-1 relative">
@@ -675,7 +681,7 @@ const PersonalInfoForm = ({
                       setFormData((prev) => ({ ...prev, bio: e.target.value }))
                     }
                     className={`self-stretch p-3 md:p-4 bg-zinc-100 rounded-3xl outline-1 outline-offset-[-1px] outline-zinc-300 w-full text-black text-base md:text-lg font-normal font-['Libre_Baskerville'] min-h-[120px]`}
-                    placeholder="Tell us about your company..."
+                    placeholder={t("company_bio_placeholder")}
                     minLength={100}
                   >
                     {formData.bio || ""}
@@ -689,7 +695,7 @@ const PersonalInfoForm = ({
           {initialData.role === "company" && (
             <div className="self-stretch flex flex-col justify-center items-start gap-2 w-full">
               <div className="self-stretch text-blue-950 text-lg md:text-xl font-bold font-['Libre_Baskerville']">
-                Available Services
+                {t("available_services")}
               </div>
               <div className="self-stretch w-full space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -740,7 +746,7 @@ const PersonalInfoForm = ({
           {initialData.role === "company" && (
             <div className="self-stretch flex flex-col justify-center items-start gap-2 w-full">
               <div className="self-stretch text-blue-950 text-lg md:text-xl font-bold font-['Libre_Baskerville']">
-                Price Listings
+                {t("price_listings")}
               </div>
               <div className="self-stretch w-full space-y-4">
                 {formData.price_listings?.split(",").map((item, index) => {
@@ -771,7 +777,7 @@ const PersonalInfoForm = ({
                             }));
                           }}
                           className="p-3 md:p-4 bg-zinc-100 rounded-3xl outline-1 outline-offset-[-1px] outline-zinc-300 w-full text-black text-base md:text-lg font-normal font-['Libre_Baskerville']"
-                          placeholder="Service title (e.g., 1 man with van - approx. 10 m3)"
+                          placeholder={t("price_listings_placeholder")}
                         />
                       </div>
                       <div className="w-full sm:w-1/3">
@@ -795,7 +801,7 @@ const PersonalInfoForm = ({
                             }));
                           }}
                           className="p-3 md:p-4 bg-zinc-100 rounded-3xl outline-1 outline-offset-[-1px] outline-zinc-300 w-full text-black text-base md:text-lg font-normal font-['Libre_Baskerville']"
-                          placeholder="Price (e.g., 700$)"
+                          placeholder={t("price_listings_placeholder")}
                         />
                       </div>
                     </div>
@@ -817,7 +823,7 @@ const PersonalInfoForm = ({
                 }}
                 className="px-4 py-2 bg-blue-950 rounded-xl text-white font-normal font-['Libre_Baskerville'] hover:bg-blue-900 transition-all"
               >
-                Add Price Listing
+                {t("add_price_listing")}
               </button>
             </div>
           )}
@@ -826,7 +832,7 @@ const PersonalInfoForm = ({
         {/* Status Messages */}
         {submitSuccess && (
           <div className="self-stretch bg-green-100 text-green-800 p-3 rounded-lg mb-4">
-            Profile information updated successfully!
+            {t("profile_updated")}
           </div>
         )}
 
@@ -845,7 +851,7 @@ const PersonalInfoForm = ({
           }`}
         >
           <div className="text-white text-lg md:text-xl font-normal font-['Libre_Baskerville']">
-            {isSubmitting ? "Saving..." : "Save Changes"}
+            {isSubmitting ? t("saving") : t("save_changes")}
           </div>
         </button>
       </div>

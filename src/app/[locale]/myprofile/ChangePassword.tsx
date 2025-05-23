@@ -5,6 +5,7 @@ import { UserDataTypes } from "@/libs/types/types";
 import axios, { AxiosHeaders } from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useTranslations } from "next-intl";
 
 const ChangePassword = ({
   token,
@@ -13,6 +14,7 @@ const ChangePassword = ({
   token: string;
   userData: UserDataTypes;
 }) => {
+  const t = useTranslations("personal_information.changePassword");
   // Form state with validation
   const [formData, setFormData] = useState({
     current_password: "",
@@ -65,25 +67,25 @@ const ChangePassword = ({
 
     // Current password validation
     if (!formData.current_password.trim()) {
-      newErrors.current_password = "Current password is required";
+      newErrors.current_password = t("current_password_is_required");
       valid = false;
     }
 
     // New password validation
     if (!formData.new_password.trim()) {
-      newErrors.new_password = "New password is required";
+      newErrors.new_password = t("new_password_is_required");
       valid = false;
     } else if (formData.new_password.length < 8) {
-      newErrors.new_password = "Password must be at least 8 characters";
+      newErrors.new_password = t("password_must_be_at_least_8_characters");
       valid = false;
     }
 
     // Confirm password validation
     if (!formData.new_password_confirmation.trim()) {
-      newErrors.new_password_confirmation = "Please confirm your new password";
+      newErrors.new_password_confirmation = t("please_confirm_your_new_password");
       valid = false;
     } else if (formData.new_password !== formData.new_password_confirmation) {
-      newErrors.new_password_confirmation = "Passwords do not match";
+      newErrors.new_password_confirmation = t("passwords_must_match");
       valid = false;
     }
 
@@ -117,7 +119,7 @@ const ChangePassword = ({
       );
 
       // Mock successful save
-      toast.success("Password changed successfully");
+      toast.success(t("password_changed_successfully"));
       setSubmitSuccess(true);
 
       // Reset form data
@@ -133,9 +135,9 @@ const ChangePassword = ({
       }, 3000);
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data?.msg || "An error occurred");
+        toast.error(error.response?.data?.msg || t("an_error_occurred"));
       } else {
-        toast.error("An unexpected error occurred");
+        toast.error(t("an_unexpected_error_occurred"));
       }
       throw error;
     } finally {
@@ -152,7 +154,7 @@ const ChangePassword = ({
         {/* Current Password Field */}
         <div className="self-stretch flex flex-col justify-center items-start gap-2">
           <div className="self-stretch text-blue-950 text-xl font-bold font-['Libre_Baskerville']">
-            Current Password
+            {t("current_password")}
           </div>
           <div className="self-stretch relative">
             <div className="self-stretch h-16 p-4 bg-zinc-100 rounded-[30px] outline-1 outline-offset-[-1px] outline-zinc-300 inline-flex justify-between items-center w-full">
@@ -161,7 +163,7 @@ const ChangePassword = ({
                 name="current_password"
                 value={formData.current_password}
                 onChange={handleChange}
-                placeholder="Enter Password"
+                placeholder={t("enter_password")}
                 className="bg-transparent border-none outline-none flex-1 text-black text-lg font-normal font-['Libre_Baskerville']"
               />
               <button
@@ -221,7 +223,7 @@ const ChangePassword = ({
         {/* New Password Field */}
         <div className="self-stretch flex flex-col justify-center items-start gap-2">
           <div className="self-stretch text-blue-950 text-xl font-bold font-['Libre_Baskerville']">
-            New Password
+            {t("new_password")}
           </div>
           <div className="self-stretch relative">
             <div className="self-stretch h-16 p-4 bg-zinc-100 rounded-[30px] outline outline-1 outline-offset-[-1px] outline-zinc-300 inline-flex justify-between items-center w-full">
@@ -230,7 +232,7 @@ const ChangePassword = ({
                 name="new_password"
                 value={formData.new_password}
                 onChange={handleChange}
-                placeholder="Enter Password"
+                placeholder={t("enter_password")}
                 className="bg-transparent border-none outline-none flex-1 text-black text-lg font-normal font-['Libre_Baskerville']"
               />
               <button
@@ -288,7 +290,7 @@ const ChangePassword = ({
         {/* Confirm New Password Field */}
         <div className="self-stretch flex flex-col justify-center items-start gap-2">
           <div className="self-stretch text-blue-950 text-xl font-bold font-['Libre_Baskerville']">
-            Confirm New Password
+            {t("confirm_new_password")}
           </div>
           <div className="self-stretch relative">
             <div className="self-stretch h-16 p-4 bg-zinc-100 rounded-[30px] outline outline-1 outline-offset-[-1px] outline-zinc-300 inline-flex justify-between items-center w-full">
@@ -299,7 +301,7 @@ const ChangePassword = ({
                 name="new_password_confirmation"
                 value={formData.new_password_confirmation}
                 onChange={handleChange}
-                placeholder="Enter Password"
+                placeholder={t("enter_password")}
                 className="bg-transparent border-none outline-none flex-1 text-black text-lg font-normal font-['Libre_Baskerville']"
               />
               <button
@@ -360,7 +362,7 @@ const ChangePassword = ({
       {/* Status Messages */}
       {submitSuccess && (
         <div className="self-stretch bg-green-100 text-green-800 p-3 rounded-lg mb-4">
-          Password changed successfully!
+          {t("password_changed_successfully")}
         </div>
       )}
 
@@ -380,7 +382,7 @@ const ChangePassword = ({
         }`}
       >
         <div className="text-white text-xl font-normal font-['Libre_Baskerville']">
-          {isSubmitting ? "Saving..." : "Save"}
+          {isSubmitting ? t("saving") : t("save_changes")}
         </div>
       </button>
     </form>
