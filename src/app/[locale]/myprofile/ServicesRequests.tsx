@@ -3,8 +3,10 @@ import { AxiosHeaders } from "axios";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import RequestsTable from "./RequestsTable";
+import { getTranslations } from "next-intl/server";
 
 const ServicesRequests = async () => {
+  const t = await getTranslations("services");
   const cookiesData = await cookies();
   const token = cookiesData.get("token")?.value;
   const user = JSON.parse(cookiesData.get("user")?.value || "{}");
@@ -36,11 +38,10 @@ const ServicesRequests = async () => {
     <div className="container mx-auto py-8">
       <div className="flex flex-col items-center mb-8">
         <h1 className="text-4xl font-bold text-blue-950 font-['Libre_Baskerville'] mb-2">
-          Available transfer requests
+          {t("available_transfer_requests")}
         </h1>
         <p className="text-center text-black/60 text-lg font-bold font-['Libre_Baskerville']">
-          Explore current customer requestِِs for moving services. Review each
-          request&apos;s details and submit your task to provide assistance.
+          {t("available_transfer_requests_description")}
         </p>
       </div>
 

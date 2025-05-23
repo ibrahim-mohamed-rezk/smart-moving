@@ -166,6 +166,15 @@
       "save_changes": "Gem ændringer"
     }
     },
+    "tasks": {
+    "no_tasks_available": "Ingen opgaver tilgængelige",
+    "You don&apos;t have any tasks yet. Your tasks will appear here once you create them.": "Ingen opgaver endnu. Opgavene vil vises her, når du opretter dem.",
+    "request_task": "Anmod om opgave",
+    "available_transfer_offers": "Tilgængelige flytningstilbud",
+    "available_transfer_offers_description": "Udforsk nuværende flytningstilbud fra virksomheder. Gennemgå hver anmodning og vælg det bedste tilpasset dine behov.",
+    "no_offers_available": "Ingen tilbud tilgængelige",
+    "actions": "Handlinger" 
+  },
     "services": {
         "Get a quote": "Få et tilbud",
         "Search price lists": "Søg i prislister",
@@ -230,7 +239,10 @@
         "The topic is moved TO": "Til sted",
         "I help myself with reading ": "Jeg hjælper selv med at læsse",
         "There is an elevator at the departure address ": "Der er en elevator på fra-adressen",
-        "There is an elevator at the move-in address ": "Der er en elevator på til-adressen"
+        "There is an elevator at the move-in address ": "Der er en elevator på til-adressen",
+        "Available transfer requests": "Tilgængelige flytningstilbud",
+        "Available transfer requests description": "Udforsk nuværende flytningstilbud fra virksomheder. Gennemgå hver anmodning og vælg det bedste tilpasset dine behov."  
+  
     },
     "infoWebsite": {
         "form": {
@@ -284,38 +296,43 @@
     "About Us": "Om os"
   },
   "auth": {
+    "Login successful": "Login successful",
     "Email": "Email",
-    "login": "Log ind",
+    "Email Address": "Email Adresse",
     "Password": "Adgangskode",
-    "LoginTitle": "Log ind på din konto",
-    "LoginSuccess": "Logget ind med succes!",
-    "LoginFailed": "Login mislykkedes, prøv igen",
-    "NetworkError": "Netværksfejl, prøv igen",
-    "ForgotPassword": "Glemt adgangskode?",
-    "Please login first to request a moving": "Log venligst ind for at anmode om en flytning",
-    "First Name": "Fornavn",
-    "Second Name": "Efternavn",
-    "Enter Email Address or Phone Number": "Indtast e-mailadresse eller telefonnummer",
-    "Enter Password": "Indtast adgangskode",
-    "Confirm Password": "Bekræft adgangskode",
-    "Postal Code": "Postnummer",
-    "Forget Password?": "Glemt adgangskode?",
-    "Don't have an account yet?": "Har du ikke en konto endnu?",
-    "Signup": "Tilmeld",
-    "Already have an account?": "Har du allerede en konto?",
-    "Login": "Log ind",
-    "Verify Your Account": "Bekræft din konto",
-    "Please enter the verification code sent to your email/phone": "Indtast venligst bekræftelseskoden sendt til din e-mail/telefon",
-    "Verify": "Bekræft",
-    "Forget password": "Glemt adgangskode",
-    "Please enter the verification code sent to your email": "Indtast venligst bekræftelseskoden sendt til din e-mail",
-    "Verification Code": "Bekræftelseskode"
+    "Register": "Registrer",
+    "Submit": "Send",
+    "Logout": "Log ud",
+    "LoginFailed": "Login failed, please try again",
+    "RegisterFailed": "Register failed, please try again",
+    "ForgotPassword": "Forgot password?",
+    "LoginTitle": "Login",
+    "RegisterTitle": "Register",
+    "Please login first to request a moving": "Please login first to request a moving",
+    "First Name": "First Name",
+    "Second Name": "Second Name",
+    "Enter Email Address or Phone Number": "Enter Email Address or Phone Number",
+    "Enter Password": "Enter Password",
+    "Confirm Password": "Confirm Password",
+    "Postal Code": "Postal Code",
+    "Forget Password?": "Forget Password?",
+    "Don't have an account yet?": "Don't have an account yet?",
+    "Signup": "Signup",
+    "Already have an account?": "Already have an account?",
+    "Login": "Login",
+    "Verify Your Account": "Verify Your Account",
+    "Please enter the verification code sent to your email/phone": "Please enter the verification code sent to your email/phone",
+    "Verify": "Verify",
+    "login": "login",
+    "Forget password": "Forget password",
+    "Please enter the verification code sent to your email": "Please enter the verification code sent to your email",
+    "Verification Code": "Verification Code"
   },
   "register": {
     "Email": "Email",
-    "Password": "Adgangskode",
-    "Register": "Registrer",
-    "RegisterFailed": "Registreringen mislykkedes, prøv igen"
+    "Password": "Password",
+    "Register": "Register",
+    "RegisterFailed": "Registration failed, please try again"
   },
   "company": {
     "why_join_us": "Hvorfor tilmelde dig?",

@@ -17,7 +17,9 @@
     "Status changed successfully": "تم تغيير الحالة بنجاح"
   },
   "auth": {
+    "Login successful": "تم تسجيل الدخول بنجاح",
     "Email": "البريد الإلكتروني",
+    "Email Address": "البريد الإلكتروني",
     "Password": "كلمة المرور",
     "Register": "إنشاء حساب",
     "Submit": "إرسال",
@@ -202,10 +204,30 @@
       "save_changes": "حفظ التغييرات"
     }
   },
+  "myprofile": {
+    "moving_address": "عنوان النقل",
+    "add_offer": "إضافة عرض",
+    "no_requests_available": "لا يوجد طلبات متاحة",
+    "id": "المعرف",
+    "name": "الاسم",
+    "status": "الحالة",
+    "actions": "الإجراءات",
+    "add_your_offer": "إضافة عرضك",
+    "price": "السعر",
+    "enter_your_price": "أدخل سعرك",
+    "submit_offer": "إرسال العرض",
+    "cancel": "الغاء",
+    "offer_submitted": "تم إرسال العرض بنجاح"
+
+  },
   "tasks": {
     "no_tasks_available": "لا يوجد مهام متاحة",
     "You don&apos;t have any tasks yet. Your tasks will appear here once you create them.": "لا يوجد مهام متاحة. سيظهرون هنا بمجرد إنشائها.",
-    "request_task": "طلب مهمة"  
+    "request_task": "طلب مهمة"  ,
+    "available_transfer_offers": "عروض النقل المتاحة",
+    "available_transfer_offers_description": "استكشف العروض الحالية للنقل المتاحة. قم بمراجعة التفاصيل لكل طلب واختر الأفضل لمتطلباتك.",
+    "no_offers_available": "لا يوجد عروض متاحة",
+    "actions": "الإجراءات"
   },
   "services": {
     "TO address": "إلى العنوان",
@@ -363,7 +385,10 @@
     "The topic is moved TO": "الموقع الذي يتم الانتقال إليه",
     "I help myself with reading ": "أقوم بالمساعدة بنفسي",
     "There is an elevator at the departure address ": "يوجد مصعد في العنوان المغادر",
-    "There is an elevator at the move-in address ": "يوجد مصعد في عنوان الانتقال"
+    "There is an elevator at the move-in address ": "يوجد مصعد في عنوان الانتقال",
+    "Available transfer requests": "طلبات النقل المتاحة",
+    "Available transfer requests description": "استكشف الطلبات الحالية للنقل المتاحة. قم بمراجعة التفاصيل لكل طلب واختر الأفضل لمتطلباتك."  
+  
   },
   "infoWebsite": {
     "form": {

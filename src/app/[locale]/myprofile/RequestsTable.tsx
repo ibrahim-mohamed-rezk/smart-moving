@@ -15,7 +15,7 @@ const RequestsTable = ({
   token: string;
 }) => {
   const locale = useLocale();
-  const t = useTranslations();
+  const t = useTranslations("myprofile");
   const [openCollapseId, setOpenCollapseId] = useState<number | null>(null);
   const [showOfferPopup, setShowOfferPopup] = useState(false);
   const [offerPrice, setOfferPrice] = useState("");
@@ -91,7 +91,7 @@ const RequestsTable = ({
           !Array.isArray(details.moving_address) && (
             <div className="mt-4 border-t pt-4 border-zinc-300">
               <div className="text-blue-950 text-xl font-bold font-['Libre_Baskerville'] mb-3">
-                Moving address
+                {t("moving_address")}
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {Object.keys(details.moving_address).map((key) => (
@@ -113,7 +113,7 @@ const RequestsTable = ({
             onClick={() => toggleOfferPopup(currentTaskId || 0)}
             className="px-6 py-2 rounded-md bg-green-500 hover:bg-green-600 text-white font-bold transition duration-300 ease-in-out"
           >
-            Add Offer
+            {t("add_offer")}
           </button>
         </div>
       </div>
@@ -125,7 +125,7 @@ const RequestsTable = ({
       {!tasksData || tasksData?.length === 0 ? (
         <div className="w-full md:p-8 text-center bg-white border border-zinc-300 rounded-lg">
           <p className="text-xl font-['Libre_Baskerville'] text-gray-700">
-            No Requests available at the moment.
+            {t("no_requests_available")}
           </p>
         </div>
       ) : (
@@ -133,16 +133,16 @@ const RequestsTable = ({
           <thead>
             <tr className="bg-neutral-200">
               <th className="p-2.5 border w-[100px] text-center border-zinc-300 text-blue-950 text-2xl font-bold font-['Libre_Baskerville']">
-                id
+                {t("id")}
               </th>
               <th className="p-2.5 border text-center border-zinc-300 text-blue-950 text-2xl font-bold font-['Libre_Baskerville']">
-                Name
+                {t("name")}
               </th>
               <th className="p-2.5 border text-center border-zinc-300 text-blue-950 text-2xl font-bold font-['Libre_Baskerville']">
-                Status
+                {t("status")}
               </th>
               <th className="p-2.5 w-fit border border-zinc-300 text-center text-blue-950 text-2xl font-bold font-['Libre_Baskerville']">
-                Actions
+                {t("actions")}
               </th>
             </tr>
           </thead>
@@ -178,7 +178,7 @@ const RequestsTable = ({
                         onClick={() => toggleOfferPopup(task.id)}
                         className="w-full sm:w-auto px-3 py-1.5 sm:px-4 sm:py-2 text-sm sm:text-base bg-green-500 hover:bg-green-600 text-white font-bold rounded-md transition duration-300 ease-in-out"
                       >
-                        Add Offer
+                        {t("add_offer")}
                       </button>
                       <button
                         onClick={() => {
@@ -213,17 +213,17 @@ const RequestsTable = ({
             className="w-full max-w-md bg-white rounded-2xl flex flex-col justify-start items-start gap-6 p-6"
           >
             <div className="self-stretch justify-start text-blue-950 text-2xl md:text-3xl font-bold font-['Libre_Baskerville']">
-              Add Your Offer
+              {t("add_your_offer")}
             </div>
             <div className="self-stretch flex flex-col gap-4 w-full">
               <label className="text-black text-lg font-bold font-['Libre_Baskerville']">
-                Price:
+                {t("price")}
               </label>
               <input
                 type="number"
                 value={offerPrice}
                 onChange={(e) => setOfferPrice(e.target.value)}
-                placeholder="Enter your price"
+                placeholder={t("enter_your_price")}
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <div className="flex justify-end gap-4 mt-4">
@@ -231,13 +231,13 @@ const RequestsTable = ({
                   onClick={() => setShowOfferPopup(false)}
                   className="px-6 py-2 rounded-md border border-blue-950 text-blue-950 font-bold transition duration-300 ease-in-out hover:bg-blue-100"
                 >
-                  Cancel
+                  {t("cancel")}
                 </button>
                 <button
                   onClick={() => currentTaskId && submitOffer(currentTaskId)}
                   className="px-6 py-2 rounded-md bg-green-500 hover:bg-green-600 text-white font-bold transition duration-300 ease-in-out"
                 >
-                  Submit Offer
+                  {t("submit_offer")}
                 </button>
               </div>
             </div>

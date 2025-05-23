@@ -8,7 +8,6 @@ import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 
 const Tasks = async () => {
-  const t = getTranslations("tasks");
   const cookiesData = await cookies();
   const token = cookiesData.get("token")?.value;
   const user = JSON.parse(cookiesData.get("user")?.value || "{}");
@@ -33,6 +32,7 @@ const Tasks = async () => {
       throw error;
     }
   };
+  const t = await getTranslations("tasks");
 
   const tasksData = await feachData();
 
@@ -42,7 +42,7 @@ const Tasks = async () => {
       {!tasksData || tasksData.length <= 0 ? (
         <div className="w-full flex flex-col items-center justify-center py-10">
           <div className="text-blue-950 text-xl md:text-2xl font-bold font-['Libre_Baskerville'] mb-4">
-            {t("no_tasks_available")}   
+            {t("no_tasks_available")}     
           </div>
           <p className="text-gray-600 text-center max-w-md">
             {t("You don&apos;t have any tasks yet. Your tasks will appear here once you create them.")}

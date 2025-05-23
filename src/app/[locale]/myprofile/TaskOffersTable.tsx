@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import TableActionButtons from "./TableActionButtons";
 import { Link } from "@/i18n/routing";
+import { getTranslations } from "next-intl/server";
 
 const TaskOffersTable = async ({
   params,
@@ -13,6 +14,7 @@ const TaskOffersTable = async ({
   params: { page: string; task: string };
   locale: string;
 }) => {
+  const t = await getTranslations("tasks");
   const cookiesData = await cookies();
   const token = cookiesData.get("token")?.value;
   const user = JSON.parse(cookiesData.get("user")?.value || "{}");
@@ -47,11 +49,10 @@ const TaskOffersTable = async ({
     <div className="container mx-auto py-8">
       <div className="flex flex-col items-center mb-8">
         <h1 className="text-4xl font-bold text-blue-950 font-['Libre_Baskerville'] mb-2">
-          Available transfer Offers
+          {t("available_transfer_offers")}
         </h1>
         <p className="text-center text-black/60 text-lg font-bold font-['Libre_Baskerville']">
-          Explore current companies Offers for moving services. Review each
-          request&apos;s details and select the one that best suits your needs.
+          {t("available_transfer_offers_description")}
         </p>
       </div>
 
@@ -60,7 +61,7 @@ const TaskOffersTable = async ({
         {!taskData?.offers || taskData?.offers?.length === 0 ? (
           <div className="w-full md:p-8 text-center bg-white border border-zinc-300 rounded-lg">
             <p className="text-xl font-['Libre_Baskerville'] text-gray-700">
-              No offers available at the moment.
+              {t("no_offers_available")}
             </p>
           </div>
         ) : (
@@ -76,7 +77,7 @@ const TaskOffersTable = async ({
                   </th>
                 ))}
                 <th className="p-2.5 w-fit border border-zinc-300 text-center text-blue-950 text-2xl font-bold font-['Libre_Baskerville']">
-                  Actions
+                  {t("actions")}
                 </th>
               </tr>
             </thead>

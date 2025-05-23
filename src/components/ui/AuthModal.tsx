@@ -167,7 +167,7 @@ const AuthModal: FC<AuthModalProps> = ({
           remember: true,
         });
 
-        toast.success("Login successful");
+        toast.success(t("Login successful"));
         setFormData({
           login: "",
           password: "",

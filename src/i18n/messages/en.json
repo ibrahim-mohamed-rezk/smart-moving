@@ -17,19 +17,18 @@
     "Status changed successfully": "Status changed successfully"
   },
   "auth": {
+    "Login successful": "Login successful",
     "Email": "Email",
+    "Email Address": "Email Address",
     "Password": "Password",
     "Register": "Register",
     "Submit": "Submit",
     "Logout": "Logout",
-    "login": "Login",
     "LoginFailed": "Login failed, please try again",
     "RegisterFailed": "Registration failed, please try again",
-    "ForgotPassword": "Forgot Password?",
+    "ForgotPassword": "Forgot password?",
     "LoginTitle": "Login",
     "RegisterTitle": "Register",
-    "LoginSuccess": "Login successful",
-    "NetworkError": "Network error, please try again",
     "Please login first to request a moving": "Please login first to request a moving",
     "First Name": "First Name",
     "Second Name": "Second Name",
@@ -45,6 +44,7 @@
     "Verify Your Account": "Verify Your Account",
     "Please enter the verification code sent to your email/phone": "Please enter the verification code sent to your email/phone",
     "Verify": "Verify",
+    "login": "Login",
     "Forget password": "Forget password",
     "Please enter the verification code sent to your email": "Please enter the verification code sent to your email",
     "Verification Code": "Verification Code"
@@ -208,6 +208,15 @@
       "save_changes": "Save changes"
     }
   },
+  "tasks": {
+    "no_tasks_available": "No tasks available",
+    "You don&apos;t have any tasks yet. Your tasks will appear here once you create them.": "You don&apos;t have any tasks yet. Your tasks will appear here once you create them.",
+    "request_task": "Request task",
+    "available_transfer_offers": "Available transfer offers",
+    "available_transfer_offers_description": "Explore current companies Offers for moving services. Review each request&apos;s details and select the one that best suits your needs.",
+    "no_offers_available": "No offers available",
+    "actions": "Actions"
+  },
   "services": {
     "TO address": "To address",
     "to address": "To address",
@@ -364,7 +373,9 @@
     "The topic is moved TO": "The topic is moved TO",
     "I help myself with reading": "I help myself with reading",
     "There is an elevator at the departure address": "There is an elevator at the departure address",
-    "There is an elevator at the move-in address": "There is an elevator at the move-in address"
+    "There is an elevator at the move-in address": "There is an elevator at the move-in address",
+    "Available transfer requests": "Available transfer requests",
+    "Available transfer requests description": "Explore current customer request&apos;s for moving services. Review each request&apos;s details and submit your task to provide assistance."
   },
   "infoWebsite": {
     "form": {
