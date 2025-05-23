@@ -34,7 +34,7 @@ export default function Header() {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
-  const [showNotification, setShowNotification] = useState(true);
+  const [showNotification, setShowNotification] = useState(false);
 
   const changeLanguage = (l: string) => {
     const paramsString = searchParams.toString();
@@ -43,6 +43,8 @@ export default function Header() {
     router.replace(url, { locale: l });
     setLangOpen(false);
   };
+
+ 
 
   useEffect(() => {
     const feachData = async () => {
@@ -68,7 +70,24 @@ export default function Header() {
     return () => document.removeEventListener("mousedown", onClick);
   }, []);
 
-  console.log(user);
+   useEffect(() => {
+     const feachData = async () => {
+       if (!token) return null;
+       try {
+         const response = await axios.post(
+           "/api/coockies/get-data-from-coockies",
+           {
+             key: "has_hold",
+           }
+         );
+         setShowNotification(response.data);
+       } catch (error) {
+         console.log(error);
+       }
+     };
+
+     feachData();
+   }, [token]);
 
   const logout = async () => {
     try {
@@ -203,10 +222,7 @@ export default function Header() {
                         <Link
                           href="/myprofile?page=tasks"
                           className=" w-full text-center py-2 flex  justify-center text-sm text-gray-700 hover:bg-gray-100 font-['Libre_Baskerville']"
-                          onClick={() => {
-                            setUserMenuOpen(false);
-                            setShowNotification(false);
-                          }}
+                          
                         >
                           {user?.role === "customer"
                             ? t("Offers")

@@ -29,7 +29,7 @@ export default async function PersonalInfoPage({
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-gray-50 font-['libre-baskerville']">
       {/* Sidebar Component - Handles both mobile and desktop views */}
-      <Sidebar userData={userData} />
+      <Sidebar token={token} userData={userData} />
 
       {/* Right Panel - Form */}
       <div className="w-full md:w-2/3 lg:w-3/4 p-4 sm:p-6 mt-4 md:mt-0">

@@ -10,6 +10,8 @@ import "../globals.css";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { cookies } from "next/headers";
+import NotificationsProvider from "@/libs/providers/NotificationsProvider";
 
 export const metadata: Metadata = {
   // change the icon to the global icon
@@ -34,20 +36,21 @@ export default async function LocaleLayout({
   }
   const messages = await getMessages({ locale });
 
+  const token = (await cookies()).get("token")?.value;
+
+
+
   return (
     <html dir={locale === "ar" ? "rtl" : "ltr"} lang={locale}>
       <body>
         <NextIntlClientProvider locale={locale} messages={messages}>
-          {/* <ReduxProvider> */}
+          <NotificationsProvider token={token} />
           <ClientToaster />
           <Header />
           <main className="bg-[#F0F0F0] min-h-screen rounded-tl-[20px] md:rounded-tl-[30px] lg:rounded-tl-[40px] rounded-tr-[20px] md:rounded-tr-[30px] border-b-0 pb-[50px] lg:rounded-tr-[40px]">
             {children}
           </main>
           <Footer />
-          {/* <ToastContainer /> */}
-          {/* <AutoLogin /> */}
-          {/* </ReduxProvider> */}
         </NextIntlClientProvider>
       </body>
     </html>

@@ -6,14 +6,15 @@ import { UserDataTypes } from "@/libs/types/types";
 import { useRouter } from "@/i18n/routing";
 import { useSearchParams } from "next/navigation";
 import { UserIcon } from "lucide-react";
+import axios from "axios";
 
-const Sidebar = ({ userData }: { userData: UserDataTypes }) => {
+const Sidebar = ({ userData, token }: { userData: UserDataTypes, token: string }) => {
   const t = useTranslations("company");
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const params = useSearchParams();
   const [activeRoute, setActiveRoute] = useState(params.get("page"));
-  const [showNotification, setShowNotification] = useState(true);
+  const [showNotification, setShowNotification] = useState(false);
 
   // Navigation handlers for sidebar
   const handleNavigation = (route: string) => {
@@ -29,6 +30,25 @@ const Sidebar = ({ userData }: { userData: UserDataTypes }) => {
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
+
+  useEffect(() => {
+    const feachData = async () => {
+      if (!token) return null;
+      try {
+        const response = await axios.post(
+          "/api/coockies/get-data-from-coockies",
+          {
+            key: "has_hold",
+          }
+        );
+        setShowNotification(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    feachData();
+  }, [token]);
 
   return (
     <>
@@ -102,10 +122,6 @@ const Sidebar = ({ userData }: { userData: UserDataTypes }) => {
                 </div>
               </button>
               <button
-                onClick={() => {
-                  handleNavigation("tasks");
-                  setShowNotification(false);
-                }}
                 className={`cursor-pointer ${
                   activeRoute === "tasks" ? "bg-white/90" : ""
                 } self-stretch relative rounded-2xl p-3 lg:p-4 inline-flex justify-center items-center gap-2.5 w-full transition-all hover:bg-white/30`}
