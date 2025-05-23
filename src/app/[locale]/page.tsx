@@ -6,7 +6,8 @@ import { getData } from "@/libs/axios/server";
 import { AxiosHeaders } from "axios";
 import { getTranslations } from "next-intl/server";
 import MobileServiceSwiper from "@/components/home/MobileServiceSwiper";
-
+import { redirect } from "@/i18n/routing";
+import { cookies } from "next/headers";
 
 const HomePage = async ({
   params,
@@ -98,30 +99,30 @@ const HomePage = async ({
                   <path
                     d="M48.2083 81.5834C45.1741 81.5834 42.2757 80.3181 36.4785 77.7876C29.7124 74.8343 24.5326 72.5733 20.939 70.4584H7.41663M48.2083 81.5834C51.2425 81.5834 54.1409 80.3181 59.9381 77.7876C74.3684 71.489 81.5833 68.3395 81.5833 63.0417V24.1042M48.2083 81.5834V40.7917M14.8333 24.1042V35.2292"
                     stroke="#93BD5F"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
                   />
                   <path
                     d="M34.5837 35.9389L23.7509 30.6971C17.8059 27.8204 14.8334 26.382 14.8334 24.1042C14.8334 21.8265 17.8059 20.3881 23.7509 17.5114L34.5837 12.2695C41.2693 9.03436 44.6124 7.41675 48.2084 7.41675C51.8043 7.41675 55.1474 9.03432 61.8332 12.2695L72.6659 17.5114C78.6108 20.3881 81.5834 21.8265 81.5834 24.1042C81.5834 26.382 78.6108 27.8204 72.6659 30.6971L61.8332 35.9389C55.1474 39.1742 51.8043 40.7917 48.2084 40.7917C44.6124 40.7917 41.2693 39.1742 34.5837 35.9389Z"
                     stroke="#93BD5F"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
                   />
                   <path
                     d="M7.41663 48.2083H18.5416"
                     stroke="#93BD5F"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
                   />
                   <path
                     d="M7.41663 59.3333H18.5416"
                     stroke="#93BD5F"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
                   />
                 </svg>
               </span>
