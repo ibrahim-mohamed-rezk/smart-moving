@@ -9,7 +9,8 @@ const nextConfig: NextConfig = {
     domains: [
       "static.vecteezy.com",
       "storage.googleapis.com",
-      "indigo-tiger-237802.hostingersite.com",
+      'indigo-tiger-237802.hostingersite.com'
+
     ], // Add the external image domain here
   },
 };

@@ -288,8 +288,8 @@
     "Within 6 months": "Within 6 months",
     "On the following date": "On the following date",
     "Get offers from": "Get offers from",
-    "All companies on Flyttetilbud.dk are allowed to bid (recommended)": "All companies on Flyttetilbud.dk are allowed to bid (recommended)",
-    "Only companies I invite myself may bid.": "Only companies I invite myself may bid.",
+    "All companies on Flyttetilbud dk are allowed to bid (recommended)": "All companies on Flyttetilbud.dk are allowed to bid (recommended)",
+    "Only companies I invite myself may bid": "Only companies I invite myself may bid.",
     "Task description": "Task description",
     "description": "Task description",
     "Moving individual furniture/white goods - Get a quote": "Moving individual furniture/white goods - Get a quote",
@@ -301,8 +301,7 @@
     "Boat": "Boat",
     "Animal": "Animal",
     "Other": "Other",
-    "The topic is moved OFF.": "The topic is moved OFF.",
-    "the topic is moved OFF": "The topic is moved OFF.",
+    "The topic is moved OFF": "The topic is moved OFF.",
     "House/Floor Plan/Storage": "House/Floor Plan/Storage",
     "1st floor": "1st floor",
     "2nd floor": "2nd floor",
@@ -310,11 +309,10 @@
     "4th floor": "4th floor",
     "5th floor or above": "5th floor or above",
     "The topic is moved TO": "The topic is moved TO",
-    "the topic is moved TO": "The topic is moved TO",
-    "I help myself with reading.": "I help myself with reading.",
-    "There is an elevator at the departure address.": "There is an elevator at the departure address.",
-    "There is an elevator at the move-in address.": "There is an elevator at the move-in address."
-  },
+    "I help myself with reading": "I help myself with reading.",
+    "There is an elevator at the departure address": "There is an elevator at the departure address.",
+    "There is an elevator at the move-in address": "There is an elevator at the move-in address."
+},
 "infoWebsite":{
   "form": {
     "name": "Name",

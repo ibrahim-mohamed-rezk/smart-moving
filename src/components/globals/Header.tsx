@@ -151,15 +151,15 @@ export default function Header() {
                         d="M14.1706 20.8905C18.3536 20.6125 21.6856 17.2332 21.9598 12.9909C22.0134 12.1607 22.0134 11.3009 21.9598 10.4707C21.6856 6.22838 18.3536 2.84913 14.1706 2.57107C12.7435 2.47621 11.2536 2.47641 9.8294 2.57107C5.64639 2.84913 2.31441 6.22838 2.04024 10.4707C1.98659 11.3009 1.98659 12.1607 2.04024 12.9909C2.1401 14.536 2.82343 15.9666 3.62791 17.1746C4.09501 18.0203 3.78674 19.0758 3.30021 19.9978C2.94941 20.6626 2.77401 20.995 2.91484 21.2351C3.05568 21.4752 3.37026 21.4829 3.99943 21.4982C5.24367 21.5285 6.08268 21.1757 6.74868 20.6846C7.1264 20.4061 7.31527 20.2668 7.44544 20.2508C7.5756 20.2348 7.83177 20.3403 8.34401 20.5513C8.8044 20.7409 9.33896 20.8579 9.8294 20.8905C11.2536 20.9852 12.7435 20.9854 14.1706 20.8905Z"
                         fill="#192953"
                         stroke="white"
-                        stroke-width="1.5"
-                        stroke-linejoin="round"
+                        strokeWidth="1.5"
+                        strokeLinejoin="round"
                       />
                       <path
                         d="M8.5 14.5H15.5M8.5 9.5H12"
                         stroke="white"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                     </svg>
                   </Link>
@@ -174,75 +174,30 @@ export default function Header() {
 
                 {/* user icon */}
                 {token ? (
-                  <div className="relative ">
-                    <button
-                      onClick={() => setUserMenuOpen((open) => !open)}
-                      className="w-6 h-6 hover:opacity-70 relative"
+                  <div className="w-6 h-6 relative">
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      <svg
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M17 8.5C17 5.73858 14.7614 3.5 12 3.5C9.23858 3.5 7 5.73858 7 8.5C7 11.2614 9.23858 13.5 12 13.5C14.7614 13.5 17 11.2614 17 8.5Z"
-                          stroke="white"
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                        <mask id="path-2-inside-1_107_998" fill="white">
-                          <path d="M19 20.5C19 16.634 15.866 13.5 12 13.5C8.13401 13.5 5 16.634 5 20.5" />
-                        </mask>
-                        <path
-                          d="M17.5 20.5C17.5 21.3284 18.1716 22 19 22C19.8284 22 20.5 21.3284 20.5 20.5H17.5ZM3.5 20.5C3.5 21.3284 4.17157 22 5 22C5.82843 22 6.5 21.3284 6.5 20.5H3.5ZM19 20.5H20.5C20.5 15.8056 16.6944 12 12 12V13.5V15C15.0376 15 17.5 17.4624 17.5 20.5H19ZM12 13.5V12C7.30558 12 3.5 15.8056 3.5 20.5H5H6.5C6.5 17.4624 8.96244 15 12 15V13.5Z"
-                          fill="white"
-                          mask="url(#path-2-inside-1_107_998)"
-                        />
-                      </svg>
-                    </button>
-                    <div
-                      className={`absolute overflow-hidden -start-full mt-2 w-32 bg-white rounded-xl shadow-lg z-10 transition-all duration-150 ${
-                        userMenuOpen
-                          ? "opacity-100 scale-100 pointer-events-auto"
-                          : "opacity-0 scale-95 pointer-events-none"
-                      }`}
-                    >
-                      <div className="py-1 flex items-center justify-center flex-col">
-                        <Link
-                          href="/myprofile?page=personal-info"
-                          className=" w-full text-center py-2 flex justify-center text-sm text-gray-700 hover:bg-gray-100 font-['Libre_Baskerville']"
-                          onClick={() => setUserMenuOpen(false)}
-                        >
-                          {t("My Profile")}
-                        </Link>
-
-                        <Link
-                          href="/myprofile?page=tasks"
-                          className=" w-full text-center py-2 flex  justify-center text-sm text-gray-700 hover:bg-gray-100 font-['Libre_Baskerville']"
-                          
-                        >
-                          {user?.role === "customer"
-                            ? t("Offers")
-                            : t("Requests")}
-                          {showNotification && (
-                            <div className="absolute top-1/2 -translate-y-1/2 right-5 w-2 h-2 bg-red-500 rounded-full"></div>
-                          )}
-                        </Link>
-
-                        <button
-                          onClick={() => {
-                            setUserMenuOpen(false);
-                            logout();
-                          }}
-                          className="block w-full text-center py-2 text-sm text-gray-700 hover:bg-gray-100 font-['Libre_Baskerville']"
-                        >
-                          {t("Logout")}
-                        </button>
-                      </div>
-                    </div>
+                      <path
+                        d="M17 8.5C17 5.73858 14.7614 3.5 12 3.5C9.23858 3.5 7 5.73858 7 8.5C7 11.2614 9.23858 13.5 12 13.5C14.7614 13.5 17 11.2614 17 8.5Z"
+                        stroke="white"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <mask id="path-2-inside-1_107_998" fill="white">
+                        <path d="M19 20.5C19 16.634 15.866 13.5 12 13.5C8.13401 13.5 5 16.634 5 20.5" />
+                      </mask>
+                      <path
+                        d="M17.5 20.5C17.5 21.3284 18.1716 22 19 22C19.8284 22 20.5 21.3284 20.5 20.5H17.5ZM3.5 20.5C3.5 21.3284 4.17157 22 5 22C5.82843 22 6.5 21.3284 6.5 20.5H3.5ZM19 20.5H20.5C20.5 15.8056 16.6944 12 12 12V13.5V15C15.0376 15 17.5 17.4624 17.5 20.5H19ZM12 13.5V12C7.30558 12 3.5 15.8056 3.5 20.5H5H6.5C6.5 17.4624 8.96244 15 12 15V13.5Z"
+                        fill="white"
+                        mask="url(#path-2-inside-1_107_998)"
+                      />
+                    </svg>
                   </div>
                 ) : (
                   <Link href="/RegisterCompany">
@@ -409,15 +364,15 @@ export default function Header() {
                         d="M14.1706 20.8905C18.3536 20.6125 21.6856 17.2332 21.9598 12.9909C22.0134 12.1607 22.0134 11.3009 21.9598 10.4707C21.6856 6.22838 18.3536 2.84913 14.1706 2.57107C12.7435 2.47621 11.2536 2.47641 9.8294 2.57107C5.64639 2.84913 2.31441 6.22838 2.04024 10.4707C1.98659 11.3009 1.98659 12.1607 2.04024 12.9909C2.1401 14.536 2.82343 15.9666 3.62791 17.1746C4.09501 18.0203 3.78674 19.0758 3.30021 19.9978C2.94941 20.6626 2.77401 20.995 2.91484 21.2351C3.05568 21.4752 3.37026 21.4829 3.99943 21.4982C5.24367 21.5285 6.08268 21.1757 6.74868 20.6846C7.1264 20.4061 7.31527 20.2668 7.44544 20.2508C7.5756 20.2348 7.83177 20.3403 8.34401 20.5513C8.8044 20.7409 9.33896 20.8579 9.8294 20.8905C11.2536 20.9852 12.7435 20.9854 14.1706 20.8905Z"
                         fill="#192953"
                         stroke="white"
-                        stroke-width="1.5"
-                        stroke-linejoin="round"
+                        strokeWidth="1.5"
+                        strokeLinejoin="round"
                       />
                       <path
                         d="M8.5 14.5H15.5M8.5 9.5H12"
                         stroke="white"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                     </svg>
                   </div>
@@ -449,9 +404,9 @@ export default function Header() {
                       <path
                         d="M17 8.5C17 5.73858 14.7614 3.5 12 3.5C9.23858 3.5 7 5.73858 7 8.5C7 11.2614 9.23858 13.5 12 13.5C14.7614 13.5 17 11.2614 17 8.5Z"
                         stroke="white"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                       <mask id="path-2-inside-1_107_998" fill="white">
                         <path d="M19 20.5C19 16.634 15.866 13.5 12 13.5C8.13401 13.5 5 16.634 5 20.5" />

@@ -282,8 +282,8 @@
     "Within 6 months": "خلال 6 أشهر",
     "On the following date": "في التاريخ التالي",
     "Get offers from": "الحصول على عروض من",
-    "All companies on Flyttetilbud.dk are allowed to bid (recommended)": "جميع الشركات على Flyttetilbud.dk يمكنها تقديم عروض (موصى به)",
-    "Only companies I invite myself may bid.": "فقط الشركات التي أدعوها بنفسي يمكنها تقديم عروض",
+    "All companies on Flyttetilbud dk are allowed to bid (recommended)": "جميع الشركات على Flyttetilbud.dk يمكنها تقديم عروض (موصى به)",
+    "Only companies I invite myself may bid ": "فقط الشركات التي أدعوها بنفسي يمكنها تقديم عروض",
     "Task description": "وصف المهمة",
     "description": "وصف المهمة",
     "Moving individual furniture/white goods - Get a quote": "نقل قطع الأثاث/الأجهزة - احصل على عرض",
@@ -295,8 +295,7 @@
     "Boat": "قارب",
     "Animal": "حيوان",
     "Other": "أخرى",
-    "The topic is moved OFF.": "الموقع الذي يتم الانتقال منه",
-    "the topic is moved OFF": "الموقع الذي يتم الانتقال منه",
+    "The topic is moved OFF ": "الموقع الذي يتم الانتقال منه",
     "House/Floor Plan/Storage": "منزل/مخزن/مخطط طابق",
     "1st floor": "الطابق الأول",
     "2nd floor": "الطابق الثاني",
@@ -304,10 +303,9 @@
     "4th floor": "الطابق الرابع",
     "5th floor or above": "الطابق الخامس أو أعلى",
     "The topic is moved TO": "الموقع الذي يتم الانتقال إليه",
-    "the topic is moved TO": "الموقع الذي يتم الانتقال إليه",
-    "I help myself with reading.": "أقوم بالمساعدة بنفسي.",
-    "There is an elevator at the departure address.": "يوجد مصعد في العنوان المغادر.",
-    "There is an elevator at the move-in address.": "يوجد مصعد في عنوان الانتقال."
+    "I help myself with reading ": "أقوم بالمساعدة بنفسي.",
+    "There is an elevator at the departure address ": "يوجد مصعد في العنوان المغادر.",
+    "There is an elevator at the move-in address ": "يوجد مصعد في عنوان الانتقال."
   },
   "infoWebsite": {
     "form": {
