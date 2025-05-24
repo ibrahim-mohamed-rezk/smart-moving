@@ -6,7 +6,7 @@ import RequestsTable from "./RequestsTable";
 import { getTranslations } from "next-intl/server";
 
 const ServicesRequests = async () => {
-  const t = await getTranslations("services");
+  const t = await getTranslations("company");
   const cookiesData = await cookies();
   const token = cookiesData.get("token")?.value;
   const user = JSON.parse(cookiesData.get("user")?.value || "{}");
