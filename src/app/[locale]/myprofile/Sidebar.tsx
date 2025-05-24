@@ -8,7 +8,13 @@ import { useSearchParams } from "next/navigation";
 import { UserIcon } from "lucide-react";
 import axios from "axios";
 
-const Sidebar = ({ userData, token }: { userData: UserDataTypes, token: string }) => {
+const Sidebar = ({
+  userData,
+  token,
+}: {
+  userData: UserDataTypes;
+  token: string;
+}) => {
   const t = useTranslations("company");
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -122,6 +128,7 @@ const Sidebar = ({ userData, token }: { userData: UserDataTypes, token: string }
                 </div>
               </button>
               <button
+                onClick={() => handleNavigation("tasks")}
                 className={`cursor-pointer ${
                   activeRoute === "tasks" ? "bg-white/90" : ""
                 } self-stretch relative rounded-2xl p-3 lg:p-4 inline-flex justify-center items-center gap-2.5 w-full transition-all hover:bg-white/30`}
