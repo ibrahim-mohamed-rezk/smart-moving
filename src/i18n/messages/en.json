@@ -157,11 +157,13 @@
     "change_password": "Change password",
     "personal_information": "Personal information",
     "company_information": "Company information",
-    "personal_information_title": "Personal information",
-    "company_information_title": "Company information",
+    "personal_information_title": "Offers",
+    "company_information_title": "Requests",
     "tasks": "Tasks",
     "task_offers": "Task offers",
-    "services_requests": "Services requests"
+    "services_requests": "Services requests",
+    "available_transfer_requests": "Available transfer requests",
+    "available_transfer_requests_description": "Choose the transfer requests that suit you and add your offer"
   },
   "personal_information": {
     "first_name": "First name",

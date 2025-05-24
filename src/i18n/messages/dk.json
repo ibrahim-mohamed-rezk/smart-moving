@@ -116,14 +116,15 @@
         "company_registered_successfully": "Virksomhed registreret med succes",
         "something_went_wrong": "Noget gik galt Prøv igen",
         "background": "Baggrundsbillede",
-        "change_password":"Skift adgangskode",
-        "personal_information":"Personlige oplysninger",
-        "company_information":"Virksomhedsoplysninger",
-        "personal_information_title":"Personlige oplysninger",
-        "company_information_title":"Virksomhedsoplysninger",
-        "tasks":"Opgave",
-        "task_offers":"Opgave tilbud",
-        "services_requests":"Tjeneste anmodninger"
+        "cancel": "Annuller",
+        "change_password": "Skift adgangskode",
+        "personal_information": "Personlige oplysninger",
+        "company_information": "Virksomhedsoplysninger",
+        "personal_information_title": "Tilbud",
+        "company_information_title": "Anmodninger",
+        "tasks": "Opgaver",
+        "task_offers": "Opgavetilbud",
+        "services_requests": "Tjenesteanmodninger"
     },
     "personal_information": {
       "first_name": "Fornavn",
