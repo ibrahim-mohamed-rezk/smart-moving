@@ -147,9 +147,9 @@ const RequestsTable = ({
             </tr>
           </thead>
           <tbody>
-            {tasksData?.map((task: TaskTypes) => (
+            {tasksData?.map((task: TaskTypes, index: number) => (
               <>
-                <tr key={`task-${task.id}`} className="bg-white">
+                <tr key={`task-${index + 1}`} className="bg-white">
                   <td className="p-2.5 text-center border border-zinc-300 text-black text-xl font-bold font-['Libre_Baskerville']">
                     {task.id}
                   </td>
