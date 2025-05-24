@@ -157,7 +157,9 @@
     "company_information_title":"الطلبات",
     "tasks":"المهام",
     "task_offers":"عروض المهام",
-    "services_requests":"طلبات الخدمات"
+    "services_requests":"طلبات الخدمات",
+    "available_transfer_requests":"طلبات النقل المتاحة",
+    "available_transfer_requests_description": "قم باختيار طلبات النقل المناسبة لك، وأضف العرض الخاص بك"
   },
   "personal_information": {
     "first_name": "الاسم الأول",

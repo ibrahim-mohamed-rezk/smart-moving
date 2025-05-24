@@ -151,7 +151,7 @@ const RequestsTable = ({
               <>
                 <tr key={`task-${index + 1}`} className="bg-white">
                   <td className="p-2.5 text-center border border-zinc-300 text-black text-xl font-bold font-['Libre_Baskerville']">
-                    {task.id}
+                    {index + 1}
                   </td>
                   <td className="p-2.5 border border-zinc-300 text-black text-xl font-bold font-['Libre_Baskerville']">
                     {task.details.title}
