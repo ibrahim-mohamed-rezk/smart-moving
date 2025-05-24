@@ -152,9 +152,9 @@
     "cancel": "الغاء",
     "change_password":"تغيير كلمة المرور",
     "personal_information":"المعلومات الشخصية",
-    "company_information":"المعلومات الشركية",
-    "personal_information_title":"المعلومات الشخصية",
-    "company_information_title":"المعلومات الشركية",
+    "company_information":"بيانات الشركة",
+    "personal_information_title":"العروض",
+    "company_information_title":"الطلبات",
     "tasks":"المهام",
     "task_offers":"عروض المهام",
     "services_requests":"طلبات الخدمات"
