@@ -17,7 +17,6 @@ const Tasks = async () => {
     redirect("/");
   }
 
-  console.log(locale)
 
   // get tasks from api
   const feachData = async () => {
