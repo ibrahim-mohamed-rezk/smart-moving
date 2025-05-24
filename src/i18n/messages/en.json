@@ -217,7 +217,8 @@
     "available_transfer_offers": "Available transfer offers",
     "available_transfer_offers_description": "Explore current companies Offers for moving services. Review each request&apos;s details and select the one that best suits your needs.",
     "no_offers_available": "No offers available",
-    "actions": "Actions"
+    "actions": "Actions",
+    "your_tasks": "Your tasks"
   },
   "services": {
     "TO address": "To address",

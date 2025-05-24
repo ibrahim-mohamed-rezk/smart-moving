@@ -178,7 +178,8 @@
     "available_transfer_offers": "Tilgængelige flytningstilbud",
     "available_transfer_offers_description": "Udforsk nuværende flytningstilbud fra virksomheder. Gennemgå hver anmodning og vælg det bedste tilpasset dine behov.",
     "no_offers_available": "Ingen tilbud tilgængelige",
-    "actions": "Handlinger" 
+    "actions": "Handlinger",
+    "your_tasks": "Dine opgaver"
   },
     "services": {
         "Get a quote": "Få et tilbud",

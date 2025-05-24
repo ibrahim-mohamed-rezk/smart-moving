@@ -150,15 +150,15 @@
     "showcvr": "إضافة رقم السجل التجاري",
     "hidecvr": "إخفاء رقم السجل التجاري",
     "cancel": "الغاء",
-    "change_password":"تغيير كلمة المرور",
-    "personal_information":"المعلومات الشخصية",
-    "company_information":"بيانات الشركة",
-    "personal_information_title":"العروض",
-    "company_information_title":"الطلبات",
-    "tasks":"المهام",
-    "task_offers":"عروض المهام",
-    "services_requests":"طلبات الخدمات",
-    "available_transfer_requests":"طلبات النقل المتاحة",
+    "change_password": "تغيير كلمة المرور",
+    "personal_information": "المعلومات الشخصية",
+    "company_information": "بيانات الشركة",
+    "personal_information_title": "العروض",
+    "company_information_title": "الطلبات",
+    "tasks": "المهام",
+    "task_offers": "عروض المهام",
+    "services_requests": "طلبات الخدمات",
+    "available_transfer_requests": "طلبات النقل المتاحة",
     "available_transfer_requests_description": "قم باختيار طلبات النقل المناسبة لك، وأضف العرض الخاص بك"
   },
   "personal_information": {
@@ -220,16 +220,16 @@
     "submit_offer": "إرسال العرض",
     "cancel": "الغاء",
     "offer_submitted": "تم إرسال العرض بنجاح"
-
   },
   "tasks": {
     "no_tasks_available": "لا يوجد مهام متاحة",
     "You don&apos;t have any tasks yet. Your tasks will appear here once you create them.": "لا يوجد مهام متاحة. سيظهرون هنا بمجرد إنشائها.",
-    "request_task": "طلب مهمة"  ,
+    "request_task": "طلب مهمة",
     "available_transfer_offers": "عروض النقل المتاحة",
     "available_transfer_offers_description": "استكشف العروض الحالية للنقل المتاحة. قم بمراجعة التفاصيل لكل طلب واختر الأفضل لمتطلباتك.",
     "no_offers_available": "لا يوجد عروض متاحة",
-    "actions": "الإجراءات"
+    "actions": "الإجراءات",
+    "your_tasks": "قائمة المهام  "
   },
   "services": {
     "TO address": "إلى العنوان",
@@ -317,7 +317,7 @@
     "comingSoon": "قريبًا",
     "submitRequest": "إرسال الطلب",
     "Services of Move": "خدمات النقل",
-    "Get a quote": "احصل على عرض سعر",    
+    "Get a quote": "احصل على عرض سعر",
     "Search price lists": "البحث في قوائم الأسعار",
     "Ratings": "التقييمات",
     "Moving out address": "عنوان الانتقال",
@@ -389,8 +389,7 @@
     "There is an elevator at the departure address ": "يوجد مصعد في العنوان المغادر",
     "There is an elevator at the move-in address ": "يوجد مصعد في عنوان الانتقال",
     "Available transfer requests": "طلبات النقل المتاحة",
-    "Available transfer requests description": "استكشف الطلبات الحالية للنقل المتاحة. قم بمراجعة التفاصيل لكل طلب واختر الأفضل لمتطلباتك."  
-  
+    "Available transfer requests description": "استكشف الطلبات الحالية للنقل المتاحة. قم بمراجعة التفاصيل لكل طلب واختر الأفضل لمتطلباتك."
   },
   "infoWebsite": {
     "form": {
