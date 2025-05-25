@@ -8,10 +8,6 @@ import {
 import {
   Download,
   FileText,
-  Package,
-  MapPin,
-  Calendar,
-  DollarSign,
 } from "lucide-react";
 
 interface ChatMessageProps {
