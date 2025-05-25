@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import axios, { AxiosHeaders } from "axios";
 import { postData } from "@/libs/axios/server";
-import { Filter, UserIcon } from "lucide-react";
+import { UserIcon } from "lucide-react";
 
 interface AddOffer {
   price: string;
@@ -165,7 +165,7 @@ const RequestsTable = ({
             <thead>
               <tr className="bg-neutral-200">
                 <th className="p-2.5 border w-[100px] text-center border-zinc-300 text-blue-950 text-2xl font-bold font-['Libre_Baskerville']">
-                  {t("id")}
+                  
                 </th>
                 <th className="p-2.5 border text-center border-zinc-300 text-blue-950 text-2xl font-bold font-['Libre_Baskerville']">
                   {t("name")}
