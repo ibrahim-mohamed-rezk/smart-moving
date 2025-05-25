@@ -157,7 +157,7 @@ export interface OfferTypes {
   updated_at?: string;
   company?: CompanyTypes;
   price?: string;
-  messgae?: string;
+  message?: string;
 }
 
 export interface ChatTypes {

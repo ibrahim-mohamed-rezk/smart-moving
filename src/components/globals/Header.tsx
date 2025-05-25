@@ -221,8 +221,8 @@ export default function Header() {
 
                         <Link
                           href="/myprofile?page=tasks"
+                          onClick={() => setUserMenuOpen(false)}
                           className=" w-full text-center py-2 flex  justify-center text-sm text-gray-700 hover:bg-gray-100 font-['Libre_Baskerville']"
-                          
                         >
                           {user?.role === "customer"
                             ? t("Offers")

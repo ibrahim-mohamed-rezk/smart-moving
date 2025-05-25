@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import TableActionButtons from "./TableActionButtons";
 import { Link } from "@/i18n/routing";
 import { getTranslations } from "next-intl/server";
+import { UserIcon } from "lucide-react";
 
 const TaskOffersTable = async ({
   params,
@@ -97,11 +98,19 @@ const TaskOffersTable = async ({
               {taskData?.offers?.map((offer: OfferTypes, index: number) => (
                 <tr key={index} className="bg-white">
                   <td className="p-2.5 border border-zinc-300 text-black text-xl font-bold font-['Libre_Baskerville']">
-                    <img
-                      className="w-12 h-12 mx-auto"
-                      src={offer?.company?.image}
-                      alt="company"
-                    />
+                    <Link
+                      href={`/companies/${offer?.company?.id}?page=about%20us`}
+                    >
+                      {offer?.company?.image ? (
+                        <img
+                          className="w-12 h-12 mx-auto"
+                          src={offer?.company?.image}
+                          alt="company"
+                        />
+                      ) : (
+                        <UserIcon className="w-8 h-8 mx-auto" />
+                      )}
+                    </Link>
                   </td>
                   <td className="p-2.5 text-center border border-zinc-300 text-black text-xl font-bold font-['Libre_Baskerville']">
                     {offer.offer}
