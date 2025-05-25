@@ -240,7 +240,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
 
       // Handle multiple file attachments
       if (selectedFiles.length > 0) {
-        selectedFiles.forEach((file, index) => {
+        selectedFiles.forEach((file) => {
           formData.append(`attachments`, file);
 
           // Add metadata for each file
