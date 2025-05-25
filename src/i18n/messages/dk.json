@@ -191,11 +191,8 @@
       "all":"Alle",
       "pending":"Afventer",
       "processing":"Behandler",
-      "done":"Færdig",
-      "name": "Navn",
-      "email": "Email",
-      "status": "Status",
-      "actions": "Handlinger"
+      "done":"Færdig"
+    
     },
     "tasks": {
     "no_tasks_available": "Ingen opgaver tilgængelige",

@@ -68,14 +68,26 @@ const TaskOffersTable = async ({
           <table className="min-w-full xl:w-full border-collapse table-fixed">
             <thead>
               <tr className="bg-neutral-200">
-                {Object.keys(taskData?.offers?.[0] || {})?.map((key) => (
-                  <th
-                    key={key}
-                    className="p-2.5 border text-center border-zinc-300  text-blue-950 text-2xl font-bold font-['Libre_Baskerville']"
-                  >
-                    {key}
-                  </th>
-                ))}
+                {Object.keys(taskData?.offers?.[0] || {})?.map((key) => {
+                  if (key === "image" || key === "message") {
+                    return null;
+                  } else if (key === "id") {
+                    return (
+                      <th
+                        key={key}
+                        className="p-2.5 border text-center border-zinc-300  text-blue-950 text-2xl font-bold font-['Libre_Baskerville']"
+                      ></th>
+                    );
+                  }
+                  return (
+                    <th
+                      key={key}
+                      className="p-2.5 border text-center border-zinc-300  text-blue-950 text-2xl font-bold font-['Libre_Baskerville']"
+                    >
+                      {key}
+                    </th>
+                  );
+                })}
                 <th className="p-2.5 w-fit border border-zinc-300 text-center text-blue-950 text-2xl font-bold font-['Libre_Baskerville']">
                   {t("actions")}
                 </th>
@@ -85,9 +97,13 @@ const TaskOffersTable = async ({
               {taskData?.offers?.map((offer: OfferTypes, index: number) => (
                 <tr key={index} className="bg-white">
                   <td className="p-2.5 border border-zinc-300 text-black text-xl font-bold font-['Libre_Baskerville']">
-                    {offer.id}
+                    <img
+                      className="w-12 h-12 mx-auto"
+                      src={offer?.company?.image}
+                      alt="company"
+                    />
                   </td>
-                  <td className="p-2.5 border border-zinc-300 text-black text-xl font-bold font-['Libre_Baskerville']">
+                  <td className="p-2.5 text-center border border-zinc-300 text-black text-xl font-bold font-['Libre_Baskerville']">
                     {offer.offer}
                   </td>
 
@@ -107,7 +123,7 @@ const TaskOffersTable = async ({
                       </div>
                     </div>
                   </td>
-                  <td className="p-2.5 border border-zinc-300 text-black text-xl font-bold font-['Libre_Baskerville']">
+                  <td className="p-2.5 border text-center border-zinc-300 text-black text-xl font-bold font-['Libre_Baskerville']">
                     <Link
                       href={`/companies/${offer?.company?.id}?page=about%20us`}
                       className="text-blue-950 text-xl font-bold font-['Libre_Baskerville']"
