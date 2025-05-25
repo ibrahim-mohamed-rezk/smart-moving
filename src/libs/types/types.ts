@@ -179,6 +179,7 @@ export interface ChatTypes {
     updated_at: string;
     user: UserDataTypes;
   }[];
+  order?: TaskTypes
 }
 
 export interface MessageTypes {
@@ -191,4 +192,30 @@ export interface MessageTypes {
   updated_at: string;
   user: UserDataTypes;
   file_url?: string;
+}
+
+export interface AttachmentType {
+  id: number;
+  type: string;
+  name: string;
+  size: string;
+  link: string;
+}
+
+export interface ExtendedMessageTypes {
+  id: number;
+  message: string;
+  user_id: number;
+  created_at: string;
+  file_url?: string;
+  acttachmets?: AttachmentType[];
+  user: {
+    id: number;
+    name: string;
+    image: string;
+    phone: string;
+    company?: {
+      id: number;
+    };
+  };
 }

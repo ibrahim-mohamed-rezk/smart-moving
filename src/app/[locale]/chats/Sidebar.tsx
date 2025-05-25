@@ -125,7 +125,7 @@ const Sidebar = ({
           </div>
         </div>
 
-        <div className="p-3 md:p-6 flex flex-col justify-center items-start gap-4 w-full overflow-y-auto">
+        <div className="p-3 md:p-6 flex flex-col justify-start items-start gap-4 w-full overflow-y-auto">
           {filteredChats.length > 0 ? (
             filteredChats.map((chat) => (
               <>

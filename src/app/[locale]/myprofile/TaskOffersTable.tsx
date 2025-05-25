@@ -146,6 +146,7 @@ const TaskOffersTable = async ({
                       id={offer.id}
                       token={token}
                       offer={offer}
+                      taskDataId={taskData.id}
                     />
                   </td>
                 </tr>

@@ -224,11 +224,11 @@
     "submit_offer": "Submit offer",
     "cancel": "Cancel",
     "offer_submitted": "Offer submitted successfully",
-    "message":"Message",
-    "all":"All",
-    "pending":"Pending",
-    "processing":"Processing",
-    "done":"Done"
+    "message": "Message",
+    "all": "All",
+    "pending": "Pending",
+    "processing": "Processing",
+    "done": "Done"
   },
   "tasks": {
     "no_tasks_available": "No tasks available",
@@ -420,5 +420,23 @@
       "privacy": "A Collected Data:\n- Account data such as name, email, phone, and address\n- Transaction data like shipment details and costs\n- Location data during app use for accurate service\n- Communication data to enhance experience\n\nB Data Usage:\n- Improve service quality\n- Enhance safety and trust\n- Provide support and send important notifications\n- Protect privacy using encryption\n\nC Data Sharing:\n- No marketing sharing without consent\n- May share with authorities upon request\n- Shared with providers as needed to fulfill service\n- We follow best practices in data security\n\nD Retention & Deletion:\n- Data is retained 5 years after last use\n- Users may request deletion via app or support\n- Tools available for privacy management",
       "contact": "You can reach us through the following:\n- Email: [enter email here]\n- Phone: [enter phone number here]\n- Via the app in the support section\n- On our official social media channels"
     }
+  },
+  "chat": {
+    "download": "Download",
+    "file": "File",
+    "shared_image": "Shared image",
+    "user_avatar": "User avatar",
+    "company_logo": "Company logo",
+    "no_conversation": "No conversation selected",
+    "select_conversation": "Please select a conversation from the sidebar or start a new one",
+    "loading_messages": "Loading messages...",
+    "no_messages": "No messages yet",
+    "start_conversation": "Start a conversation by sending a message",
+    "type_message": "Type a message",
+    "attach_files": "Attach files",
+    "files_selected": "{count} file{plural} selected",
+    "clear_all": "Clear all",
+    "scroll_to_bottom": "Scroll to bottom",
+    "unknown_user": "Unknown User"
   }
 }

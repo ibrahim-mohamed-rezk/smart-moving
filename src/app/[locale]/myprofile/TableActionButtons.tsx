@@ -12,6 +12,7 @@ const TableActionButtons = ({
   token,
   locale,
   offer,
+  taskDataId,
 }: {
   id: number;
   token: string;
@@ -19,6 +20,7 @@ const TableActionButtons = ({
   locale?: string;
   offer?: OfferTypes;
   openCollabse?: boolean;
+  taskDataId?: number;
   setOpenCollabse?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [showOfferPopup, setShowOfferPopup] = useState(false);
@@ -40,7 +42,7 @@ const TableActionButtons = ({
 
       const chat = await postData(
         "chat",
-        { user_id: offer?.company?.user_id },
+        { user_id: offer?.company?.user_id, order_id: taskDataId },
         new AxiosHeaders({
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
