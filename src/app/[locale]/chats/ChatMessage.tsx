@@ -21,7 +21,6 @@ const ChatMessage = ({
   message,
   user,
   index,
-  orderDetails,
 }: ChatMessageProps) => {
   const renderAttachment = (attachment: AttachmentType) => {
     const isImage =
