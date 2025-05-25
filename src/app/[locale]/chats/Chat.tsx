@@ -3,19 +3,44 @@ import { Link } from "@/i18n/routing";
 import { getData, postData } from "@/libs/axios/server";
 import { ChatTypes, MessageTypes, UserDataTypes } from "@/libs/types/types";
 import axios, { AxiosHeaders } from "axios";
-import { UserIcon } from "lucide-react";
+import {
+  UserIcon,
+  Paperclip,
+  X,
+  Download,
+  FileText,
+  Image,
+} from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import toast from "react-hot-toast";
 
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB in bytes
+
+// Define attachment type based on API response
+interface AttachmentType {
+  id: number;
+  type: string;
+  name: string;
+  size: string;
+  link: string;
+}
+
+// Extended MessageTypes to include attachments
+interface ExtendedMessageTypes extends MessageTypes {
+  acttachmets?: AttachmentType[];
+}
+
 const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState<MessageTypes[]>([]);
+  const [messages, setMessages] = useState<ExtendedMessageTypes[]>([]);
   const [chat, setChat] = useState<ChatTypes | null>(null);
   const [loading, setLoading] = useState(false);
   const [sendingMessage, setSendingMessage] = useState(false);
   const [autoScroll, setAutoScroll] = useState(true);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const prevMessagesLengthRef = useRef(0);
@@ -95,7 +120,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
 
         // Sort messages chronologically
         const sortedMessages = response.data.sort(
-          (a: MessageTypes, b: MessageTypes) =>
+          (a: ExtendedMessageTypes, b: ExtendedMessageTypes) =>
             new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
         );
 
@@ -143,15 +168,95 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
     }
   }, [handleScroll]);
 
+  // Helper function to get file type from extension or MIME type
+  const getFileType = (filename: string, type?: string): string => {
+    if (type) return type;
+
+    const extension = filename.split(".").pop()?.toLowerCase();
+    const imageExtensions = ["jpg", "jpeg", "png", "gif", "webp", "svg", "bmp"];
+
+    if (extension && imageExtensions.includes(extension)) {
+      return "image";
+    }
+
+    return "file";
+  };
+
+  // Helper function to format file size
+  const formatFileSize = (bytes: number): string => {
+    if (bytes === 0) return "0 Bytes";
+    const k = 1024;
+    const sizes = ["Bytes", "KB", "MB", "GB"];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+  };
+
+  // Handle file selection (multiple files)
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+
+    const validFiles: File[] = [];
+
+    files.forEach((file) => {
+      if (file.size > MAX_FILE_SIZE) {
+        toast.error(`File "${file.name}" exceeds 10MB limit`);
+        return;
+      }
+      validFiles.push(file);
+    });
+
+    setSelectedFiles((prev) => [...prev, ...validFiles]);
+  };
+
+  // Handle file removal
+  const handleRemoveFile = (index: number) => {
+    setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  // Clear all selected files
+  const handleClearAllFiles = () => {
+    setSelectedFiles([]);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   // Handle sending new message
   const handleSendMessage = async () => {
-    if (!message.trim() || !id || sendingMessage) return;
+    if (
+      (!message.trim() && selectedFiles.length === 0) ||
+      !id ||
+      sendingMessage
+    )
+      return;
 
     try {
       setSendingMessage(true);
+      const formData = new FormData();
+      formData.append("message", message);
+      formData.append("chat_id", id);
+      formData.append("time", new Date().toISOString());
+
+      // Handle multiple file attachments
+      if (selectedFiles.length > 0) {
+        selectedFiles.forEach((file, index) => {
+          formData.append(`attachments`, file);
+
+          // Add metadata for each file
+          const fileType = getFileType(
+            file.name,
+            file.type.startsWith("image/") ? "image" : "file"
+          );
+          formData.append("attach_type", fileType);
+          formData.append("attach_size", formatFileSize(file.size));
+          formData.append("attach_name", file.name);
+        });
+      }
+
       const response = await postData(
         "chat_message",
-        { message, chat_id: id, time: new Date().toISOString() },
+        formData,
         new AxiosHeaders({
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
@@ -162,6 +267,10 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
       const newMessage = response.data;
       setMessages((prevMessages) => [...prevMessages, newMessage]);
       setMessage("");
+      setSelectedFiles([]);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
 
       // Force auto-scroll when user sends a message
       setAutoScroll(true);
@@ -184,6 +293,70 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
     }
   };
 
+  // Render attachment component
+  const renderAttachment = (attachment: AttachmentType) => {
+    const isImage =
+      attachment.type === "image" ||
+      attachment.link.match(/\.(jpg|jpeg|png|gif|webp|svg|bmp)$/i);
+
+    if (isImage) {
+      return (
+        <div key={attachment.id} className="relative group mb-2">
+          <img
+            src={attachment.link}
+            alt={attachment.name}
+            className="max-w-full max-h-[300px] rounded-lg object-contain cursor-pointer"
+            loading="lazy"
+            onClick={() => window.open(attachment.link, "_blank")}
+          />
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors rounded-lg" />
+          <a
+            href={attachment.link}
+            download={attachment.name}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute top-2 right-2 bg-black/50 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/70"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Download size={16} />
+          </a>
+        </div>
+      );
+    } else {
+      return (
+        <div
+          key={attachment.id}
+          className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg mb-2 border border-gray-200 hover:bg-gray-100 transition-colors"
+        >
+          <div className="flex-shrink-0 p-2 bg-blue-100 rounded-lg">
+            <FileText size={20} className="text-blue-600" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p
+              className="text-sm font-medium text-gray-900 truncate"
+              title={attachment.name}
+            >
+              {attachment.name}
+            </p>
+            <p className="text-xs text-gray-500">
+              {attachment.size} • {attachment.type.toUpperCase()}
+            </p>
+          </div>
+          <a
+            href={attachment.link}
+            download={attachment.name}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 text-blue-500 hover:text-blue-600 px-3 py-1 rounded-md hover:bg-blue-50 transition-colors flex-shrink-0"
+          >
+            <Download size={16} />
+            <span className="text-sm">Download</span>
+          </a>
+        </div>
+      );
+    }
+  };
+
   // Scroll to bottom button
   const ScrollToBottomButton = () => {
     if (autoScroll) return null;
@@ -194,7 +367,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
           setAutoScroll(true);
           scrollToBottom();
         }}
-        className="absolute bottom-4 right-4 bg-blue-950 text-white rounded-full p-2 shadow-md hover:bg-blue-800 transition-colors"
+        className="absolute bottom-4 right-4 bg-blue-950 text-white rounded-full p-2 shadow-md hover:bg-blue-800 transition-colors z-10"
         aria-label="Scroll to bottom"
       >
         <svg
@@ -350,7 +523,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
               </div>
             </div>
           ) : messages.length > 0 ? (
-            messages.map((message: MessageTypes, index: number) => (
+            messages.map((message: ExtendedMessageTypes, index: number) => (
               <div
                 key={message.id || index}
                 className={`self-stretch flex ${
@@ -363,7 +536,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
                     className="w-8 h-8 md:w-10 md:h-10 relative bg-white rounded-[100px] outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden flex-shrink-0"
                   >
                     <img
-                      className="w-full h-full "
+                      className="w-full h-full"
                       src={message.user?.image}
                       alt="User avatar"
                     />
@@ -379,17 +552,78 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
                       message.user_id === user?.id
                         ? "bg-blue-950 rounded-xl"
                         : "bg-zinc-100 rounded-lg"
-                    } flex justify-start items-start gap-2.5`}
+                    } flex flex-col justify-start items-start gap-2.5`}
                   >
-                    <div
-                      className={`${
-                        message.user_id === user?.id
-                          ? "text-white"
-                          : "text-black"
-                      } text-sm md:text-base font-normal font-['Libre_Baskerville']`}
-                    >
-                      {message.message}
-                    </div>
+                    {message.message && (
+                      <div
+                        className={`${
+                          message.user_id === user?.id
+                            ? "text-white"
+                            : "text-black"
+                        } text-sm md:text-base font-normal font-['Libre_Baskerville']`}
+                      >
+                        {message.message}
+                      </div>
+                    )}
+
+                    {/* Render attachments from API response */}
+                    {message.acttachmets && message.acttachmets.length > 0 && (
+                      <div className="w-full">
+                        {message.acttachmets.map((attachment) =>
+                          renderAttachment(attachment)
+                        )}
+                      </div>
+                    )}
+
+                    {/* Fallback for old file_url field */}
+                    {message.file_url && !message.acttachmets && (
+                      <div className="w-full">
+                        {message.file_url.match(
+                          /\.(jpg|jpeg|png|gif|webp|svg)$/i
+                        ) ? (
+                          <div className="relative group">
+                            <img
+                              src={message.file_url}
+                              alt="Shared image"
+                              className="max-w-full max-h-[300px] rounded-lg object-contain"
+                              loading="lazy"
+                            />
+                            <a
+                              href={message.file_url}
+                              download
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="absolute top-2 right-2 bg-black/50 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              <Download size={16} />
+                            </a>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-2 p-2 bg-gray-100 rounded-lg">
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium truncate">
+                                {message.file_url.split("/").pop()}
+                              </p>
+                              <p className="text-xs text-gray-500">
+                                {message.file_url
+                                  .match(/\.([^.]+)$/)?.[1]
+                                  ?.toUpperCase() || "File"}
+                              </p>
+                            </div>
+                            <a
+                              href={message.file_url}
+                              download
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-1 text-blue-500 hover:text-blue-600 px-3 py-1 rounded-md hover:bg-blue-50 transition-colors"
+                            >
+                              <Download size={16} />
+                              <span className="text-sm">Download</span>
+                            </a>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
                 {message.user_id === user?.id && (
@@ -419,54 +653,104 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
       </div>
 
       {/* Message Input - Fixed at Bottom */}
-      <div className="flex-none p-3 md:p-6 flex justify-start items-center gap-2 md:gap-6 w-full">
-        <button className="w-6 h-6 relative overflow-hidden flex-shrink-0">
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M11.97 12V15.5C11.97 17.43 13.54 19 15.47 19C17.4 19 18.97 17.43 18.97 15.5V10C18.97 6.13 15.84 3 11.97 3C8.09997 3 4.96997 6.13 4.96997 10V16C4.96997 19.31 7.65997 22 10.97 22"
-              stroke="black"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
-        <div className="flex-1 min-h-[40px] md:h-12 p-2 md:p-4 bg-white rounded-2xl outline-2 outline-offset-[-2px] outline-zinc-300 flex justify-between items-center overflow-hidden">
+      <div className="flex-none p-3 md:p-6 flex flex-col gap-2 w-full">
+        {/* Selected Files Preview */}
+        {selectedFiles.length > 0 && (
+          <div className="flex flex-col gap-2 p-3 bg-gray-50 rounded-lg border">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700">
+                {selectedFiles.length} file
+                {selectedFiles.length !== 1 ? "s" : ""} selected
+              </span>
+              <button
+                onClick={handleClearAllFiles}
+                className="text-red-500 hover:text-red-700 text-sm"
+              >
+                Clear all
+              </button>
+            </div>
+            <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
+              {selectedFiles.map((file, index) => (
+                <div
+                  key={index}
+                  className="flex items-center gap-2 px-2 py-1 bg-white rounded border text-sm"
+                >
+                  {file.type.startsWith("image/") ? (
+                    <Image size={16} className="text-green-600" />
+                  ) : (
+                    <FileText size={16} className="text-blue-600" />
+                  )}
+                  <span className="truncate max-w-32" title={file.name}>
+                    {file.name}
+                  </span>
+                  <span className="text-xs text-gray-500">
+                    ({formatFileSize(file.size)})
+                  </span>
+                  <button
+                    onClick={() => handleRemoveFile(index)}
+                    className="text-gray-400 hover:text-red-500 ml-1"
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="flex justify-start items-center gap-2 md:gap-6 w-full">
           <input
-            type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onKeyDown={handleKeyPress}
-            placeholder="Type a message"
-            disabled={sendingMessage}
-            className="w-full outline-none text-black text-sm font-normal font-['Libre_Baskerville'] placeholder:text-black/40"
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileSelect}
+            className="hidden"
+            accept="image/*,.pdf,.doc,.docx,.txt,.zip,.rar"
+            multiple
           />
           <button
-            onClick={handleSendMessage}
-            disabled={sendingMessage || !message.trim()}
-            className={`w-6 h-6 relative overflow-hidden flex-shrink-0 ${
-              !message.trim() ? "opacity-50" : ""
-            }`}
+            onClick={() => fileInputRef.current?.click()}
+            className="w-6 h-6 relative overflow-hidden flex-shrink-0 hover:text-blue-600 transition-colors"
+            title="Attach files"
           >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M16.1401 2.96004L7.11012 5.96004C1.04012 7.99004 1.04012 11.3 7.11012 13.32L9.79012 14.21L10.6801 16.89C12.7001 22.96 16.0201 22.96 18.0401 16.89L21.0501 7.87004C22.3901 3.82004 20.1901 1.61004 16.1401 2.96004ZM16.4601 8.34004L12.6601 12.16C12.5101 12.31 12.3201 12.38 12.1301 12.38C11.9401 12.38 11.7501 12.31 11.6001 12.16C11.4606 12.0189 11.3824 11.8285 11.3824 11.63C11.3824 11.4316 11.4606 11.2412 11.6001 11.1L15.4001 7.28004C15.6901 6.99004 16.1701 6.99004 16.4601 7.28004C16.7501 7.57004 16.7501 8.05004 16.4601 8.34004Z"
-                fill="#25B4DE"
-              />
-            </svg>
+            <Paperclip className="w-6 h-6" />
           </button>
+          <div className="flex-1 min-h-[40px] md:h-12 p-2 md:p-4 bg-white rounded-2xl outline-2 outline-offset-[-2px] outline-zinc-300 flex justify-between items-center overflow-hidden">
+            <input
+              type="text"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={handleKeyPress}
+              placeholder="Type a message"
+              disabled={sendingMessage}
+              className="w-full outline-none text-black text-sm font-normal font-['Libre_Baskerville'] placeholder:text-black/40"
+            />
+            <button
+              onClick={handleSendMessage}
+              disabled={
+                sendingMessage ||
+                (!message.trim() && selectedFiles.length === 0)
+              }
+              className={`w-6 h-6 relative overflow-hidden flex-shrink-0 transition-opacity ${
+                (!message.trim() && selectedFiles.length === 0) ||
+                sendingMessage
+                  ? "opacity-50"
+                  : "hover:opacity-80"
+              }`}
+            >
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M16.1401 2.96004L7.11012 5.96004C1.04012 7.99004 1.04012 11.3 7.11012 13.32L9.79012 14.21L10.6801 16.89C12.7001 22.96 16.0201 22.96 18.0401 16.89L21.0501 7.87004C22.3901 3.82004 20.1901 1.61004 16.1401 2.96004ZM16.4601 8.34004L12.6601 12.16C12.5101 12.31 12.3201 12.38 12.1301 12.38C11.9401 12.38 11.7501 12.31 11.6001 12.16C11.4606 12.0189 11.3824 11.8285 11.3824 11.63C11.3824 11.4316 11.4606 11.2412 11.6001 11.1L15.4001 7.28004C15.6901 6.99004 16.1701 6.99004 16.4601 7.28004C16.7501 7.57004 16.7501 8.05004 16.4601 8.34004Z"
+                  fill="#25B4DE"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </div>

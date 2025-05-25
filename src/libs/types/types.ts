@@ -190,4 +190,5 @@ export interface MessageTypes {
   created_at: string;
   updated_at: string;
   user: UserDataTypes;
+  file_url?: string;
 }

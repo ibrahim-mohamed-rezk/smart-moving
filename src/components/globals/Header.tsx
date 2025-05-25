@@ -202,6 +202,9 @@ export default function Header() {
                           mask="url(#path-2-inside-1_107_998)"
                         />
                       </svg>
+                      {showNotification && (
+                        <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></div>
+                      )}
                     </button>
                     <div
                       className={`absolute overflow-hidden -start-full mt-2 w-32 bg-white rounded-xl shadow-lg z-10 transition-all duration-150 ${
