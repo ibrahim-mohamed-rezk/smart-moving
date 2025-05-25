@@ -210,6 +210,26 @@
       "save_changes": "Save changes"
     }
   },
+  "myprofile": {
+    "moving_address": "Moving address",
+    "add_offer": "Add offer",
+    "no_requests_available": "No requests available",
+    "id": "ID",
+    "name": "Name",
+    "status": "Status",
+    "actions": "Actions",
+    "add_your_offer": "Add your offer",
+    "price": "Price",
+    "enter_your_price": "Enter your price",
+    "submit_offer": "Submit offer",
+    "cancel": "Cancel",
+    "offer_submitted": "Offer submitted successfully",
+    "message":"Message",
+    "all":"All",
+    "pending":"Pending",
+    "processing":"Processing",
+    "done":"Done"
+  },
   "tasks": {
     "no_tasks_available": "No tasks available",
     "You don&apos;t have any tasks yet. Your tasks will appear here once you create them.": "You don&apos;t have any tasks yet. Your tasks will appear here once you create them.",

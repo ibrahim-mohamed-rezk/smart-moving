@@ -2,10 +2,16 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { TaskDetailsTypes, TaskTypes } from "@/libs/types/types";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import axios, { AxiosHeaders } from "axios";
 import { postData } from "@/libs/axios/server";
+import { Filter, UserIcon } from "lucide-react";
+
+interface AddOffer {
+  price: string;
+  message: string;
+}
 
 const RequestsTable = ({
   tasksData,
@@ -18,9 +24,19 @@ const RequestsTable = ({
   const t = useTranslations("myprofile");
   const [openCollapseId, setOpenCollapseId] = useState<number | null>(null);
   const [showOfferPopup, setShowOfferPopup] = useState(false);
-  const [offerPrice, setOfferPrice] = useState("");
+  const [offerPrice, setOfferPrice] = useState<AddOffer | null>(null);
   const [currentTaskId, setCurrentTaskId] = useState<number | null>(null);
   const offerPopupRef = useRef<HTMLDivElement>(null);
+  const [filter, setFilter] = useState("all");
+  const [filterdTasks, setFilteredTasks] = useState<TaskTypes[]>(tasksData);
+
+  useEffect(() => {
+    if (filter === "all") {
+      setFilteredTasks(tasksData);
+    } else {
+      setFilteredTasks(tasksData.filter((task) => task.status === filter));
+    }
+  }, [filter, tasksData]);
 
   const toggleDetails = (taskId: number) => {
     if (openCollapseId === taskId) {
@@ -36,7 +52,7 @@ const RequestsTable = ({
   };
 
   const submitOffer = async (id: number) => {
-    if (!offerPrice || isNaN(Number(offerPrice))) {
+    if (!offerPrice || isNaN(Number(offerPrice.price))) {
       toast.error("Please enter a valid price");
       return;
     }
@@ -44,7 +60,7 @@ const RequestsTable = ({
     try {
       await postData(
         `company/offer/${id}`,
-        { offer: Number(offerPrice) },
+        { offer: Number(offerPrice.price) },
         new AxiosHeaders({
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -54,7 +70,7 @@ const RequestsTable = ({
 
       toast.success("Offer submitted successfully");
       setShowOfferPopup(false);
-      setOfferPrice("");
+      setOfferPrice(null);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data?.msg || "An error occurred");
@@ -122,87 +138,123 @@ const RequestsTable = ({
 
   return (
     <div className="w-full overflow-x-auto">
-      {!tasksData || tasksData?.length === 0 ? (
+      {!filterdTasks || filterdTasks?.length === 0 ? (
         <div className="w-full md:p-8 text-center bg-white border border-zinc-300 rounded-lg">
           <p className="text-xl font-['Libre_Baskerville'] text-gray-700">
             {t("no_requests_available")}
           </p>
         </div>
       ) : (
-        <table className="min-w-full xl:w-full border-collapse table-fixed">
-          <thead>
-            <tr className="bg-neutral-200">
-              <th className="p-2.5 border w-[100px] text-center border-zinc-300 text-blue-950 text-2xl font-bold font-['Libre_Baskerville']">
-                {t("id")}
-              </th>
-              <th className="p-2.5 border text-center border-zinc-300 text-blue-950 text-2xl font-bold font-['Libre_Baskerville']">
-                {t("name")}
-              </th>
-              <th className="p-2.5 border text-center border-zinc-300 text-blue-950 text-2xl font-bold font-['Libre_Baskerville']">
-                {t("status")}
-              </th>
-              <th className="p-2.5 w-fit border border-zinc-300 text-center text-blue-950 text-2xl font-bold font-['Libre_Baskerville']">
-                {t("actions")}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {tasksData?.map((task: TaskTypes, index: number) => (
-              <>
-                <tr key={`task-${index + 1}`} className="bg-white">
-                  <td className="p-2.5 text-center border border-zinc-300 text-black text-xl font-bold font-['Libre_Baskerville']">
-                    {index + 1}
-                  </td>
-                  <td className="p-2.5 border border-zinc-300 text-black text-xl font-bold font-['Libre_Baskerville']">
-                    {task.details.title}
-                  </td>
-                  <td className="p-2.5 border border-zinc-300">
-                    <div
-                      className={`px-4 py-2 rounded-[30px] flex justify-center items-center
+        <div>
+          <div className="flex justify-center items-center gap-2 mb-4">
+            {["all", "pending", "processing", "done"].map((status) => (
+              <button
+                key={status}
+                onClick={() => setFilter(status)}
+                className={`${
+                  filter === status
+                    ? "bg-blue-950 text-white"
+                    : "bg-white text-blue-950"
+                } px-4 py-2 border border-zinc-300 rounded-md hover:bg-blue-950 hover:text-white transition duration-300 ease-in-out`}
+              >
+                {t(status)}
+              </button>
+            ))}
+          </div>
+          <table className="min-w-full xl:w-full border-collapse table-fixed">
+            <thead>
+              <tr className="bg-neutral-200">
+                <th className="p-2.5 border w-[100px] text-center border-zinc-300 text-blue-950 text-2xl font-bold font-['Libre_Baskerville']">
+                  {t("id")}
+                </th>
+                <th className="p-2.5 border text-center border-zinc-300 text-blue-950 text-2xl font-bold font-['Libre_Baskerville']">
+                  {t("name")}
+                </th>
+                <th className="p-2.5 border text-center border-zinc-300 text-blue-950 text-2xl font-bold font-['Libre_Baskerville']">
+                  {t("status")}
+                </th>
+                <th className="p-2.5 w-fit border border-zinc-300 text-center text-blue-950 text-2xl font-bold font-['Libre_Baskerville']">
+                  {t("actions")}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {filterdTasks?.map((task: TaskTypes, index: number) => (
+                <>
+                  <tr key={`task-${index + 1}`} className="bg-white">
+                    <td className="p-2.5 border text-center w-full  border-zinc-300 text-black text-xl font-bold font-['Libre_Baskerville']">
+                      {task.image ? (
+                        <img
+                          className="w-12 h-12 mx-auto"
+                          src={task.image}
+                          alt="user"
+                        />
+                      ) : (
+                        <UserIcon className="w-8 h-8 mx-auto" />
+                      )}
+                    </td>
+                    <td className="p-2.5 border text-center border-zinc-300 text-black text-xl font-bold font-['Libre_Baskerville']">
+                      {task.details.title} <br />
+                      <span className="text-sm font-normal">
+                        {new Date(task.created_at || "").toLocaleDateString(
+                          "en-GB"
+                        )}
+                      </span>
+                    </td>
+                    <td className="p-2.5 border  text-center border-zinc-300">
+                      <div
+                        className={`px-4 mx-auto w-fit py-2 rounded-[30px] flex justify-center items-center
                       ${
                         task.status === "pending"
-                          ? "bg-yellow-400/40"
-                          : task.status === "accept"
-                          ? "bg-green-500/40"
-                          : "bg-red-600/40"
+                          ? "bg-yellow-400"
+                          : task.status === "done"
+                          ? "bg-green-500"
+                          : "bg-red-400"
                       }`}
-                    >
-                      <div className="text-black text-lg font-normal font-['Libre_Baskerville']">
-                        {task.status}
+                      >
+                        <div className="text-black text-lg font-normal font-['Libre_Baskerville']">
+                          {task.status}
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                  <td className="p-2.5 border w-fit border-zinc-300 text-black text-xl font-bold font-['Libre_Baskerville']">
-                    <div className="flex mx-auto w-fit items-center justify-center gap-2 md:gap-4">
-                      <button
-                        onClick={() => toggleOfferPopup(task.id)}
-                        className="w-full sm:w-auto px-3 py-1.5 sm:px-4 sm:py-2 text-sm sm:text-base bg-green-500 hover:bg-green-600 text-white font-bold rounded-md transition duration-300 ease-in-out"
-                      >
-                        {t("add_offer")}
-                      </button>
-                      <button
-                        onClick={() => {
-                          toggleDetails(task.id);
-                          setCurrentTaskId(task.id);
-                        }}
-                        className="w-full sm:w-auto px-3 py-1.5 sm:px-4 sm:py-2 text-sm sm:text-base bg-blue-900 hover:bg-blue-950 text-white font-bold rounded-md transition duration-300 ease-in-out"
-                      >
-                        {openCollapseId === task.id ? "Hide" : "Details"}
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                {openCollapseId === task.id && (
-                  <tr key={`details-${task.id}`}>
-                    <td colSpan={4} className="border border-zinc-300 p-0">
-                      {renderTaskDetails(task.details)}
+                    </td>
+                    <td className="p-2.5 border w-fit border-zinc-300 text-black text-xl font-bold font-['Libre_Baskerville']">
+                      <div className="flex mx-auto w-fit items-center justify-center gap-2 md:gap-4">
+                        <button
+                          disabled={task.status !== "pending"}
+                          onClick={() => toggleOfferPopup(task.id)}
+                          className={`w-full sm:w-auto px-3 py-1.5 sm:px-4 sm:py-2 text-sm sm:text-base ${
+                            task.status !== "pending"
+                              ? "bg-green-200 cursor-not-allowed"
+                              : "bg-green-600 hover:bg-green-700"
+                          } text-white font-bold rounded-md transition duration-300 ease-in-out`}
+                        >
+                          {t("add_offer")}
+                        </button>
+
+                        <button
+                          onClick={() => {
+                            toggleDetails(task.id);
+                            setCurrentTaskId(task.id);
+                          }}
+                          className="w-full sm:w-auto px-3 py-1.5 sm:px-4 sm:py-2 text-sm sm:text-base bg-blue-900 hover:bg-blue-950 text-white font-bold rounded-md transition duration-300 ease-in-out"
+                        >
+                          {openCollapseId === task.id ? "Hide" : "Details"}
+                        </button>
+                      </div>
                     </td>
                   </tr>
-                )}
-              </>
-            ))}
-          </tbody>
-        </table>
+                  {openCollapseId === task.id && (
+                    <tr key={`details-${task.id}`}>
+                      <td colSpan={4} className="border border-zinc-300 p-0">
+                        {renderTaskDetails(task.details)}
+                      </td>
+                    </tr>
+                  )}
+                </>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
 
       {/* Add Offer Popup */}
@@ -221,11 +273,30 @@ const RequestsTable = ({
               </label>
               <input
                 type="number"
-                value={offerPrice}
-                onChange={(e) => setOfferPrice(e.target.value)}
+                value={offerPrice?.price}
+                onChange={(e) =>
+                  setOfferPrice((prev) => ({
+                    price: e.target.value,
+                    message: prev?.message || "",
+                  }))
+                }
                 placeholder={t("enter_your_price")}
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
+              <label className="text-black text-lg font-bold font-['Libre_Baskerville']">
+                {t("message")}
+              </label>
+              <textarea
+                value={offerPrice?.message}
+                onChange={(e) =>
+                  setOfferPrice((prev) => ({
+                    price: prev?.price || "",
+                    message: e.target.value,
+                  }))
+                }
+                placeholder={t("enter_your_price")}
+                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              ></textarea>
               <div className="flex justify-end gap-4 mt-4">
                 <button
                   onClick={() => setShowOfferPopup(false)}

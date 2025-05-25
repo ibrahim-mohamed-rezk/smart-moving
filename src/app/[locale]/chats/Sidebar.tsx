@@ -1,13 +1,21 @@
 "use client";
 import { useEffect, useState } from "react";
 // import { UserDataTypes } from "@/libs/types/types";
-import { useRouter } from "@/i18n/routing";
+import { Link, useRouter } from "@/i18n/routing";
 import { Menu, X } from "lucide-react";
 import { getData } from "@/libs/axios/server";
 import { AxiosHeaders } from "axios";
 import { ChatTypes, UserDataTypes } from "@/libs/types/types";
 
-const Sidebar = ({ locale, token, user }: { locale: string; token: string, user: UserDataTypes }) => {
+const Sidebar = ({
+  locale,
+  token,
+  user,
+}: {
+  locale: string;
+  token: string;
+  user: UserDataTypes;
+}) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const router = useRouter();
   const [chats, setChats] = useState<ChatTypes[]>([]);
@@ -95,15 +103,35 @@ const Sidebar = ({ locale, token, user }: { locale: string; token: string, user:
                 >
                   <div className="self-stretch flex justify-between items-start w-full">
                     <div className="flex justify-start items-center gap-2">
-                      <div className="w-10 h-10 md:w-16 flex items-center justify-center md:h-16 relative bg-white rounded-[100px] outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden">
+                      <Link
+                        href={`/companies/${
+                          chat.participants.find(
+                            (participant) =>
+                              participant.user_id !== user.id &&
+                              participant.user.role === "company"
+                          )?.user.company?.id
+                        }?page=about%20us`}
+                        className="w-10 h-10 md:w-16 flex items-center justify-center md:h-16 relative bg-white rounded-[100px] outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                      >
                         <img
-                        className="w-full h-full"
-                        src={chat.participants.find(participant => participant.user_id !== user.id)?.user.image}
-                        alt="user"
-                      />
-                      </div>
+                          className="w-full h-full"
+                          src={
+                            chat.participants.find(
+                              (participant) => participant.user_id !== user.id
+                            )?.user.image
+                          }
+                          alt="user"
+                        />
+                      </Link>
                       <div className="text-blue-950 text-base md:text-lg font-normal font-['Libre_Baskerville']">
-                        {chat.participants.find(participant => participant.user_id !== user.id)?.user.name}
+                        {
+                          chat.participants.find(
+                            (participant) => participant.user_id !== user.id
+                          )?.user.name
+                        }
                       </div>
                     </div>
                     <div className="opacity-30 text-black text-xs md:text-sm font-normal font-['Libre_Baskerville']">
@@ -111,9 +139,9 @@ const Sidebar = ({ locale, token, user }: { locale: string; token: string, user:
                         ? new Date(
                             chat.last_message.updated_at
                           ).toLocaleDateString([], {
-                            weekday: 'short',
-                            month: 'short',
-                            day: 'numeric',
+                            weekday: "short",
+                            month: "short",
+                            day: "numeric",
                             hour: "2-digit",
                             minute: "2-digit",
                           })

@@ -1,4 +1,5 @@
 "use client";
+import { Link } from "@/i18n/routing";
 import { getData, postData } from "@/libs/axios/server";
 import { ChatTypes, MessageTypes, UserDataTypes } from "@/libs/types/types";
 import axios, { AxiosHeaders } from "axios";
@@ -262,7 +263,13 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
       <div className="flex-none">
         <div className="w-full p-3 md:p-6 flex justify-between items-center">
           <div className="flex justify-start items-center gap-2">
-            <div className="w-10 h-10 md:w-16 md:h-16 relative bg-white rounded-[100px] outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden">
+            <Link
+              href={`/companies/${
+                chat?.participants.filter((p) => p.user.id !== user.id)[0].user
+                  .company?.id
+              }?page=about%20us`}
+              className="w-10 h-10 md:w-16 md:h-16 relative bg-white rounded-[100px] outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden"
+            >
               {chat?.participants.filter((p) => p.user.id !== user.id)[0].user
                 .image ? (
                 <img
@@ -278,7 +285,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
                   <UserIcon className="w-[80%] h-[80%]" />
                 </div>
               )}
-            </div>
+            </Link>
             <div className="flex flex-col justify-center items-start gap-1">
               <div className="text-blue-950 text-sm md:text-lg font-normal font-['Libre_Baskerville']">
                 {
@@ -351,13 +358,16 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
                 } items-start gap-2 md:gap-4`}
               >
                 {message.user_id !== user?.id && (
-                  <div className="w-8 h-8 md:w-10 md:h-10 relative bg-white rounded-[100px] outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden flex-shrink-0">
+                  <Link
+                    href={`/companies/${message.user?.company?.id}?page=about%20us`}
+                    className="w-8 h-8 md:w-10 md:h-10 relative bg-white rounded-[100px] outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden flex-shrink-0"
+                  >
                     <img
                       className="w-full h-full "
                       src={message.user?.image}
                       alt="User avatar"
                     />
-                  </div>
+                  </Link>
                 )}
                 <div
                   className={`flex flex-col justify-start items-${
@@ -383,7 +393,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
                   </div>
                 </div>
                 {message.user_id === user?.id && (
-                  <div className="w-8 h-8 md:w-10 md:h-10 relative bg-white rounded-[100px] outline outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden flex-shrink-0">
+                  <div className="w-8 h-8 md:w-10 md:h-10 relative bg-white rounded-[100px] outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden flex-shrink-0">
                     <img
                       className="w-full h-full absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
                       src={message.user?.image}

@@ -219,7 +219,12 @@
     "enter_your_price": "أدخل سعرك",
     "submit_offer": "إرسال العرض",
     "cancel": "الغاء",
-    "offer_submitted": "تم إرسال العرض بنجاح"
+    "offer_submitted": "تم إرسال العرض بنجاح",
+    "message":"الرسالة",
+    "all":"الكل",
+    "pending":"قيد الانتظار",
+    "processing":"قيد التنفيذ",
+    "done":"مكتمل"
   },
   "tasks": {
     "no_tasks_available": "لا يوجد مهام متاحة",

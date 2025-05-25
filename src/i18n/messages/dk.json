@@ -173,6 +173,26 @@
       "save_changes": "Gem ændringer"
     }
     },
+    "myprofile": {
+      "moving_address": "Flytteadresse",
+      "add_offer": "Tilføj tilbud",
+      "no_requests_available": "Ingen anmodninger tilgængelige",
+      "id": "ID",
+      "name": "Navn",
+      "status": "Status",
+      "actions": "Handlinger",
+      "add_your_offer": "Tilføj dit tilbud",
+      "price": "Pris",
+      "enter_your_price": "Indtast din pris",
+      "submit_offer": "Indsend tilbud",
+      "cancel": "Annuller",
+      "offer_submitted": "Tilbud indsendt med succes",
+      "message":"Besked",
+      "all":"Alle",
+      "pending":"Afventer",
+      "processing":"Behandler",
+      "done":"Færdig"
+    },
     "tasks": {
     "no_tasks_available": "Ingen opgaver tilgængelige",
     "You don&apos;t have any tasks yet. Your tasks will appear here once you create them.": "Ingen opgaver endnu. Opgavene vil vises her, når du opretter dem.",

@@ -105,6 +105,7 @@ export interface UserDataTypes {
   price_listings?: string;
   company?: CompanyTypes;
   verified_phone?: string;
+  user_id?: number;
 }
 
 export interface TaskTypes {
@@ -117,6 +118,7 @@ export interface TaskTypes {
   offers?: OfferTypes[];
   created_at?: string;
   updated_at?: string;
+  image?: string;
 }
 
 export interface TaskDetailsTypes {
@@ -154,6 +156,8 @@ export interface OfferTypes {
   created_at?: string;
   updated_at?: string;
   company?: CompanyTypes;
+  price?: string;
+  messgae?: string;
 }
 
 export interface ChatTypes {
