@@ -1,7 +1,5 @@
 import { TaskTypes } from "@/libs/types/types";
 import {
-  Download,
-  FileText,
   Package,
   MapPin,
   Calendar,
