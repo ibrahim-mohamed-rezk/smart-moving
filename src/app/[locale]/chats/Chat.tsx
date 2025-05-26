@@ -408,16 +408,16 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
       {/* Chat Messages - Scrollable Section */}
       <div className="flex-1 overflow-hidden max-h-screen relative">
         {status === "done" && (
-          <div className="absolute inset-0 bg-black/50 z-10 flex items-center justify-center">
-            <div className="bg-white p-6 rounded-xl max-w-md w-full mx-4">
-              <h3 className="text-blue-950 text-xl font-bold font-['Libre_Baskerville'] mb-4">
+          <div className="absolute inset-0 bg-black/50 flex items-start justify-center overflow-auto z-10 p-4">
+            <div className="bg-white p-6 rounded-xl max-w-md w-full mx-4 h-fit block ">
+              <h3 className="text-blue-950 text-xl font-bold font-['Libre_Baskerville'] mb-4 sticky top-0 bg-white pb-2">
                 Order Details
               </h3>
               <div className="space-y-3">
                 {chat?.order?.email && (
                   <div className="flex flex-col">
                     <span className="text-gray-600 text-sm">Email</span>
-                    <span className="text-black font-medium">
+                    <span className="text-black font-medium break-words">
                       {chat.order.email}
                     </span>
                   </div>
@@ -425,7 +425,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
                 {chat?.order?.phone && (
                   <div className="flex flex-col">
                     <span className="text-gray-600 text-sm">Phone</span>
-                    <span className="text-black font-medium">
+                    <span className="text-black font-medium break-words">
                       {chat.order.phone}
                     </span>
                   </div>
@@ -433,7 +433,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
                 {chat?.order?.address && (
                   <div className="flex flex-col">
                     <span className="text-gray-600 text-sm">Address</span>
-                    <span className="text-black font-medium">
+                    <span className="text-black font-medium break-words">
                       {chat.order.address}
                     </span>
                   </div>
@@ -441,7 +441,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
                 {chat?.order?.price && (
                   <div className="flex flex-col">
                     <span className="text-gray-600 text-sm">Price</span>
-                    <span className="text-black font-medium">
+                    <span className="text-black font-medium break-words">
                       {chat.order.price}
                     </span>
                   </div>
@@ -449,13 +449,13 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
                 {chat?.order?.date && (
                   <div className="flex flex-col">
                     <span className="text-gray-600 text-sm">Date</span>
-                    <span className="text-black font-medium">
+                    <span className="text-black font-medium break-words">
                       {chat.order.date}
                     </span>
                   </div>
                 )}
               </div>
-              <div className="mt-6 text-center text-gray-600">
+              <div className="mt-6 text-center text-gray-600 sticky bottom-0 bg-white pt-2">
                 This conversation is marked as done
               </div>
             </div>
