@@ -22,6 +22,7 @@ const NotificationsProvider = ({ token }: { token: string | undefined }) => {
 
         await axios.post("/api/coockies/store-data-in-cookies", {
           has_hold: response.has_hold,
+          un_read_message_count: response.un_read_message_count,
         });
       } catch (error) {
         console.log(error);

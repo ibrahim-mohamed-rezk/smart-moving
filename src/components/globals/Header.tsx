@@ -35,6 +35,7 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
   const [showNotification, setShowNotification] = useState(false);
+  const [showNotificationChat, setShowNotificationChat] = useState(0);
 
   const changeLanguage = (l: string) => {
     const paramsString = searchParams.toString();
@@ -80,7 +81,26 @@ export default function Header() {
              key: "has_hold",
            }
          );
-         setShowNotification(response.data);
+         setShowNotification(response.data.data);
+       } catch (error) {
+         console.log(error);
+       }
+     };
+
+     feachData();
+   }, [token]);
+  
+   useEffect(() => {
+     const feachData = async () => {
+       if (!token) return null;
+       try {
+         const response = await axios.post(
+           "/api/coockies/get-data-from-coockies",
+           {
+             key: "un_read_message_count",
+           }
+         );
+         setShowNotificationChat(response.data.data);
        } catch (error) {
          console.log(error);
        }
@@ -162,6 +182,9 @@ export default function Header() {
                         stroke-linejoin="round"
                       />
                     </svg>
+                    {showNotificationChat !== 0 && (
+                      <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></div>
+                    )}
                   </Link>
                 ) : (
                   <button
@@ -423,6 +446,9 @@ export default function Header() {
                         stroke-linejoin="round"
                       />
                     </svg>
+                    {showNotificationChat !== 0 && (
+                      <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></div>
+                    )}
                   </div>
                 ) : (
                   <button

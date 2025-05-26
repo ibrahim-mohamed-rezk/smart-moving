@@ -58,7 +58,7 @@ const ChatHeader = ({
                 value={status}
                 onChange={(e) => onStatusChange(e.target.value)}
                 className="bg-transparent border-none outline-none cursor-pointer text-white text-sm md:text-lg font-normal font-['Libre_Baskerville'] hover:text-sky-200 transition-colors"
-                disabled={status === "done"}
+                disabled={status === "done" || chat?.order?.status === "done"}
               >
                 {[
                   { title: t("pending"), value: "pending" },

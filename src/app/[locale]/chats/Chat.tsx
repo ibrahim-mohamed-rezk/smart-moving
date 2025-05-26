@@ -40,7 +40,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const prevMessagesLengthRef = useRef(0);
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState(chat?.order?.status);
 
   // Done form popup states
   const [showDoneForm, setShowDoneForm] = useState(false);
@@ -97,7 +97,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
         );
         setChat(response.data);
         // Set initial status from chat data
-        setStatus(response.data.status || "pending");
+        setStatus(response.data.order?.status || "pending");
         setLoading(false);
       } catch (error) {
         console.error("Error fetching chat:", error);
@@ -316,7 +316,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
       };
 
       await postData(
-        `customer/change-status/${id}`,
+        `customer/change-status/${chat?.order?.id}`,
         requestData,
         new AxiosHeaders({
           lang: locale,
@@ -401,12 +401,66 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
       <ChatHeader
         chat={chat}
         user={user}
-        status={status}
+        status={status || "pending"}
         onStatusChange={handleStatusChange}
       />
 
       {/* Chat Messages - Scrollable Section */}
       <div className="flex-1 overflow-hidden max-h-screen relative">
+        {status === "done" && (
+          <div className="absolute inset-0 bg-black/50 z-10 flex items-center justify-center">
+            <div className="bg-white p-6 rounded-xl max-w-md w-full mx-4">
+              <h3 className="text-blue-950 text-xl font-bold font-['Libre_Baskerville'] mb-4">
+                Order Details
+              </h3>
+              <div className="space-y-3">
+                {chat?.order?.email && (
+                  <div className="flex flex-col">
+                    <span className="text-gray-600 text-sm">Email</span>
+                    <span className="text-black font-medium">
+                      {chat.order.email}
+                    </span>
+                  </div>
+                )}
+                {chat?.order?.phone && (
+                  <div className="flex flex-col">
+                    <span className="text-gray-600 text-sm">Phone</span>
+                    <span className="text-black font-medium">
+                      {chat.order.phone}
+                    </span>
+                  </div>
+                )}
+                {chat?.order?.address && (
+                  <div className="flex flex-col">
+                    <span className="text-gray-600 text-sm">Address</span>
+                    <span className="text-black font-medium">
+                      {chat.order.address}
+                    </span>
+                  </div>
+                )}
+                {chat?.order?.price && (
+                  <div className="flex flex-col">
+                    <span className="text-gray-600 text-sm">Price</span>
+                    <span className="text-black font-medium">
+                      {chat.order.price}
+                    </span>
+                  </div>
+                )}
+                {chat?.order?.date && (
+                  <div className="flex flex-col">
+                    <span className="text-gray-600 text-sm">Date</span>
+                    <span className="text-black font-medium">
+                      {chat.order.date}
+                    </span>
+                  </div>
+                )}
+              </div>
+              <div className="mt-6 text-center text-gray-600">
+                This conversation is marked as done
+              </div>
+            </div>
+          </div>
+        )}
         <div
           ref={messagesContainerRef}
           className="h-full scrollbar-hide p-3 md:p-6 flex flex-col justify-start items-start gap-4 md:gap-8 overflow-y-auto"
@@ -465,6 +519,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
         onKeyPress={handleKeyPress}
         sendingMessage={sendingMessage}
         formatFileSize={formatFileSize}
+        disabled={status === "done"}
       />
 
       {/* Done Form Popup */}

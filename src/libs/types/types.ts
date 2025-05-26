@@ -119,6 +119,11 @@ export interface TaskTypes {
   created_at?: string;
   updated_at?: string;
   image?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  price?: string;
+  date?: string;
 }
 
 export interface TaskDetailsTypes {
