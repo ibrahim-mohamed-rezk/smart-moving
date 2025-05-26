@@ -81,7 +81,7 @@ const TaskCard = ({ task, token }: { task: TaskTypes; token: string }) => {
         <div className="self-stretch inline-flex justify-between items-center flex-wrap gap-2">
           <div className="px-3 py-1 md:px-5 bg-sky-500 rounded-[30px] flex justify-center items-center gap-2">
             <div className="justify-start text-white text-sm md:text-lg font-normal font-['Libre_Baskerville']">
-              <select
+              {/* <select
                 value={status}
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                   setStatus(e.target.value);
@@ -102,7 +102,8 @@ const TaskCard = ({ task, token }: { task: TaskTypes; token: string }) => {
                     {status.title}
                   </option>
                 ))}
-              </select>
+              </select> */}
+              <div>{task.status}</div>
             </div>
           </div>
           {count > 0 && (
