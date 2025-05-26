@@ -3,7 +3,7 @@ import { Link } from "@/i18n/routing";
 // import { postData } from "@/libs/axios/server";
 import { TaskTypes } from "@/libs/types/types";
 // import axios, { AxiosHeaders } from "axios";
-import { useLocale, useTranslations } from "next-intl";
+// import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 // import toast from "react-hot-toast";
 
