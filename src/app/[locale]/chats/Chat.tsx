@@ -311,7 +311,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
 
       // Combine status change with form data
       const requestData = {
-        status: "done",
+        status: "processing",
         ...doneFormData,
       };
 
@@ -325,7 +325,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
         })
       );
 
-      setStatus("done");
+      setStatus(requestData.status);
       setShowDoneForm(false);
       // Reset form data
       setDoneFormData({
@@ -355,8 +355,8 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
       return;
     }
 
-    if (newStatus === "done") {
-      // Show form popup for done status
+    if (newStatus === "processing") {
+      // Show form popup for processing status
       setShowDoneForm(true);
       return;
     }
@@ -364,7 +364,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
     // For other status changes, proceed normally
     try {
       await postData(
-        `customer/change-status/${id}`,
+        `customer/change-status/${chat?.order?.id}`,
         { status: newStatus },
         new AxiosHeaders({
           lang: locale,
@@ -401,7 +401,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
       <ChatHeader
         chat={chat}
         user={user}
-        status={status || "pending"}
+        status={status}
         onStatusChange={handleStatusChange}
       />
 
@@ -409,11 +409,11 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
       <div className="flex-1 overflow-hidden max-h-screen relative">
         {status === "done" && (
           <div className="absolute inset-0 bg-black/50 flex items-start justify-center overflow-auto z-10 p-4">
-            <div className="bg-white p-6 rounded-xl max-w-md w-full mx-4 h-fit block ">
+            <div className="bg-white p-6 rounded-xl max-w-md w-full mx-4 h-fit block">
               <h3 className="text-blue-950 text-xl font-bold font-['Libre_Baskerville'] mb-4 sticky top-0 bg-white pb-2">
                 Order Details
               </h3>
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {chat?.order?.email && (
                   <div className="flex flex-col">
                     <span className="text-gray-600 text-sm">Email</span>
@@ -455,7 +455,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
                   </div>
                 )}
               </div>
-              <div className="mt-6 text-center text-gray-600 sticky bottom-0 bg-white pt-2">
+              <div className="mt-4 text-center text-gray-600">
                 This conversation is marked as done
               </div>
             </div>
@@ -473,7 +473,9 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
             </div>
           ) : (
             <>
-              {chat?.order && <OrderDetails order={chat.order} />}
+              {chat?.order && status !== "processing" && (
+                <OrderDetails order={chat.order} />
+              )}
               {messages.length > 0 ? (
                 messages.map((message, index) => (
                   <ChatMessage

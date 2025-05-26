@@ -15,6 +15,7 @@ interface DoneFormPopupProps {
   onClose: () => void;
   onFormChange: (field: keyof DoneFormData, value: string) => void;
   onSubmit: () => void;
+  status?: string;
 }
 
 const DoneFormPopup = ({
@@ -24,6 +25,7 @@ const DoneFormPopup = ({
   onClose,
   onFormChange,
   onSubmit,
+  status = "done",
 }: DoneFormPopupProps) => {
   if (!showDoneForm) return null;
 
@@ -33,7 +35,9 @@ const DoneFormPopup = ({
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-semibold text-blue-950">
-              Complete Task Details
+              {status === "processing"
+                ? "Processing Task Details"
+                : "Complete Task Details"}
             </h3>
             <button
               onClick={onClose}
@@ -44,94 +48,120 @@ const DoneFormPopup = ({
             </button>
           </div>
 
-          <div className="space-y-4">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              onSubmit();
+            }}
+            className="space-y-4"
+          >
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Price *
+              <label
+                htmlFor="price"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Price
               </label>
               <input
-                type="number"
-                step="0.01"
+                type="text"
+                id="price"
                 value={doneFormData.price}
                 onChange={(e) => onFormChange("price", e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter price"
-                disabled={isSubmittingDoneForm}
+                required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Email *
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Email
               </label>
               <input
                 type="email"
+                id="email"
                 value={doneFormData.email}
                 onChange={(e) => onFormChange("email", e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter email"
-                disabled={isSubmittingDoneForm}
+                required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Phone *
+              <label
+                htmlFor="phone"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Phone
               </label>
               <input
                 type="tel"
+                id="phone"
                 value={doneFormData.phone}
                 onChange={(e) => onFormChange("phone", e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter phone number"
-                disabled={isSubmittingDoneForm}
+                required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Address *
+              <label
+                htmlFor="address"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Address
               </label>
               <textarea
+                id="address"
                 value={doneFormData.address}
                 onChange={(e) => onFormChange("address", e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter address"
                 rows={3}
-                disabled={isSubmittingDoneForm}
+                required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Completion Date *
+              <label
+                htmlFor="date"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Date
               </label>
               <input
                 type="date"
+                id="date"
                 value={doneFormData.date}
                 onChange={(e) => onFormChange("date", e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                disabled={isSubmittingDoneForm}
+                required
               />
             </div>
-          </div>
 
-          <div className="flex gap-3 mt-6">
-            <button
-              onClick={onClose}
-              className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
-              disabled={isSubmittingDoneForm}
-            >
-              Cancel
-            </button>
-            <button
-              onClick={onSubmit}
-              className="flex-1 px-4 py-2 bg-blue-950 text-white rounded-md hover:bg-blue-800 transition-colors disabled:opacity-50"
-              disabled={isSubmittingDoneForm}
-            >
-              {isSubmittingDoneForm ? "Submitting..." : "Mark as Done"}
-            </button>
-          </div>
+            <div className="flex justify-end gap-3 mt-6">
+              <button
+                type="button"
+                onClick={onClose}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                disabled={isSubmittingDoneForm}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                disabled={isSubmittingDoneForm}
+              >
+                {isSubmittingDoneForm
+                  ? "Submitting..."
+                  : status === "processing"
+                  ? "Start Processing"
+                  : "Mark as Done"}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
