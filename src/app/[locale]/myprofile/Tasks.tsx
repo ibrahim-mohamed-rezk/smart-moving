@@ -66,7 +66,7 @@ const Tasks = async () => {
           <div className="w-full flex flex-col justify-start items-start gap-4 md:gap-6">
             <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
               {tasksData.map((task: TaskTypes, index: number) => (
-                <TaskCard key={index} token={token} task={task} />
+                <TaskCard key={index} task={task} />
               ))}
             </div>
           </div>

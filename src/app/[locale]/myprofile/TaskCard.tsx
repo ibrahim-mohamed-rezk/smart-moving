@@ -7,7 +7,7 @@ import { TaskTypes } from "@/libs/types/types";
 import { useEffect, useState } from "react";
 // import toast from "react-hot-toast";
 
-const TaskCard = ({ task, token }: { task: TaskTypes; token: string }) => {
+const TaskCard = ({ task }: { task: TaskTypes; }) => {
   // const t = useTranslations("profile");
   // const locale = useLocale();
   // const [status, setStatus] = useState(task.status);
