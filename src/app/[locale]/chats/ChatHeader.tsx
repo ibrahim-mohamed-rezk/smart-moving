@@ -13,7 +13,7 @@ import { useTranslations } from "next-intl";
 interface ChatHeaderProps {
   chat: ChatTypes | null;
   user: UserDataTypes;
-  status: string;
+  status: string | undefined;
   onStatusChange: (newStatus: string) => void;
 }
 
