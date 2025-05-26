@@ -234,7 +234,11 @@
     "available_transfer_offers_description": "استكشف العروض الحالية للنقل المتاحة. قم بمراجعة التفاصيل لكل طلب واختر الأفضل لمتطلباتك.",
     "no_offers_available": "لا يوجد عروض متاحة",
     "actions": "الإجراءات",
-    "your_tasks": "قائمة المهام  "
+    "your_tasks": "قائمة المهام  ",
+    "all":"الكل",
+    "pending":"قيد الانتظار",
+    "processing":"قيد التنفيذ",
+    "done":"مكتمل"
   },
   "services": {
     "TO address": "إلى العنوان",

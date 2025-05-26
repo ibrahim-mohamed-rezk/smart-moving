@@ -1,11 +1,10 @@
 import { getData } from "@/libs/axios/server";
-import TaskCard from "./TaskCard";
 import { AxiosHeaders } from "axios";
 import { cookies } from "next/headers";
-import { TaskTypes } from "@/libs/types/types";
 import { Link } from "@/i18n/routing";
 import { redirect } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
+import TasksCards from "./tasksCards";
 
 const Tasks = async () => {
   const cookiesData = await cookies();
@@ -17,7 +16,6 @@ const Tasks = async () => {
     redirect("/");
   }
 
-
   // get tasks from api
   const feachData = async () => {
     try {
@@ -27,7 +25,7 @@ const Tasks = async () => {
         new AxiosHeaders({
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
-          lang: locale
+          lang: locale,
         })
       );
       return response.data;
@@ -60,16 +58,7 @@ const Tasks = async () => {
         </div>
       ) : (
         <>
-          <div className="w-full md:w-96 h-auto md:h-11 justify-start text-blue-950 text-2xl md:text-4xl font-bold font-['Libre_Baskerville']">
-            {t("your_tasks")} ({tasksData.length})
-          </div>
-          <div className="w-full flex flex-col justify-start items-start gap-4 md:gap-6">
-            <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
-              {tasksData.map((task: TaskTypes, index: number) => (
-                <TaskCard key={index} task={task} />
-              ))}
-            </div>
-          </div>
+          <TasksCards tasksData={tasksData} />
         </>
       )}
     </div>

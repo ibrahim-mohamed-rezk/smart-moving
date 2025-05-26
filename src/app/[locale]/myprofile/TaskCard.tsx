@@ -7,7 +7,7 @@ import { TaskTypes } from "@/libs/types/types";
 import { useEffect, useState } from "react";
 // import toast from "react-hot-toast";
 
-const TaskCard = ({ task }: { task: TaskTypes; }) => {
+const TaskCard = ({ task }: { task: TaskTypes }) => {
   // const t = useTranslations("profile");
   // const locale = useLocale();
   // const [status, setStatus] = useState(task.status);
@@ -44,35 +44,41 @@ const TaskCard = ({ task }: { task: TaskTypes; }) => {
   }, [task]);
 
   return (
-    <div className="w-full p-4 md:p-6 bg-white rounded-2xl inline-flex flex-col justify-center items-start gap-4 md:gap-6 shadow-sm hover:shadow-md transition-shadow">
+    <Link
+      href={`/myprofile?page=task-offers&task=${task.id}`}
+      className="w-full cursor-pointer p-4 md:p-6 bg-white rounded-2xl inline-flex flex-col justify-center items-start gap-4 md:gap-6 shadow-sm hover:shadow-md transition-shadow"
+    >
       <div className="self-stretch inline-flex justify-between items-center">
         <div className="justify-start text-blue-950 text-xl md:text-3xl font-bold font-['Libre_Baskerville']">
           {task.details?.title}
+          <div className="text-black/60 text-xs md:text-sm font-normal font-['Libre_Baskerville']">
+            {task.created_at
+              ? new Date(task.created_at).toLocaleDateString()
+              : ""}
+          </div>
         </div>
-        <Link href={`/myprofile?page=task-offers&task=${task.id}`}>
-          <svg
-            width="40"
-            height="40"
-            viewBox="0 0 40 40"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M33.3336 20H6.66699"
-              stroke="#192953"
-              stroke-width="3"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M25.0007 28.3337C25.0007 28.3337 33.3338 22.1963 33.3338 20.0003C33.3338 17.8043 25.0005 11.667 25.0005 11.667"
-              stroke="#192953"
-              stroke-width="3"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </Link>
+        <svg
+          width="40"
+          height="40"
+          viewBox="0 0 40 40"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M33.3336 20H6.66699"
+            stroke="#192953"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M25.0007 28.3337C25.0007 28.3337 33.3338 22.1963 33.3338 20.0003C33.3338 17.8043 25.0005 11.667 25.0005 11.667"
+            stroke="#192953"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
       </div>
       <div className="self-stretch flex flex-col justify-center items-start gap-3 md:gap-4">
         <div className="self-stretch justify-start text-black/60 text-base md:text-xl font-bold font-['Libre_Baskerville']">
@@ -106,6 +112,7 @@ const TaskCard = ({ task }: { task: TaskTypes; }) => {
               <div>{task.status}</div>
             </div>
           </div>
+
           {count > 0 && (
             <div className="flex justify-start items-center gap-1">
               <div className="border rounded-full border-red-500 w-6 h-6 flex items-center justify-center text-red-500 text-xs md:text-sm font-normal font-['Libre_Baskerville']">
@@ -115,7 +122,7 @@ const TaskCard = ({ task }: { task: TaskTypes; }) => {
           )}
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
