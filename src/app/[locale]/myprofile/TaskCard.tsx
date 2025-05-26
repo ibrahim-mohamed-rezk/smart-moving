@@ -1,39 +1,39 @@
 "use client";
 import { Link } from "@/i18n/routing";
-import { postData } from "@/libs/axios/server";
+// import { postData } from "@/libs/axios/server";
 import { TaskTypes } from "@/libs/types/types";
-import axios, { AxiosHeaders } from "axios";
+// import axios, { AxiosHeaders } from "axios";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 
 const TaskCard = ({ task, token }: { task: TaskTypes; token: string }) => {
-  const t = useTranslations("profile");
-  const locale = useLocale();
-  const [status, setStatus] = useState(task.status);
+  // const t = useTranslations("profile");
+  // const locale = useLocale();
+  // const [status, setStatus] = useState(task.status);
   const [count, setCount] = useState(0);
 
-  const ChangeStatus = async (status: string) => {
-    try {
-      await postData(
-        `customer/change-status/${task.id}`,
-        { status },
-        new AxiosHeaders({
-          lang: locale,
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        })
-      );
-      toast.success(t("Status changed successfully"));
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data?.msg || "An error occurred");
-      } else {
-        toast.error("An unexpected error occurred");
-      }
-      throw error;
-    }
-  };
+  // const ChangeStatus = async (status: string) => {
+  //   try {
+  //     await postData(
+  //       `customer/change-status/${task.id}`,
+  //       { status },
+  //       new AxiosHeaders({
+  //         lang: locale,
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //       })
+  //     );
+  //     toast.success(t("Status changed successfully"));
+  //   } catch (error) {
+  //     if (axios.isAxiosError(error)) {
+  //       toast.error(error.response?.data?.msg || "An error occurred");
+  //     } else {
+  //       toast.error("An unexpected error occurred");
+  //     }
+  //     throw error;
+  //   }
+  // };
 
   useEffect(() => {
     task?.offers?.forEach((offer) => {
