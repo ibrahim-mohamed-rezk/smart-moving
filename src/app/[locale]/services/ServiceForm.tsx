@@ -62,6 +62,7 @@ const ServiceForm = ({
       service_id: service_id,
     });
   }, [params, service_id]);
+
   const handleSubmit = async () => {
     if (!token) {
       setAuthModalType("login");
@@ -79,12 +80,12 @@ const ServiceForm = ({
       );
 
       router.push("/myprofile?page=tasks");
-      toast.success("Request sent successfully");
+      toast.success(t("requestSentSuccessfully"));
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data?.msg || "An error occurred");
+        toast.error(error.response?.data?.msg || t("errorOccurred"));
       } else {
-        toast.error("An unexpected error occurred");
+        toast.error(t("unexpectedErrorOccurred"));
       }
       throw error;
     }
@@ -92,11 +93,8 @@ const ServiceForm = ({
 
   if (!forms[service]) {
     return (
-      <div className=" w-[80%]  mx-auto flex items-center justify-center mt-[clamp(20px,5vw,120px)] text-center">
-        <img
-          src="/soon.png"
-          alt="comming soon"
-        />
+      <div className="w-[80%] mx-auto flex items-center justify-center mt-[clamp(20px,5vw,120px)] text-center">
+        <img src="/soon.png" alt={t("comingSoon")} />
       </div>
     );
   }
@@ -144,6 +142,7 @@ const ServiceForm = ({
                         placeholder={`${t("Enter")} ${t(
                           input.title
                         ).toLowerCase()}`}
+                        dir="auto"
                       />
                     </div>
                   );
@@ -168,6 +167,7 @@ const ServiceForm = ({
                         placeholder={`${t("Enter")} ${t(
                           input.title
                         ).toLowerCase()}`}
+                        dir="auto"
                       ></textarea>
                     </div>
                   );
@@ -197,6 +197,7 @@ const ServiceForm = ({
                             }
                           }}
                           className="w-full p-3 pr-10 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all appearance-none bg-white"
+                          dir="auto"
                         >
                           {input.options?.map((option) => (
                             <option key={option.value} value={option.value}>
@@ -235,6 +236,7 @@ const ServiceForm = ({
                             type="date"
                             name={t("begining_date")}
                             className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                            dir="auto"
                           />
                         </div>
                       )}
@@ -297,8 +299,12 @@ const ServiceForm = ({
                         className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#192953]"
                       />
                       <div className="flex justify-between mt-1">
-                        <span className="text-xs text-gray-500">0 m²</span>
-                        <span className="text-xs text-gray-500">200 m²</span>
+                        <span className="text-xs text-gray-500">
+                          {t("0 m²")}
+                        </span>
+                        <span className="text-xs text-gray-500">
+                          {t("200 m²")}
+                        </span>
                       </div>
                     </div>
                   );
@@ -342,6 +348,7 @@ const ServiceForm = ({
                           placeholder={`${t("Enter")} ${t(
                             input.title
                           ).toLowerCase()}`}
+                          dir="auto"
                         />
                       </div>
                     );
@@ -371,6 +378,7 @@ const ServiceForm = ({
                           placeholder={`${t("Enter")} ${t(
                             input.title
                           ).toLowerCase()}`}
+                          dir="auto"
                         ></textarea>
                       </div>
                     );
@@ -400,6 +408,7 @@ const ServiceForm = ({
                               }
                             }}
                             className="w-full p-3 pr-10 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all appearance-none bg-white"
+                            dir="auto"
                           >
                             {input.options?.map((option) => (
                               <option key={option.value} value={option.value}>
@@ -442,6 +451,7 @@ const ServiceForm = ({
                                 }}
                                 name={t("begining_date")}
                                 className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                                dir="auto"
                               />
                             </div>
                           )}

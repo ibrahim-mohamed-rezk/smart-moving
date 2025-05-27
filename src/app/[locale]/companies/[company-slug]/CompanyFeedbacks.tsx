@@ -5,6 +5,7 @@ import ReviewCard from "./ReviewCard";
 import { postData } from "@/libs/axios/server";
 import toast from "react-hot-toast";
 import axios, { AxiosHeaders } from "axios";
+import { useTranslations } from "next-intl";
 
 const CompanyFeedbacks = ({
   reviews,
@@ -17,6 +18,7 @@ const CompanyFeedbacks = ({
   companySlug: string;
   services: ServiceTypes[];
 }) => {
+  const t = useTranslations("feedbacks");
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
   const [reviewData, setReviewData] = useState({
     rating: 3,
@@ -28,7 +30,7 @@ const CompanyFeedbacks = ({
 
   const openFeedbackForm = () => {
     if (!token) {
-      toast.error("Please login to add a review");
+      toast.error(t("please_login"));
       return;
     }
     setReviewData({
@@ -63,17 +65,17 @@ const CompanyFeedbacks = ({
 
   const handleSubmit = async () => {
     if (!token) {
-      toast.error("Please login to add a review");
+      toast.error(t("please_login"));
       return;
     }
 
     if (!reviewData.service_id) {
-      toast.error("Please select a service");
+      toast.error(t("select_service_error"));
       return;
     }
 
     if (!reviewData.review) {
-      toast.error("Please add a message");
+      toast.error(t("add_message_error"));
       return;
     }
 
@@ -88,16 +90,16 @@ const CompanyFeedbacks = ({
         })
       );
 
-      toast.success("Review added successfully");
+      toast.success(t("review_added"));
       closeFeedbackForm();
       // Refresh the page or update the reviews list
       window.location.reload();
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data?.msg || "An error occurred");
+        toast.error(error.response?.data?.msg || t("error_occurred"));
       } else {
-        toast.error("An unexpected error occurred");
+        toast.error(t("error_occurred"));
       }
     } finally {
       setIsSubmitting(false);
@@ -109,13 +111,13 @@ const CompanyFeedbacks = ({
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-blue-950 text-2xl sm:text-3xl lg:text-4xl font-bold font-['Libre_Baskerville']">
-            Customer Feedbacks
+            {t("title")}
           </h2>
           <button
             onClick={openFeedbackForm}
             className="px-6 py-3 bg-blue-950 text-white rounded-lg font-bold hover:bg-blue-900 transition-colors"
           >
-            Add Feedback
+            {t("add_feedback")}
           </button>
         </div>
 
@@ -132,11 +134,10 @@ const CompanyFeedbacks = ({
           ) : (
             <div className="w-full flex justify-center flex-col items-center p-8">
               <div className="text-blue-950 text-2xl font-bold font-['Libre_Baskerville'] mb-4">
-                No Ratings Yet
+                {t("no_ratings")}
               </div>
               <p className="text-black/60 text-center text-lg font-normal font-['Libre_Baskerville']">
-                This company has not received any feedback yet. Be the first to
-                share your experience!
+                {t("no_ratings_message")}
               </p>
             </div>
           )}
@@ -149,12 +150,12 @@ const CompanyFeedbacks = ({
           <div className="w-full max-w-[1139px] px-16 py-12 bg-white rounded-2xl shadow-[2px_4px_8px_0px_rgba(0,0,0,0.08)] inline-flex flex-col justify-center items-center gap-8">
             <div className="self-stretch flex flex-col justify-start items-start gap-12">
               <div className="self-stretch justify-start text-blue-950 text-4xl font-bold font-['Libre_Baskerville']">
-                Write Feedback
+                {t("write_feedback")}
               </div>
               <div className="self-stretch flex flex-col justify-start items-start gap-8">
                 <div className="flex flex-col justify-center items-start gap-4">
                   <div className="justify-start text-blue-950 text-xl font-bold font-['Libre_Baskerville']">
-                    Rate the Services{" "}
+                    {t("rate_services")}
                   </div>
                   <div className="inline-flex justify-start items-center gap-6">
                     {[1, 2, 3, 4, 5].map((star) => (
@@ -180,7 +181,7 @@ const CompanyFeedbacks = ({
                 </div>
                 <div className="self-stretch h-24 flex flex-col justify-center items-start gap-4">
                   <div className="justify-start text-blue-950 text-xl font-bold font-['Libre_Baskerville']">
-                    Select Service
+                    {t("select_service")}
                   </div>
                   <select
                     name="service_id"
@@ -188,7 +189,7 @@ const CompanyFeedbacks = ({
                     onChange={handleInputChange}
                     className="self-stretch h-14 px-6 rounded-[30px] border border-blue-950/40 text-xl font-bold font-['Libre_Baskerville'] focus:outline-none focus:border-blue-950 focus:ring-2 focus:ring-blue-950/20 bg-white text-blue-950 hover:border-blue-950/60 transition-colors"
                   >
-                    <option value="">Select a service</option>
+                    <option value="">{t("select_service_placeholder")}</option>
                     {services.map((service: ServiceTypes) => (
                       <option
                         key={service.id}
@@ -202,13 +203,13 @@ const CompanyFeedbacks = ({
                 </div>
                 <div className="self-stretch h-52 flex flex-col justify-center items-start gap-4">
                   <div className="justify-start text-blue-950 text-xl font-bold font-['Libre_Baskerville']">
-                    Message
+                    {t("message")}
                   </div>
                   <textarea
                     name="review"
                     onChange={handleInputChange}
                     className="self-stretch h-40 p-4 rounded-[30px] border border-blue-950/40 resize-none focus:outline-none focus:border-blue-950 focus:ring-2 focus:ring-blue-950/20 bg-white text-blue-950 hover:border-blue-950/60 transition-colors"
-                    placeholder="Write your feedback here..."
+                    placeholder={t("message_placeholder")}
                     value={reviewData.review}
                   ></textarea>
                 </div>
@@ -220,7 +221,7 @@ const CompanyFeedbacks = ({
                 className="flex-1 px-36 py-4 rounded-2xl outline-1 outline-offset-[-1px] outline-blue-950 flex justify-center items-center gap-2 cursor-pointer"
               >
                 <div className="justify-start text-blue-950 text-xl font-normal font-['Libre_Baskerville']">
-                  Cancel
+                  {t("cancel")}
                 </div>
               </div>
               <button
@@ -231,7 +232,7 @@ const CompanyFeedbacks = ({
                 }`}
               >
                 <div className="justify-start text-white text-xl font-normal font-['Libre_Baskerville']">
-                  {isSubmitting ? "Posting..." : "Post"}
+                  {isSubmitting ? t("posting") : t("post")}
                 </div>
               </button>
             </div>

@@ -96,6 +96,8 @@
   "company": {
     "why_join_us": "لماذا تنضم إلينا؟",
     "view details": " رؤيه المزيد",
+    "Moving Companies": "شركات النقل",
+    "No ratings": "لا تقييمات",
     "get_customer_requests": "استلم طلبات العملاء مباشرة",
     "sign_up_today": "سجل اليوم للوصول إلى المزيد من العملاء",
     "too_busy": "مشغول؟",
@@ -159,7 +161,15 @@
     "task_offers": "عروض المهام",
     "services_requests": "طلبات الخدمات",
     "available_transfer_requests": "طلبات النقل المتاحة",
-    "available_transfer_requests_description": "قم باختيار طلبات النقل المناسبة لك، وأضف العرض الخاص بك"
+    "available_transfer_requests_description": "قم باختيار طلبات النقل المناسبة لك، وأضف العرض الخاص بك",
+    "about_us": "من نحن",
+    "feedbacks": "التقييمات",
+    "get_an_offer": "احصل على عرض",
+    "price_lists": "قوائم الأسعار",
+    "very_active": "نشط جداً",
+    "ratings": "تقييمات",
+    "price_list_for": "قائمة الأسعار لـ",
+    "no_price_list_available": "لا توجد قائمة أسعار متاحة"
   },
   "personal_information": {
     "first_name": "الاسم الأول",
@@ -461,5 +471,30 @@
       "done": "وضع علامة كمكتمل",
       "submitting": "جاري الإرسال..."
     }
+  },
+  "feedbacks": {
+    "title": "تقييمات العملاء",
+    "add_feedback": "إضافة تقييم",
+    "no_ratings": "لا توجد تقييمات بعد",
+    "no_ratings_message": "لم تتلق هذه الشركة أي تقييمات بعد. كن أول من يشارك تجربته!",
+    "write_feedback": "كتابة تقييم",
+    "rate_services": "تقييم الخدمات",
+    "select_service": "اختر الخدمة",
+    "select_service_placeholder": "اختر خدمة",
+    "message": "الرسالة",
+    "message_placeholder": "اكتب تقييمك هنا...",
+    "cancel": "إلغاء",
+    "post": "نشر",
+    "posting": "جاري النشر...",
+    "please_login": "يرجى تسجيل الدخول لإضافة تقييم",
+    "select_service_error": "يرجى اختيار خدمة",
+    "add_message_error": "يرجى إضافة رسالة",
+    "review_added": "تمت إضافة التقييم بنجاح",
+    "error_occurred": "حدث خطأ"
+  },
+  "company_offers": {
+    "select_service": "اختر الخدمة",
+    "no_services_available": "لا توجد خدمات متاحة",
+    "no_services_message": "لم تقم هذه الشركة بإضافة أي خدمات بعد. يرجى التحقق لاحقاً."
   }
 }

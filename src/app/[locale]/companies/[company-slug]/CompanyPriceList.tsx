@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 const CompanyPriceList = ({
   priceLists,
@@ -8,6 +9,7 @@ const CompanyPriceList = ({
   priceLists: string;
   companyName: string;
 }) => {
+  const t = useTranslations("company");
   const [priceItems, setPriceItems] = useState<
     { text: string; price: string }[]
   >([]);
@@ -30,7 +32,7 @@ const CompanyPriceList = ({
           <div className="flex-1 self-stretch p-6 inline-flex flex-col justify-center items-end gap-2">
             <div className="self-stretch flex flex-col justify-center items-center gap-1">
               <div className="self-stretch justify-start text-blue-950 text-3xl font-bold font-['Libre_Baskerville']">
-                Price list for {companyName}
+                {t("price_list_for")} {companyName}
               </div>
             </div>
             <div className="self-stretch flex flex-col justify-start items-start gap-6">
@@ -54,7 +56,7 @@ const CompanyPriceList = ({
                 ) : (
                   <div className="self-stretch inline-flex justify-between items-center">
                     <div className="justify-start text-blue-950 text-base font-normal font-['Libre_Baskerville']">
-                      No price list available
+                      {t("no_price_list_available")}
                     </div>
                   </div>
                 )}

@@ -8,6 +8,7 @@ import axios, { AxiosHeaders } from "axios";
 import toast from "react-hot-toast";
 import { ReviewTypes } from "@/libs/types/types";
 import { cookies } from "next/headers";
+import { getTranslations } from "next-intl/server";
 
 interface Tab {
   id: string;
@@ -25,6 +26,7 @@ const CompanyHero = async ({
   const { page } = await searchParams;
   const cookiesData = await cookies();
   const token = cookiesData.get("token")?.value;
+  const t = await getTranslations();
 
   if (!page) {
     return redirect({
@@ -38,7 +40,9 @@ const CompanyHero = async ({
       const response = await getData(
         `show/${companySlug}`,
         {},
-        new AxiosHeaders({})
+        new AxiosHeaders({
+          lang: locale,
+        })
       );
       return response.data;
     } catch (error) {
@@ -59,10 +63,10 @@ const CompanyHero = async ({
     ) / companyData.reviews.length;
 
   const tabs: Tab[] = [
-    { id: "about", label: "About Us" },
-    { id: "feedbacks", label: "Feedbacks" },
-    { id: "offer", label: "Get an offer" },
-    { id: "prices", label: "Price lists" },
+    { id: "about%20us", label: t("company.about_us") },
+    { id: "feedbacks", label: t("company.feedbacks") },
+    { id: "get%20an%20offer", label: t("company.get_an_offer") },
+    { id: "price%20lists", label: t("company.price_lists") },
   ];
 
   return (
@@ -76,7 +80,9 @@ const CompanyHero = async ({
               <div className="w-32 h-32 sm:w-40 sm:h-40 lg:w-64 lg:h-64 bg-white rounded-2xl outline-1 outline-indigo-950 flex items-center justify-center overflow-hidden">
                 <img
                   className="w-full h-full"
-                  src={companyData.image === "" ? "/image0.png" : companyData.image}
+                  src={
+                    companyData.image === "" ? "/image0.png" : companyData.image
+                  }
                   alt="Company"
                 />
               </div>
@@ -128,7 +134,7 @@ const CompanyHero = async ({
                     </svg>
 
                     <span className="text-base sm:text-lg lg:text-xl font-bold font-['Libre_Baskerville']">
-                      Very active on the site
+                      {t("company.very_active")}
                     </span>
                   </div>
                 </div>
@@ -154,7 +160,7 @@ const CompanyHero = async ({
                     </span>
                   </div>
                   <span className="text-base sm:text-lg lg:text-xl font-bold font-['Libre_Baskerville'] text-stone-300">
-                    ( {companyData.reviews?.length} ratings )
+                    ( {companyData.reviews?.length} {t("company.ratings")} )
                   </span>
                 </div>
               </div>
@@ -166,7 +172,7 @@ const CompanyHero = async ({
             <div className="flex flex-wrap gap-4 sm:gap-8">
               {tabs.map((tab) => (
                 <Link
-                  href={`/companies/${companySlug}?page=${tab.label.toLowerCase()}`}
+                  href={`/companies/${companySlug}?page=${tab.id.toLowerCase()}`}
                   key={tab.id}
                   className={`pb-2 text-xl sm:text-2xl lg:text-3xl font-bold font-['Libre_Baskerville'] relative ${
                     page === tab.label.toLocaleLowerCase()

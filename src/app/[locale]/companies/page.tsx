@@ -37,7 +37,7 @@ const CompaniesPage = async ({
 
   return (
     <div className="container mx-auto py-8 px-4">
-      <h1 className="text-3xl font-bold mb-8 text-center">Moving Companies</h1>
+      <h1 className="text-3xl font-bold mb-8 text-center">{t("Moving Companies")}</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {companies &&
@@ -85,7 +85,7 @@ const CompaniesPage = async ({
                       </>
                     ) : (
                       <>
-                        No ratings
+                       {t("No ratings")}
                         <span className="text-yellow-500 ml-1">★</span>
                       </>
                     )}

@@ -100,6 +100,8 @@
   "company": {
     "why_join_us": "Why join us?",
     "view details": "View details",
+    "Moving Companies": "Moving Companies",
+    "No ratings yet": "No ratings yet",
     "get_customer_requests": "Get customer requests directly",
     "sign_up_today": "Sign up today to reach more clients",
     "too_busy": "Too busy?",
@@ -163,7 +165,15 @@
     "task_offers": "Task offers",
     "services_requests": "Services requests",
     "available_transfer_requests": "Available transfer requests",
-    "available_transfer_requests_description": "Choose the transfer requests that suit you and add your offer"
+    "available_transfer_requests_description": "Choose the transfer requests that suit you and add your offer",
+    "about_us": "About Us",
+    "feedbacks": "Feedbacks",
+    "get_an_offer": "Get an offer",
+    "price_lists": "Price lists",
+    "very_active": "Very Active",
+    "ratings": "ratings",
+    "price_list_for": "Price list for",
+    "no_price_list_available": "No price list available"
   },
   "personal_information": {
     "first_name": "First name",
@@ -465,5 +475,30 @@
       "done": "Mark as Done",
       "submitting": "Submitting..."
     }
+  },
+  "feedbacks": {
+    "title": "Customer Feedbacks",
+    "add_feedback": "Add Feedback",
+    "no_ratings": "No Ratings Yet",
+    "no_ratings_message": "This company has not received any feedback yet. Be the first to share your experience!",
+    "write_feedback": "Write Feedback",
+    "rate_services": "Rate the Services",
+    "select_service": "Select Service",
+    "select_service_placeholder": "Select a service",
+    "message": "Message",
+    "message_placeholder": "Write your feedback here...",
+    "cancel": "Cancel",
+    "post": "Post",
+    "posting": "Posting...",
+    "please_login": "Please login to add a review",
+    "select_service_error": "Please select a service",
+    "add_message_error": "Please add a message",
+    "review_added": "Review added successfully",
+    "error_occurred": "An error occurred"
+  },
+  "company_offers": {
+    "select_service": "Select Service",
+    "no_services_available": "No Services Available",
+    "no_services_message": "This company has not added any services yet. Please check back later."
   }
 }

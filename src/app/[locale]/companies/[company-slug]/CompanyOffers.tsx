@@ -1,14 +1,17 @@
 import { Link } from "@/i18n/routing";
 import { ServiceTypes } from "@/libs/types/types";
+import { useTranslations } from "next-intl";
 
 const CompanyOffers = ({ services }: { services: ServiceTypes[] }) => {
+  const t = useTranslations("company_offers");
+
   return (
     <div className="flex flex-col bg-[#F0F0F0] rounded-[16px] w-full">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {services && services.length > 0 ? (
           <div className="self-stretch w-full p-6 inline-flex flex-col justify-center items-end gap-6">
             <div className="self-stretch justify-start text-blue-950 text-4xl font-bold font-['Libre_Baskerville']">
-              Select Service
+              {t("select_service")}
             </div>
             <div className="self-stretch flex w-full flex-col justify-center items-center gap-6">
               {services.map((service, index) => (
@@ -59,11 +62,10 @@ const CompanyOffers = ({ services }: { services: ServiceTypes[] }) => {
         ) : (
           <div className="w-full flex justify-center flex-col items-center p-8 bg-white rounded-2xl">
             <div className="text-blue-950 text-2xl font-bold font-['Libre_Baskerville'] mb-4">
-              No Services Available
+              {t("no_services_available")}
             </div>
             <p className="text-black/60 text-center text-lg font-normal font-['Libre_Baskerville']">
-              This company has not added any services yet. Please check back
-              later.
+              {t("no_services_message")}
             </p>
           </div>
         )}
