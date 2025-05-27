@@ -3,7 +3,7 @@
 import { useLocale, useTranslations } from "next-intl";
 import { useState, useRef, useEffect } from "react";
 import { Link, routing, usePathname, useRouter } from "@/i18n/routing";
-import { ChevronDown, Check, Menu, X } from "lucide-react";
+import { ChevronDown, Check, Menu, X, BadgePercent } from "lucide-react";
 import Image from "next/image";
 import AuthModal from "../ui/AuthModal";
 import { navigatons } from "@/libs/data/data";
@@ -45,8 +45,6 @@ export default function Header() {
     setLangOpen(false);
   };
 
- 
-
   useEffect(() => {
     const feachData = async () => {
       try {
@@ -71,43 +69,43 @@ export default function Header() {
     return () => document.removeEventListener("mousedown", onClick);
   }, []);
 
-   useEffect(() => {
-     const feachData = async () => {
-       if (!token) return null;
-       try {
-         const response = await axios.post(
-           "/api/coockies/get-data-from-coockies",
-           {
-             key: "has_hold",
-           }
-         );
-         setShowNotification(response.data.data);
-       } catch (error) {
-         console.log(error);
-       }
-     };
+  useEffect(() => {
+    const feachData = async () => {
+      if (!token) return null;
+      try {
+        const response = await axios.post(
+          "/api/coockies/get-data-from-coockies",
+          {
+            key: "has_hold",
+          }
+        );
+        setShowNotification(response.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-     feachData();
-   }, [token]);
-  
-   useEffect(() => {
-     const feachData = async () => {
-       if (!token) return null;
-       try {
-         const response = await axios.post(
-           "/api/coockies/get-data-from-coockies",
-           {
-             key: "un_read_message_count",
-           }
-         );
-         setShowNotificationChat(response.data.data);
-       } catch (error) {
-         console.log(error);
-       }
-     };
+    feachData();
+  }, [token]);
 
-     feachData();
-   }, [token]);
+  useEffect(() => {
+    const feachData = async () => {
+      if (!token) return null;
+      try {
+        const response = await axios.post(
+          "/api/coockies/get-data-from-coockies",
+          {
+            key: "un_read_message_count",
+          }
+        );
+        setShowNotificationChat(response.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    feachData();
+  }, [token]);
 
   const logout = async () => {
     try {
@@ -154,6 +152,21 @@ export default function Header() {
               </nav>
 
               <div className="items-center justify-center hidden md:flex ms-auto gap-[clamp(5px,1.25vw,50px)] ">
+                {/* offers icon */}
+                {token && (
+                  <Link
+                    href="/myprofile?page=tasks"
+                    onClick={() => setUserMenuOpen(false)}
+                    className=" flex justify-center relative"
+                  >
+                    {/* {user?.role === "customer" ? t("Offers") : t("Requests")} */}
+                    <BadgePercent className="text-white" />
+                    {showNotification && (
+                      <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></div>
+                    )}
+                  </Link>
+                )}
+                
                 {/* chat icon */}
                 {token ? (
                   <Link
@@ -197,14 +210,12 @@ export default function Header() {
 
                 {/* user icon */}
                 {token ? (
-                  <div className="relative ">
+                  <div className="relative flex">
                     <button
                       onClick={() => setUserMenuOpen((open) => !open)}
                       className="w-6 h-6 hover:opacity-70 relative"
                     >
                       <svg
-                        width="24"
-                        height="24"
                         viewBox="0 0 24 24"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
@@ -243,19 +254,6 @@ export default function Header() {
                           onClick={() => setUserMenuOpen(false)}
                         >
                           {t("My Profile")}
-                        </Link>
-
-                        <Link
-                          href="/myprofile?page=tasks"
-                          onClick={() => setUserMenuOpen(false)}
-                          className=" w-full text-center py-2 flex  justify-center text-sm text-gray-700 hover:bg-gray-100 font-['Libre_Baskerville']"
-                        >
-                          {user?.role === "customer"
-                            ? t("Offers")
-                            : t("Requests")}
-                          {showNotification && (
-                            <div className="absolute top-1/2 -translate-y-1/2 right-5 w-2 h-2 bg-red-500 rounded-full"></div>
-                          )}
                         </Link>
 
                         <button

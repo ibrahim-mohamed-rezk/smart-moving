@@ -60,6 +60,13 @@ const ServiceForm = ({
     setFormData({
       ...formData,
       service_id: service_id,
+      details: {
+        ...formData.details,
+        title: params
+          ?.get("service")
+          ?.replace("-", " ")
+          .replace(/\b\w/g, (char) => char.toUpperCase()),
+      },
     });
   }, [params, service_id]);
 

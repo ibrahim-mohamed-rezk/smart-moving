@@ -3,12 +3,12 @@ import { Link } from "@/i18n/routing";
 // import { postData } from "@/libs/axios/server";
 import { TaskTypes } from "@/libs/types/types";
 // import axios, { AxiosHeaders } from "axios";
-// import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 // import toast from "react-hot-toast";
 
 const TaskCard = ({ task }: { task: TaskTypes }) => {
-  // const t = useTranslations("profile");
+  const t = useTranslations("profile");
   // const locale = useLocale();
   // const [status, setStatus] = useState(task.status);
   const [count, setCount] = useState(0);
@@ -50,7 +50,7 @@ const TaskCard = ({ task }: { task: TaskTypes }) => {
     >
       <div className="self-stretch inline-flex justify-between items-center">
         <div className="justify-start text-blue-950 text-xl md:text-3xl font-bold font-['Libre_Baskerville']">
-          {task.details?.title}
+          {t(task.details?.title || "")}
           <div className="text-black/60 text-xs md:text-sm font-normal font-['Libre_Baskerville']">
             {task.created_at
               ? new Date(task.created_at).toLocaleDateString()
@@ -109,7 +109,7 @@ const TaskCard = ({ task }: { task: TaskTypes }) => {
                   </option>
                 ))}
               </select> */}
-              <div>{task.status}</div>
+              <div>{t(task.status)}</div>
             </div>
           </div>
 

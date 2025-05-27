@@ -12,9 +12,14 @@
   },
   "profile": {
     "processing": "Behandler",
+    "proccessing": "Behandler",
     "pending": "Afventer",
     "done": "Færdig",
-    "Status changed successfully": "Status ændret succesfuldt"
+    "Status changed successfully": "Status ændret succesfuldt",
+    "Private Moving": "Privat flytning",
+    "Company Relocation": "Virksomhedsflytning",
+    "Storage": "Opbevaring",
+    "Moving Individual-Furniture-White-Goods": "Flytning af individuelle møbler og hvidevarer"
   },
   "auth": {
     "Login successful": "Login lykkedes",

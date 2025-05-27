@@ -12,9 +12,14 @@
   },
   "profile": {
     "processing": "Processing",
+    "proccessing": "Processing",
     "pending": "Pending",
     "done": "Done",
-    "Status changed successfully": "Status changed successfully"
+    "Status changed successfully": "Status changed successfully",
+    "Private Moving": "Private Moving",
+    "Company Relocation": "Company Relocation",
+    "Storage": "Storage",
+    "Moving Individual-Furniture-White-Goods": "Moving Individual-Furniture-White-Goods"
   },
   "auth": {
     "Login successful": "Login successful",

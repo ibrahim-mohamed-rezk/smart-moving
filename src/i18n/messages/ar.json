@@ -12,9 +12,14 @@
   },
   "profile": {
     "processing": "قيد التنفيذ",
+    "proccessing": "قيد التنفيذ",
     "pending": "قيد الانتظار",
     "done": "مكتمل",
-    "Status changed successfully": "تم تغيير الحالة بنجاح"
+    "Status changed successfully": "تم تغيير الحالة بنجاح",
+    "Private Moving": "نقل خاص",
+    "Company Relocation": "نقل الشركات",
+    "Storage": "التخزين",
+    "Moving Individual-Furniture-White-Goods": "نقل مفروشات وأثاث وأجهزة كهربائية"
   },
   "auth": {
     "Login successful": "تم تسجيل الدخول بنجاح",
