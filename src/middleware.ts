@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import createMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
 
-const locales = ["en", "de", "ar", "fr"]; // Define supported locales
+const locales = ["en", "de", "ar", "fr", "dk"]; // Define supported locales
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -25,5 +25,5 @@ export default function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/(de|en|ar|fr)/:path*"],
+  matcher: ["/", "/(de|en|ar|fr|dk)/:path*"],
 };
