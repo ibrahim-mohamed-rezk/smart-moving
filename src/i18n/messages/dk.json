@@ -644,8 +644,15 @@
       "type_message": "Skriv en besked",
       "attach_files": "Vedhæft filer",
       "files_selected": "{count} fil{plural} valgt",
-      "clear_all": "Ryd alle",
-      "scroll_to_bottom": "Rul til bunden"
+      "clear_all": "Ryd alt",
+      "scroll_to_bottom": "Rul til bunden",
+      "unknown_user": "Ukendt bruger",
+      "messages": "Beskeder",
+      "search_conversations": "Søg i samtaler...",
+      "no_matching_conversations": "Ingen matchende samtaler",
+      "try_adjusting_search": "Prøv at justere din søgning",
+      "no_messages_yet": "Ingen beskeder endnu",
+      "start_conversation_with_company": "Start en samtale med et firma for at se beskeder her"
     }
   },
   "profile": {
@@ -656,5 +663,46 @@
   },
   "hoeme": {
     "welcome": "Velkommen"
+  },
+  "doneForm": {
+    "title": {
+      "processing": "Behandling af opgavedetaljer",
+      "done": "Fuldfør opgavedetaljer"
+    },
+    "price": "Pris",
+    "email": "E-mail",
+    "phone": "Telefon",
+    "address": "Adresse",
+    "date": "Dato",
+    "cancel": "Annuller",
+    "submit": {
+      "processing": "Start behandling",
+      "done": "Marker som færdig",
+      "submitting": "Sender..."
+    }
+  },
+  "chat": {
+    "download": "Download",
+    "file": "Fil",
+    "shared_image": "Delt billede",
+    "user_avatar": "Bruger avatar",
+    "company_logo": "Firma logo",
+    "no_conversation": "Ingen samtale valgt",
+    "select_conversation": "Vælg venligst en samtale fra sidepanelet eller start en ny",
+    "loading_messages": "Indlæser beskeder...",
+    "no_messages": "Ingen beskeder endnu",
+    "start_conversation": "Start en samtale ved at sende en besked",
+    "type_message": "Skriv en besked",
+    "attach_files": "Vedhæft filer",
+    "files_selected": "{count} fil{plural} valgt",
+    "clear_all": "Ryd alt",
+    "scroll_to_bottom": "Rul til bunden",
+    "unknown_user": "Ukendt bruger",
+    "messages": "Beskeder",
+    "search_conversations": "Søg i samtaler...",
+    "no_matching_conversations": "Ingen matchende samtaler",
+    "try_adjusting_search": "Prøv at justere din søgning",
+    "no_messages_yet": "Ingen beskeder endnu",
+    "start_conversation_with_company": "Start en samtale med et firma for at se beskeder her"
   }
 }

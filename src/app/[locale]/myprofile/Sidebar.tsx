@@ -47,7 +47,7 @@ const Sidebar = ({
             key: "has_hold",
           }
         );
-        setShowNotification(response.data);
+        setShowNotification(response.data.data);
       } catch (error) {
         console.log(error);
       }
@@ -74,12 +74,12 @@ const Sidebar = ({
           <div className="w-full max-w-96 inline-flex flex-col justify-center items-center gap-8 lg:gap-14">
             <div className="inline-flex justify-start w-full items-center gap-2 lg:gap-4">
               <div className="w-16 h-16 md:w-18 md:h-18 relative bg-white rounded-full outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden flex items-center justify-center">
-                {/* <img
-                  className="w-12 h-10 md:w-16 md:h-12 lg:w-20 lg:h-14 object-contain"
-                  src="https://placehold.co/75x57"
+               {userData.image ? <img
+                  className="w-1full h-full"
+                  src={userData.image}
                   alt="User avatar"
-                /> */}
-                <UserIcon className="w-[65%] h-[65%] text-[#192953]" />
+                /> :
+                <UserIcon className="w-[65%] h-[65%] text-[#192953]" />}
               </div>
               <div className="flex  flex-col justify-center items-start gap-1">
                 <div className="text-white text-lg md:text-xl font-bold font-['Libre_Baskerville'] break-words">

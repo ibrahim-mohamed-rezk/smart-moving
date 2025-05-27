@@ -6,6 +6,7 @@ import { Menu, X, Search } from "lucide-react";
 import { getData } from "@/libs/axios/server";
 import { AxiosHeaders } from "axios";
 import { ChatTypes, UserDataTypes } from "@/libs/types/types";
+import { useTranslations } from "next-intl";
 
 const Sidebar = ({
   locale,
@@ -20,6 +21,7 @@ const Sidebar = ({
   const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
   const [chats, setChats] = useState<ChatTypes[]>([]);
+  const t = useTranslations("chat");
 
   console.log(chats);
 
@@ -82,7 +84,7 @@ const Sidebar = ({
           <div className="flex justify-start items-center">
             <div className="flex justify-start items-center gap-1.5">
               <div className="text-black text-lg md:text-xl font-bold font-['Libre_Baskerville']">
-                Messages
+                {t("messages")}
               </div>
               <div className="px-2 py-0.5 bg-zinc-100 rounded-3xl flex flex-col justify-start items-start gap-2.5">
                 <div className="text-black text-xs font-semibold font-['Inter'] leading-none">
@@ -109,7 +111,7 @@ const Sidebar = ({
             />
             <input
               type="text"
-              placeholder="Search conversations..."
+              placeholder={t("search_conversations")}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-zinc-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-950 focus:border-transparent text-sm font-['Inter']"
@@ -196,19 +198,19 @@ const Sidebar = ({
           ) : chats.length > 0 ? (
             <div className="w-full flex flex-col items-center justify-center py-8">
               <div className="text-blue-950 text-lg font-normal font-['Libre_Baskerville'] text-center mb-2">
-                No matching conversations
+                {t("no_matching_conversations")}
               </div>
               <div className="text-black/60 text-sm font-normal font-['Libre_Baskerville'] text-center">
-                Try adjusting your search term
+                {t("try_adjusting_search")}
               </div>
             </div>
           ) : (
             <div className="w-full flex flex-col items-center justify-center py-8">
               <div className="text-blue-950 text-lg font-normal font-['Libre_Baskerville'] text-center mb-2">
-                No messages yet
+                {t("no_messages_yet")}
               </div>
               <div className="text-black/60 text-sm font-normal font-['Libre_Baskerville'] text-center">
-                Start a conversation with a company to see messages here
+                {t("start_conversation_with_company")}
               </div>
             </div>
           )}

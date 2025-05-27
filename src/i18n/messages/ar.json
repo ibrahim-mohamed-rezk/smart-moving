@@ -235,10 +235,10 @@
     "no_offers_available": "لا يوجد عروض متاحة",
     "actions": "الإجراءات",
     "your_tasks": "قائمة المهام  ",
-    "all":"الكل",
-    "pending":"قيد الانتظار",
-    "processing":"قيد التنفيذ",
-    "done":"مكتمل"
+    "all": "الكل",
+    "pending": "قيد الانتظار",
+    "processing": "قيد التنفيذ",
+    "done": "مكتمل"
   },
   "services": {
     "TO address": "إلى العنوان",
@@ -437,6 +437,29 @@
     "files_selected": "تم اختيار {count} ملف{plural}",
     "clear_all": "مسح الكل",
     "scroll_to_bottom": "التمرير إلى الأسفل",
-    "unknown_user": "مستخدم غير معروف"
+    "unknown_user": "مستخدم غير معروف",
+    "messages": "الرسائل",
+    "search_conversations": "البحث في المحادثات...",
+    "no_matching_conversations": "لا توجد محادثات مطابقة",
+    "try_adjusting_search": "حاول تعديل مصطلح البحث",
+    "no_messages_yet": "لا توجد رسائل بعد",
+    "start_conversation_with_company": "ابدأ محادثة مع شركة لرؤية الرسائل هنا"
+  },
+  "doneForm": {
+    "title": {
+      "processing": "تفاصيل معالجة المهمة",
+      "done": "تفاصيل إكمال المهمة"
+    },
+    "price": "السعر",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "address": "العنوان",
+    "date": "التاريخ",
+    "cancel": "إلغاء",
+    "submit": {
+      "processing": "بدء التنفيذ",
+      "done": "وضع علامة كمكتمل",
+      "submitting": "جاري الإرسال..."
+    }
   }
 }

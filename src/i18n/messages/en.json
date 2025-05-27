@@ -239,10 +239,10 @@
     "no_offers_available": "No offers available",
     "actions": "Actions",
     "your_tasks": "Your tasks",
-    "all":"All",
-    "pending":"Pending",
-    "processing":"Processing",
-    "done":"Done"
+    "all": "All",
+    "pending": "Pending",
+    "processing": "Processing",
+    "done": "Done"
   },
   "services": {
     "TO address": "To address",
@@ -441,6 +441,29 @@
     "files_selected": "{count} file{plural} selected",
     "clear_all": "Clear all",
     "scroll_to_bottom": "Scroll to bottom",
-    "unknown_user": "Unknown User"
+    "unknown_user": "Unknown User",
+    "messages": "Messages",
+    "search_conversations": "Search conversations...",
+    "no_matching_conversations": "No matching conversations",
+    "try_adjusting_search": "Try adjusting your search term",
+    "no_messages_yet": "No messages yet",
+    "start_conversation_with_company": "Start a conversation with a company to see messages here"
+  },
+  "doneForm": {
+    "title": {
+      "processing": "Processing Task Details",
+      "done": "Complete Task Details"
+    },
+    "price": "Price",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "date": "Date",
+    "cancel": "Cancel",
+    "submit": {
+      "processing": "Start Processing",
+      "done": "Mark as Done",
+      "submitting": "Submitting..."
+    }
   }
 }

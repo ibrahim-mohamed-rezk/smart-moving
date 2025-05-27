@@ -1,4 +1,5 @@
 import { X } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface DoneFormData {
   price: string;
@@ -27,6 +28,8 @@ const DoneFormPopup = ({
   onSubmit,
   status = "done",
 }: DoneFormPopupProps) => {
+  const t = useTranslations("doneForm");
+
   if (!showDoneForm) return null;
 
   return (
@@ -35,9 +38,7 @@ const DoneFormPopup = ({
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-semibold text-blue-950">
-              {status === "processing"
-                ? "Processing Task Details"
-                : "Complete Task Details"}
+              {t(`title.${status}`)}
             </h3>
             <button
               onClick={onClose}
@@ -60,7 +61,7 @@ const DoneFormPopup = ({
                 htmlFor="price"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Price
+                {t("price")}
               </label>
               <input
                 type="text"
@@ -77,7 +78,7 @@ const DoneFormPopup = ({
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Email
+                {t("email")}
               </label>
               <input
                 type="email"
@@ -94,7 +95,7 @@ const DoneFormPopup = ({
                 htmlFor="phone"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Phone
+                {t("phone")}
               </label>
               <input
                 type="tel"
@@ -111,7 +112,7 @@ const DoneFormPopup = ({
                 htmlFor="address"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Address
+                {t("address")}
               </label>
               <textarea
                 id="address"
@@ -128,7 +129,7 @@ const DoneFormPopup = ({
                 htmlFor="date"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Date
+                {t("date")}
               </label>
               <input
                 type="date"
@@ -147,7 +148,7 @@ const DoneFormPopup = ({
                 className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                 disabled={isSubmittingDoneForm}
               >
-                Cancel
+                {t("cancel")}
               </button>
               <button
                 type="submit"
@@ -155,10 +156,8 @@ const DoneFormPopup = ({
                 disabled={isSubmittingDoneForm}
               >
                 {isSubmittingDoneForm
-                  ? "Submitting..."
-                  : status === "processing"
-                  ? "Start Processing"
-                  : "Mark as Done"}
+                  ? t("submit.submitting")
+                  : t(`submit.processing`)}
               </button>
             </div>
           </form>
