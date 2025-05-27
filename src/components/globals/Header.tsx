@@ -10,7 +10,7 @@ import { navigatons } from "@/libs/data/data";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import ForgetPasswordModal from "../ui/ForgetPasswordModal";
-import { UserDataTypes } from "@/libs/types/types";
+// import { UserDataTypes } from "@/libs/types/types";
 
 const flagMap: Record<string, string> = {
   en: "gb",
@@ -30,7 +30,7 @@ export default function Header() {
   const [token, setToken] = useState<string | null>(null);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const searchParams = useSearchParams();
-  const [user, setUser] = useState<UserDataTypes | null>(null);
+  // const [user, setUser] = useState<UserDataTypes | null>(null);
 
   const [menuOpen, setMenuOpen] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
@@ -50,7 +50,7 @@ export default function Header() {
       try {
         const response = await axios.get("/api/auth/getToken");
         setToken(response.data.token);
-        setUser(JSON.parse(response.data.user));
+        // setUser(JSON.parse(response.data.user));
       } catch (error) {
         throw error;
       }

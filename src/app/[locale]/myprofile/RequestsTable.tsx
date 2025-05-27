@@ -60,7 +60,7 @@ const RequestsTable = ({
     try {
       await postData(
         `company/offer/${id}`,
-        { offer: Number(offerPrice.price) },
+        { offer: Number(offerPrice.price), message: offerPrice.message },
         new AxiosHeaders({
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
