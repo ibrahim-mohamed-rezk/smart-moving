@@ -6,6 +6,7 @@ import axios, { AxiosHeaders } from "axios";
 import toast from "react-hot-toast";
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
 
 const TableActionButtons = ({
   id,
@@ -24,7 +25,7 @@ const TableActionButtons = ({
   setOpenCollabse?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [showOfferPopup, setShowOfferPopup] = useState(false);
-
+  const t = useTranslations("table_actions");
   const offerPopupRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
@@ -49,13 +50,13 @@ const TableActionButtons = ({
         })
       );
 
-      toast.success("Offer accepted successfully");
+      toast.success(t("offer_accepted"));
       router.push(`/chats?id=${chat.data.id}`);
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data?.msg || "An error occurred");
+        toast.error(error.response?.data?.msg || t("error_occurred"));
       } else {
-        toast.error("An unexpected error occurred");
+        toast.error(t("unexpected_error"));
       }
       throw error;
     }
@@ -72,13 +73,13 @@ const TableActionButtons = ({
           lang: locale || "en",
         })
       );
-      toast.success("Offer declined successfully");
+      toast.success(t("offer_declined"));
       setShowOfferPopup(false);
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data?.msg || "An error occurred");
+        toast.error(error.response?.data?.msg || t("error_occurred"));
       } else {
-        toast.error("An unexpected error occurred");
+        toast.error(t("unexpected_error"));
       }
       throw error;
     }
@@ -108,7 +109,7 @@ const TableActionButtons = ({
         onClick={() => setShowOfferPopup(!showOfferPopup)}
         className="w-full sm:w-auto px-3 py-1.5 sm:px-4 sm:py-2 text-sm sm:text-base bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-md transition duration-300 ease-in-out"
       >
-        {showOfferPopup ? "Close Details" : "View Details"}
+        {showOfferPopup ? t("close_details") : t("view_details")}
       </button>
       {showOfferPopup && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -122,18 +123,18 @@ const TableActionButtons = ({
             >
               ×
             </button>
-            <h2 className="text-xl font-bold mb-4">Offer Details</h2>
+            <h2 className="text-xl font-bold mb-4">{t("offer_details")}</h2>
             <div className="space-y-4">
               <div>
-                <p className="font-semibold">Price:</p>
+                <p className="font-semibold">{t("price")}:</p>
                 <p className="text-gray-700">
-                  {offer?.offer || "Not specified"}
+                  {offer?.offer || t("not_specified")}
                 </p>
               </div>
               <div>
-                <p className="font-semibold">Message:</p>
+                <p className="font-semibold">{t("message")}:</p>
                 <p className="text-gray-700">
-                  {offer?.message || "No message provided"}
+                  {offer?.message || t("no_message")}
                 </p>
               </div>
               <div className="flex justify-between gap-2 mt-6">
@@ -142,14 +143,14 @@ const TableActionButtons = ({
                     onClick={acceptOffer}
                     className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-bold rounded-md transition duration-300 ease-in-out"
                   >
-                    Accept
+                    {t("accept")}
                   </button>
                 )}
                 <button
                   onClick={declineOffer}
                   className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-bold rounded-md transition duration-300 ease-in-out"
                 >
-                  Decline
+                  {t("decline")}
                 </button>
               </div>
             </div>

@@ -258,7 +258,14 @@
     "all": "Alle",
     "pending": "Afventer",
     "processing": "Behandler",
-    "done": "Færdig"
+    "done": "Færdig",
+    "company_logo": "Virksomhedslogo",
+    "hold": "På hold",
+    "accept": "Accepteret",
+    "reject": "Afvist",
+    "offer": "Tilbud",
+    "status": "Status",
+    "company": "Virksomhed"
   },
   "services": {
     "TO address": "Til adresse",
@@ -506,5 +513,20 @@
     "select_service": "Vælg Service",
     "no_services_available": "Ingen Tjenester Tilgængelige",
     "no_services_message": "Denne virksomhed har ikke tilføjet nogen tjenester endnu. Kom venligst tilbage senere."
+  },
+  "table_actions": {
+    "view_details": "Se detaljer",
+    "close_details": "Luk detaljer",
+    "offer_details": "Tilbudsdetaljer",
+    "price": "Pris",
+    "not_specified": "Ikke specificeret",
+    "message": "Besked",
+    "no_message": "Ingen besked angivet",
+    "accept": "Accepter",
+    "decline": "Afvis",
+    "offer_accepted": "Tilbud accepteret succesfuldt",
+    "offer_declined": "Tilbud afvist succesfuldt",
+    "error_occurred": "Der opstod en fejl",
+    "unexpected_error": "Der opstod en uventet fejl"
   }
 }

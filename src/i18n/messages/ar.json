@@ -249,11 +249,18 @@
     "available_transfer_offers_description": "استكشف العروض الحالية للنقل المتاحة. قم بمراجعة التفاصيل لكل طلب واختر الأفضل لمتطلباتك.",
     "no_offers_available": "لا يوجد عروض متاحة",
     "actions": "الإجراءات",
-    "your_tasks": "قائمة المهام  ",
+    "your_tasks": "قائمة المهام",
     "all": "الكل",
     "pending": "قيد الانتظار",
     "processing": "قيد التنفيذ",
-    "done": "مكتمل"
+    "done": "مكتمل",
+    "company_logo": "شعار الشركة",
+    "hold": "قيد الانتظار",
+    "accept": "تم القبول",
+    "reject": "مرفوض",
+    "offer": "العرض",
+    "status": "الحالة",
+    "company": "الشركة"
   },
   "services": {
     "TO address": "إلى العنوان",
@@ -501,5 +508,20 @@
     "select_service": "اختر الخدمة",
     "no_services_available": "لا توجد خدمات متاحة",
     "no_services_message": "لم تقم هذه الشركة بإضافة أي خدمات بعد. يرجى التحقق لاحقاً."
+  },
+  "table_actions": {
+    "view_details": "عرض التفاصيل",
+    "close_details": "إغلاق التفاصيل",
+    "offer_details": "تفاصيل العرض",
+    "price": "السعر",
+    "not_specified": "غير محدد",
+    "message": "الرسالة",
+    "no_message": "لا توجد رسالة",
+    "accept": "قبول",
+    "decline": "رفض",
+    "offer_accepted": "تم قبول العرض بنجاح",
+    "offer_declined": "تم رفض العرض بنجاح",
+    "error_occurred": "حدث خطأ",
+    "unexpected_error": "حدث خطأ غير متوقع"
   }
 }

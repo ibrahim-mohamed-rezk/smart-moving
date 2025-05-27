@@ -257,7 +257,14 @@
     "all": "All",
     "pending": "Pending",
     "processing": "Processing",
-    "done": "Done"
+    "done": "Done",
+    "company_logo": "Company Logo",
+    "hold": "On Hold",
+    "accept": "Accepted",
+    "reject": "Rejected",
+    "offer": "Offer",
+    "status": "Status",
+    "company": "Company"
   },
   "services": {
     "TO address": "To address",
@@ -505,5 +512,20 @@
     "select_service": "Select Service",
     "no_services_available": "No Services Available",
     "no_services_message": "This company has not added any services yet. Please check back later."
+  },
+  "table_actions": {
+    "view_details": "View Details",
+    "close_details": "Close Details",
+    "offer_details": "Offer Details",
+    "price": "Price",
+    "not_specified": "Not specified",
+    "message": "Message",
+    "no_message": "No message provided",
+    "accept": "Accept",
+    "decline": "Decline",
+    "offer_accepted": "Offer accepted successfully",
+    "offer_declined": "Offer declined successfully",
+    "error_occurred": "An error occurred",
+    "unexpected_error": "An unexpected error occurred"
   }
 }

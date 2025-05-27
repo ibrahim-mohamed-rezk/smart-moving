@@ -33,6 +33,7 @@ const TaskOffersTable = async ({
         new AxiosHeaders({
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
+          lang: locale,
         })
       );
       return response.data;
@@ -47,7 +48,10 @@ const TaskOffersTable = async ({
   );
 
   return (
-    <div className="container mx-auto py-8">
+    <div
+      className="container mx-auto py-8"
+      dir={locale === "ar" ? "rtl" : "ltr"}
+    >
       <div className="flex flex-col items-center mb-8">
         <h1 className="text-4xl font-bold text-blue-950 font-['Libre_Baskerville'] mb-2">
           {t("available_transfer_offers")}
@@ -85,7 +89,7 @@ const TaskOffersTable = async ({
                       key={key}
                       className="p-2.5 border text-center border-zinc-300  text-blue-950 text-2xl font-bold font-['Libre_Baskerville']"
                     >
-                      {key}
+                      {t(key)}
                     </th>
                   );
                 })}
@@ -105,7 +109,7 @@ const TaskOffersTable = async ({
                         <img
                           className="w-12 h-12 mx-auto"
                           src={offer?.company?.image}
-                          alt="company"
+                          alt={t("company_logo")}
                         />
                       ) : (
                         <UserIcon className="w-8 h-8 mx-auto" />
@@ -128,7 +132,7 @@ const TaskOffersTable = async ({
                       }`}
                     >
                       <div className="text-black text-lg font-normal font-['Libre_Baskerville']">
-                        {offer.status}
+                        {t(offer.status)}
                       </div>
                     </div>
                   </td>
