@@ -9,7 +9,7 @@ import { app } from "@/libs/firebase/config";
 import PhoneInput from "react-phone-number-input";
 import type { Value } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import {
   ConfirmationResult,
@@ -36,6 +36,7 @@ const PersonalInfoForm = ({
   const t = useTranslations("personal_information");
   const [services, setServices] = useState([]);
   const [phone, setPhone] = useState<Value>(initialData.phone as Value);
+  const locale = useLocale();
 
   // Form state with validation
   const [formData, setFormData] = useState({
@@ -227,7 +228,7 @@ const PersonalInfoForm = ({
         const response = await getData(
           `services`,
           {},
-          new AxiosHeaders({ Authorization: `Bearer ${token}` })
+          new AxiosHeaders({ Authorization: `Bearer ${token}`, lang: locale })
         );
         setServices(response.data);
       } catch (error) {
@@ -801,7 +802,7 @@ const PersonalInfoForm = ({
                             }));
                           }}
                           className="p-3 md:p-4 bg-zinc-100 rounded-3xl outline-1 outline-offset-[-1px] outline-zinc-300 w-full text-black text-base md:text-lg font-normal font-['Libre_Baskerville']"
-                          placeholder={t("price_listings_placeholder")}
+                          placeholder={t("price_listings_placeholder_price")}
                         />
                       </div>
                     </div>

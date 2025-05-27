@@ -19,7 +19,8 @@
     "Private Moving": "Privat flytning",
     "Company Relocation": "Virksomhedsflytning",
     "Storage": "Opbevaring",
-    "Moving Individual-Furniture-White-Goods": "Flytning af individuelle møbler og hvidevarer"
+    "Moving Individual-Furniture-White-Goods": "Flytning af individuelle møbler og hvidevarer",
+    "taxi": "Taxi"
   },
   "auth": {
     "Login successful": "Login lykkedes",
@@ -203,6 +204,7 @@
     "available_services": "Tilgængelige tjenester",
     "price_listings": "Prisopslag",
     "price_listings_placeholder": "Serviceadresse (f.eks: 1 mand med bil - ca. 10 m³)",
+    "price_listings_placeholder_price": "Pris (f.eks: 700 kr.)",
     "price_listings_title": "Pris (f.eks: 700 kr.)",
     "add_price_listing": "Tilføj prisopslag",
     "profile_updated": "Profil opdateret succesfuldt",
@@ -252,7 +254,8 @@
     "Storage": "Opbevaring",
     "Moving Individual-Furniture-White-Goods": "Flytning af individuelle møbler og hvidevarer",
     "hide": "Skjul",
-    "details": "Detaljer"
+    "details": "Detaljer",
+    "Taxi": "Taxi"
   },
   "tasks": {
     "no_tasks_available": "Ingen opgaver tilgængelige",

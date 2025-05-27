@@ -10,7 +10,7 @@ import { navigatons } from "@/libs/data/data";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import ForgetPasswordModal from "../ui/ForgetPasswordModal";
-// import { UserDataTypes } from "@/libs/types/types";
+import { UserDataTypes } from "@/libs/types/types";
 
 const flagMap: Record<string, string> = {
   en: "gb",
@@ -30,7 +30,7 @@ export default function Header() {
   const [token, setToken] = useState<string | null>(null);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const searchParams = useSearchParams();
-  // const [user, setUser] = useState<UserDataTypes | null>(null);
+  const [user, setUser] = useState<UserDataTypes | null>(null);
 
   const [menuOpen, setMenuOpen] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
@@ -50,7 +50,7 @@ export default function Header() {
       try {
         const response = await axios.get("/api/auth/getToken");
         setToken(response.data.token);
-        // setUser(JSON.parse(response.data.user));
+        setUser(JSON.parse(response.data.user));
       } catch (error) {
         throw error;
       }
@@ -138,18 +138,20 @@ export default function Header() {
               </Link>
 
               {/* Right side: Desktop nav */}
-              <nav className="hidden ms-[clamp(20px,5.0vw,596px)] md:flex items-center gap-6">
-                {navigatons.map((nav) => (
-                  <Link
-                    key={nav.href}
-                    href={nav.href}
-                    locale={locale}
-                    className="text-white hover:text-blue-400 font-[400] font-['Libre_Baskerville'] leading-[100%] text-[clamp(12px,0.938vw,18px)] transition-colors"
-                  >
-                    {t(nav.name)}
-                  </Link>
-                ))}
-              </nav>
+              {user?.role === "customer" && (
+                <nav className="hidden ms-[clamp(20px,5.0vw,596px)] md:flex items-center gap-6">
+                  {navigatons.map((nav) => (
+                    <Link
+                      key={nav.href}
+                      href={nav.href}
+                      locale={locale}
+                      className="text-white hover:text-blue-400 font-[400] font-['Libre_Baskerville'] leading-[100%] text-[clamp(12px,0.938vw,18px)] transition-colors"
+                    >
+                      {t(nav.name)}
+                    </Link>
+                  ))}
+                </nav>
+              )}
 
               <div className="items-center justify-center hidden md:flex ms-auto gap-[clamp(5px,1.25vw,50px)] ">
                 {/* offers icon */}
@@ -166,7 +168,7 @@ export default function Header() {
                     )}
                   </Link>
                 )}
-                
+
                 {/* chat icon */}
                 {token ? (
                   <Link
@@ -352,19 +354,20 @@ export default function Header() {
         {menuOpen && (
           <div className="md:hidden bg-[#192953] shadow-lg border-t border-[#304680]">
             <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col space-y-4">
-              {navigatons.map((nav) => (
-                <Link
-                  href={nav.href}
-                  key={nav.href}
-                  locale={locale}
-                  className="text-white hover:text-blue-400 font-medium text-base block py-2 px-3 hover:bg-[#263966] rounded-lg transition-colors"
-                >
-                  {t(nav.name)}
-                </Link>
-              ))}
+              {user?.role === "customer" &&
+                navigatons.map((nav) => (
+                  <Link
+                    href={nav.href}
+                    key={nav.href}
+                    locale={locale}
+                    className="text-white hover:text-blue-400 font-medium text-base block py-2 px-3 hover:bg-[#263966] rounded-lg transition-colors"
+                  >
+                    {t(nav.name)}
+                  </Link>
+                ))}
 
               {/* Language Switcher mobile */}
-              <div className="relative mx-auto">
+              <div className="relative z-50 block mx-auto">
                 <button
                   onClick={() => setLangOpen((o) => !o)}
                   className="flex items-center hover:border hover:border-white/70 rounded-[clamp(10px,0.833vw,20px)] font-['Libre_Baskerville'] text-[clamp(14px,1.042vw,20px)] font-[400] py-[clamp(3px,0.417vw,5px)] px-[clamp(5px,1.562vw,10px)] justify-center gap-2 text-white cursor-pointer transition focus:outline-none"
@@ -419,88 +422,140 @@ export default function Header() {
 
               {/* auth buttons */}
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                {/* chat icon */}
-                {token ? (
-                  <div className="w-6 mx-auto h-6 relative">
-                    <svg
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+                <div className="w-full flex relative ">
+                  {/* offers icon */}
+                  {token && (
+                    <Link
+                      href="/myprofile?page=tasks"
+                      onClick={() => setMenuOpen(false)}
+                      className="w-fit flex mx-auto relative"
                     >
-                      <path
-                        d="M14.1706 20.8905C18.3536 20.6125 21.6856 17.2332 21.9598 12.9909C22.0134 12.1607 22.0134 11.3009 21.9598 10.4707C21.6856 6.22838 18.3536 2.84913 14.1706 2.57107C12.7435 2.47621 11.2536 2.47641 9.8294 2.57107C5.64639 2.84913 2.31441 6.22838 2.04024 10.4707C1.98659 11.3009 1.98659 12.1607 2.04024 12.9909C2.1401 14.536 2.82343 15.9666 3.62791 17.1746C4.09501 18.0203 3.78674 19.0758 3.30021 19.9978C2.94941 20.6626 2.77401 20.995 2.91484 21.2351C3.05568 21.4752 3.37026 21.4829 3.99943 21.4982C5.24367 21.5285 6.08268 21.1757 6.74868 20.6846C7.1264 20.4061 7.31527 20.2668 7.44544 20.2508C7.5756 20.2348 7.83177 20.3403 8.34401 20.5513C8.8044 20.7409 9.33896 20.8579 9.8294 20.8905C11.2536 20.9852 12.7435 20.9854 14.1706 20.8905Z"
-                        fill="#192953"
-                        stroke="white"
-                        stroke-width="1.5"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M8.5 14.5H15.5M8.5 9.5H12"
-                        stroke="white"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                    {showNotificationChat !== 0 && (
-                      <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></div>
-                    )}
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => {
-                      setAuthModalType("login");
-                      setMenuOpen(false);
-                    }}
-                    className="text-white bg-transparent hover:bg-blue-600 border border-blue-40hover:border-blue-600 rounded-lg py-2 px-4 font-medium text-sm transition-colors w-full sm:w-auto"
-                  >
-                    {t("Login")}
-                  </button>
-                )}
+                      <BadgePercent className="text-white" />
+                      {showNotification && (
+                        <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></div>
+                      )}
+                    </Link>
+                  )}
 
-                {/* user icon mobile */}
-                {token ? (
-                  <Link
-                    href="/myprofile?page=personal-info"
-                    className="w-6 h-6 mx-auto relative"
-                  >
-                    <svg
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+                  {/* chat icon */}
+                  {token ? (
+                    <div className="w-6 mx-auto h-6 relative">
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M14.1706 20.8905C18.3536 20.6125 21.6856 17.2332 21.9598 12.9909C22.0134 12.1607 22.0134 11.3009 21.9598 10.4707C21.6856 6.22838 18.3536 2.84913 14.1706 2.57107C12.7435 2.47621 11.2536 2.47641 9.8294 2.57107C5.64639 2.84913 2.31441 6.22838 2.04024 10.4707C1.98659 11.3009 1.98659 12.1607 2.04024 12.9909C2.1401 14.536 2.82343 15.9666 3.62791 17.1746C4.09501 18.0203 3.78674 19.0758 3.30021 19.9978C2.94941 20.6626 2.77401 20.995 2.91484 21.2351C3.05568 21.4752 3.37026 21.4829 3.99943 21.4982C5.24367 21.5285 6.08268 21.1757 6.74868 20.6846C7.1264 20.4061 7.31527 20.2668 7.44544 20.2508C7.5756 20.2348 7.83177 20.3403 8.34401 20.5513C8.8044 20.7409 9.33896 20.8579 9.8294 20.8905C11.2536 20.9852 12.7435 20.9854 14.1706 20.8905Z"
+                          fill="#192953"
+                          stroke="white"
+                          stroke-width="1.5"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M8.5 14.5H15.5M8.5 9.5H12"
+                          stroke="white"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                      {showNotificationChat !== 0 && (
+                        <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></div>
+                      )}
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        setAuthModalType("login");
+                        setMenuOpen(false);
+                      }}
+                      className="text-white bg-transparent hover:bg-blue-600 border border-blue-40hover:border-blue-600 rounded-lg py-2 px-4 font-medium text-sm transition-colors w-full sm:w-auto"
                     >
-                      <path
-                        d="M17 8.5C17 5.73858 14.7614 3.5 12 3.5C9.23858 3.5 7 5.73858 7 8.5C7 11.2614 9.23858 13.5 12 13.5C14.7614 13.5 17 11.2614 17 8.5Z"
-                        stroke="white"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <mask id="path-2-inside-1_107_998" fill="white">
-                        <path d="M19 20.5C19 16.634 15.866 13.5 12 13.5C8.13401 13.5 5 16.634 5 20.5" />
-                      </mask>
-                      <path
-                        d="M17.5 20.5C17.5 21.3284 18.1716 22 19 22C19.8284 22 20.5 21.3284 20.5 20.5H17.5ZM3.5 20.5C3.5 21.3284 4.17157 22 5 22C5.82843 22 6.5 21.3284 6.5 20.5H3.5ZM19 20.5H20.5C20.5 15.8056 16.6944 12 12 12V13.5V15C15.0376 15 17.5 17.4624 17.5 20.5H19ZM12 13.5V12C7.30558 12 3.5 15.8056 3.5 20.5H5H6.5C6.5 17.4624 8.96244 15 12 15V13.5Z"
-                        fill="white"
-                        mask="url(#path-2-inside-1_107_998)"
-                      />
-                    </svg>
-                  </Link>
-                ) : (
-                  <Link
-                    href="/RegisterCompany"
-                    className="w-full sm:w-auto"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    <button className="text-white bg-blue-600 hover:bg-blue-700 rounded-lg py-2 px-4 font-medium text-sm transition-colors w-full">
-                      {t("Register Moving Company")}
+                      {t("Login")}
                     </button>
-                  </Link>
-                )}
+                  )}
+
+                  {/* user icon mobile */}
+                  {token ? (
+                    <div className="relative  mx-auto">
+                      <button
+                        onClick={() => setUserMenuOpen((open) => !open)}
+                        className="w-fit flex mx-auto relative"
+                      >
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M17 8.5C17 5.73858 14.7614 3.5 12 3.5C9.23858 3.5 7 5.73858 7 8.5C7 11.2614 9.23858 13.5 12 13.5C14.7614 13.5 17 11.2614 17 8.5Z"
+                            stroke="white"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <mask id="path-2-inside-1_107_998" fill="white">
+                            <path d="M19 20.5C19 16.634 15.866 13.5 12 13.5C8.13401 13.5 5 16.634 5 20.5" />
+                          </mask>
+                          <path
+                            d="M17.5 20.5C17.5 21.3284 18.1716 22 19 22C19.8284 22 20.5 21.3284 20.5 20.5H17.5ZM3.5 20.5C3.5 21.3284 4.17157 22 5 22C5.82843 22 6.5 21.3284 6.5 20.5H3.5ZM19 20.5H20.5C20.5 15.8056 16.6944 12 12 12V13.5V15C15.0376 15 17.5 17.4624 17.5 20.5H19ZM12 13.5V12C7.30558 12 3.5 15.8056 3.5 20.5H5H6.5C6.5 17.4624 8.96244 15 12 15V13.5Z"
+                            fill="white"
+                            mask="url(#path-2-inside-1_107_998)"
+                          />
+                        </svg>
+                        {showNotification && (
+                          <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></div>
+                        )}
+                      </button>
+                      <div
+                        className={`absolute overflow-hidden left-1/2 transform -translate-x-1/2 mt-2 w-32 bg-white rounded-xl shadow-lg z-10 transition-all duration-150 ${
+                          userMenuOpen
+                            ? "opacity-100 scale-100 pointer-events-auto"
+                            : "opacity-0 scale-95 pointer-events-none"
+                        }`}
+                      >
+                        <div className="py-1 flex items-center justify-center flex-col">
+                          <Link
+                            href="/myprofile?page=personal-info"
+                            className="w-full text-center py-2 flex justify-center text-sm text-gray-700 hover:bg-gray-100 font-['Libre_Baskerville']"
+                            onClick={() => {
+                              setUserMenuOpen(false);
+                              setMenuOpen(false);
+                            }}
+                          >
+                            {t("My Profile")}
+                          </Link>
+
+                          <button
+                            onClick={() => {
+                              setUserMenuOpen(false);
+                              setMenuOpen(false);
+                              logout();
+                            }}
+                            className="block w-full text-center py-2 text-sm text-gray-700 hover:bg-gray-100 font-['Libre_Baskerville']"
+                          >
+                            {t("Logout")}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <Link
+                      href="/RegisterCompany"
+                      className="w-full sm:w-auto"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      <button className="text-white bg-blue-600 hover:bg-blue-700 rounded-lg py-2 px-4 font-medium text-sm transition-colors w-full">
+                        {t("Register Moving Company")}
+                      </button>
+                    </Link>
+                  )}
+                </div>
               </div>
             </div>
           </div>

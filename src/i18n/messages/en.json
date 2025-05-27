@@ -19,7 +19,8 @@
     "Private Moving": "Private Moving",
     "Company Relocation": "Company Relocation",
     "Storage": "Storage",
-    "Moving Individual-Furniture-White-Goods": "Moving Individual-Furniture-White-Goods"
+    "Moving Individual-Furniture-White-Goods": "Moving Individual-Furniture-White-Goods",
+    "Taxi": "Taxi"
   },
   "auth": {
     "Login successful": "Login successful",
@@ -202,6 +203,7 @@
     "available_services": "Available services",
     "price_listings": "Price listings",
     "price_listings_placeholder": "Service address (e.g: 1 man with a car - approximately 10 m3)",
+    "price_listings_placeholder_price": "Price (e.g: 700$)",
     "price_listings_title": "Price (e.g: 700$)",
     "add_price_listing": "Add price listing",
     "profile_updated": "Profile updated successfully",
@@ -251,7 +253,8 @@
     "Storage": "Storage",
     "Moving Individual-Furniture-White-Goods": "Moving Individual-Furniture-White-Goods",
     "hide": "Hide",
-    "details": "Details"
+    "details": "Details",
+    "Taxi": "Taxi"
   },
   "tasks": {
     "no_tasks_available": "No tasks available",

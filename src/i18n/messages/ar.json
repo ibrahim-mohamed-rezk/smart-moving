@@ -19,7 +19,8 @@
     "Private Moving": "نقل خاص",
     "Company Relocation": "نقل الشركات",
     "Storage": "التخزين",
-    "Moving Individual-Furniture-White-Goods": "نقل مفروشات وأثاث وأجهزة كهربائية"
+    "Moving Individual-Furniture-White-Goods": "نقل مفروشات وأثاث وأجهزة كهربائية",
+    "taxi": "التاكسي"
   },
   "auth": {
     "Login successful": "تم تسجيل الدخول بنجاح",
@@ -198,6 +199,7 @@
     "available_services": "الخدمات المتاحة",
     "price_listings": "قوائم الأسعار",
     "price_listings_placeholder": "عنوان الخدمة (مثل: 1 رجل مع سيارة - تقريباً 10 م3)",
+    "price_listings_placeholder_price": "السعر (مثل: 700$)",
     "price_listings_title": "السعر (مثل: 700$)",
     "add_price_listing": "إضافة قائمة الأسعار",
     "profile_updated": "تم تحديث الملف الشخصي بنجاح",
@@ -247,7 +249,8 @@
     "Storage": "التخزين",
     "Moving Individual-Furniture-White-Goods": "نقل مفروشات وأثاث وأجهزة كهربائية",
     "hide": "إخفاء",
-    "details": "التفاصيل"
+    "details": "التفاصيل",
+    "Taxi": "التاكسي"
   },
   "tasks": {
     "no_tasks_available": "لا يوجد مهام متاحة",
