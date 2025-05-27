@@ -97,13 +97,31 @@ const ChatHeader = ({
             </div>
           )}
 
-          <div className="px-3 py-1 md:px-5 bg-sky-500 rounded-[30px] flex justify-center items-center gap-2">
+          <div
+            className={`px-3 py-1 md:px-5 ${
+              status?.toLocaleLowerCase() === "pending"
+                ? "bg-blue-500"
+                : status?.toLocaleLowerCase() === "processing"
+                ? "bg-orange-500"
+                : status?.toLocaleLowerCase() === "done"
+                ? "bg-green-500"
+                : ""
+            } rounded-[30px] flex justify-center items-center gap-2`}
+          >
             <div className="justify-start text-white text-sm md:text-lg font-normal font-['Libre_Baskerville']">
               {user.role === "customer" ? (
                 <select
                   value={status}
                   onChange={(e) => onStatusChange(e.target.value)}
-                  className="bg-transparent border-none outline-none cursor-pointer text-white text-sm md:text-lg font-normal font-['Libre_Baskerville'] hover:text-sky-200 transition-colors"
+                  className={`bg-transparent border-none outline-none cursor-pointer text-white text-sm md:text-lg font-normal font-['Libre_Baskerville'] hover:text-sky-200 transition-colors ${
+                    status?.toLocaleLowerCase() === "pending"
+                      ? "bg-blue-500"
+                      : status?.toLocaleLowerCase() === "processing"
+                      ? "bg-orange-500"
+                      : status?.toLocaleLowerCase() === "done"
+                      ? "bg-green-500"
+                      : ""
+                  }`}
                   disabled={status === "done" || chat?.order?.status === "done"}
                 >
                   {[
@@ -114,14 +132,26 @@ const ChatHeader = ({
                     <option
                       key={statusOption.value}
                       value={statusOption.value}
-                      className="bg-sky-500 text-white"
+                      className={`bg-sky-500 flex items-center justify-start gap-2 text-white`}
                     >
                       {statusOption.title}
+                      <span
+                        className={`${
+                          statusOption.value?.toLocaleLowerCase() === "pending"
+                            ? "bg-blue-500"
+                            : statusOption.value?.toLocaleLowerCase() ===
+                              "processing"
+                            ? "bg-orange-500"
+                            : statusOption.value?.toLocaleLowerCase() === "done"
+                            ? "bg-green-500"
+                            : ""
+                        } w-2 h-2 relative flex z-20 rounded-full border border-black`}
+                      ></span>
                     </option>
                   ))}
                 </select>
               ) : (
-                status
+                <>{status} </>
               )}
             </div>
           </div>
