@@ -239,7 +239,15 @@
     "all": "الكل",
     "pending": "قيد الانتظار",
     "processing": "قيد التنفيذ",
-    "done": "مكتمل"
+    "done": "مكتمل",
+    "proccessing": "قيد التنفيذ",
+    "Status changed successfully": "تم تغيير الحالة بنجاح",
+    "Private Moving": "نقل خاص",
+    "Company Relocation": "نقل الشركات",
+    "Storage": "التخزين",
+    "Moving Individual-Furniture-White-Goods": "نقل مفروشات وأثاث وأجهزة كهربائية",
+    "hide": "إخفاء",
+    "details": "التفاصيل"
   },
   "tasks": {
     "no_tasks_available": "لا يوجد مهام متاحة",

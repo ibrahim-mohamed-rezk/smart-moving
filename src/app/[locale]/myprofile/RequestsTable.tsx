@@ -194,7 +194,7 @@ const RequestsTable = ({
                       )}
                     </td>
                     <td className="p-2.5 border text-center border-zinc-300 text-black text-xl font-bold font-['Libre_Baskerville']">
-                      {task.details.title} <br />
+                      {t(task.details.title || "")} <br />
                       <span className="text-sm font-normal">
                         {new Date(task.created_at || "").toLocaleDateString(
                           "en-GB"
@@ -213,7 +213,7 @@ const RequestsTable = ({
                       }`}
                       >
                         <div className="text-black text-lg font-normal font-['Libre_Baskerville']">
-                          {task.status}
+                          {t(task.status)}
                         </div>
                       </div>
                     </td>
@@ -238,7 +238,7 @@ const RequestsTable = ({
                           }}
                           className="w-full sm:w-auto px-3 py-1.5 sm:px-4 sm:py-2 text-sm sm:text-base bg-blue-900 hover:bg-blue-950 text-white font-bold rounded-md transition duration-300 ease-in-out"
                         >
-                          {openCollapseId === task.id ? "Hide" : "Details"}
+                          {openCollapseId === task.id ? t("hide") : t("details")}
                         </button>
                       </div>
                     </td>

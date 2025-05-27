@@ -243,7 +243,15 @@
     "all": "All",
     "pending": "Pending",
     "processing": "Processing",
-    "done": "Done"
+    "done": "Done",
+    "proccessing": "Processing",
+    "Status changed successfully": "Status changed successfully",
+    "Private Moving": "Private Moving",
+    "Company Relocation": "Company Relocation",
+    "Storage": "Storage",
+    "Moving Individual-Furniture-White-Goods": "Moving Individual-Furniture-White-Goods",
+    "hide": "Hide",
+    "details": "Details"
   },
   "tasks": {
     "no_tasks_available": "No tasks available",
