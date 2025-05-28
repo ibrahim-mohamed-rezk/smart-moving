@@ -461,7 +461,11 @@ export default function Header() {
 
                   {/* chat icon */}
                   {token ? (
-                    <div className="w-6 mx-auto h-6 relative">
+                    <Link
+                      href="/chats"
+                      onClick={() => setMenuOpen(false)}
+                      className="w-6 mx-auto h-6 relative"
+                    >
                       <svg
                         width="24"
                         height="24"
@@ -487,7 +491,7 @@ export default function Header() {
                       {showNotificationChat !== 0 && (
                         <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></div>
                       )}
-                    </div>
+                    </Link>
                   ) : (
                     <button
                       onClick={() => {
@@ -502,9 +506,10 @@ export default function Header() {
 
                   {/* user icon mobile */}
                   {token ? (
-                    <div className="relative  mx-auto">
-                      <button
-                        onClick={() => setUserMenuOpen((open) => !open)}
+                    <div className="relative mx-auto">
+                      <Link
+                        href="/myprofile?page=personal-info"
+                        onClick={() => setMenuOpen(false)}
                         className="w-fit flex mx-auto relative"
                       >
                         <svg
@@ -530,10 +535,7 @@ export default function Header() {
                             mask="url(#path-2-inside-1_107_998)"
                           />
                         </svg>
-                        {/* {showNotification && (
-                          <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></div>
-                        )} */}
-                      </button>
+                      </Link>
                       <div
                         className={`absolute overflow-hidden left-1/2 transform -translate-x-1/2 mt-2 w-32 bg-white rounded-xl shadow-lg z-10 transition-all duration-150 ${
                           userMenuOpen
