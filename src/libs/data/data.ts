@@ -251,13 +251,13 @@ export const movingFurnitureInputs = {
       name: "service_level",
       type: "select",
       options: [
-        { title: "I help myself with reading.", value: "i_help_myself" },
+        { title: "I help myself with reading", value: "i_help_myself" },
         {
-          title: "There is an elevator at the departure address.",
+          title: "There is an elevator at the departure address",
           value: "there_is_an_elevator",
         },
         {
-          title: "There is an elevator at the move-in address.",
+          title: "There is an elevator at the move-in address",
           value: "there_is_an_elevator_2",
         },
       ],

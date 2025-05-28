@@ -133,6 +133,7 @@
     "contact_person": "شخص الاتصال",
     "enter_contact_person": "أدخل اسم شخص الاتصال",
     "phone_number": "رقم الهاتف",
+    "phone": "رقم الهاتف",
     "enter_phone_number": "أدخل رقم الهاتف",
     "enter_valid_phone": "يرجى إدخال رقم هاتف صحيح",
     "password": "كلمة المرور",
@@ -275,6 +276,7 @@
     "hold": "قيد الانتظار",
     "accept": "تم القبول",
     "reject": "مرفوض",
+    "refuse": "مرفوض",
     "offer": "العرض",
     "status": "الحالة",
     "company": "الشركة"
@@ -433,9 +435,9 @@
     "4th floor": "الطابق الرابع",
     "5th floor or above": "الطابق الخامس أو أعلى",
     "The topic is moved TO": "الموقع الذي يتم الانتقال إليه",
-    "I help myself with reading ": "أقوم بالمساعدة بنفسي",
-    "There is an elevator at the departure address ": "يوجد مصعد في العنوان المغادر",
-    "There is an elevator at the move-in address ": "يوجد مصعد في عنوان الانتقال",
+    "I help myself with reading": "أقوم بالمساعدة بنفسي",
+    "There is an elevator at the departure address": "يوجد مصعد في العنوان المغادر",
+    "There is an elevator at the move-in address": "يوجد مصعد في عنوان الانتقال",
     "Available transfer requests": "طلبات النقل المتاحة",
     "Available transfer requests description": "استكشف الطلبات الحالية للنقل المتاحة. قم بمراجعة التفاصيل لكل طلب واختر الأفضل لمتطلباتك."
   },

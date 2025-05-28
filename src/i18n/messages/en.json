@@ -138,6 +138,7 @@
     "contact_person": "Contact Person",
     "enter_contact_person": "Enter contact person name",
     "phone_number": "Phone Number",
+    "phone": "Phone Number",
     "enter_phone_number": "Enter your phone number",
     "enter_valid_phone": "Please enter a valid phone number",
     "password": "Password",
@@ -280,6 +281,7 @@
     "hold": "On Hold",
     "accept": "Accepted",
     "reject": "Rejected",
+    "refuse": "Rejected",
     "offer": "Offer",
     "status": "Status",
     "company": "Company"

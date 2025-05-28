@@ -87,6 +87,12 @@ export default function Header() {
     };
 
     feachData();
+
+    // Set up interval for subsequent fetches
+    const intervalId = setInterval(feachData, 10000);
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(intervalId);
   }, [token]);
 
   useEffect(() => {
