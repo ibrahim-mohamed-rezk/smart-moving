@@ -144,7 +144,7 @@ const Sidebar = ({
                       <div className="relative">
                         <Link
                           href={
-                            user.role === "company"
+                            user.role === "customer"
                               ? `/companies/${
                                   chat.participants.find(
                                     (participant) =>
