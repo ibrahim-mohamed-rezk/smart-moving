@@ -75,6 +75,7 @@ const TableActionButtons = ({
       );
       toast.success(t("offer_declined"));
       setShowOfferPopup(false);
+      window.location.reload();
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data?.msg || t("error_occurred"));
@@ -138,7 +139,7 @@ const TableActionButtons = ({
                 </p>
               </div>
               <div className="flex justify-between gap-2 mt-6">
-                {offer?.status !== "accept" && (
+                {offer?.status === "hold" && (
                   <button
                     onClick={acceptOffer}
                     className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-bold rounded-md transition duration-300 ease-in-out"
@@ -146,12 +147,12 @@ const TableActionButtons = ({
                     {t("accept")}
                   </button>
                 )}
-                <button
+                {offer?.status === "hold" &&<button
                   onClick={declineOffer}
                   className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-bold rounded-md transition duration-300 ease-in-out"
                 >
                   {t("decline")}
-                </button>
+                </button>}
               </div>
             </div>
           </div>

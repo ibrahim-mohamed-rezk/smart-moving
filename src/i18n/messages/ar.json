@@ -232,6 +232,8 @@
   },
   "myprofile": {
     "moving_address": "عنوان النقل",
+    "Please enter a valid price": "يرجى ادخال سعر صحيح",
+    "Offer submitted successfully": "تم إرسال العرض بنجاح",
     "requestSentSuccessfully": "تم إرسال الطلب بنجاح",
     "errorOccurred": "حدث خطأ",
     "unexpectedErrorOccurred": "حدث خطأ غير متوقع",

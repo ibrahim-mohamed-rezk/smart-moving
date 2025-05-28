@@ -53,7 +53,7 @@ const RequestsTable = ({
 
   const submitOffer = async (id: number) => {
     if (!offerPrice || isNaN(Number(offerPrice.price))) {
-      toast.error("Please enter a valid price");
+      toast.error(t("Please enter a valid price"));
       return;
     }
 
@@ -64,11 +64,11 @@ const RequestsTable = ({
         new AxiosHeaders({
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
-          lang: locale || "en",
+          lang: locale,
         })
       );
 
-      toast.success("Offer submitted successfully");
+      toast.success(t("Offer submitted successfully"));
       setShowOfferPopup(false);
       setOfferPrice(null);
     } catch (error) {

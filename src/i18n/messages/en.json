@@ -237,6 +237,8 @@
   },
   "myprofile": {
     "moving_address": "Moving address",
+    "Please enter a valid price": "Please enter a valid price",
+    "Offer submitted successfully": "Offer submitted successfully",
     "Address possibly floor": "Address possibly floor",
     "square meters": "Number of square meters",
     "requestSentSuccessfully": "Request sent successfully",
