@@ -236,6 +236,7 @@
   },
   "myprofile": {
     "moving_address": "Flytteadresse",
+    "enter_your_message": "Indtast besked",
     "Please enter a valid price": "Indtast en gyldig pris",
     "Offer submitted successfully": "Tilbud sendt succesfuldt",
     "requestSentSuccessfully": "Anmodning sendt succesfuldt",

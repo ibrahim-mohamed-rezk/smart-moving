@@ -294,7 +294,7 @@ const RequestsTable = ({
                     message: e.target.value,
                   }))
                 }
-                placeholder={t("enter_your_price")}
+                placeholder={t("enter_your_message")}
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               ></textarea>
               <div className="flex justify-end gap-4 mt-4">

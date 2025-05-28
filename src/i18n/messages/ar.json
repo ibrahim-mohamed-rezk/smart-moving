@@ -232,6 +232,7 @@
   },
   "myprofile": {
     "moving_address": "عنوان النقل",
+    "enter_your_message": "ادخل رسالتك",
     "Please enter a valid price": "يرجى ادخال سعر صحيح",
     "Offer submitted successfully": "تم إرسال العرض بنجاح",
     "requestSentSuccessfully": "تم إرسال الطلب بنجاح",
