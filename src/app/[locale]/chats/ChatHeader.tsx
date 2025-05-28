@@ -99,11 +99,11 @@ const ChatHeader = ({
 
           <div
             className={`px-3 py-1 md:px-5 ${
-              status?.toLowerCase() === "pending"
+              chat?.order?.status?.toLowerCase() === "pending"
                 ? "bg-blue-500"
-                : status?.toLowerCase() === "proccessing"
+                : chat?.order?.status?.toLowerCase() === "proccessing"
                 ? "bg-orange-500"
-                : status?.toLowerCase() === "done"
+                : chat?.order?.status?.toLowerCase() === "done"
                 ? "bg-green-500"
                 : ""
             } rounded-[30px] flex justify-center items-center gap-2`}
@@ -131,7 +131,7 @@ const ChatHeader = ({
                   ))}
                 </select>
               ) : (
-                <>{status} </>
+                <>{chat?.order?.status} </>
               )}
             </div>
           </div>
