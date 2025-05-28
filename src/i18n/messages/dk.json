@@ -66,6 +66,7 @@
   },
   "home": {
     "welcome": "Velkommen til Smart Moving!",
+    "no_reviews": "Ingen anmeldelser",
     "title": "Få 3 gratis tilbud på din flytning",
     "handle_heavy_lifting": "Lad os tage os af det tunge arbejde - du fokuserer på spændingen ved din nye begyndelse!",
     "select_move_now": "Vælg din flytning nu",
@@ -236,6 +237,7 @@
   },
   "myprofile": {
     "moving_address": "Flytteadresse",
+    "my offers": "Mine tilbud",
     "enter_your_message": "Indtast besked",
     "storage desired in": "Lagring ønsket i",
     "area approx": "Omregning af areal",

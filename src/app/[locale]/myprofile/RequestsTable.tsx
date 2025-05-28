@@ -5,7 +5,7 @@ import { TaskDetailsTypes, TaskTypes } from "@/libs/types/types";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import axios, { AxiosHeaders } from "axios";
-import { postData } from "@/libs/axios/server";
+import { postData, getData } from "@/libs/axios/server";
 import { UserIcon } from "lucide-react";
 
 interface AddOffer {
@@ -31,12 +31,35 @@ const RequestsTable = ({
   const [filterdTasks, setFilteredTasks] = useState<TaskTypes[]>(tasksData);
 
   useEffect(() => {
-    if (filter === "all") {
-      setFilteredTasks(tasksData);
-    } else {
-      setFilteredTasks(tasksData.filter((task) => task.status === filter));
-    }
-  }, [filter, tasksData]);
+    const fetchData = async () => {
+      if (filter === "my offers") {
+        try {
+          const response = await getData(
+            "company/recived-orders",
+            {},
+            new AxiosHeaders({
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+              lang: locale,
+            })
+          );
+          setFilteredTasks(response.data);
+        } catch (error) {
+          if (axios.isAxiosError(error)) {
+            toast.error(error.response?.data?.msg || "An error occurred");
+          } else {
+            toast.error("An unexpected error occurred");
+          }
+        }
+      } else if (filter === "all") {
+        setFilteredTasks(tasksData);
+      } else {
+        setFilteredTasks(tasksData.filter((task) => task.status === filter));
+      }
+    };
+
+    fetchData();
+  }, [filter, tasksData, token, locale]);
 
   const toggleDetails = (taskId: number) => {
     if (openCollapseId === taskId) {
@@ -147,26 +170,26 @@ const RequestsTable = ({
       ) : (
         <div>
           <div className="flex justify-center items-center gap-2 mb-4">
-            {["all", "pending", "processing", "done"].map((status) => (
-              <button
-                key={status}
-                onClick={() => setFilter(status)}
-                className={`${
-                  filter === status
-                    ? "bg-blue-950 text-white"
-                    : "bg-white text-blue-950"
-                } px-4 py-2 border border-zinc-300 rounded-md hover:bg-blue-950 hover:text-white transition duration-300 ease-in-out`}
-              >
-                {t(status)}
-              </button>
-            ))}
+            {["all", "pending", "processing", "done", "my offers"].map(
+              (status) => (
+                <button
+                  key={status}
+                  onClick={() => setFilter(status)}
+                  className={`${
+                    filter === status
+                      ? "bg-blue-950 text-white"
+                      : "bg-white text-blue-950"
+                  } px-4 py-2 border border-zinc-300 rounded-md hover:bg-blue-950 hover:text-white transition duration-300 ease-in-out`}
+                >
+                  {t(status)}
+                </button>
+              )
+            )}
           </div>
           <table className="min-w-full xl:w-full border-collapse table-fixed">
             <thead>
               <tr className="bg-neutral-200">
-                <th className="p-2.5 border w-[100px] text-center border-zinc-300 text-blue-950 text-2xl font-bold font-['Libre_Baskerville']">
-                  
-                </th>
+                <th className="p-2.5 border w-[100px] text-center border-zinc-300 text-blue-950 text-2xl font-bold font-['Libre_Baskerville']"></th>
                 <th className="p-2.5 border text-center border-zinc-300 text-blue-950 text-2xl font-bold font-['Libre_Baskerville']">
                   {t("name")}
                 </th>
@@ -220,10 +243,10 @@ const RequestsTable = ({
                     <td className="p-2.5 border w-fit border-zinc-300 text-black text-xl font-bold font-['Libre_Baskerville']">
                       <div className="flex mx-auto w-fit items-center justify-center gap-2 md:gap-4">
                         <button
-                          disabled={task.status !== "pending"}
+                          disabled={task.status !== "pending" || filter === "my offers"}
                           onClick={() => toggleOfferPopup(task.id)}
                           className={`w-full sm:w-auto px-3 py-1.5 sm:px-4 sm:py-2 text-sm sm:text-base ${
-                            task.status !== "pending"
+                            task.status !== "pending" || filter === "my offers"
                               ? "bg-green-200 cursor-not-allowed"
                               : "bg-green-600 hover:bg-green-700"
                           } text-white font-bold rounded-md transition duration-300 ease-in-out`}
@@ -238,7 +261,9 @@ const RequestsTable = ({
                           }}
                           className="w-full sm:w-auto px-3 py-1.5 sm:px-4 sm:py-2 text-sm sm:text-base bg-blue-900 hover:bg-blue-950 text-white font-bold rounded-md transition duration-300 ease-in-out"
                         >
-                          {openCollapseId === task.id ? t("hide") : t("details")}
+                          {openCollapseId === task.id
+                            ? t("hide")
+                            : t("details")}
                         </button>
                       </div>
                     </td>

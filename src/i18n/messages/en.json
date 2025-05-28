@@ -66,6 +66,7 @@
   },
   "home": {
     "welcome": "Welcome to Smart Moving!",
+    "no_reviews": "No reviews",
     "title": "Get 3 free quotes for your move",
     "handle_heavy_lifting": "Let us handle the heavy lifting - you focus on the excitement of your new beginning!",
     "select_move_now": "Select your move now",
@@ -237,6 +238,7 @@
   },
   "myprofile": {
     "moving_address": "Moving address",
+    "my offers": "My offers",
     "enter_your_message": "Enter your message",
     "storage desired in": "Storage desired in",
     "area approx": "Area approx",

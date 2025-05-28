@@ -22,19 +22,28 @@ const BestCompanies = ({ companies }: { companies: CompanyTypes[] }) => {
             <Link
               href={`/companies/${company.id}?page=about%20us`}
               key={i}
-              className="flex-shrink-0 p-4 w-[clamp(12rem,15vw,15rem)] text-center"
+              className="flex-shrink-0 aspect-square rounded-full p-4 w-[clamp(12rem,15vw,13rem)] text-center"
             >
               <img
                 src={company.image || "/worldCarIcon.png"}
                 alt={t("company_logo")}
-                width={200}
-                height={200}
-                className="mx-auto mb-2 w-[200px] h-[200px]"
+                className="mx-auto mb-2 w-full rounded-full h-full object-cover"
               />
               {/* Optional: if you want to show company names */}
-              {/* <h2 className="text-lg font-bold text-[#7FB63D] ">
+              <h2 className="text-lg text-nowrap font-bold text-[#7FB63D] ">
                 {company.name}
-              </h2> */}
+              </h2>
+              <span className="text-lg font-bold text-[#7FB63D] ">
+                {company.reviews?.length > 0
+                  ? (
+                      company.reviews.reduce(
+                        (acc, review) => acc + review.rating,
+                        0
+                      ) / company.reviews.length
+                    ).toFixed(1)
+                  : t("no_reviews")}{" "}
+                ⭐
+              </span>
             </Link>
           ))}
         </div>

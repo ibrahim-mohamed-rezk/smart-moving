@@ -70,7 +70,7 @@ const Sidebar = ({
           />
         </div>
 
-        <div className="relative z-10 p-4 w-full lg:p-8 h-full flex flex-col">
+        <div className="relative z-10 p-4 w-full lg:p-2 h-full flex flex-col">
           <div className="w-full max-w-96 inline-flex flex-col justify-center items-center gap-8 lg:gap-14">
             <div className="inline-flex justify-start w-full items-center gap-2 lg:gap-4">
               <div className="w-16 h-16 md:w-18 md:h-18 relative bg-white rounded-full outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden flex items-center justify-center">
