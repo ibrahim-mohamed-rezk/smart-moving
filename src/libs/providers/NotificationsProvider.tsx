@@ -28,7 +28,15 @@ const NotificationsProvider = ({ token }: { token: string | undefined }) => {
         console.log(error);
       }
     };
+
+    // Initial fetch
     feachData();
+
+    // Set up interval for subsequent fetches
+    const intervalId = setInterval(feachData, 10000);
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(intervalId);
   }, [token, locale]);
   return null;
 };

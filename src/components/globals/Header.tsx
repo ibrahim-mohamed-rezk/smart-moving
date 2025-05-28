@@ -31,6 +31,7 @@ export default function Header() {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const searchParams = useSearchParams();
   const [user, setUser] = useState<UserDataTypes | null>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
 
   const [menuOpen, setMenuOpen] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
@@ -106,6 +107,19 @@ export default function Header() {
 
     feachData();
   }, [token]);
+
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      if (
+        userMenuRef.current &&
+        !userMenuRef.current.contains(e.target as Node)
+      ) {
+        setUserMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, []);
 
   const logout = async () => {
     try {
@@ -212,7 +226,7 @@ export default function Header() {
 
                 {/* user icon */}
                 {token ? (
-                  <div className="relative flex">
+                  <div className="relative flex" ref={userMenuRef}>
                     <button
                       onClick={() => setUserMenuOpen((open) => !open)}
                       className="w-6 h-6 hover:opacity-70 relative"
