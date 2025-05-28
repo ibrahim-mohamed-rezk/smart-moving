@@ -17,7 +17,6 @@ import {
   RecaptchaVerifier,
   signInWithPhoneNumber,
 } from "firebase/auth";
-import Image from "next/image";
 
 declare global {
   interface Window {
@@ -404,9 +403,7 @@ const PersonalInfoForm = ({
             typeof profileImageUrl === "string" &&
             profileImageUrl.match(/\.(jpeg|jpg|gif|png|webp)$|blob:http/i) ? (
               <div className="relative w-full h-full">
-                <Image
-                  width={100}
-                  height={100}
+                <img
                   src={profileImageUrl.toString()}
                   alt="Profile"
                   className="w-full h-full object-cover"
