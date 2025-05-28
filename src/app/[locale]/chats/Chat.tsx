@@ -99,7 +99,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
         );
         setChat(response.data);
         // Set initial status from chat data
-        setStatus(response.data.order?.status );
+        setStatus(response.data.order?.status);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching chat:", error);
@@ -339,6 +339,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
       });
 
       toast.success(t("status_changed"));
+      window.location.reload();
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data?.msg || t("unexpected_error"));
@@ -376,6 +377,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
       );
       setStatus(newStatus);
       toast.success(t("status_changed"));
+      window.location.reload();
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data?.msg || t("unexpected_error"));
@@ -407,64 +409,74 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
         onStatusChange={handleStatusChange}
       />
 
-      {/* Chat Messages - Scrollable Section */}
+      {/* Chat Messages - Scrollable Section  */}
       <div className="flex-1 overflow-hidden max-h-screen relative">
         {status === "done" && (
           <div className="absolute inset-0 bg-black/50 flex items-start justify-center overflow-auto z-10 p-4">
-            <div className="bg-white p-6 rounded-xl max-w-md w-full mx-4 h-fit block">
-              <h3 className="text-blue-950 text-xl font-bold font-['Libre_Baskerville'] mb-4 sticky top-0 bg-white pb-2">
-                {t("order_details")}
-              </h3>
-              <div className="space-y-4">
-                {chat?.order?.email && (
-                  <div className="flex flex-col">
-                    <span className="text-gray-600 text-sm">{t("email")}</span>
-                    <span className="text-black font-medium break-words">
-                      {chat.order.email}
-                    </span>
-                  </div>
-                )}
-                {chat?.order?.phone && (
-                  <div className="flex flex-col">
-                    <span className="text-gray-600 text-sm">{t("phone")}</span>
-                    <span className="text-black font-medium break-words">
-                      {chat.order.phone}
-                    </span>
-                  </div>
-                )}
-                {chat?.order?.address && (
-                  <div className="flex flex-col">
-                    <span className="text-gray-600 text-sm">
-                      {t("address")}
-                    </span>
-                    <span className="text-black font-medium break-words">
-                      {chat.order.address}
-                    </span>
-                  </div>
-                )}
-                {chat?.order?.price && (
-                  <div className="flex flex-col">
-                    <span className="text-gray-600 text-sm">{t("price")}</span>
-                    <span className="text-black font-medium break-words">
-                      {chat.order.price}
-                    </span>
-                  </div>
-                )}
-                {chat?.order?.date && (
-                  <div className="flex flex-col">
-                    <span className="text-gray-600 text-sm">{t("date")}</span>
-                    <span className="text-black font-medium break-words">
-                      {chat.order.date}
-                    </span>
-                  </div>
-                )}
+            <div className="bg-white p-6 flex lg:flex-row flex-col rounded-xl max-w-7xl w-full mx-4 h-fit ">
+              <div className="w-full">
+                <h3 className="text-blue-950 text-xl font-bold font-['Libre_Baskerville'] mb-4 sticky top-0 bg-white pb-2">
+                  {t("order_details")}
+                </h3>
+                <div className="space-y-4">
+                  {chat?.order?.email && (
+                    <div className="flex flex-col">
+                      <span className="text-gray-600 text-sm">
+                        {t("email")}
+                      </span>
+                      <span className="text-black font-medium break-words">
+                        {chat.order.email}
+                      </span>
+                    </div>
+                  )}
+                  {chat?.order?.phone && (
+                    <div className="flex flex-col">
+                      <span className="text-gray-600 text-sm">
+                        {t("phone")}
+                      </span>
+                      <span className="text-black font-medium break-words">
+                        {chat.order.phone}
+                      </span>
+                    </div>
+                  )}
+                  {chat?.order?.address && (
+                    <div className="flex flex-col">
+                      <span className="text-gray-600 text-sm">
+                        {t("address")}
+                      </span>
+                      <span className="text-black font-medium break-words">
+                        {chat.order.address}
+                      </span>
+                    </div>
+                  )}
+                  {chat?.order?.price && (
+                    <div className="flex flex-col">
+                      <span className="text-gray-600 text-sm">
+                        {t("price")}
+                      </span>
+                      <span className="text-black font-medium break-words">
+                        {chat.order.price}
+                      </span>
+                    </div>
+                  )}
+                  {chat?.order?.date && (
+                    <div className="flex flex-col">
+                      <span className="text-gray-600 text-sm">{t("date")}</span>
+                      <span className="text-black font-medium break-words">
+                        {chat.order.date}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <div className="mt-4 text-center text-gray-600">
+                  {t("conversation_done")}
+                </div>
               </div>
-              <div className="mt-4 text-center text-gray-600">
-                {t("conversation_done")}
-              </div>
+              {chat?.order && <OrderDetails order={chat.order} />}
             </div>
           </div>
         )}
+
         <div
           ref={messagesContainerRef}
           className="h-full scrollbar-hide p-3 md:p-6 flex flex-col justify-start items-start gap-4 md:gap-8 overflow-y-auto"
@@ -477,9 +489,10 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
             </div>
           ) : (
             <>
-              {chat?.order && status !== "processing" && (
-                <OrderDetails order={chat.order} />
-              )}
+              {chat?.order &&
+                (status !== "processing" || status === "processing") && (
+                  <OrderDetails order={chat.order} />
+                )}
               {messages.length > 0 ? (
                 messages.map((message, index) => (
                   <ChatMessage

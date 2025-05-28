@@ -61,7 +61,7 @@ const ChatHeader = ({
             </div>
           </div>
 
-          {status === "processing" && chat?.order && (
+          {chat?.order && (status === "processing" || status === "done") && (
             <div className="flex-1 mx-4 grid grid-cols-2 gap-x-4 gap-y-2">
               <div className="flex items-center gap-2 text-sm">
                 <Mail className="w-4 h-4 text-gray-500 flex-shrink-0" />
@@ -115,16 +115,25 @@ const ChatHeader = ({
                   value={status}
                   onChange={(e) => onStatusChange(e.target.value)}
                   className="border-none outline-none cursor-pointer text-white text-sm md:text-lg font-normal font-['Libre_Baskerville'] hover:text-sky-200 transition-colors bg-transparent"
-                  disabled={status === "done" || status === "done"}
+                  disabled={status === "done"}
                 >
                   {[
-                    { title: t("pending"), value: "pending" },
+                    {
+                      title: t("pending"),
+                      value: "pending",
+                      disabled: status === "processing",
+                    },
                     { title: t("processing"), value: "processing" },
-                    { title: t("done"), value: "done" },
+                    {
+                      title: t("done"),
+                      value: "done",
+                      disabled: status === "pending",
+                    },
                   ].map((statusOption) => (
                     <option
                       key={statusOption.value}
                       value={statusOption.value}
+                      disabled={statusOption.disabled}
                       className={`${"bg-blue-500"} text-white`}
                     >
                       {statusOption.title}
