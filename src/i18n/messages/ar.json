@@ -232,6 +232,9 @@
   },
   "myprofile": {
     "moving_address": "عنوان النقل",
+    "FRA address": "عنوان المغادرة",
+    "Moving out address": "عنوان الانتقال",
+    "moving out address": "عنوان الانتقال",
     "add_offer": "إضافة عرض",
     "no_requests_available": "لا يوجد طلبات متاحة",
     "id": "المعرف",
