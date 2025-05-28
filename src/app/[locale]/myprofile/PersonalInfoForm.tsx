@@ -683,7 +683,6 @@ const PersonalInfoForm = ({
                     }
                     className={`self-stretch p-3 md:p-4 bg-zinc-100 rounded-3xl outline-1 outline-offset-[-1px] outline-zinc-300 w-full text-black text-base md:text-lg font-normal font-['Libre_Baskerville'] min-h-[120px]`}
                     placeholder={t("company_bio_placeholder")}
-                    minLength={100}
                   >
                     {formData.bio || ""}
                   </textarea>
