@@ -141,39 +141,46 @@ const Sidebar = ({
                 >
                   <div className="self-stretch flex justify-between items-start w-full">
                     <div className="flex justify-start items-center gap-2">
-                      <Link
-                        href={
-                          user.role === "company"
-                            ? `/companies/${
+                      <div className="relative">
+                        <Link
+                          href={
+                            user.role === "company"
+                              ? `/companies/${
+                                  chat.participants.find(
+                                    (participant) =>
+                                      participant.user_id !== user.id &&
+                                      participant.user.role === "company"
+                                  )?.user.company?.id
+                                }?page=about%20us`
+                              : "#"
+                          }
+                          className="w-10 h-10 md:w-16 flex items-center justify-center md:h-16 relative bg-white rounded-[100px] outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                          }}
+                        >
+                          {chat.participants.find(
+                            (participant) => participant.user_id !== user.id
+                          )?.user.image ? (
+                            <img
+                              className="w-full h-full"
+                              src={
                                 chat.participants.find(
-                                  (participant) =>
-                                    participant.user_id !== user.id &&
-                                    participant.user.role === "company"
-                                )?.user.company?.id
-                              }?page=about%20us`
-                            : "#"
-                        }
-                        className="w-10 h-10 md:w-16 flex items-center justify-center md:h-16 relative bg-white rounded-[100px] outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                        }}
-                      >
-                        {chat.participants.find(
-                          (participant) => participant.user_id !== user.id
-                        )?.user.image ? (
-                          <img
-                            className="w-full h-full"
-                            src={
-                              chat.participants.find(
-                                (participant) => participant.user_id !== user.id
-                              )?.user.image
-                            }
-                            alt="user"
-                          />
-                        ) : (
-                          <UserIcon className="w-[80%] h-[80%]" />
+                                  (participant) => participant.user_id !== user.id
+                                )?.user.image
+                              }
+                              alt="user"
+                            />
+                          ) : (
+                            <UserIcon className="w-[80%] h-[80%]" />
+                          )}
+                        </Link>
+                        {chat.unread_messages_count > 0 && (
+                          <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                            {chat.unread_messages_count}
+                          </div>
                         )}
-                      </Link>
+                      </div>
                       <div className="text-blue-950 text-base md:text-lg font-normal font-['Libre_Baskerville']">
                         {
                           chat.participants.find(
