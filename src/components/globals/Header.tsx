@@ -506,10 +506,9 @@ export default function Header() {
 
                   {/* user icon mobile */}
                   {token ? (
-                    <div className="relative mx-auto">
-                      <Link
-                        href="/myprofile?page=personal-info"
-                        onClick={() => setMenuOpen(false)}
+                    <div className="relative  mx-auto">
+                      <button
+                        onClick={() => setUserMenuOpen((open) => !open)}
                         className="w-fit flex mx-auto relative"
                       >
                         <svg
@@ -535,7 +534,10 @@ export default function Header() {
                             mask="url(#path-2-inside-1_107_998)"
                           />
                         </svg>
-                      </Link>
+                        {/* {showNotification && (
+                          <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></div>
+                        )} */}
+                      </button>
                       <div
                         className={`absolute overflow-hidden left-1/2 transform -translate-x-1/2 mt-2 w-32 bg-white rounded-xl shadow-lg z-10 transition-all duration-150 ${
                           userMenuOpen
