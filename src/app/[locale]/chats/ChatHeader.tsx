@@ -26,6 +26,7 @@ const ChatHeader = ({
   const t = useTranslations("profile");
 
   const otherUser = chat?.participants.filter((p) => p.user.id !== user.id)[0];
+  // alert(`chat: ${status}, status: ${status}`);
 
   return (
     <div className="flex-none">
@@ -65,32 +66,32 @@ const ChatHeader = ({
               <div className="flex items-center gap-2 text-sm">
                 <Mail className="w-4 h-4 text-gray-500 flex-shrink-0" />
                 <span className="text-gray-600 truncate">
-                  {chat.order.email}
+                  {chat.order?.email}
                 </span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <Phone className="w-4 h-4 text-gray-500 flex-shrink-0" />
                 <span className="text-gray-600 truncate">
-                  {chat.order.phone}
+                  {chat.order?.phone}
                 </span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <MapPin className="w-4 h-4 text-gray-500 flex-shrink-0" />
                 <span className="text-gray-600 truncate">
-                  {chat.order.address}
+                  {chat.order?.address}
                 </span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <DollarSign className="w-4 h-4 text-gray-500 flex-shrink-0" />
                 <span className="text-gray-600 truncate">
-                  {chat.order.price}
+                  {chat.order?.price}
                 </span>
               </div>
               {chat.order.date && (
                 <div className="flex items-center gap-2 text-sm col-span-2">
                   <Calendar className="w-4 h-4 text-gray-500 flex-shrink-0" />
                   <span className="text-gray-600 truncate">
-                    {chat.order.date}
+                    {chat.order?.date}
                   </span>
                 </div>
               )}
@@ -99,11 +100,11 @@ const ChatHeader = ({
 
           <div
             className={`px-3 py-1 md:px-5 ${
-              chat?.order?.status?.toLowerCase() === "pending"
+              status?.toLowerCase() === "pending"
                 ? "bg-blue-500"
-                : chat?.order?.status?.toLowerCase() === "proccessing"
+                : status?.toLowerCase() === "processing"
                 ? "bg-orange-500"
-                : chat?.order?.status?.toLowerCase() === "done"
+                : status?.toLowerCase() === "done"
                 ? "bg-green-500"
                 : ""
             } rounded-[30px] flex justify-center items-center gap-2`}
@@ -114,7 +115,7 @@ const ChatHeader = ({
                   value={status}
                   onChange={(e) => onStatusChange(e.target.value)}
                   className="border-none outline-none cursor-pointer text-white text-sm md:text-lg font-normal font-['Libre_Baskerville'] hover:text-sky-200 transition-colors bg-transparent"
-                  disabled={status === "done" || chat?.order?.status === "done"}
+                  disabled={status === "done" || status === "done"}
                 >
                   {[
                     { title: t("pending"), value: "pending" },
@@ -131,7 +132,7 @@ const ChatHeader = ({
                   ))}
                 </select>
               ) : (
-                <>{chat?.order?.status} </>
+                <>{status} </>
               )}
             </div>
           </div>

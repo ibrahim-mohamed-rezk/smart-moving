@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 // import { UserDataTypes } from "@/libs/types/types";
 import { Link, useRouter } from "@/i18n/routing";
-import { Menu, X, Search } from "lucide-react";
+import { Menu, X, Search, UserIcon } from "lucide-react";
 import { getData } from "@/libs/axios/server";
 import { AxiosHeaders } from "axios";
 import { ChatTypes, UserDataTypes } from "@/libs/types/types";
@@ -142,27 +142,37 @@ const Sidebar = ({
                   <div className="self-stretch flex justify-between items-start w-full">
                     <div className="flex justify-start items-center gap-2">
                       <Link
-                        href={`/companies/${
-                          chat.participants.find(
-                            (participant) =>
-                              participant.user_id !== user.id &&
-                              participant.user.role === "company"
-                          )?.user.company?.id
-                        }?page=about%20us`}
+                        href={
+                          user.role === "company"
+                            ? `/companies/${
+                                chat.participants.find(
+                                  (participant) =>
+                                    participant.user_id !== user.id &&
+                                    participant.user.role === "company"
+                                )?.user.company?.id
+                              }?page=about%20us`
+                            : "#"
+                        }
                         className="w-10 h-10 md:w-16 flex items-center justify-center md:h-16 relative bg-white rounded-[100px] outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden"
                         onClick={(e) => {
                           e.stopPropagation();
                         }}
                       >
-                        <img
-                          className="w-full h-full"
-                          src={
-                            chat.participants.find(
-                              (participant) => participant.user_id !== user.id
-                            )?.user.image
-                          }
-                          alt="user"
-                        />
+                        {chat.participants.find(
+                          (participant) => participant.user_id !== user.id
+                        )?.user.image ? (
+                          <img
+                            className="w-full h-full"
+                            src={
+                              chat.participants.find(
+                                (participant) => participant.user_id !== user.id
+                              )?.user.image
+                            }
+                            alt="user"
+                          />
+                        ) : (
+                          <UserIcon className="w-[80%] h-[80%]" />
+                        )}
                       </Link>
                       <div className="text-blue-950 text-base md:text-lg font-normal font-['Libre_Baskerville']">
                         {
@@ -177,7 +187,6 @@ const Sidebar = ({
                         ? new Date(
                             chat.last_message.updated_at
                           ).toLocaleDateString([], {
-                            weekday: "short",
                             month: "short",
                             day: "numeric",
                             hour: "2-digit",

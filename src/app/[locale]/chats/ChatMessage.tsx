@@ -8,6 +8,7 @@ import {
 import {
   Download,
   FileText,
+  UserIcon,
 } from "lucide-react";
 
 interface ChatMessageProps {
@@ -97,13 +98,13 @@ const ChatMessage = ({
       {!isMyMessage && (
         <Link
           href={`/companies/${message.user?.company?.id}?page=about%20us`}
-          className="w-8 h-8 md:w-10 md:h-10 relative bg-white rounded-[100px] outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden flex-shrink-0"
+          className="w-8 h-8 md:w-10 flex items-center justify-center md:h-10 relative bg-white rounded-[100px] outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden flex-shrink-0"
         >
-          <img
+          {message.user?.image ? <img
             className="w-full h-full"
             src={message.user?.image}
             alt="User avatar"
-          />
+          />: <UserIcon className="w-[80%] h-[80%]" />}
         </Link>
       )}
       <div
@@ -185,12 +186,12 @@ const ChatMessage = ({
         </div>
       </div>
       {isMyMessage && (
-        <div className="w-8 h-8 md:w-10 md:h-10 relative bg-white rounded-[100px] outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden flex-shrink-0">
-          <img
+        <div className="w-8 h-8 md:w-10 flex items-center justify-center md:h-10 relative bg-white rounded-[100px] outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden flex-shrink-0">
+          {message.user.image?<img
             className="w-full h-full absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
             src={message.user?.image}
             alt="User avatar"
-          />
+          />: <UserIcon className="w-[80%] h-[80%]" />}
         </div>
       )}
     </div>
