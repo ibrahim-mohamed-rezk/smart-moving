@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { Link } from "@/i18n/routing";
 import { CompanyTypes } from "@/libs/types/types";
 import { getTranslations } from "next-intl/server";
+import { UserIcon } from "lucide-react";
 
 const CompaniesPage = async ({
   params,
@@ -47,10 +48,11 @@ const CompaniesPage = async ({
               className="bg-white rounded-lg gap-4 shadow-md p-3 flex justify-between items-center hover:shadow-lg transition-shadow"
             >
               <div className="w-36 h-36 rounded-full  flex items-center justify-center overflow-hidden flex-shrink-0 border border-gray-300">
-                <img
-                  src={company.image === "" ? "/logo.png" : company.image}
+                {company.image ? <img
+                  src={company.image}
                   alt={company.name}
-                />
+                  className="w-full h-full"
+                />: <UserIcon className="w-[80%] h-[80%]" />}
               </div>
 
               <div className="flex-2 flex items-start justify-center flex-col pr-6">
