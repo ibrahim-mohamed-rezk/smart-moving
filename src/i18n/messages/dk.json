@@ -237,6 +237,8 @@
   "myprofile": {
     "moving_address": "Flytteadresse",
     "enter_your_message": "Indtast besked",
+    "storage desired in": "Lagring ønsket i",
+    "area approx": "Omregning af areal",
     "Please enter a valid price": "Indtast en gyldig pris",
     "Offer submitted successfully": "Tilbud sendt succesfuldt",
     "requestSentSuccessfully": "Anmodning sendt succesfuldt",
