@@ -97,7 +97,7 @@ const ChatMessage = ({
     >
       {!isMyMessage && (
         <Link
-          href={`/companies/${message.user?.company?.id}?page=about%20us`}
+          href={ user.role === "customer" ?`/companies/${message.user?.company?.id}?page=about%20us`:"#"}
           className="w-8 h-8 md:w-10 flex items-center justify-center md:h-10 relative bg-white rounded-[100px] outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden flex-shrink-0"
         >
           {message.user?.image ? <img

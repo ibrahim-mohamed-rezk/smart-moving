@@ -34,7 +34,11 @@ const ChatHeader = ({
         <div className="flex justify-between items-start">
           <div className="flex justify-start items-start gap-4">
             <Link
-              href={`/companies/${otherUser?.user.company?.id}?page=about%20us`}
+              href={
+                user.role === "customer"
+                  ? `/companies/${otherUser?.user.company?.id}?page=about%20us`
+                  : "#"
+              }
               className="w-10 h-10 md:w-16 md:h-16 relative bg-white rounded-[100px] outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden flex-shrink-0"
             >
               {otherUser?.user.image ? (
