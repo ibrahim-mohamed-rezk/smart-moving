@@ -187,7 +187,7 @@ const ServiceForm = ({
                       </label>
                       <div className="relative">
                         <select
-                          name={t(input.name)}
+                          name={input.name}
                           onChange={(
                             e: React.ChangeEvent<HTMLSelectElement>
                           ) => {
