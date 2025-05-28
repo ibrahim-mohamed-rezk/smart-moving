@@ -127,7 +127,7 @@ const Sidebar = ({
                   {t("change_password")}
                 </div>
               </button>
-              <button
+              {/* <button
                 onClick={() => handleNavigation("tasks")}
                 className={`cursor-pointer ${
                   activeRoute === "tasks" ? "bg-white/90" : ""
@@ -145,7 +145,7 @@ const Sidebar = ({
                 {showNotification && (
                   <div className="absolute top-1/2 -translate-y-1/2 right-2 w-4 h-4 bg-red-500 rounded-full"></div>
                 )}
-              </button>
+              </button> */}
             </div>
           </div>
         </div>

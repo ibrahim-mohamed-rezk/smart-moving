@@ -243,7 +243,9 @@ export default function Header() {
                       )}
                     </button>
                     <div
-                      className={`absolute overflow-hidden -start-full mt-2 w-32 bg-white rounded-xl shadow-lg z-10 transition-all duration-150 ${
+                      className={`absolute overflow-hidden top-6 start-1/2 transform ${
+                        locale === "ar" ? "translate-x-1/2" : "-translate-x-1/2"
+                      } mt-2 w-32 bg-white rounded-xl shadow-lg z-10 transition-all duration-150 ${
                         userMenuOpen
                           ? "opacity-100 scale-100 pointer-events-auto"
                           : "opacity-0 scale-95 pointer-events-none"
