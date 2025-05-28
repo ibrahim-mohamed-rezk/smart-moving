@@ -66,9 +66,10 @@ const ServiceForm = ({
           ?.get("service")
           ?.replace("-", " ")
           .replace(/\b\w/g, (char) => char.toUpperCase()),
+        square_meters: squareMeters,
       },
     });
-  }, [params, service_id]);
+  }, [params, service_id, squareMeters]);
 
   const handleSubmit = async () => {
     if (!token) {
@@ -135,7 +136,7 @@ const ServiceForm = ({
                       </label>
                       <input
                         type="text"
-                        name={t(input.name)}
+                        name={input.name}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                           setFormData((prev) => ({
                             ...prev,
@@ -169,7 +170,7 @@ const ServiceForm = ({
                             },
                           }))
                         }
-                        name={t(input.name)}
+                        name={input.name}
                         className="w-full p-3 min-h-32 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-y"
                         placeholder={`${t("Enter")} ${t(
                           input.title
@@ -241,7 +242,7 @@ const ServiceForm = ({
                               }))
                             }
                             type="date"
-                            name={t("begining_date")}
+                            name={"begining_date"}
                             className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                             dir="auto"
                           />
@@ -264,7 +265,7 @@ const ServiceForm = ({
                           >
                             <input
                               type="radio"
-                              name={t(input.name)}
+                              name={input.name}
                               value={option.value}
                               onChange={() =>
                                 setFormData((prev) => ({
@@ -337,8 +338,8 @@ const ServiceForm = ({
                           {t(input.title)}
                         </label>
                         <input
-                          type={t("text")}
-                          name={t(input.name)}
+                          type={"text"}
+                          name={input.name}
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             setFormData((prev) => ({
                               ...prev,
@@ -355,7 +356,6 @@ const ServiceForm = ({
                           placeholder={`${t("Enter")} ${t(
                             input.title
                           ).toLowerCase()}`}
-                          dir="auto"
                         />
                       </div>
                     );
@@ -380,7 +380,7 @@ const ServiceForm = ({
                               },
                             }))
                           }
-                          name={t(input.name)}
+                          name={input.name}
                           className="w-full p-3 min-h-32 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-y"
                           placeholder={`${t("Enter")} ${t(
                             input.title
@@ -397,7 +397,7 @@ const ServiceForm = ({
                         </label>
                         <div className="relative">
                           <select
-                            name={t(input.name)}
+                            name={input.name}
                             onChange={(
                               e: React.ChangeEvent<HTMLSelectElement>
                             ) => {
@@ -456,7 +456,7 @@ const ServiceForm = ({
                                     },
                                   }));
                                 }}
-                                name={t("begining_date")}
+                                name={"begining_date"}
                                 className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                                 dir="auto"
                               />
@@ -479,7 +479,7 @@ const ServiceForm = ({
                             >
                               <input
                                 type="radio"
-                                name={t(input.name)}
+                                name={input.name}
                                 value={t(option.value)}
                                 onChange={(
                                   e: React.ChangeEvent<HTMLInputElement>

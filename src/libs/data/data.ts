@@ -208,7 +208,7 @@ export const movingFurnitureInputs = {
       ],
     },
     {
-      title: "The topic is moved OFF.",
+      title: "The topic is moved OFF",
       name: "the_topic_is_moved_OFF",
       type: "select",
       options: [
