@@ -237,7 +237,9 @@
   "myprofile": {
     "moving_address": "Flytteadresse",
     "requestSentSuccessfully": "Anmodning sendt succesfuldt",
+    "begining date": "Begining date",
       "errorOccurred": "Der opstod en fejl",
+      "the topic is moved TO": "The topic is moved TO",
       "unexpectedErrorOccurred": "Der opstod en uventet fejl",
       "comingSoon": "Kommer snart",
       "submitRequest": "Indsend anmodning",
