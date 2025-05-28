@@ -34,14 +34,17 @@ const OrderDetails = ({ order }: { order: TaskTypes }) => {
   };
 
   const renderDetails = (
-    details: Record<string, any>,
+    details: Record<string, unknown>,
     prefix = ""
   ): ReactNode[] => {
     return Object.entries(details).map(([key, value]) => {
       if (value === null || value === undefined) return null;
 
       if (typeof value === "object" && !Array.isArray(value)) {
-        return renderDetails(value, `${prefix}${key}.`);
+        return renderDetails(
+          value as Record<string, unknown>,
+          `${prefix}${key}.`
+        );
       }
 
       const Icon = getIconForField(key);
