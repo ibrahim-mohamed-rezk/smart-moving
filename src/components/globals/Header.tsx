@@ -258,9 +258,9 @@ export default function Header() {
                           mask="url(#path-2-inside-1_107_998)"
                         />
                       </svg>
-                      {showNotification && (
+                      {/* {showNotification && (
                         <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></div>
-                      )}
+                      )} */}
                     </button>
                     <div
                       className={`absolute overflow-hidden top-6 start-1/2 transform ${
@@ -530,9 +530,9 @@ export default function Header() {
                             mask="url(#path-2-inside-1_107_998)"
                           />
                         </svg>
-                        {showNotification && (
+                        {/* {showNotification && (
                           <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></div>
-                        )}
+                        )} */}
                       </button>
                       <div
                         className={`absolute overflow-hidden left-1/2 transform -translate-x-1/2 mt-2 w-32 bg-white rounded-xl shadow-lg z-10 transition-all duration-150 ${
