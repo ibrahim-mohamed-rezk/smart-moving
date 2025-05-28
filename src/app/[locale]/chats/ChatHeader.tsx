@@ -141,7 +141,7 @@ const ChatHeader = ({
                   ))}
                 </select>
               ) : (
-                <>{status} </>
+                <>{t(status || "")} </>
               )}
             </div>
           </div>
