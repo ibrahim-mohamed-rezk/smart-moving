@@ -232,7 +232,9 @@
   },
   "myprofile": {
     "moving_address": "عنوان النقل",
+    "Address possibly floor": "العنوان وربما الطابق",
     "FRA address": "عنوان المغادرة",
+    "title": "العنوان",
     "Moving out address": "عنوان الانتقال",
     "moving out address": "عنوان الانتقال",
     "add_offer": "إضافة عرض",
@@ -261,7 +263,6 @@
     "hide": "إخفاء",
     "details": "التفاصيل",
     "Taxi": "التاكسي",
-    "title": "العنوان",
     "services": {
       "TO address": "إلى العنوان",
       "to address": "إلى العنوان",

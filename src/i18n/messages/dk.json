@@ -236,7 +236,9 @@
   },
   "myprofile": {
     "moving_address": "Flytteadresse",
+    "Address possibly floor": "Adresse eventuelt etage",
     "FRA address": "Fra adresse",
+    "title": "Tilbud",
     "Moving out address": "Fraflytningsadresse",
     "moving out address": "fraflytningsadresse",
     "add_offer": "Tilføj tilbud",

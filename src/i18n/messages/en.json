@@ -237,7 +237,9 @@
   },
   "myprofile": {
     "moving_address": "Moving address",
+    "Address possibly floor": "Address possibly floor",
     "FRA address": "From address",
+    "title": "Title",
     "Moving out address": "Moving out address",
     "moving out address": "Moving out address",
     "add_offer": "Add offer",
