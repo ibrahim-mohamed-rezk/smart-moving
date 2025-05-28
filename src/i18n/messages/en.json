@@ -753,7 +753,7 @@
     "shared_image": "Shared image",
     "user_avatar": "User avatar",
     "company_logo": "Company logo",
-    "no_conversation": "No conversation selected",
+    "no_conversation_selected": "No conversation selected",
     "select_conversation": "Please select a conversation from the sidebar or start a new one",
     "loading_messages": "Loading messages...",
     "no_messages": "No messages yet",
@@ -769,7 +769,20 @@
     "no_matching_conversations": "No matching conversations",
     "try_adjusting_search": "Try adjusting your search term",
     "no_messages_yet": "No messages yet",
-    "start_conversation_with_company": "Start a conversation with a company to see messages here"
+    "start_conversation_with_company": "Start a conversation with a company to see messages here",
+    "order_details": "Order Details",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "price": "Price",
+    "date": "Date",
+    "conversation_done": "This conversation is marked as done",
+    "fill_required_fields": "Please fill in all required fields",
+    "status_changed": "Status changed successfully",
+    "cannot_change_done": "Cannot change status once it's marked as done",
+    "failed_to_load": "Failed to load chat information",
+    "failed_to_send": "Failed to send message",
+    "unexpected_error": "An unexpected error occurred"
   },
   "doneForm": {
     "title": {

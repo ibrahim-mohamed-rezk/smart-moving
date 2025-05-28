@@ -16,6 +16,7 @@ import MessageInput from "./MessageInput";
 import ScrollToBottomButton from "./ScrollToBottomButton";
 import DoneFormPopup from "./DoneFormPopup";
 import OrderDetails from "./OrderDetails";
+import { useTranslations } from "next-intl";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB in bytes
 
@@ -56,6 +57,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   const locale = useLocale();
+  const t = useTranslations("chat");
 
   // Enhanced scroll to bottom function with smooth behavior
   const scrollToBottom = useCallback((smooth = true) => {
@@ -97,11 +99,11 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
         );
         setChat(response.data);
         // Set initial status from chat data
-        setStatus(response.data.order?.status || "pending");
+        setStatus(response.data.order?.status );
         setLoading(false);
       } catch (error) {
         console.error("Error fetching chat:", error);
-        toast.error("Failed to load chat information");
+        toast.error(t("failed_to_load"));
         setLoading(false);
       } finally {
         setLoading(false);
@@ -109,7 +111,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
     };
 
     fetchChat();
-  }, [id, locale, token]);
+  }, [id, locale, token, t]);
 
   // Fetch messages and handle scrolling
   useEffect(() => {
@@ -268,9 +270,9 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
       setTimeout(() => scrollToBottom(), 100);
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data?.msg || "Failed to send message");
+        toast.error(error.response?.data?.msg || t("failed_to_send"));
       } else {
-        toast.error("An unexpected error occurred");
+        toast.error(t("unexpected_error"));
       }
     } finally {
       setSendingMessage(false);
@@ -302,7 +304,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
       !doneFormData.address ||
       !doneFormData.date
     ) {
-      toast.error("Please fill in all required fields");
+      toast.error(t("fill_required_fields"));
       return;
     }
 
@@ -336,12 +338,12 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
         date: "",
       });
 
-      toast.success("Status changed successfully");
+      toast.success(t("status_changed"));
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data?.msg || "An error occurred");
+        toast.error(error.response?.data?.msg || t("unexpected_error"));
       } else {
-        toast.error("An unexpected error occurred");
+        toast.error(t("unexpected_error"));
       }
     } finally {
       setIsSubmittingDoneForm(false);
@@ -351,7 +353,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
   // Handle status change
   const handleStatusChange = async (newStatus: string) => {
     if (status === "done") {
-      toast.error("Cannot change status once it's marked as done");
+      toast.error(t("cannot_change_done"));
       return;
     }
 
@@ -373,12 +375,12 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
         })
       );
       setStatus(newStatus);
-      toast.success("Status changed successfully");
+      toast.success(t("status_changed"));
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data?.msg || "An error occurred");
+        toast.error(error.response?.data?.msg || t("unexpected_error"));
       } else {
-        toast.error("An unexpected error occurred");
+        toast.error(t("unexpected_error"));
       }
     }
   };
@@ -387,9 +389,9 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
     return (
       <div className="w-full h-full flex items-center justify-center">
         <div className="text-blue-950 text-lg md:text-xl font-normal font-['Libre_Baskerville'] text-center p-8">
-          <p>No conversation selected</p>
+          <p>{t("no_conversation_selected")}</p>
           <p className="text-black/60 text-sm md:text-base mt-2">
-            Please select a conversation from the sidebar or start a new one
+            {t("select_conversation")}
           </p>
         </div>
       </div>
@@ -411,12 +413,12 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
           <div className="absolute inset-0 bg-black/50 flex items-start justify-center overflow-auto z-10 p-4">
             <div className="bg-white p-6 rounded-xl max-w-md w-full mx-4 h-fit block">
               <h3 className="text-blue-950 text-xl font-bold font-['Libre_Baskerville'] mb-4 sticky top-0 bg-white pb-2">
-                Order Details
+                {t("order_details")}
               </h3>
               <div className="space-y-4">
                 {chat?.order?.email && (
                   <div className="flex flex-col">
-                    <span className="text-gray-600 text-sm">Email</span>
+                    <span className="text-gray-600 text-sm">{t("email")}</span>
                     <span className="text-black font-medium break-words">
                       {chat.order.email}
                     </span>
@@ -424,7 +426,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
                 )}
                 {chat?.order?.phone && (
                   <div className="flex flex-col">
-                    <span className="text-gray-600 text-sm">Phone</span>
+                    <span className="text-gray-600 text-sm">{t("phone")}</span>
                     <span className="text-black font-medium break-words">
                       {chat.order.phone}
                     </span>
@@ -432,7 +434,9 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
                 )}
                 {chat?.order?.address && (
                   <div className="flex flex-col">
-                    <span className="text-gray-600 text-sm">Address</span>
+                    <span className="text-gray-600 text-sm">
+                      {t("address")}
+                    </span>
                     <span className="text-black font-medium break-words">
                       {chat.order.address}
                     </span>
@@ -440,7 +444,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
                 )}
                 {chat?.order?.price && (
                   <div className="flex flex-col">
-                    <span className="text-gray-600 text-sm">Price</span>
+                    <span className="text-gray-600 text-sm">{t("price")}</span>
                     <span className="text-black font-medium break-words">
                       {chat.order.price}
                     </span>
@@ -448,7 +452,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
                 )}
                 {chat?.order?.date && (
                   <div className="flex flex-col">
-                    <span className="text-gray-600 text-sm">Date</span>
+                    <span className="text-gray-600 text-sm">{t("date")}</span>
                     <span className="text-black font-medium break-words">
                       {chat.order.date}
                     </span>
@@ -456,7 +460,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
                 )}
               </div>
               <div className="mt-4 text-center text-gray-600">
-                This conversation is marked as done
+                {t("conversation_done")}
               </div>
             </div>
           </div>
@@ -468,7 +472,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
           {loading ? (
             <div className="w-full flex flex-col items-center justify-center py-8">
               <div className="text-blue-950 text-lg font-normal font-['Libre_Baskerville'] text-center">
-                Loading messages...
+                {t("loading_messages")}
               </div>
             </div>
           ) : (
@@ -489,10 +493,10 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
               ) : (
                 <div className="w-full flex flex-col items-center justify-center py-8">
                   <div className="text-blue-950 text-lg font-normal font-['Libre_Baskerville'] text-center mb-2">
-                    No messages yet
+                    {t("no_messages")}
                   </div>
                   <div className="text-black/60 text-sm font-normal font-['Libre_Baskerville'] text-center">
-                    Start a conversation by sending a message
+                    {t("start_conversation")}
                   </div>
                 </div>
               )}
