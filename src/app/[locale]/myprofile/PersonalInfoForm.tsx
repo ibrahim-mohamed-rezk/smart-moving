@@ -758,11 +758,13 @@ const PersonalInfoForm = ({
                           type="text"
                           value={title || ""}
                           onChange={(e) => {
+                            // Add space after each word
+                            const valueWithSpaces = e.target.value.replace(/([a-zA-Z])([a-zA-Z])/g, '$1 $2');
                             const newListings = formData.price_listings
                               ?.split(",")
                               .map((i, idx) =>
                                 idx === index
-                                  ? `${e.target.value}:${
+                                  ? `${valueWithSpaces}:${
                                       item.split(":")[1] || ""
                                     }`
                                   : i
