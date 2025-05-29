@@ -289,7 +289,7 @@ const PersonalInfoForm = ({
     }
 
     // Phone validation
-    const phoneRegex = /^\+?\d{10,15}$/;
+    const phoneRegex = /^\+?\d{5,15}$/;
     if (!formData.phone.trim()) {
       newErrors.phone = "Phone number is required";
       valid = false;

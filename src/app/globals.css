@@ -1,15 +1,14 @@
 /* fonts */
-@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap");
 
 /* local fonts */
 @font-face {
-  font-family: 'Franklin Gothic Heavy';
-  src: url('/fonts/FranklinGothic.ttf') format('truetype');
+  font-family: "Franklin Gothic Heavy";
+  src: url("/fonts/FranklinGothic.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
-
 
 @import "tailwindcss";
 
@@ -25,15 +24,15 @@ button {
   scrollbar-width: none;
 }
 
-.hero-list ul{
+.hero-list ul {
   list-style: disc;
-  list-style-position: inside
+  list-style-position: inside;
 }
 
-*{
-  font-family: 'Libre Baskerville', serif;
+* {
+  font-family: "Libre Baskerville", serif;
 }
 
-
-
-
+html[dir="rtl"] input, html[dir="rtl"] textarea {
+  direction: rtl;
+}

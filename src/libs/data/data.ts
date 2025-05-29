@@ -12,6 +12,7 @@ export const privateMovingInputs = {
   isDivided: true,
   firstPart: {
     title: "Moving out address",
+    placeHoleder: "Moving out address placeholder",
   },
   secondPart: {
     title: "Moving address",
@@ -225,6 +226,7 @@ export const movingFurnitureInputs = {
       title: "Moving out address",
       name: "moving_out_address",
       type: "text",
+      placeHoleder: "Moving out address placeholder",
     },
     {
       title: "FRA address",
@@ -283,6 +285,7 @@ export const companyRelocationInputs = {
   isDivided: true,
   firstPart: {
     title: "Moving out address",
+    placeHoleder: "Moving out address placeholder",
   },
   secondPart: {
     title: "Moving address",

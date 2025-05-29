@@ -42,6 +42,7 @@ export interface ServiceInput {
   name: string;
   type: string;
   options?: { title: string; value: string }[];
+  placeHoleder?: string;
 }
 
 export interface ServiceFormData {
