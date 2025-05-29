@@ -29,9 +29,11 @@ export default function Header() {
   const t = useTranslations("header");
   const [token, setToken] = useState<string | null>(null);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [userMobileMenuOpen, setUserMbileMenuOpen] = useState(false);
   const searchParams = useSearchParams();
   const [user, setUser] = useState<UserDataTypes | null>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const userMobileMenuRef = useRef<HTMLDivElement>(null);
 
   const [menuOpen, setMenuOpen] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
@@ -121,6 +123,19 @@ export default function Header() {
         !userMenuRef.current.contains(e.target as Node)
       ) {
         setUserMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, []);
+
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      if (
+        userMobileMenuRef.current &&
+        !userMobileMenuRef.current.contains(e.target as Node)
+      ) {
+        setUserMbileMenuOpen(false);
       }
     };
     document.addEventListener("mousedown", onClick);
@@ -458,7 +473,6 @@ export default function Header() {
                       )}
                     </Link>
                   )}
-
                   {/* chat icon */}
                   {token ? (
                     <Link
@@ -506,9 +520,9 @@ export default function Header() {
 
                   {/* user icon mobile */}
                   {token ? (
-                    <div className="relative  mx-auto">
+                    <div className="relative mx-auto">
                       <button
-                        onClick={() => setUserMenuOpen((open) => !open)}
+                        onClick={() => setUserMbileMenuOpen((open) => !open)}
                         className="w-fit flex mx-auto relative"
                       >
                         <svg
@@ -521,9 +535,9 @@ export default function Header() {
                           <path
                             d="M17 8.5C17 5.73858 14.7614 3.5 12 3.5C9.23858 3.5 7 5.73858 7 8.5C7 11.2614 9.23858 13.5 12 13.5C14.7614 13.5 17 11.2614 17 8.5Z"
                             stroke="white"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                           />
                           <mask id="path-2-inside-1_107_998" fill="white">
                             <path d="M19 20.5C19 16.634 15.866 13.5 12 13.5C8.13401 13.5 5 16.634 5 20.5" />
@@ -534,13 +548,11 @@ export default function Header() {
                             mask="url(#path-2-inside-1_107_998)"
                           />
                         </svg>
-                        {/* {showNotification && (
-                          <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></div>
-                        )} */}
                       </button>
                       <div
+                        ref={userMobileMenuRef}
                         className={`absolute overflow-hidden left-1/2 transform -translate-x-1/2 mt-2 w-32 bg-white rounded-xl shadow-lg z-10 transition-all duration-150 ${
-                          userMenuOpen
+                          userMobileMenuOpen
                             ? "opacity-100 scale-100 pointer-events-auto"
                             : "opacity-0 scale-95 pointer-events-none"
                         }`}
@@ -550,18 +562,19 @@ export default function Header() {
                             href="/myprofile?page=personal-info"
                             className="w-full text-center py-2 flex justify-center text-sm text-gray-700 hover:bg-gray-100 font-['Libre_Baskerville']"
                             onClick={() => {
-                              setUserMenuOpen(false);
-                              setMenuOpen(false);
+                              setUserMbileMenuOpen(false); // Close user dropdown
+                              setMenuOpen(false); // Close mobile menu
                             }}
                           >
                             {t("My Profile")}
                           </Link>
 
                           <button
+                            type="button"
                             onClick={() => {
-                              setUserMenuOpen(false);
-                              setMenuOpen(false);
-                              logout();
+                              setUserMbileMenuOpen(false); // Close user dropdown
+                              setMenuOpen(false); // Close mobile menu
+                              logout(); // Perform logout
                             }}
                             className="block w-full text-center py-2 text-sm text-gray-700 hover:bg-gray-100 font-['Libre_Baskerville']"
                           >
