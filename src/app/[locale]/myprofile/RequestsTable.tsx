@@ -104,7 +104,7 @@ const RequestsTable = ({
   };
 
   // Helper function to render task details
-  const renderTaskDetails = (details: TaskDetailsTypes) => {
+  const renderTaskDetails = (details: TaskDetailsTypes, disabled: boolean) => {
     return (
       <div className="px-4 py-3 bg-gray-50">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -149,8 +149,13 @@ const RequestsTable = ({
 
         <div className="flex justify-end mt-4">
           <button
+            disabled={disabled}
             onClick={() => toggleOfferPopup(currentTaskId || 0)}
-            className="px-6 py-2 rounded-md bg-green-500 hover:bg-green-600 text-white font-bold transition duration-300 ease-in-out"
+            className={`px-6 py-2 rounded-md ${
+              disabled
+                ? "bg-green-200 cursor-not-allowed"
+                : "bg-green-500 hover:bg-green-600"
+            } text-white font-bold transition duration-300 ease-in-out`}
           >
             {t("add_offer")}
           </button>
@@ -243,7 +248,9 @@ const RequestsTable = ({
                     <td className="p-2.5 border w-fit border-zinc-300 text-black text-xl font-bold font-['Libre_Baskerville']">
                       <div className="flex mx-auto w-fit items-center justify-center gap-2 md:gap-4">
                         <button
-                          disabled={task.status !== "pending" || filter === "my offers"}
+                          disabled={
+                            task.status !== "pending" || filter === "my offers"
+                          }
                           onClick={() => toggleOfferPopup(task.id)}
                           className={`w-full sm:w-auto px-3 py-1.5 sm:px-4 sm:py-2 text-sm sm:text-base ${
                             task.status !== "pending" || filter === "my offers"
@@ -271,7 +278,10 @@ const RequestsTable = ({
                   {openCollapseId === task.id && (
                     <tr key={`details-${task.id}`}>
                       <td colSpan={4} className="border border-zinc-300 p-0">
-                        {renderTaskDetails(task.details)}
+                        {renderTaskDetails(
+                          task.details,
+                          task.status !== "pending" || filter === "my offers"
+                        )}
                       </td>
                     </tr>
                   )}
