@@ -22,12 +22,12 @@ const BestCompanies = ({ companies }: { companies: CompanyTypes[] }) => {
             <Link
               href={`/companies/${company.id}?page=about%20us`}
               key={i}
-              className="flex-shrink-0 aspect-square rounded-full p-4 w-[clamp(12rem,15vw,13rem)] text-center"
+              className="flex-shrink-0 overflow-hidden h-fit rounded-full p-4 w-[clamp(12rem,15vw,13rem)] text-center"
             >
               <img
                 src={company.image || "/worldCarIcon.png"}
                 alt={t("company_logo")}
-                className="mx-auto mb-2 w-full rounded-full h-full object-cover"
+                className="mx-auto mb-2 w-full aspect-square rounded-full h-full object-cover"
               />
               {/* Optional: if you want to show company names */}
               <h2 className="text-lg text-nowrap font-bold text-[#7FB63D] ">

@@ -18,7 +18,12 @@ export const privateMovingInputs = {
     title: "Moving address",
   },
   out_address: [
-    { title: "FRA address", name: "FRA_address", type: "text" },
+    {
+      title: "FRA address",
+      name: "FRA_address",
+      type: "text",
+      placeHoleder: "FRA address placeholder",
+    },
     {
       title: "Address possibly floor",
       name: "Address_possibly_floor",
@@ -68,7 +73,12 @@ export const privateMovingInputs = {
   ],
 
   moving_address: [
-    { title: "To address", name: "to_address", type: "text" },
+    {
+      title: "To address",
+      name: "to_address",
+      type: "text",
+      placeHoleder: "to address placeholder",
+    },
     {
       title: "Address possibly floor",
       name: "Address_possibly_floor",
@@ -232,21 +242,24 @@ export const movingFurnitureInputs = {
       title: "FRA address",
       name: "FRA_address",
       type: "text",
+      placeHoleder: "FRA address placeholder",
     },
-    {
-      title: "The topic is moved TO",
-      name: "the_topic_is_moved_TO",
-      type: "text",
-    },
+    // {
+    //   title: "The topic is moved TO",
+    //   name: "the_topic_is_moved_TO",
+    //   type: "text",
+    // },
     {
       title: "Moving address",
       name: "moving_address",
       type: "text",
+      placeHoleder: "moving address placeholder",
     },
     {
       title: "TO address",
       name: "to_address",
       type: "text",
+      placeHoleder: "to address placeholder",
     },
     {
       title: "Service level",
@@ -291,7 +304,12 @@ export const companyRelocationInputs = {
     title: "Moving address",
   },
   out_address: [
-    { title: "FRA address", name: "FRA_address", type: "text" },
+    {
+      title: "FRA address",
+      name: "FRA_address",
+      type: "text",
+      placeHoleder: "FRA address placeholder",
+    },
     {
       title: "Address possibly floor",
       name: "Address_possibly_floor",
@@ -329,7 +347,12 @@ export const companyRelocationInputs = {
   ],
 
   moving_address: [
-    { title: "To address", name: "to_address", type: "text" },
+    {
+      title: "To address",
+      name: "to_address",
+      type: "text",
+      placeHoleder: "to address placeholder",
+    },
     {
       title: "Address possibly floor",
       name: "Address_possibly_floor",

@@ -236,7 +236,7 @@
     }
   },
   "myprofile": {
-    "moving_address": "Flytteadresse",
+    "moving_address": "Til gaden",
     "my offers": "Mine tilbud",
     "enter_your_message": "Indtast besked",
     "storage desired in": "Lagring ønsket i",
@@ -258,9 +258,10 @@
     "moving out address": "flyt fra adresse",
     "Moving out address placeholder": "Indtast navnet på det område du flytter fra",
     "moving out address placeholder": "Indtast navnet på det område du flytter fra",
-    "Moving address": "Tilflytningsadresse",
-    "moving address": "tilflytningsadresse",
-    "FRA address": "Fra adresse",
+    "Moving address": "Til guvernementet",
+    "moving address": "Til guvernementet",
+    "moving address placeholder": "Indtast navnet på det guvernement, du ankommer til",
+    "FRA address": "Fra gade",
     "Address possibly floor": "Adresse eventuelt etage",
     "Elevator": "Elevator",
     "Yes": "Ja",
@@ -271,7 +272,7 @@
     "fully furnished": "fuldt møbleret",
     "semi furnished": "delvist møbleret",
     "not furnished": "ikke møbleret",
-    "To address": "Til adresse",
+    "To address": "Til gaden",
     "Service level": "Serviceniveau",
     "service level": "serviceniveau",
     "Standard": "Standard",
@@ -324,7 +325,7 @@
     "The topic is moved TO": "Emnet flyttes TIL",
     "I help myself with reading": "Jeg hjælper selv med læsning",
     "There is an elevator at the departure address": "Der er elevator på afgangsadressen",
-    "There is an elevator at the move-in address": "Der er elevator på tilflytningsadressen",
+    "There is an elevator at the move-in address": "Der er elevator på Til guvernementetn",
     "Available transfer requests": "Tilgængelige flytteanmodninger",
     "Available transfer requests description": "Udforsk nuværende kundeanmodninger om flyttetjenester. Gennemgå hver anmodnings detaljer og indsend din opgave for at yde assistance.",
     "square meters": "Antal kvadratmeter",
@@ -355,8 +356,9 @@
     "hide": "Skjul",
     "details": "Detaljer",
     "Taxi": "Taxi",
-    "TO address": "Til adresse",
-    "to address": "til adresse",
+    "TO address": "Til gaden",
+    "to address": "Til gaden",
+    "to address placeholder": "Indtast navnet på den gade, der fører dertil",
     "begining_date": "Startdato",
     "Please login to request a service": "Log venligst ind for at anmode om en service",
     "Street plan": "Gadeplan",
@@ -389,10 +391,11 @@
     "0 m²": "0 m²",
     "200 m²": "200 m²",
     "firstPartTitle": "Fraflytningsadresse",
-    "secondPartTitle": "Tilflytningsadresse",
+    "secondPartTitle": "Til guvernementet",
     "services": {
-      "TO address": "Til adresse",
-      "to address": "til adresse",
+      "TO address": "Til gaden",
+      "to address": "Til gaden",
+      "to address placeholder": "Indtast navnet på den gade, der fører dertil",
       "begining_date": "Startdato",
       "Please login to request a service": "Log venligst ind for at anmode om en service",
       "Street plan": "Gadeplan",
@@ -425,7 +428,7 @@
       "0 m²": "0 m²",
       "200 m²": "200 m²",
       "firstPartTitle": "Fraflytningsadresse",
-      "secondPartTitle": "Tilflytningsadresse",
+      "secondPartTitle": "Til guvernementet",
       "out_address": {
         "title": "Parkeringsafstand til dør",
         "FRA_address": {
@@ -454,7 +457,7 @@
       },
       "moving_address": {
         "to_address": {
-          "title": "Til adresse",
+          "title": "Til gaden",
           "placeholder": "Indtast adresse"
         },
         "Address_possibly_floor": {
@@ -483,9 +486,11 @@
       "Moving out address placeholder": "Indtast navnet på det område du flytter fra",
       "moving out address placeholder": "Indtast navnet på det område du flytter fra",
       "moving out address": "fraflytningsadresse",
-      "Moving address": "Tilflytningsadresse",
-      "moving address": "tilflytningsadresse",
-      "FRA address": "Fra adresse",
+      "Moving address": "Til guvernementet",
+      "moving address": "Til guvernementet",
+      "moving address placeholder": "Indtast navnet på det guvernement, du ankommer til",
+      "FRA address": "Fra gade",
+      "FRA address placeholder": "Indtast fra gade",
       "Address possibly floor": "Adresse eventuelt etage",
       "Elevator": "Elevator",
       "Yes": "Ja",
@@ -496,7 +501,7 @@
       "fully furnished": "fuldt møbleret",
       "semi furnished": "delvist møbleret",
       "not furnished": "ikke møbleret",
-      "To address": "Til adresse",
+      "To address": "Til gaden",
       "Service level": "Serviceniveau",
       "service level": "serviceniveau",
       "Standard": "Standard",
@@ -549,7 +554,7 @@
       "The topic is moved TO": "Emnet flyttes TIL",
       "I help myself with reading": "Jeg hjælper selv med læsning",
       "There is an elevator at the departure address": "Der er elevator på afgangsadressen",
-      "There is an elevator at the move-in address": "Der er elevator på tilflytningsadressen",
+      "There is an elevator at the move-in address": "Der er elevator på Til guvernementetn",
       "Available transfer requests": "Tilgængelige flytteanmodninger",
       "Available transfer requests description": "Udforsk nuværende kundeanmodninger om flyttetjenester. Gennemgå hver anmodnings detaljer og indsend din opgave for at yde assistance."
     }
@@ -577,8 +582,9 @@
     "company": "Virksomhed"
   },
   "services": {
-    "TO address": "Til adresse",
-    "to address": "til adresse",
+    "TO address": "Til gaden",
+    "to address": "Til gaden",
+    "to address placeholder": "Indtast navnet på den gade, der fører dertil",
     "begining_date": "Startdato",
     "Please login to request a service": "Log venligst ind for at anmode om en service",
     "Street plan": "Gadeplan",
@@ -611,7 +617,7 @@
     "0 m²": "0 m²",
     "200 m²": "200 m²",
     "firstPartTitle": "Fraflytningsadresse",
-    "secondPartTitle": "Tilflytningsadresse",
+    "secondPartTitle": "Til guvernementet",
     "out_address": {
       "title": "Parkeringsafstand til dør",
       "FRA_address": {
@@ -640,7 +646,7 @@
     },
     "moving_address": {
       "to_address": {
-        "title": "Til adresse",
+        "title": "Til gaden",
         "placeholder": "Indtast adresse"
       },
       "Address_possibly_floor": {
@@ -669,9 +675,11 @@
     "Moving out address placeholder": "Indtast navnet på det område du flytter fra",
     "moving out address placeholder": "Indtast navnet på det område du flytter fra",
     "moving out address": "fraflytningsadresse",
-    "Moving address": "Tilflytningsadresse",
-    "moving address": "tilflytningsadresse",
-    "FRA address": "Fra adresse",
+    "Moving address": "Til guvernementet",
+    "moving address": "Til guvernementet",
+    "moving address placeholder": "Indtast navnet på det guvernement, du ankommer til",
+    "FRA address": "Fra gade",
+    "FRA address placeholder": "Indtast fra gade",
     "Address possibly floor": "Adresse eventuelt etage",
     "Elevator": "Elevator",
     "Yes": "Ja",
@@ -682,7 +690,7 @@
     "fully furnished": "fuldt møbleret",
     "semi furnished": "delvist møbleret",
     "not furnished": "ikke møbleret",
-    "To address": "Til adresse",
+    "To address": "Til gaden",
     "Service level": "Serviceniveau",
     "service level": "serviceniveau",
     "Standard": "Standard",
@@ -734,7 +742,7 @@
     "The topic is moved TO": "Emnet flyttes TIL",
     "I help myself with reading": "Jeg hjælper selv med læsning",
     "There is an elevator at the departure address": "Der er elevator på afgangsadressen",
-    "There is an elevator at the move-in address": "Der er elevator på tilflytningsadressen",
+    "There is an elevator at the move-in address": "Der er elevator på Til guvernementetn",
     "Available transfer requests": "Tilgængelige flytteanmodninger",
     "Available transfer requests description": "Udforsk nuværende kundeanmodninger om flyttetjenester. Gennemgå hver anmodnings detaljer og indsend din opgave for at yde assistance."
   },
@@ -859,7 +867,7 @@
     "service_type": "Servicetype",
     "description": "Beskrivelse",
     "from_address": "Fra adresse",
-    "to_address": "Til adresse",
+    "to_address": "Til gaden",
     "floor": "Etage",
     "start_time": "Starttid",
     "start_date": "Startdato",

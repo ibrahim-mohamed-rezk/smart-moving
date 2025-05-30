@@ -505,7 +505,6 @@ const PersonalInfoForm = ({
               </div>
             </div>
           </div>
-
           {/* Email Field */}
           <div className="self-stretch flex flex-col justify-center items-start gap-2 w-full">
             <div className="self-stretch text-blue-950 text-lg md:text-xl font-bold font-['Libre_Baskerville']">
@@ -528,7 +527,6 @@ const PersonalInfoForm = ({
               )}
             </div>
           </div>
-
           {/* Phone Field */}
           <div className="self-stretch flex flex-col justify-center items-start gap-2 w-full">
             <div className="self-stretch text-blue-950 text-lg md:text-xl font-bold font-['Libre_Baskerville']">
@@ -663,7 +661,6 @@ const PersonalInfoForm = ({
               )}
             </div>
           </div>
-
           {/* company bio */}
           {initialData.role === "company" && (
             <div className="self-stretch flex flex-col justify-center items-start gap-2 w-full">
@@ -687,7 +684,6 @@ const PersonalInfoForm = ({
               </div>
             </div>
           )}
-
           {/* Services Checklist */}
           {initialData.role === "company" && (
             <div className="self-stretch flex flex-col justify-center items-start gap-2 w-full">
@@ -738,8 +734,7 @@ const PersonalInfoForm = ({
               </div>
             </div>
           )}
-
-          {/* Price Listings */}
+          {/* Price Listings */ }
           {initialData.role === "company" && (
             <div className="self-stretch flex flex-col justify-center items-start gap-2 w-full">
               <div className="self-stretch text-blue-950 text-lg md:text-xl font-bold font-['Libre_Baskerville']">
@@ -747,7 +742,7 @@ const PersonalInfoForm = ({
               </div>
               <div className="self-stretch w-full space-y-4">
                 {formData.price_listings?.split(",").map((item, index) => {
-                  const [title, price] = item.split(":").map((i) => i.trim());
+                  const [title, price] = item.split(":");
                   return (
                     <div
                       key={index}
@@ -758,21 +753,26 @@ const PersonalInfoForm = ({
                           type="text"
                           value={title || ""}
                           onChange={(e) => {
-                            // Add space after each word
-                            const valueWithSpaces = e.target.value.replace(/([a-zA-Z])([a-zA-Z])/g, '$1 $2');
-                            const newListings = formData.price_listings
-                              ?.split(",")
-                              .map((i, idx) =>
-                                idx === index
-                                  ? `${valueWithSpaces}:${
-                                      item.split(":")[1] || ""
-                                    }`
-                                  : i
-                              )
-                              .join(",");
+                            const currentListings =
+                              formData.price_listings?.split(",") || [];
+                            const updatedListings = currentListings.map(
+                              (listingItem, idx) => {
+                                if (idx === index) {
+                                  // Get the existing price part after the colon
+                                  const colonIndex = listingItem.indexOf(":");
+                                  const existingPrice =
+                                    colonIndex !== -1
+                                      ? listingItem.substring(colonIndex + 1)
+                                      : "";
+                                  return `${e.target.value}:${existingPrice}`;
+                                }
+                                return listingItem;
+                              }
+                            );
+
                             setFormData((prev) => ({
                               ...prev,
-                              price_listings: newListings,
+                              price_listings: updatedListings.join(","),
                             }));
                           }}
                           className="p-3 md:p-4 bg-zinc-100 rounded-3xl outline-1 outline-offset-[-1px] outline-zinc-300 w-full text-black text-base md:text-lg font-normal font-['Libre_Baskerville']"
@@ -784,19 +784,26 @@ const PersonalInfoForm = ({
                           type="text"
                           value={price || ""}
                           onChange={(e) => {
-                            const newListings = formData.price_listings
-                              ?.split(",")
-                              .map((i, idx) =>
-                                idx === index
-                                  ? `${item.split(":")[0] || ""}:${
-                                      e.target.value
-                                    }`
-                                  : i
-                              )
-                              .join(",");
+                            const currentListings =
+                              formData.price_listings?.split(",") || [];
+                            const updatedListings = currentListings.map(
+                              (listingItem, idx) => {
+                                if (idx === index) {
+                                  // Get the existing title part before the colon
+                                  const colonIndex = listingItem.indexOf(":");
+                                  const existingTitle =
+                                    colonIndex !== -1
+                                      ? listingItem.substring(0, colonIndex)
+                                      : listingItem;
+                                  return `${existingTitle}:${e.target.value}`;
+                                }
+                                return listingItem;
+                              }
+                            );
+
                             setFormData((prev) => ({
                               ...prev,
-                              price_listings: newListings,
+                              price_listings: updatedListings.join(","),
                             }));
                           }}
                           className="p-3 md:p-4 bg-zinc-100 rounded-3xl outline-1 outline-offset-[-1px] outline-zinc-300 w-full text-black text-base md:text-lg font-normal font-['Libre_Baskerville']"
