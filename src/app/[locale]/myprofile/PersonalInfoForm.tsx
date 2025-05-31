@@ -37,6 +37,8 @@ const PersonalInfoForm = ({
   const [phone, setPhone] = useState<Value>(initialData.phone as Value);
   const locale = useLocale();
 
+  console.log(initialData);
+
   // Form state with validation
   const [formData, setFormData] = useState({
     ...initialData,
@@ -363,7 +365,11 @@ const PersonalInfoForm = ({
 
       // Update user in cookies
       if (response.data) {
-        document.cookie = `user=${JSON.stringify(response.data)}; path=/`;
+        document.cookie = `user=${JSON.stringify({
+          ...response.data,
+          company: null,
+          company_id: response.data.company.id,
+        })}; path=/`;
         // Reload the window to reflect updated user data
         toast.success("Profile updated successfully");
         setSubmitSuccess(true);
@@ -736,7 +742,7 @@ const PersonalInfoForm = ({
               </div>
             </div>
           )}
-          {/* Price Listings */ }
+          {/* Price Listings */}
           {initialData.role === "company" && (
             <div className="self-stretch flex flex-col justify-center items-start gap-2 w-full">
               <div className="self-stretch text-blue-950 text-lg md:text-xl font-bold font-['Libre_Baskerville']">

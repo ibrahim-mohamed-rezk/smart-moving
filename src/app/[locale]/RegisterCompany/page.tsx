@@ -85,12 +85,6 @@ const AccountCreationForm = () => {
     getToken();
   }, []);
 
-  useEffect(() => {
-    if (!token) {
-      router.push("/myprofile?page=tasks");
-    }
-  },[token]);
-
   const [formData, setFormData] = useState({
     first_name: "",
     sur_name: "",
@@ -474,7 +468,15 @@ const AccountCreationForm = () => {
 
       await axios.post("/api/auth/login", {
         token: response.token,
-        user: JSON.stringify(response.data),
+        user: JSON.stringify(
+          response.data.role === "company"
+            ? {
+                ...response.data,
+                company: null,
+                company_id: response.data.company.id,
+              }
+            : response.data
+        ),
         remember: true,
       });
 

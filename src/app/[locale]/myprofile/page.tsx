@@ -6,14 +6,16 @@ import ChangePassword from "./ChangePassword";
 import Tasks from "./Tasks";
 import TaskOffersTable from "./TaskOffersTable";
 import ServicesRequests from "./ServicesRequests";
+import { getData } from "@/libs/axios/server";
+import { AxiosHeaders } from "axios";
 
 // This is now a server component
 export default async function PersonalInfoPage({
   searchParams,
   params,
 }: {
-    searchParams: Promise<{ page: string; task: string }>;
-    params: Promise<{ locale: string }>;
+  searchParams: Promise<{ page: string; task: string }>;
+  params: Promise<{ locale: string }>;
 }) {
   const paramsData = await searchParams;
   const { locale } = await params;
@@ -25,6 +27,23 @@ export default async function PersonalInfoPage({
     redirect("/");
   }
 
+  const feachData = async () => {
+    try {
+      const response = await getData(
+        `show/${userData.company_id}`,
+        {},
+        new AxiosHeaders({
+          lang: locale,
+        })
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      throw error;
+    }
+  };
+
+  const companyData = await feachData();
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-gray-50 font-['libre-baskerville']">
@@ -35,7 +54,14 @@ export default async function PersonalInfoPage({
       <div className="w-full md:w-2/3 lg:w-3/4 p-4 sm:p-6 mt-4 md:mt-0">
         {/* gerneral tabs */}
         {paramsData.page === "personal-info" && (
-          <PersonalInfoForm initialData={userData} token={token} />
+          <PersonalInfoForm
+            initialData={
+              userData.role === "company"
+                ? { ...userData, company: companyData }
+                : userData
+            }
+            token={token}
+          />
         )}
         {paramsData.page === "change-password" && (
           <ChangePassword token={token} userData={userData} />
@@ -51,7 +77,7 @@ export default async function PersonalInfoPage({
 
         {/* company tabs */}
         {userData.role === "company" && paramsData.page === "tasks" && (
-          <ServicesRequests/>
+          <ServicesRequests />
         )}
       </div>
     </div>

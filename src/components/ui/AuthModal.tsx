@@ -163,7 +163,15 @@ const AuthModal: FC<AuthModalProps> = ({
 
         await axios.post("/api/auth/login", {
           token: response.token,
-          user: JSON.stringify(response.data),
+          user: JSON.stringify(
+            response.data.role === "company"
+              ? {
+                  ...response.data,
+                  company: null,
+                  company_id: response.data.company.id,
+                }
+              : response.data
+          ),
           remember: true,
         });
 
@@ -173,7 +181,7 @@ const AuthModal: FC<AuthModalProps> = ({
           password: "",
         });
         onClose();
-        // window.location.reload();
+        window.location.reload();
       } catch (error) {
         if (axios.isAxiosError(error)) {
           toast.error(error.response?.data?.msg || "An error occurred");
