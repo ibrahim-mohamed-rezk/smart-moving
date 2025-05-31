@@ -173,11 +173,7 @@ const AuthModal: FC<AuthModalProps> = ({
           password: "",
         });
         onClose();
-        if (response.data.role === "customer") {
-          window.location.reload();
-        } else {
-          window.location.href = `${params?.locale}/myprofile?page=tasks`;
-        }
+        window.location.reload();
       } catch (error) {
         if (axios.isAxiosError(error)) {
           toast.error(error.response?.data?.msg || "An error occurred");

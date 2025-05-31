@@ -85,7 +85,11 @@ const AccountCreationForm = () => {
     getToken();
   }, []);
 
-
+  useEffect(() => {
+    if (!token) {
+      router.push("/myprofile?page=tasks");
+    }
+  },[token]);
 
   const [formData, setFormData] = useState({
     first_name: "",
@@ -486,13 +490,13 @@ const AccountCreationForm = () => {
     }
   };
 
-    if (loading) {
-      return (
-        <div className="w-full min-h-screen flex items-center justify-center">
-          Loading...
-        </div>
-      );
-    }
+  if (loading) {
+    return (
+      <div className="w-full min-h-screen flex items-center justify-center">
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen bg-gray-50 font-['libre-baskerville']">
