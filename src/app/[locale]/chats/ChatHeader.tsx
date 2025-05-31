@@ -5,7 +5,6 @@ import {
   Mail,
   Phone,
   MapPin,
-  DollarSign,
   Calendar,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -88,7 +87,7 @@ const ChatHeader = ({
                 </span>
               </div>
               <div className="flex items-center gap-2 text-sm">
-                <DollarSign className="w-4 h-4 text-gray-500 flex-shrink-0" />
+                kr
                 <span className="text-gray-600 truncate">
                   {chat.order?.price}
                 </span>

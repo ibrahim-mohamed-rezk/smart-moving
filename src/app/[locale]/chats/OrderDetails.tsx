@@ -15,6 +15,7 @@ const OrderDetails = ({ order }: { order: TaskTypes }) => {
 
   if (!order) return null;
 
+
   const getIconForField = (key: string): LucideIcon => {
     if (key.includes("address") || key.includes("parking")) return MapPin;
     if (key.includes("when") || key.includes("date") || key.includes("تاريخ"))
@@ -71,7 +72,7 @@ const OrderDetails = ({ order }: { order: TaskTypes }) => {
         {renderDetails(order.details)}
         {order.offers?.[0] && (
           <div className="flex items-start gap-2">
-            <DollarSign className="w-5 h-5 text-gray-500 mt-0.5" />
+            kr
             <div>
               <p className="text-sm font-medium text-gray-900">{t("price")}</p>
               <p className="text-sm text-gray-600">
