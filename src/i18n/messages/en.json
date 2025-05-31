@@ -12,6 +12,7 @@
   },
   "profile": {
     "processing": "Processing",
+    "accept_complete": "Accept complete",
     "complete_order": "Complete order",
     "Processing": "Processing",
     "pending": "Pending",

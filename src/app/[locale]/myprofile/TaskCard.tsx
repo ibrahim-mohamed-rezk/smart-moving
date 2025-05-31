@@ -1,15 +1,18 @@
 "use client";
 import { Link } from "@/i18n/routing";
+import { postData } from "@/libs/axios/server";
 // import { postData } from "@/libs/axios/server";
 import { TaskTypes } from "@/libs/types/types";
+import axios, { AxiosHeaders } from "axios";
 // import axios, { AxiosHeaders } from "axios";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 // import toast from "react-hot-toast";
 
-const TaskCard = ({ task }: { task: TaskTypes }) => {
+const TaskCard = ({ task, token }: { task: TaskTypes, token: string }) => {
   const t = useTranslations("profile");
-  // const locale = useLocale();
+  const locale = useLocale();
   // const [status, setStatus] = useState(task.status);
   const [count, setCount] = useState(0);
 
@@ -42,6 +45,28 @@ const TaskCard = ({ task }: { task: TaskTypes }) => {
       }
     });
   }, [task]);
+
+  const requestCompletion = async () => {
+    try {
+      await postData(
+        `customer/change-status/${task.id}`,
+        { status: "done" },
+        new AxiosHeaders({
+          lang: locale,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        })
+      );
+      toast.success(t("Status changed successfully"));
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.msg || "An error occurred");
+      } else {
+        toast.error("An unexpected error occurred");
+      }
+      throw error;
+    }
+  };
 
   return (
     <Link
@@ -120,6 +145,15 @@ const TaskCard = ({ task }: { task: TaskTypes }) => {
               <div>{t(task.status)}</div>
             </div>
           </div>
+
+          {task.request_complete && task.status !== "done" && (
+            <button
+              onClick={requestCompletion}
+              className="px-3 py-1 md:px-5 bg-green-500 rounded-[30px] flex justify-center items-center gap-2 text-white"
+            >
+              {t("accept_complete")}
+            </button>
+          )}
 
           {count > 0 && (
             <div className="flex justify-start items-center gap-1">

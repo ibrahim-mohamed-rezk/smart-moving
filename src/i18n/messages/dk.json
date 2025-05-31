@@ -12,6 +12,7 @@
   },
   "profile": {
     "complete_order": "Færdig bestilling",
+    "accept_complete": "Accepter bestilling",
     "processing": "Behandler",
     "pending": "Afventer",
     "done": "Færdig",

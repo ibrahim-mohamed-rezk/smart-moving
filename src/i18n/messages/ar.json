@@ -12,6 +12,7 @@
   },
   "profile": {
     "complete_order": "اكمال الطلب", 
+    "accept_complete": "قبول الطلب",
     "processing": "قيد التنفيذ",
     "pending": "قيد الانتظار",
     "done": "مكتمل",

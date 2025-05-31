@@ -114,6 +114,7 @@ export interface TaskTypes {
   id: number;
   user_id: number;
   company_id?: number;
+  request_complete: boolean;
   service_id?: number;
   details: TaskDetailsTypes;
   offers?: OfferTypes[];

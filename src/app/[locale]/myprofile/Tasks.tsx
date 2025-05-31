@@ -58,7 +58,7 @@ const Tasks = async () => {
         </div>
       ) : (
         <>
-          <TasksCards tasksData={tasksData} />
+          <TasksCards token={token} tasksData={tasksData} />
         </>
       )}
     </div>

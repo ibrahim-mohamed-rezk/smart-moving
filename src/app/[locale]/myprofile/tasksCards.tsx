@@ -7,9 +7,10 @@ import { useState } from "react";
 
 interface TasksCardsProps {
   tasksData: TaskTypes[];
+  token: string;
 }
 
-const TasksCards = ({ tasksData }: TasksCardsProps) => {
+const TasksCards = ({ tasksData, token }: TasksCardsProps) => {
   const t = useTranslations("tasks");
   const [filter, setFilter] = useState<string>("all");
 
@@ -43,7 +44,7 @@ const TasksCards = ({ tasksData }: TasksCardsProps) => {
       <div className="w-full flex flex-col justify-start items-start gap-4 md:gap-6">
         <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
           {filteredTasks.map((task) => (
-            <TaskCard key={task.id} task={task} />
+            <TaskCard token={token} key={task.id} task={task} />
           ))}
         </div>
       </div>
