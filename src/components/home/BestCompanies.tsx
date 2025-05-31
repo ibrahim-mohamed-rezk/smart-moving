@@ -22,28 +22,30 @@ const BestCompanies = ({ companies }: { companies: CompanyTypes[] }) => {
             <Link
               href={`/companies/${company.id}?page=about%20us`}
               key={i}
-              className="flex-shrink-0 overflow-hidden h-fit rounded-full p-4 w-[clamp(12rem,15vw,13rem)] text-center"
+              className="flex-shrink-0 overflow-hidden h-fit  p-4 w-[clamp(12rem,15vw,13rem)] text-center"
             >
-              <img
-                src={company.image || "/worldCarIcon.png"}
-                alt={t("company_logo")}
-                className="mx-auto mb-2 w-full aspect-square rounded-full h-full object-cover"
-              />
+              <div className="relative">
+                <img
+                  src={company.image || "/worldCarIcon.png"}
+                  alt={t("company_logo")}
+                  className="mx-auto mb-2 w-full aspect-square rounded-full h-full object-cover"
+                />
+                <div className="absolute top-2 right-2 bg-white/90 px-2 py-1 rounded-full text-sm font-bold text-[#7FB63D] shadow-sm">
+                  {company.reviews?.length > 0
+                    ? (
+                        company.reviews.reduce(
+                          (acc, review) => acc + review.rating,
+                          0
+                        ) / company.reviews.length
+                      ).toFixed(1)
+                    : "0"}{" "}
+                  ⭐
+                </div>
+              </div>
               {/* Optional: if you want to show company names */}
-              <h2 className="text-lg text-nowrap font-bold text-[#7FB63D] ">
+              <h2 className="text-lg text-nowrap line-clamp-1 font-bold text-[#7FB63D] ">
                 {company.name}
               </h2>
-              <span className="text-lg font-bold text-[#7FB63D] ">
-                {company.reviews?.length > 0
-                  ? (
-                      company.reviews.reduce(
-                        (acc, review) => acc + review.rating,
-                        0
-                      ) / company.reviews.length
-                    ).toFixed(1)
-                  : t("no_reviews")}{" "}
-                ⭐
-              </span>
             </Link>
           ))}
         </div>
