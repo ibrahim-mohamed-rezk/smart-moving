@@ -173,7 +173,7 @@ const AuthModal: FC<AuthModalProps> = ({
           password: "",
         });
         onClose();
-        window.location.reload();
+        // window.location.reload();
       } catch (error) {
         if (axios.isAxiosError(error)) {
           toast.error(error.response?.data?.msg || "An error occurred");
