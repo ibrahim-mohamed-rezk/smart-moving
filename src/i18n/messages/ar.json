@@ -581,6 +581,7 @@
   },
   "services": {
     "TO address": "الى شارع",
+    "true":"نعم",
     "to address": "الى شارع",
     "to address placeholder": "ادخل اسم الشارع الموصل اليه",
     "begining_date": "تاريخ البدء",

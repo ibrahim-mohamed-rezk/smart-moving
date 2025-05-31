@@ -341,8 +341,10 @@ const PersonalInfoForm = ({
       if (initialData.role === "company") {
         submitData.append("bio", formData.bio || "");
         submitData.append("price_listings", formData.price_listings || "");
-        // Send services as array of numbers
-        submitData.append("services", JSON.stringify(formData.services));
+        // Send services as array of strings
+        formData.services.forEach((serviceId) => {
+          submitData.append("services[]", serviceId.toString());
+        });
       }
 
       // Add profile image if selected
