@@ -11,7 +11,7 @@
     "Requests": "Anmodninger"
   },
   "profile": {
-    "processing": "Behandler",
+    "complete_order": "Færdig bestilling",
     "processing": "Behandler",
     "pending": "Afventer",
     "done": "Færdig",
@@ -769,6 +769,7 @@
   },
   "chat": {
     "download": "Download",
+    "successfully_requested": "Anmodning sendt",
     "file": "Fil",
     "shared_image": "Delt billede",
     "user_avatar": "Brugeravatar",

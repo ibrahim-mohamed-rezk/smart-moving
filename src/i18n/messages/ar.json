@@ -11,7 +11,7 @@
     "Requests": "الطلبات"
   },
   "profile": {
-    "processing": "قيد التنفيذ",
+    "complete_order": "اكمال الطلب", 
     "processing": "قيد التنفيذ",
     "pending": "قيد الانتظار",
     "done": "مكتمل",
@@ -769,6 +769,7 @@
   },
   "chat": {
     "download": "تحميل",
+    "successfully_requested": "تم الطلب بنجاح",
     "file": "ملف",
     "shared_image": "صورة مشتركة",
     "user_avatar": "صورة المستخدم",

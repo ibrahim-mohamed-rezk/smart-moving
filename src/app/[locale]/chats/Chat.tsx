@@ -387,6 +387,30 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
     }
   };
 
+  const requestCompletion = async () => {
+    try {
+      await getData(
+        `company/request-complete/${chat?.order?.id}`,{},
+        new AxiosHeaders({
+          lang: locale,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        })
+      );
+
+
+      toast.success(t("successfully_requested"));
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.msg || t("unexpected_error"));
+      } else {
+        toast.error(t("unexpected_error"));
+      }
+    } finally {
+      setIsSubmittingDoneForm(false);
+    }
+  };
+
   if (!id)
     return (
       <div className="w-full h-full flex items-center justify-center">
@@ -403,6 +427,7 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
     <div className="w-full h-full bg-white rounded-tr-2xl rounded-br-2xl border-l border-zinc-300 flex flex-col">
       {/* Chat Header */}
       <ChatHeader
+        requestCompletion={requestCompletion}
         chat={chat}
         user={user}
         status={status}

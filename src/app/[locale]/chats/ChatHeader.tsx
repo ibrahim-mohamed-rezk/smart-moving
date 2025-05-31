@@ -15,6 +15,7 @@ interface ChatHeaderProps {
   user: UserDataTypes;
   status: string | undefined;
   onStatusChange: (newStatus: string) => void;
+  requestCompletion: () => void;
 }
 
 const ChatHeader = ({
@@ -22,6 +23,7 @@ const ChatHeader = ({
   user,
   status,
   onStatusChange,
+  requestCompletion,
 }: ChatHeaderProps) => {
   const t = useTranslations("profile");
 
@@ -149,9 +151,18 @@ const ChatHeader = ({
               )}
             </div>
           </div>
+
+          {user.role === "company" && status === "processing" && (
+            <button
+              onClick={requestCompletion}
+              className="ms-2 bg-green-500 rounded-full px-3 py-1 flex items-center justify-center text-white "
+            >
+              {t("complete_order")}
+            </button>
+          )}
         </div>
       </div>
-      <div className="w-full h-px opacity-10 bg-black" />
+      <div className="w-full h-px opacity-10 bg-black " />
     </div>
   );
 };

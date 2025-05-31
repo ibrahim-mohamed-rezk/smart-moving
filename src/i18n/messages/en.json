@@ -12,6 +12,7 @@
   },
   "profile": {
     "processing": "Processing",
+    "complete_order": "Complete order",
     "Processing": "Processing",
     "pending": "Pending",
     "done": "Done",
@@ -771,6 +772,7 @@
   },
   "chat": {
     "download": "Download",
+    "successfully_requested": "Successfully requested",
     "file": "File",
     "shared_image": "Shared image",
     "user_avatar": "User avatar",
