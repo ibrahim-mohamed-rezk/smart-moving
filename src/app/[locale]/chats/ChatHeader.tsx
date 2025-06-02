@@ -87,7 +87,7 @@ const ChatHeader = ({
                 </span>
               </div>
               <div className="flex items-center gap-2 text-sm">
-                kr
+                <img src="/images/money.svg" alt="Money" className="w-4 h-4" />
                 <span className="text-gray-600 truncate">
                   {chat.order?.price}
                 </span>

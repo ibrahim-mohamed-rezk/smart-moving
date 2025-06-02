@@ -57,7 +57,7 @@ const Sidebar = ({
   return (
     <>
       {/* Mobile menu toggle button - only visible on small screens */}
-      <div className="md:hidden fixed top-15 end-4 z-20">
+      <div className="md:hidden fixed top-15 end-4 z-30">
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           className="p-2 bg-blue-950 text-white rounded-full shadow-lg"
@@ -70,7 +70,7 @@ const Sidebar = ({
         className={`
          bg-white rounded-tl-2xl rounded-bl-2xl shadow-[1px_0px_0px_0px_rgba(0,0,0,0.08)] 
         flex flex-col justify-start items-start overflow-hidden
-        fixed md:relative top-0 left-0 z-10
+        fixed md:relative top-0 left-0 z-30
         w-[85%] sm:w-72 md:w-80 lg:w-96
         transition-transform duration-300 ease-in-out
         ${
@@ -236,7 +236,7 @@ const Sidebar = ({
       {/* Overlay for mobile menu */}
       {isMobileMenuOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-0 md:hidden"
+          className="fixed inset-0 bg-black/50 z-20 md:hidden"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}

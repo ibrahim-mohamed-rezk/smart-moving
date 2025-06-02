@@ -25,7 +25,7 @@ export default async function PersonalInfoPage({
       <Sidebar user={userData} token={token} locale={locale} />
 
       {/* Right Panel - Form */}
-      <div className="w-full md:w-2/3 lg:w-3/4">
+      <div className="w-full overflow-auto md:w-2/3 lg:w-3/4">
         <Chat token={token} user={userData} />
       </div>
     </div>

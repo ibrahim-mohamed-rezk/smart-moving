@@ -72,7 +72,7 @@ const OrderDetails = ({ order }: { order: TaskTypes }) => {
         {renderDetails(order.details)}
         {order.offers?.[0] && (
           <div className="flex items-start gap-2">
-            kr
+            <img src="/images/money.svg" alt="Money" className="w-4 h-4" />
             <div>
               <p className="text-sm font-medium text-gray-900">{t("price")}</p>
               <p className="text-sm text-gray-600">

@@ -437,10 +437,10 @@ const Chat = ({ token, user }: { token: string; user: UserDataTypes }) => {
       {/* Chat Messages - Scrollable Section  */}
       <div className="flex-1 overflow-hidden max-h-screen relative">
         {status === "done" && (
-          <div className="absolute inset-0 bg-black/50 flex items-start justify-center overflow-auto z-10 p-4">
-            <div className="bg-white p-6 flex lg:flex-row flex-col rounded-xl max-w-7xl w-full mx-4 h-fit ">
+          <div className="absolute inset-0 bg-black/50 flex items-start justify-center  z-10 p-4">
+            <div className="bg-white p-6 flex lg:flex-row flex-col rounded-xl max-w-7xl overflow-auto w-full mx-4 max-h-[100%] ">
               <div className="w-full">
-                <h3 className="text-blue-950 text-xl font-bold font-['Libre_Baskerville'] mb-4 sticky top-0 bg-white pb-2">
+                <h3 className="text-blue-950 text-xl font-bold font-['Libre_Baskerville'] mb-4 bg-white pb-2">
                   {t("order_details")}
                 </h3>
                 <div className="space-y-4">
