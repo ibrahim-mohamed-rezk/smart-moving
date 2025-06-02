@@ -28,6 +28,7 @@ export default async function PersonalInfoPage({
   }
 
   const feachData = async () => {
+    if (!userData.company_id) return null;
     try {
       const response = await getData(
         `show/${userData.company_id}`,
