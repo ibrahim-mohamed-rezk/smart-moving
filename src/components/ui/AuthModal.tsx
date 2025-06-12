@@ -217,9 +217,9 @@ const AuthModal: FC<AuthModalProps> = ({
   };
 
   const handleVerifyOTP = async (e: React.FormEvent) => {
-    validateOTP();
     e.preventDefault();
     const otpCode = otpDigits.join("");
+    const isValid = await validateOTP();
 
     if (otpCode.length !== 6) {
       toast.error("Please enter all 6 digits");
@@ -227,27 +227,31 @@ const AuthModal: FC<AuthModalProps> = ({
     }
 
     try {
-      const response = await postData(
-        "customer/verify-code-register",
-        { status: true, phone: registerformData.phone },
-        new AxiosHeaders({
-          "Content-Type": "application/json",
-          lang: params?.locale as string,
-        })
-      );
+      if (isValid) {
+        const response = await postData(
+          "customer/verify-code-register",
+          { status: true, phone: registerformData.phone },
+          new AxiosHeaders({
+            "Content-Type": "application/json",
+            lang: params?.locale as string,
+          })
+        );
 
-      toast.success("OTP verified successfully");
+        toast.success("OTP verified successfully");
 
-      await axios.post("/api/auth/login", {
-        token: response.token,
-        user: JSON.stringify(response.data),
-        remember: true,
-      });
-      setOpenOTP(false);
-      onClose();
-      setTimeout(() => {
-        window.location.reload();
-      }, 1500);
+        await axios.post("/api/auth/login", {
+          token: response.token,
+          user: JSON.stringify(response.data),
+          remember: true,
+        });
+        setOpenOTP(false);
+        onClose();
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      } else {
+        toast.error("Invalid OTP");
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data?.msg || "Invalid OTP");
@@ -407,14 +411,12 @@ const AuthModal: FC<AuthModalProps> = ({
           ...prev,
           verified_phone: true,
         }));
-        if (window.recaptchaVerifier) {
-          window.recaptchaVerifier.clear();
-        }
+        return true;
       }
     } catch (error) {
       console.error("Error verifying code:", error);
-
       toast.error("Failed to verify code");
+      return false;
     }
   };
 
