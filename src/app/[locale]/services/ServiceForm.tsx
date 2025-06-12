@@ -354,7 +354,7 @@ const ServiceForm = ({
                           }
                           className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                           placeholder={`${t("Enter")} ${t(
-                            input.title
+                            input.placeHoleder || input.title
                           ).toLowerCase()}`}
                         />
                       </div>
@@ -383,7 +383,7 @@ const ServiceForm = ({
                           name={input.name}
                           className="w-full p-3 min-h-32 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-y"
                           placeholder={`${t("Enter")} ${t(
-                            input.title
+                            input.placeHoleder || input.title
                           ).toLowerCase()}`}
                           dir="auto"
                         ></textarea>

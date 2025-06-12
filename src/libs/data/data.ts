@@ -19,10 +19,22 @@ export const privateMovingInputs = {
   },
   out_address: [
     {
+      title: "from government",
+      name: "from_government",
+      type: "text",
+      placeHoleder: "from government placeholder",
+    },
+    {
       title: "FRA address",
       name: "FRA_address",
       type: "text",
       placeHoleder: "FRA address placeholder",
+    },
+    {
+      title: "postal code",
+      name: "postal_code",
+      type: "text",
+      placeHoleder: "postal code placeholder",
     },
     {
       title: "Address possibly floor",
@@ -74,6 +86,12 @@ export const privateMovingInputs = {
 
   moving_address: [
     {
+      title: "to government",
+      name: "to_government",
+      type: "text",
+      placeHoleder: "to government placeholder",
+    },
+    {
       title: "To address",
       name: "to_address",
       type: "text",
@@ -83,6 +101,12 @@ export const privateMovingInputs = {
       title: "Address possibly floor",
       name: "Address_possibly_floor",
       type: "text",
+    },
+    {
+      title: "postal code",
+      name: "postal_code",
+      type: "text",
+      placeHoleder: "postal code placeholder",
     },
     // {
     //   title: "Elevator",
@@ -305,10 +329,28 @@ export const companyRelocationInputs = {
   },
   out_address: [
     {
+      title: "from government",
+      name: "from_government",
+      type: "text",
+      placeHoleder: "from government placeholder",
+    },
+    {
       title: "FRA address",
       name: "FRA_address",
       type: "text",
       placeHoleder: "FRA address placeholder",
+    },
+    {
+      title: "postal code",
+      name: "postal_code",
+      type: "text",
+      placeHoleder: "postal code placeholder",
+    },
+    {
+      title: "from city",
+      name: "from_city",
+      type: "text",
+      placeHoleder: "from city placeholder",
     },
     {
       title: "Address possibly floor",
@@ -344,9 +386,21 @@ export const companyRelocationInputs = {
       name: "description",
       type: "textarea",
     },
+    {
+      title: "machines",
+      name: "machines",
+      type: "text",
+      placeHoleder: "machines placeholder",
+    },
   ],
 
   moving_address: [
+    {
+      title: "to government",
+      name: "to_government",
+      type: "text",
+      placeHoleder: "to government placeholder",
+    },
     {
       title: "To address",
       name: "to_address",
@@ -354,18 +408,35 @@ export const companyRelocationInputs = {
       placeHoleder: "to address placeholder",
     },
     {
-      title: "Address possibly floor",
-      name: "Address_possibly_floor",
+      title: "postal code",
+      name: "postal_code",
       type: "text",
+      placeHoleder: "postal code placeholder",
     },
     {
-      title: "Elevator",
-      name: "elevator",
-      type: "radio",
-      options: [
-        { title: "Yes", value: "true" },
-        { title: "No", value: "false" },
-      ],
+      title: "to city",
+      name: "to_city",
+      type: "text",
+      placeHoleder: "from city placeholder",
+    },
+    // {
+    //   title: "Address possibly floor",
+    //   name: "Address_possibly_floor",
+    //   type: "text",
+    // },
+    // {
+    //   title: "Elevator",
+    //   name: "elevator",
+    //   type: "radio",
+    //   options: [
+    //     { title: "Yes", value: "true" },
+    //     { title: "No", value: "false" },
+    //   ],
+    // },
+    {
+      title: "Number of square meters",
+      name: "number_of_square_meters",
+      type: "range",
     },
     {
       title: "Service level",
