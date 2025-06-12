@@ -16,7 +16,7 @@ const LatestReviews = ({ reviews }: { reviews: ReviewTypes[] }) => {
       <div className="relative">
         <div
           id="review-slider"
-          className="flex gap-6 items-center justify-center overflow-x-auto scrollbar-hide scroll-smooth"
+          className="flex gap-6 items-center justify-start overflow-x-auto scrollbar-hide scroll-smooth"
         >
           {reviews.map((review, i) => (
            <ReviewCard  key={i} review={review} />

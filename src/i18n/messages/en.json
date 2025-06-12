@@ -108,6 +108,7 @@
   },
   "company": {
     "why_join_us": "Why join us?",
+    "possible_website": " company website link",
     "verify_your_account": "Verify your account",
     "please_enter_verification_code": "Please enter the verification code sent to your phone",
     "verify": "Verify",

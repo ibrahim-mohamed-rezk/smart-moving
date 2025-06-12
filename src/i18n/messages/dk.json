@@ -107,6 +107,7 @@
   },
   "company": {
     "why_join_us": "Hvorfor tilslutte dig os?",
+    "possible_website":"Link til virksomhedens hjemmeside ",
     "verify_your_account": "Bekræft din konto",
     "please_enter_verification_code": "Indtast venligst bekræftelseskoden sendt til din telefon",
     "verify": "Bekræft",

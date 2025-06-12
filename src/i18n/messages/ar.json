@@ -103,6 +103,7 @@
   },
   "company": {
     "why_join_us": "لماذا تنضم إلينا؟",
+    "possible_website": "رابط موقع الشركه",
     "verify_your_account": "تحقق من هاتفك",
     "please_enter_verification_code": "يرجى إدخال رمز التحقق المرسل إلى بريدك هاتفك",
     "verify": "تحقق",

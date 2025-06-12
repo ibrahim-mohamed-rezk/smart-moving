@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 const ReviewCard = ({ review }: { review: ReviewTypes }) => {
   const t = useTranslations("home");
   return (
-    <div className="self-stretch relative bg-white rounded-lg shadow-md p-6">
+    <div className="self-stretch min-w-[300px] relative bg-white rounded-lg shadow-md p-6">
       <div className="relative py-2 flex flex-col justify-start items-start gap-1">
         <div className="text-black text-xl font-bold font-['Libre_Baskerville']">
           {review.user}

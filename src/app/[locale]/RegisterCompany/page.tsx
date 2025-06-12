@@ -97,6 +97,7 @@ const AccountCreationForm = () => {
     address: "",
     postal_code: "",
     city: "",
+    possible_website: "",
     services: [] as number[],
   });
 
@@ -485,7 +486,8 @@ const AccountCreationForm = () => {
         setOpenOTP(false);
         setIsLoading(false);
         window.location.href = "/";
-      } {
+      }
+      {
         toast.error(t("invalid_otp"));
         setIsLoading(false);
       }
@@ -1210,6 +1212,44 @@ const AccountCreationForm = () => {
                       name="postal_code"
                       placeholder={t("enter_postal_code")}
                       value={formData.postal_code}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-4 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <label
+                      htmlFor="city"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
+                      {t("city")}
+                    </label>
+                    <input
+                      type="text"
+                      id="city"
+                      name="city"
+                      placeholder={t("enter_city_name")}
+                      value={formData.city}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-4 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-6">
+                  <div className="flex-1">
+                    <label
+                      htmlFor="possible_website"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
+                      {t("possible_website")}
+                    </label>
+                    <input
+                      type="text"
+                      id="possible_website"
+                      name="possible_website"
+                      placeholder={t("possible_website")}
+                      value={formData.possible_website}
                       onChange={handleInputChange}
                       className="w-full px-4 py-4 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     />
