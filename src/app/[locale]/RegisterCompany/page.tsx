@@ -483,9 +483,11 @@ const AccountCreationForm = () => {
         });
 
         setOpenOTP(false);
+        setIsLoading(false);
         window.location.href = "/";
       } {
         toast.error(t("invalid_otp"));
+        setIsLoading(false);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
