@@ -1254,24 +1254,6 @@ const AccountCreationForm = () => {
                       className="w-full px-4 py-4 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     />
                   </div>
-                  <div className="flex-1">
-                    <label
-                      htmlFor="city"
-                      className="block text-sm font-medium text-gray-700 mb-1"
-                    >
-                      {t("city")}
-                    </label>
-                    <input
-                      type="text"
-                      id="city"
-                      name="city"
-                      placeholder={t("enter_city_name")}
-                      value={formData.city}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-4 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                      required
-                    />
-                  </div>
                 </div>
 
                 <div className="mt-8">

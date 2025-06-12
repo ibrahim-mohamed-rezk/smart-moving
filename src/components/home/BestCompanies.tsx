@@ -59,22 +59,22 @@ const BestCompanies = ({ companies }: { companies: CompanyTypes[] }) => {
               centeredSlides: false,
             },
             640: {
-              slidesPerView: 2.5,
+              slidesPerView: 3,
               spaceBetween: 20,
               centeredSlides: false,
             },
             768: {
-              slidesPerView: 3.5,
+              slidesPerView: 4,
               spaceBetween: 24,
               centeredSlides: false,
             },
             1024: {
-              slidesPerView: 4.5,
+              slidesPerView: 5,
               spaceBetween: 24,
               centeredSlides: false,
             },
             1280: {
-              slidesPerView: 5.5,
+              slidesPerView: 7,
               spaceBetween: 24,
               centeredSlides: false,
             },
@@ -94,7 +94,7 @@ const BestCompanies = ({ companies }: { companies: CompanyTypes[] }) => {
                   <img
                     src={company.image || "/worldCarIcon.png"}
                     alt={`${company.name} ${t("company_logo")}`}
-                    className="mx-auto mb-2 w-full aspect-square rounded-full h-full object-cover shadow-lg"
+                    className="mx-auto max-w-[300px] mb-2 w-full aspect-square rounded-full h-full object-cover shadow-lg"
                     loading="lazy"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
@@ -166,7 +166,7 @@ const BestCompanies = ({ companies }: { companies: CompanyTypes[] }) => {
         )}
 
         {/* Custom Pagination */}
-        <div className="swiper-pagination-custom mt-4"></div>
+        <div className="swiper-pagination-custom mx-auto text-nowrap left-0 flex !w-fit gap-[5px] mt-4"></div>
       </div>
     </section>
   );
