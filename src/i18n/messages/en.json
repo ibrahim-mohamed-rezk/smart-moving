@@ -771,6 +771,7 @@
     "Available transfer requests description": "Explore current customer request&apos;s for moving services. Review each request&apos;s details and submit your task to provide assistance."
   },
   "infoWebsite": {
+    "message_sent_successfully": "Message sent successfully",
     "form": {
       "name": "Name",
       "email": "Email",

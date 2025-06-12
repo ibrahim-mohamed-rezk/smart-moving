@@ -772,6 +772,7 @@
     "Available transfer requests description": "Udforsk nuværende kundeanmodninger om flyttetjenester. Gennemgå hver anmodnings detaljer og indsend din opgave for at yde assistance."
   },
   "infoWebsite": {
+    "message_sent_successfully": "Besked sendt",
     "form": {
       "name": "Navn",
       "email": "E-mail",

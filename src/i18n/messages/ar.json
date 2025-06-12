@@ -772,6 +772,7 @@
     "Available transfer requests description": "استكشف الطلبات الحالية للنقل المتاحة. قم بمراجعة التفاصيل لكل طلب واختر الأفضل لمتطلباتك."
   },
   "infoWebsite": {
+    "message_sent_successfully": "تم الارسال بنجاح",
     "form": {
       "name": "الاسم",
       "email": "البريد الإلكتروني",
