@@ -137,6 +137,11 @@ const CompanyHero = async ({
                       {t("company.very_active")}
                     </span>
                   </div>
+                  {companyData.possible_website && (
+                    <Link href={companyData.possible_website}>
+                      {companyData.possible_website}
+                    </Link>
+                  )}
                 </div>
 
                 <div className="flex items-center gap-2">
