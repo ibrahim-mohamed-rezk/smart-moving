@@ -86,7 +86,6 @@ const BestCompanies = ({ companies }: { companies: CompanyTypes[] }) => {
           {companies.map((company, i) => (
             <SwiperSlide
               key={`${company.id}-${i}`}
-              className="!w-[clamp(12rem,15vw,13rem)]"
             >
               <Link
                 href={`/companies/${company.id}?page=about%20us`}
