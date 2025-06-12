@@ -402,11 +402,12 @@ const AccountCreationForm = () => {
           ...prev,
           verified_phone: true,
         }));
+        return true;
       }
     } catch (error) {
       console.error("Error verifying code:", error);
-
       toast.error("Failed to verify code");
+      return false;
     }
   };
 
@@ -453,35 +454,39 @@ const AccountCreationForm = () => {
     setIsLoading(true);
 
     try {
-      validateOTP();
+      const isValid = await validateOTP();
 
-      const response = await postData(
-        "company/verify-code-register",
-        { status: true, phone: formData.phone },
-        new AxiosHeaders({
-          "Content-Type": "application/json",
-          lang: params?.locale as string,
-        })
-      );
+      if (isValid) {
+        const response = await postData(
+          "company/verify-code-register",
+          { status: true, phone: formData.phone },
+          new AxiosHeaders({
+            "Content-Type": "application/json",
+            lang: params?.locale as string,
+          })
+        );
 
-      toast.success(t("otp_verified_successfully"));
+        toast.success(t("otp_verified_successfully"));
 
-      await axios.post("/api/auth/login", {
-        token: response.token,
-        user: JSON.stringify(
-          response.data.role === "company"
-            ? {
-                ...response.data,
-                company: null,
-                company_id: response.data.company.id,
-              }
-            : response.data
-        ),
-        remember: true,
-      });
+        await axios.post("/api/auth/login", {
+          token: response.token,
+          user: JSON.stringify(
+            response.data.role === "company"
+              ? {
+                  ...response.data,
+                  company: null,
+                  company_id: response.data.company.id,
+                }
+              : response.data
+          ),
+          remember: true,
+        });
 
-      setOpenOTP(false);
-      window.location.href = "/";
+        setOpenOTP(false);
+        window.location.href = "/";
+      } {
+        toast.error(t("invalid_otp"));
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data?.msg || t("invalid_otp"));

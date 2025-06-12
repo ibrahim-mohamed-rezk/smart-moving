@@ -199,7 +199,7 @@ const PersonalInfoForm = ({
         throw new Error(
           "Verification session expired. Please request a new code."
         );
-      }
+      } 
 
       const result = await window.confirmationResult.confirm(verificationCode);
       if (result.user) {
