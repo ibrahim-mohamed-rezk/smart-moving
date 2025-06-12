@@ -188,6 +188,7 @@
   "personal_information": {
     "first_name": "الاسم الأول",
     "last_name": "اسم العائلة",
+    "possible_website":"رابط موقع الشركه",
     "email": "البريد الإلكتروني",
     "resend_code": "اعادة الارسال",
     "verify_code": "تحقق من الكود",

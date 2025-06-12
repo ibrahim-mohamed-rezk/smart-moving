@@ -37,8 +37,6 @@ const PersonalInfoForm = ({
   const [phone, setPhone] = useState<Value>(initialData.phone as Value);
   const locale = useLocale();
 
-  console.log(initialData);
-
   // Form state with validation
   const [formData, setFormData] = useState({
     ...initialData,
@@ -50,6 +48,7 @@ const PersonalInfoForm = ({
     verified_phone: initialData.phone === initialData.verified_phone,
     phone: phone,
     status: true,
+    possible_website: initialData.company?.possible_website || "",
   });
 
   // Profile image state
@@ -199,7 +198,7 @@ const PersonalInfoForm = ({
         throw new Error(
           "Verification session expired. Please request a new code."
         );
-      } 
+      }
 
       const result = await window.confirmationResult.confirm(verificationCode);
       if (result.user) {
@@ -523,6 +522,28 @@ const PersonalInfoForm = ({
                 type="email"
                 name="email"
                 value={formData.email}
+                onChange={handleChange}
+                className={`self-stretch h-12 md:h-16 p-3 md:p-4 bg-zinc-100 rounded-3xl ${
+                  errors.email
+                    ? "outline-red-500"
+                    : "outline-1 outline-offset-[-1px] outline-zinc-300"
+                } w-full text-black text-base md:text-lg font-bold font-['Libre_Baskerville']`}
+              />
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1 ml-2">{errors.email}</p>
+              )}
+            </div>
+          </div>
+          {/* websiter link*/}
+          <div className="self-stretch flex flex-col justify-center items-start gap-2 w-full">
+            <div className="self-stretch text-blue-950 text-lg md:text-xl font-bold font-['Libre_Baskerville']">
+              {t("possible_website")}
+            </div>
+            <div className="self-stretch relative w-full">
+              <input
+                type="text"
+                name="possible_website"
+                value={formData.possible_website}
                 onChange={handleChange}
                 className={`self-stretch h-12 md:h-16 p-3 md:p-4 bg-zinc-100 rounded-3xl ${
                   errors.email
