@@ -535,27 +535,31 @@ const PersonalInfoForm = ({
             </div>
           </div>
           {/* websiter link*/}
-          <div className="self-stretch flex flex-col justify-center items-start gap-2 w-full">
-            <div className="self-stretch text-blue-950 text-lg md:text-xl font-bold font-['Libre_Baskerville']">
-              {t("possible_website")}
+          {initialData.role === "company" && (
+            <div className="self-stretch flex flex-col justify-center items-start gap-2 w-full">
+              <div className="self-stretch text-blue-950 text-lg md:text-xl font-bold font-['Libre_Baskerville']">
+                {t("possible_website")}
+              </div>
+              <div className="self-stretch relative w-full">
+                <input
+                  type="text"
+                  name="possible_website"
+                  value={formData.possible_website}
+                  onChange={handleChange}
+                  className={`self-stretch h-12 md:h-16 p-3 md:p-4 bg-zinc-100 rounded-3xl ${
+                    errors.email
+                      ? "outline-red-500"
+                      : "outline-1 outline-offset-[-1px] outline-zinc-300"
+                  } w-full text-black text-base md:text-lg font-bold font-['Libre_Baskerville']`}
+                />
+                {errors.email && (
+                  <p className="text-red-500 text-sm mt-1 ml-2">
+                    {errors.email}
+                  </p>
+                )}
+              </div>
             </div>
-            <div className="self-stretch relative w-full">
-              <input
-                type="text"
-                name="possible_website"
-                value={formData.possible_website}
-                onChange={handleChange}
-                className={`self-stretch h-12 md:h-16 p-3 md:p-4 bg-zinc-100 rounded-3xl ${
-                  errors.email
-                    ? "outline-red-500"
-                    : "outline-1 outline-offset-[-1px] outline-zinc-300"
-                } w-full text-black text-base md:text-lg font-bold font-['Libre_Baskerville']`}
-              />
-              {errors.email && (
-                <p className="text-red-500 text-sm mt-1 ml-2">{errors.email}</p>
-              )}
-            </div>
-          </div>
+          )}
           {/* Phone Field */}
           <div className="self-stretch flex flex-col justify-center items-start gap-2 w-full">
             <div className="self-stretch text-blue-950 text-lg md:text-xl font-bold font-['Libre_Baskerville']">
