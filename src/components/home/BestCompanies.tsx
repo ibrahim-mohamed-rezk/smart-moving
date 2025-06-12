@@ -6,6 +6,7 @@ import { Link } from "@/i18n/routing";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { useRef } from "react";
+import type { SwiperRef } from "swiper/react";
 
 // Import Swiper styles
 import "swiper/css";
@@ -14,7 +15,7 @@ import "swiper/css/pagination";
 
 const BestCompanies = ({ companies }: { companies: CompanyTypes[] }) => {
   const t = useTranslations("home");
-  const swiperRef = useRef<any>(null);
+  const swiperRef = useRef<SwiperRef>(null);
 
   // Don't render if no companies
   if (!companies || companies.length === 0) {
@@ -80,13 +81,11 @@ const BestCompanies = ({ companies }: { companies: CompanyTypes[] }) => {
           }}
           className="!pb-12"
           onSwiper={(swiper) => {
-            swiperRef.current = swiper;
+            swiperRef.current = { swiper };
           }}
         >
           {companies.map((company, i) => (
-            <SwiperSlide
-              key={`${company.id}-${i}`}
-            >
+            <SwiperSlide key={`${company.id}-${i}`}>
               <Link
                 href={`/companies/${company.id}?page=about%20us`}
                 className="block overflow-hidden h-fit p-4 text-center hover:transform hover:scale-105 transition-transform duration-300"
@@ -126,7 +125,7 @@ const BestCompanies = ({ companies }: { companies: CompanyTypes[] }) => {
         {companies.length > 3 && (
           <>
             <button
-              onClick={() => swiperRef.current?.slidePrev()}
+              onClick={() => swiperRef.current?.swiper.slidePrev()}
               className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white p-3 shadow-lg rounded-full hover:bg-gray-50 transition-colors duration-200 z-10"
               aria-label={t("scroll_left")}
             >
@@ -145,7 +144,7 @@ const BestCompanies = ({ companies }: { companies: CompanyTypes[] }) => {
               </svg>
             </button>
             <button
-              onClick={() => swiperRef.current?.slideNext()}
+              onClick={() => swiperRef.current?.swiper.slideNext()}
               className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white p-3 shadow-lg rounded-full hover:bg-gray-50 transition-colors duration-200 z-10"
               aria-label={t("scroll_right")}
             >
