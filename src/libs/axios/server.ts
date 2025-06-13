@@ -2,7 +2,7 @@ import axios, { AxiosHeaders } from "axios";
 
 // Create an Axios instance
 const backendServer = axios.create({
-  baseURL: "smart-movingdash.space/api/v1/",
+  baseURL: "https://smart-movingdash.space/api/v1/",
   headers: {
     "Content-Type": "multipart/form-data",
   },
