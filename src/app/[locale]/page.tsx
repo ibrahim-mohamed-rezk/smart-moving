@@ -37,6 +37,20 @@ const HomePage = async ({
       console.log(error);
     }
   };
+  const sendView = async () => {
+    try {
+      await getData(
+        "view",
+        {},
+        new AxiosHeaders({
+          lang: locale,
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  sendView();
 
   const { services, hero_section, about_us, companies, reviews } =
     await feachData();
