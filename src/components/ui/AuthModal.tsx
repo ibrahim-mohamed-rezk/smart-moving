@@ -312,7 +312,7 @@ const AuthModal: FC<AuthModalProps> = ({
       console.error("Google auth error:", error);
     }
   };
-
+  
   // ////////////////////////////////
   // firebase for verify phone
 

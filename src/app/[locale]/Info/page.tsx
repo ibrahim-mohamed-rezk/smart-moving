@@ -6,6 +6,9 @@ import { useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import axios, { AxiosHeaders } from "axios";
 import { postData } from "@/libs/axios/server";
+import PhoneInput from "react-phone-number-input";
+import type { Value } from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 const MovingInfoPage = () => {
   const t = useTranslations("infoWebsite");
@@ -16,6 +19,7 @@ const MovingInfoPage = () => {
     name: "",
     email: "",
     message: "",
+    phone: undefined as Value | undefined,
   });
 
   // Get the tab from URL or default to "about"
@@ -73,9 +77,7 @@ const MovingInfoPage = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setContactData({ ...contactData, [e.target.name]: e.target.value });
-    };
-    
-
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,6 +95,7 @@ const MovingInfoPage = () => {
         name: "",
         email: "",
         message: "",
+        phone: undefined as Value | undefined,
       });
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -170,6 +173,21 @@ const MovingInfoPage = () => {
                   onChange={handleContactChange}
                   required
                   className="w-full border border-gray-300 rounded-md px-4 py-2"
+                />
+              </div>
+              <div>
+                <label htmlFor="phone" className="block font-semibold mb-1">
+                  {t("form.phone")}
+                </label>
+                <PhoneInput
+                  international
+                  defaultCountry="DK"
+                  value={contactData.phone}
+                  onChange={(value) => {
+                    setContactData({ ...contactData, phone: value });
+                  }}
+                  className="w-full"
+                  id="loginPhone"
                 />
               </div>
               <div>
