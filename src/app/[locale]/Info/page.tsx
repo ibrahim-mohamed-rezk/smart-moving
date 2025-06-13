@@ -179,16 +179,18 @@ const MovingInfoPage = () => {
                 <label htmlFor="phone" className="block font-semibold mb-1">
                   {t("form.phone")}
                 </label>
-                <PhoneInput
-                  international
-                  defaultCountry="DK"
-                  value={contactData.phone}
-                  onChange={(value) => {
-                    setContactData({ ...contactData, phone: value });
-                  }}
-                  className="w-full"
-                  id="loginPhone"
-                />
+                <div className="w-full border border-gray-300 rounded-md px-4 py-2">
+                  <PhoneInput
+                    international
+                    defaultCountry="DK"
+                    value={contactData.phone}
+                    onChange={(value) => {
+                      setContactData({ ...contactData, phone: value });
+                    }}
+                    className="w-full"
+                    id="loginPhone"
+                  />
+                </div>
               </div>
               <div>
                 <label htmlFor="message" className="block font-semibold mb-1">

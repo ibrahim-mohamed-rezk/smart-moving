@@ -774,6 +774,7 @@
     "message_sent_successfully": "Message sent successfully",
     "form": {
       "name": "Name",
+      "phone": "Phone",
       "email": "Email",
       "message": "Message",
       "submit": "Send"

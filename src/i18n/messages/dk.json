@@ -775,6 +775,7 @@
     "message_sent_successfully": "Besked sendt",
     "form": {
       "name": "Navn",
+      "phone": "Telefon",
       "email": "E-mail",
       "message": "Besked",
       "submit": "Send"

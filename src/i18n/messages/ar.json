@@ -775,6 +775,7 @@
     "message_sent_successfully": "تم الارسال بنجاح",
     "form": {
       "name": "الاسم",
+      "phone": "رقم الهاتف",
       "email": "البريد الإلكتروني",
       "message": "الرسالة",
       "submit": "إرسال"
