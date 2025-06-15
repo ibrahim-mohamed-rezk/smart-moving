@@ -5,6 +5,7 @@ import { useState, useRef, useEffect } from "react";
 import { Link, routing, usePathname, useRouter } from "@/i18n/routing";
 import { ChevronDown, Check, Menu, X, BadgePercent } from "lucide-react";
 import Image from "next/image";
+import Script from "next/script";
 import AuthModal from "../ui/AuthModal";
 import { navigatons } from "@/libs/data/data";
 import axios from "axios";
@@ -154,6 +155,55 @@ export default function Header() {
 
   return (
     <>
+      <Script
+        id="website-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "SmartMoving",
+            url: "https://www.smart-moving.net/",
+            potentialAction: {
+              "@type": "SearchAction",
+              target: "https://www.smart-moving.net/?s={search_term_string}",
+              "query-input": "required name=search_term_string",
+            },
+          }),
+        }}
+      />
+      <Script
+        id="local-business-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "LocalBusiness",
+            name: "SmartMoving",
+            image: "https://www.smart-moving.net/logo.png",
+            url: "https://www.smart-moving.net/",
+            telephone: "+1-214-960-4130",
+            email: "sales@smartmoving.com",
+            address: {
+              "@type": "PostalAddress",
+              streetAddress: "12377 Merit Drive, Suite 1530",
+              addressLocality: "Dallas",
+              addressRegion: "TX",
+              postalCode: "75251",
+              addressCountry: "US",
+            },
+            priceRange: "$$$",
+            description:
+              "All‑in‑one moving company software and CRM to streamline operations, dispatch, estimates, billing, and reporting.",
+            openingHours: ["Mo-Fr 08:00-18:00"],
+            geo: {
+              "@type": "GeoCoordinates",
+              latitude: 32.8644,
+              longitude: -96.824,
+            },
+          }),
+        }}
+      />
       <header className="bg-gradient-to-r w-full max-w-full bg-[#192953] sticky top-0 z-50 shadow-md">
         <div className="container w-full mx-auto">
           <div className="flex w-full items-center justify-between py-[clamp(5px,0.417vw,20px)] ">
