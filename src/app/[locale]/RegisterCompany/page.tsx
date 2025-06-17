@@ -60,7 +60,7 @@ const AccountCreationForm = () => {
   const [passwordMatch, setPasswordMatch] = useState<boolean | null>(null);
   const [validPhone, setValidPhone] = useState<boolean | null>(null);
   const [validFirst_name, setValidFirst_name] = useState<boolean | null>(null);
-  const [validsur_name, setValidsur_name] = useState<boolean | null>(null);
+  // const [validsur_name, setValidsur_name] = useState<boolean | null>(null);
   const [services, setservices] = useState<ServiceTypes[]>([]);
   const [showCVR, setShowCVR] = useState<boolean>(false);
   const [token, setToken] = useState<string>("");
@@ -87,7 +87,7 @@ const AccountCreationForm = () => {
 
   const [formData, setFormData] = useState({
     first_name: "",
-    sur_name: "",
+    // sur_name: "",
     CVR: "",
     email: "",
     phone: phone,
@@ -148,13 +148,13 @@ const AccountCreationForm = () => {
     }
   }, [formData.first_name]);
 
-  useEffect(() => {
-    if (formData.sur_name) {
-      setValidsur_name(formData.sur_name.trim() !== "");
-    } else {
-      setValidsur_name(null);
-    }
-  }, [formData.sur_name]);
+  // useEffect(() => {
+  //   if (formData.sur_name) {
+  //     setValidsur_name(formData.sur_name.trim() !== "");
+  //   } else {
+  //     setValidsur_name(null);
+  //   }
+  // }, [formData.sur_name]);
 
   // Validate email format
   useEffect(() => {
@@ -243,7 +243,7 @@ const AccountCreationForm = () => {
   const canProceedToNextTab = () => {
     const {
       first_name,
-      sur_name,
+      // sur_name,
       email,
       phone,
       password,
@@ -252,7 +252,7 @@ const AccountCreationForm = () => {
 
     return (
       first_name.trim() !== "" &&
-      sur_name.trim() !== "" &&
+      // sur_name.trim() !== "" &&
       email.trim() !== "" &&
       validEmail === true &&
       phone?.trim() !== "" &&
@@ -764,7 +764,7 @@ const AccountCreationForm = () => {
                       </p>
                     )}
                   </div>
-                  <div className="flex-1">
+                  {/* <div className="flex-1">
                     <label
                       htmlFor="sur_name"
                       className="block text-xl text-bold font-medium text-gray-700 mb-1"
@@ -803,7 +803,7 @@ const AccountCreationForm = () => {
                         {t("last_name_required")}
                       </p>
                     )}
-                  </div>
+                  </div> */}
                 </div>
 
                 {/* CVR */}
