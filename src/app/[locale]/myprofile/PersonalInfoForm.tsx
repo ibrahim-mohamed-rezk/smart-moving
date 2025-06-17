@@ -40,8 +40,14 @@ const PersonalInfoForm = ({
   // Form state with validation
   const [formData, setFormData] = useState({
     ...initialData,
-    first_name: initialData.name?.split(" ")[0] || "",
-    sur_name: initialData.name?.split(" ")[1] || "",
+    first_name:
+      initialData.role === "company"
+        ? initialData.name
+        : initialData.name?.split(" ")[0] || "",
+    sur_name:
+      initialData.role === "company"
+        ? ""
+        : initialData.name?.split(" ")[1] || "",
     price_listings: initialData.company?.price_listings || "",
     bio: initialData.company?.bio || "",
     services: initialData.company?.services?.map((s) => s.id) || [],
@@ -329,8 +335,12 @@ const PersonalInfoForm = ({
       const submitData = new FormData();
 
       // Add form fields
-      submitData.append("first_name", formData.first_name || "");
-      submitData.append("sur_name", formData.sur_name || "");
+      if (initialData.role === "company") {
+        submitData.append("first_name", formData.first_name || "");
+      } else {
+        submitData.append("first_name", formData.first_name || "");
+        submitData.append("sur_name", formData.sur_name || "");
+      }
       submitData.append("email", formData.email);
       submitData.append("phone", formData.phone);
 
@@ -467,7 +477,9 @@ const PersonalInfoForm = ({
           <div className="self-stretch flex flex-col sm:flex-row justify-start items-start gap-6 md:gap-12 w-full">
             <div className="flex-1 flex flex-col justify-center items-start gap-2 w-full">
               <div className="self-stretch text-blue-950 text-lg md:text-xl font-bold font-['Libre_Baskerville']">
-                {t("first_name")}
+                {initialData.role === "company"
+                  ? t("company_name")
+                  : t("first_name")}
               </div>
               <div className="self-stretch relative w-full">
                 <input
@@ -488,29 +500,31 @@ const PersonalInfoForm = ({
                 )}
               </div>
             </div>
-            <div className="flex-1 flex flex-col justify-center items-start gap-2 w-full">
-              <div className="self-stretch text-blue-950 text-lg md:text-xl font-bold font-['Libre_Baskerville']">
-                {t("last_name")}
+            {initialData.role !== "company" && (
+              <div className="flex-1 flex flex-col justify-center items-start gap-2 w-full">
+                <div className="self-stretch text-blue-950 text-lg md:text-xl font-bold font-['Libre_Baskerville']">
+                  {t("last_name")}
+                </div>
+                <div className="self-stretch relative w-full">
+                  <input
+                    type="text"
+                    name="sur_name"
+                    value={formData.sur_name}
+                    onChange={handleChange}
+                    className={`self-stretch h-12 md:h-16 p-3 md:p-4 bg-zinc-100 rounded-3xl ${
+                      errors.sur_name
+                        ? "outline-red-500"
+                        : "outline-1 outline-offset-[-1px] outline-zinc-300"
+                    } w-full text-black text-base md:text-lg font-normal font-['Libre_Baskerville']`}
+                  />
+                  {errors.sur_name && (
+                    <p className="text-red-500 text-sm mt-1 ml-2">
+                      {errors.sur_name}
+                    </p>
+                  )}
+                </div>
               </div>
-              <div className="self-stretch relative w-full">
-                <input
-                  type="text"
-                  name="sur_name"
-                  value={formData.sur_name}
-                  onChange={handleChange}
-                  className={`self-stretch h-12 md:h-16 p-3 md:p-4 bg-zinc-100 rounded-3xl ${
-                    errors.sur_name
-                      ? "outline-red-500"
-                      : "outline-1 outline-offset-[-1px] outline-zinc-300"
-                  } w-full text-black text-base md:text-lg font-normal font-['Libre_Baskerville']`}
-                />
-                {errors.sur_name && (
-                  <p className="text-red-500 text-sm mt-1 ml-2">
-                    {errors.sur_name}
-                  </p>
-                )}
-              </div>
-            </div>
+            )}
           </div>
           {/* Email Field */}
           <div className="self-stretch flex flex-col justify-center items-start gap-2 w-full">
