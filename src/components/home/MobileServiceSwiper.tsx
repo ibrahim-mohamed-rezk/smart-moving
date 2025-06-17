@@ -7,8 +7,7 @@ import { ServiceTypes } from "@/libs/types/types";
 
 import { Link } from "@/i18n/routing";
 
-
-const MobileServiceSwiper = ({ services }: { services: ServiceTypes[] } ) => {
+const MobileServiceSwiper = ({ services }: { services: ServiceTypes[] }) => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -65,8 +64,13 @@ const MobileServiceSwiper = ({ services }: { services: ServiceTypes[] } ) => {
 };
 
 // ServiceCard component - extracted from your original code
-const ServiceCard = ({ service, idx }:{ service: ServiceTypes, idx: number}) => {
-
+const ServiceCard = ({
+  service,
+  idx,
+}: {
+  service: ServiceTypes;
+  idx: number;
+}) => {
   return (
     <Link
       href={`/services?service=${service.slug}&service_id=${service.id}`}
@@ -79,9 +83,10 @@ const ServiceCard = ({ service, idx }:{ service: ServiceTypes, idx: number}) => 
           <div className="text-blue-950 text-[clamp(18px,1.675vw,36px)] font-bold font-['Libre_Baskerville'] capitalize transition-colors duration-300 ease-in-out group-hover:text-white">
             {service.title}
           </div>
-          <div className="self-stretch text-center text-black/60 text-[clamp(14px,1vw,22px)] font-bold font-['Libre_Baskerville'] transition-colors duration-300 ease-in-out group-hover:text-white/80">
-            {service.description}
-          </div>
+          <div
+            className="self-stretch text-center text-black/60 text-[clamp(14px,1vw,22px)] font-bold font-['Libre_Baskerville'] transition-colors duration-300 ease-in-out group-hover:text-white/80"
+            dangerouslySetInnerHTML={{ __html: service.description }}
+          />
         </div>
         <div className="p-[clamp(5px,0.833vw,30px)] bg-white rounded-full inline-flex justify-center items-center transition-all duration-500 ease-in-out group-hover:bg-[#fff] group-hover:transform group-hover:scale-110 group-hover:shadow-lg">
           <div className="w-[clamp(20px,2.604vw,50px))] h-[clamp(20px,2.604vw,50px))] relative flex items-center justify-center">

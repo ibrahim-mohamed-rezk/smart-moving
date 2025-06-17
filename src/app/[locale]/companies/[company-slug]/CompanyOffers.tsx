@@ -24,9 +24,10 @@ const CompanyOffers = ({ services }: { services: ServiceTypes[] }) => {
                     <div className="justify-start text-blue-950 text-3xl font-bold font-['Libre_Baskerville']">
                       {service.title}
                     </div>
-                    <div className="text-center justify-start text-black/60 text-xl font-bold font-['Libre_Baskerville']">
-                      {service.description}
-                    </div>
+                    <div
+                      className="text-center justify-start text-black/60 text-xl font-bold font-['Libre_Baskerville']"
+                      dangerouslySetInnerHTML={{ __html: service.description }}
+                    />
                   </div>
                   <Link
                     href={`/services?service=${service.slug}&service_id=${service.id}`}
