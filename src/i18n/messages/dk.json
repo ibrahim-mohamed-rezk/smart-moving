@@ -191,6 +191,7 @@
   },
   "personal_information": {
     "first_name": "Fornavn",
+    "company_name": "Virksomhedsnavn",
     "possible_website":"Link til virksomhedens hjemmeside ",
     "last_name": "Efternavn",
     "email": "E-mail",

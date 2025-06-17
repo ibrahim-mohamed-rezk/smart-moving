@@ -279,8 +279,8 @@ const PersonalInfoForm = ({
       valid = false;
     }
 
-    // Last name validation
-    if (!formData.sur_name?.trim()) {
+    // Last name validation - only for non-company users
+    if (initialData.role !== "company" && !formData.sur_name?.trim()) {
       newErrors.sur_name = "Last name is required";
       valid = false;
     }
@@ -352,6 +352,7 @@ const PersonalInfoForm = ({
       if (initialData.role === "company") {
         submitData.append("bio", formData.bio || "");
         submitData.append("price_listings", formData.price_listings || "");
+        submitData.append("possible_website", formData.possible_website || "");
         // Send services as array of strings
         formData.services.forEach((serviceId) => {
           submitData.append("services[]", serviceId.toString());
