@@ -87,7 +87,7 @@ const AccountCreationForm = () => {
 
   const [formData, setFormData] = useState({
     first_name: "",
-    // sur_name: "",
+    sur_name: " ",
     CVR: "",
     email: "",
     phone: phone,
