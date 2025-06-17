@@ -377,7 +377,7 @@ const PersonalInfoForm = ({
         document.cookie = `user=${JSON.stringify({
           ...response.data,
           company: null,
-          company_id: response.data.company.id,
+          company_id: response.data.company?.id,
         })}; path=/`;
         // Reload the window to reflect updated user data
         toast.success("Profile updated successfully");
