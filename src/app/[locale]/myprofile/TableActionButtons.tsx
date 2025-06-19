@@ -116,7 +116,7 @@ const TableActionButtons = ({
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div
             ref={offerPopupRef}
-            className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full mx-4 relative"
+            className="bg-white p-6 max-h-[90vh] overflow-y-auto  rounded-lg shadow-xl max-w-md w-full mx-4 relative"
           >
             <button
               onClick={() => setShowOfferPopup(false)}
@@ -134,7 +134,7 @@ const TableActionButtons = ({
               </div>
               <div>
                 <p className="font-semibold">{t("message")}:</p>
-                <p className="text-gray-700">
+                <p className="text-gray-700 ">
                   {offer?.message || t("no_message")}
                 </p>
               </div>
@@ -147,12 +147,14 @@ const TableActionButtons = ({
                     {t("accept")}
                   </button>
                 )}
-                {offer?.status === "hold" &&<button
-                  onClick={declineOffer}
-                  className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-bold rounded-md transition duration-300 ease-in-out"
-                >
-                  {t("decline")}
-                </button>}
+                {offer?.status === "hold" && (
+                  <button
+                    onClick={declineOffer}
+                    className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-bold rounded-md transition duration-300 ease-in-out"
+                  >
+                    {t("decline")}
+                  </button>
+                )}
               </div>
             </div>
           </div>
