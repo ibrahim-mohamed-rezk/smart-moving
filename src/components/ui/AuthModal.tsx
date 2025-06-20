@@ -426,14 +426,18 @@ const AuthModal: FC<AuthModalProps> = ({
 
   const setupRecaptcha = useCallback((): Promise<void> => {
     return new Promise((resolve, reject) => {
-      // Don't setup if already initialized
-      if (recaptchaInitialized && window.recaptchaVerifier) {
-        resolve();
-        return;
-      }
-
       // Clear any existing reCAPTCHA first
-      cleanupRecaptcha();
+      if (window.recaptchaVerifier) {
+        try {
+          window.recaptchaVerifier.clear();
+        } catch (e) {
+          // ignore
+        }
+        window.recaptchaVerifier = null;
+      }
+      if (recaptchaContainerRef.current) {
+        recaptchaContainerRef.current.innerHTML = "";
+      }
 
       setTimeout(() => {
         if (!recaptchaContainerRef.current || !isMountedRef.current) {
@@ -442,26 +446,23 @@ const AuthModal: FC<AuthModalProps> = ({
         }
 
         try {
-          // Clear the container's content to remove any previous widget
-          recaptchaContainerRef.current.innerHTML = "";
-
-          // Create a unique container ID to avoid conflicts
-          const containerId = `recaptcha-container-${Date.now()}`;
-          recaptchaContainerRef.current.id = containerId;
-
-          window.recaptchaVerifier = new RecaptchaVerifier(auth, containerId, {
-            size: "invisible",
-            callback: () => {
-              console.log("reCAPTCHA resolved");
-              resolve();
-            },
-            "expired-callback": () => {
-              toast.error("reCAPTCHA expired. Please try again.");
-              cleanupRecaptcha();
-              reject(new Error("reCAPTCHA expired"));
-            },
-          });
-
+          // Use the DOM node directly for RecaptchaVerifier
+          window.recaptchaVerifier = new RecaptchaVerifier(
+            auth,
+            recaptchaContainerRef.current,
+            {
+              size: "invisible",
+              callback: () => {
+                console.log("reCAPTCHA resolved");
+                resolve();
+              },
+              "expired-callback": () => {
+                toast.error("reCAPTCHA expired. Please try again.");
+                cleanupRecaptcha();
+                reject(new Error("reCAPTCHA expired"));
+              },
+            }
+          );
           setRecaptchaInitialized(true);
           resolve();
         } catch (error) {
