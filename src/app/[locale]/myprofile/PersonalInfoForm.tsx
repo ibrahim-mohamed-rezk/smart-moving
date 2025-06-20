@@ -21,7 +21,7 @@ import {
 declare global {
   interface Window {
     recaptchaVerifier: RecaptchaVerifier | null;
-    confirmationResult: any;
+    confirmationResult: ConfirmationResult | null;
   }
 }
 
