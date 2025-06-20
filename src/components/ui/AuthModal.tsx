@@ -1,7 +1,6 @@
-// AuthModal.tsx
 "use client";
 
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState, useCallback } from "react";
 import { Eye, X } from "lucide-react";
 import HiddenIcon from "../../../public/aye";
 import Image from "next/image";
@@ -15,12 +14,21 @@ import {
   GoogleAuthProvider,
   signInWithPhoneNumber,
   RecaptchaVerifier,
+  AuthError,
 } from "firebase/auth";
 import { app } from "@/libs/firebase/config";
 import { useTranslations } from "next-intl";
 import PhoneInput from "react-phone-number-input";
 import type { Value } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
+
+// Add this at the top of the file (after imports if you prefer)
+declare global {
+  interface Window {
+    recaptchaVerifier: import("firebase/auth").RecaptchaVerifier | null;
+    confirmationResult: any;
+  }
+}
 
 interface AuthModalProps {
   type: "login" | "register" | null;
@@ -44,6 +52,15 @@ const AuthModal: FC<AuthModalProps> = ({
   const [phone, setPhone] = useState<Value>();
   const [isPhoneInput, setIsPhoneInput] = useState(false);
   const recaptchaContainerRef = useRef<HTMLDivElement>(null);
+  const [isPhoneVerified, setIsPhoneVerified] = useState(false);
+  const [isVerifyingPhone, setIsVerifyingPhone] = useState(false);
+
+  // Add a ref to track if component is mounted
+  const isMountedRef = useRef(true);
+
+  // Track reCAPTCHA state
+  const [recaptchaInitialized, setRecaptchaInitialized] = useState(false);
+
   const [formData, setFormData] = useState({
     login: "",
     password: "",
@@ -59,6 +76,30 @@ const AuthModal: FC<AuthModalProps> = ({
     postal_code: "",
   });
 
+  // Cleanup function for reCAPTCHA
+  const cleanupRecaptcha = useCallback(() => {
+    if (window.recaptchaVerifier) {
+      try {
+        window.recaptchaVerifier.clear();
+        window.recaptchaVerifier = null;
+      } catch (error) {
+        console.warn("Error clearing reCAPTCHA:", error);
+      }
+    }
+    if (window.confirmationResult) {
+      window.confirmationResult = null;
+    }
+    setRecaptchaInitialized(false);
+  }, []);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      isMountedRef.current = false;
+      cleanupRecaptcha();
+    };
+  }, [cleanupRecaptcha]);
+
   // Update the registerFormData when phone changes
   useEffect(() => {
     if (phone) {
@@ -66,6 +107,8 @@ const AuthModal: FC<AuthModalProps> = ({
         ...prevData,
         phone,
       }));
+      // Reset phone verification when phone changes
+      setIsPhoneVerified(false);
     }
   }, [phone]);
 
@@ -121,6 +164,11 @@ const AuthModal: FC<AuthModalProps> = ({
     });
     setIsPhoneInput(false);
     setPhone(undefined);
+    setIsPhoneVerified(false);
+    setOpenOTP(false);
+    setOtpDigits(["", "", "", "", "", ""]);
+    // Clean up reCAPTCHA when switching types
+    cleanupRecaptcha();
   };
 
   const handleOtpChange = (index: number, value: string) => {
@@ -148,8 +196,62 @@ const AuthModal: FC<AuthModalProps> = ({
     }
   };
 
+  // Handle Firebase Auth Errors
+  const handleFirebaseError = (error: AuthError) => {
+    console.error("Firebase error:", error);
+
+    switch (error.code) {
+      case "auth/invalid-phone-number":
+        toast.error("Invalid phone number format");
+        break;
+      case "auth/too-many-requests":
+        toast.error("Too many requests. Please try again later");
+        break;
+      case "auth/quota-exceeded":
+        toast.error("SMS quota exceeded. Please try again later");
+        break;
+      case "auth/user-disabled":
+        toast.error("This phone number has been disabled");
+        break;
+      case "auth/operation-not-allowed":
+        toast.error("Phone authentication is not enabled");
+        break;
+      case "auth/invalid-verification-code":
+        toast.error("Invalid verification code");
+        break;
+      case "auth/code-expired":
+        toast.error("Verification code has expired");
+        break;
+      case "auth/session-expired":
+        toast.error("Verification session has expired");
+        break;
+      case "auth/credential-already-in-use":
+        // Phone number already exists, switch to login
+        setModalType("login");
+        setPhone(registerformData.phone);
+        setFormData((prev) => ({
+          ...prev,
+          login: registerformData.phone?.toString() || "",
+        }));
+        setIsPhoneInput(true);
+        setOpenOTP(false);
+        break;
+      case "auth/account-exists-with-different-credential":
+        toast.error(
+          "Account exists with different credential. Please use email/password login."
+        );
+        setModalType("login");
+        setIsPhoneInput(false);
+        setOpenOTP(false);
+        break;
+      default:
+        toast.error(error.message || "Authentication error occurred");
+    }
+  };
+
   const handelSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (modalType === "login") {
       try {
         const response = await postData(
@@ -191,8 +293,14 @@ const AuthModal: FC<AuthModalProps> = ({
         throw error;
       }
     } else if (modalType === "register") {
+      // Check if phone is verified before proceeding
+      if (!isPhoneVerified) {
+        toast.error("Please verify your phone number first");
+        return;
+      }
+
       try {
-        await postData(
+        const response = await postData(
           "customer/register-api",
           registerformData,
           new AxiosHeaders({
@@ -201,10 +309,19 @@ const AuthModal: FC<AuthModalProps> = ({
           })
         );
 
-        sendOTP();
+        toast.success("Account created successfully");
 
-        toast.success("account created successfully");
-        setOpenOTP(true);
+        // Login the user automatically after registration
+        await axios.post("/api/auth/login", {
+          token: response.token,
+          user: JSON.stringify(response.data),
+          remember: true,
+        });
+
+        onClose();
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       } catch (error) {
         if (axios.isAxiosError(error)) {
           toast.error(error.response?.data?.msg || "An error occurred");
@@ -219,47 +336,38 @@ const AuthModal: FC<AuthModalProps> = ({
   const handleVerifyOTP = async (e: React.FormEvent) => {
     e.preventDefault();
     const otpCode = otpDigits.join("");
-    const isValid = await validateOTP();
 
     if (otpCode.length !== 6) {
       toast.error("Please enter all 6 digits");
       return;
     }
 
+    setIsVerifyingPhone(true);
+
     try {
+      const isValid = await validateOTP();
+
       if (isValid) {
-        const response = await postData(
-          "customer/verify-code-register",
-          { status: true, phone: registerformData.phone },
-          new AxiosHeaders({
-            "Content-Type": "application/json",
-            lang: params?.locale as string,
-          })
-        );
-
-        toast.success("OTP verified successfully");
-
-        await axios.post("/api/auth/login", {
-          token: response.token,
-          user: JSON.stringify(response.data),
-          remember: true,
-        });
+        setIsPhoneVerified(true);
         setOpenOTP(false);
-        onClose();
-        setTimeout(() => {
-          window.location.reload();
-        }, 1500);
-      } else {
-        toast.error("Invalid OTP");
+        toast.success("Phone number verified successfully!");
+
+        // Reset OTP digits
+        setOtpDigits(["", "", "", "", "", ""]);
+        // Clean up after successful verification
+        cleanupRecaptcha();
       }
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data?.msg || "Invalid OTP");
+      if (error instanceof Error && error.message.includes("auth/")) {
+        handleFirebaseError(error as AuthError);
       } else {
-        toast.error("An unexpected error occurred");
+        toast.error("Failed to verify phone number");
       }
+    } finally {
+      setIsVerifyingPhone(false);
     }
   };
+
   const auth = getAuth(app);
 
   const handleGoogleAuth = async (e: React.FormEvent) => {
@@ -312,43 +420,57 @@ const AuthModal: FC<AuthModalProps> = ({
       console.error("Google auth error:", error);
     }
   };
-  
+
   // ////////////////////////////////
   // firebase for verify phone
 
-  const setupRecaptcha = (): void => {
-    // Clear any existing reCAPTCHA to prevent duplicates
-    if (window.recaptchaVerifier) {
-      window.recaptchaVerifier.clear();
-    }
+  const setupRecaptcha = useCallback((): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      // Don't setup if already initialized
+      if (recaptchaInitialized && window.recaptchaVerifier) {
+        resolve();
+        return;
+      }
 
-    // Make sure the container exists
-    if (!recaptchaContainerRef.current) {
-      console.log("reCAPTCHA container not found");
-      return;
-    }
+      // Clear any existing reCAPTCHA first
+      cleanupRecaptcha();
 
-    try {
-      window.recaptchaVerifier = new RecaptchaVerifier(
-        auth,
-        recaptchaContainerRef.current,
-        {
-          size: "invisible",
-          callback: () => {
-            console.log("reCAPTCHA resolved");
-          },
-          "expired-callback": () => {
-            toast.error("reCAPTCHA expired. Please try again.");
-          },
+      // Add a small delay to ensure DOM is ready
+      setTimeout(() => {
+        // Make sure the container exists and component is still mounted
+        if (!recaptchaContainerRef.current || !isMountedRef.current) {
+          reject(new Error("reCAPTCHA container not available"));
+          return;
         }
-      );
-    } catch (error) {
-      console.error("Error creating reCAPTCHA:", error);
-      toast.error(
-        "Failed to set up verification. Please refresh and try again."
-      );
-    }
-  };
+
+        try {
+          // Create a unique container ID to avoid conflicts
+          const containerId = `recaptcha-container-${Date.now()}`;
+          recaptchaContainerRef.current.id = containerId;
+
+          window.recaptchaVerifier = new RecaptchaVerifier(auth, containerId, {
+            size: "invisible",
+            callback: () => {
+              console.log("reCAPTCHA resolved");
+              resolve();
+            },
+            "expired-callback": () => {
+              toast.error("reCAPTCHA expired. Please try again.");
+              cleanupRecaptcha();
+              reject(new Error("reCAPTCHA expired"));
+            },
+          });
+
+          setRecaptchaInitialized(true);
+          resolve();
+        } catch (error) {
+          console.error("Error creating reCAPTCHA:", error);
+          cleanupRecaptcha();
+          reject(error);
+        }
+      }, 1000); // Small delay to ensure DOM is ready
+    });
+  }, [auth, cleanupRecaptcha, recaptchaInitialized]);
 
   const sendOTP = async (): Promise<void> => {
     if (!registerformData.phone) {
@@ -356,9 +478,24 @@ const AuthModal: FC<AuthModalProps> = ({
       return;
     }
 
+    setIsVerifyingPhone(true);
+
     try {
-      if (!window.recaptchaVerifier) {
-        setupRecaptcha();
+      // Ensure container is available before setup
+      if (!recaptchaContainerRef.current) {
+        toast.error(
+          "reCAPTCHA is not ready yet. Please wait a moment and try again."
+        );
+        setIsVerifyingPhone(false);
+        return;
+      }
+
+      // Setup reCAPTCHA with proper error handling
+      await setupRecaptcha();
+
+      // Double-check component is still mounted
+      if (!isMountedRef.current) {
+        throw new Error("Component unmounted during reCAPTCHA setup");
       }
 
       // Format phone number to include "+" if it doesn't already
@@ -377,24 +514,41 @@ const AuthModal: FC<AuthModalProps> = ({
         appVerifier
       );
 
+      // Only proceed if component is still mounted
+      if (!isMountedRef.current) {
+        return;
+      }
+
       window.confirmationResult = confirmationResult;
       setOpenOTP(true);
       toast.success("Verification code sent to your phone");
-      if (window.recaptchaVerifier) {
-        window.recaptchaVerifier.clear();
-      }
     } catch (error) {
       console.error("Error sending OTP:", error);
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "Failed to send verification code. Try again."
-      );
+
+      // Only show error if component is still mounted
+      if (isMountedRef.current) {
+        if (error instanceof Error && error.message.includes("auth/")) {
+          handleFirebaseError(error as AuthError);
+        } else {
+          toast.error(
+            error instanceof Error
+              ? error.message
+              : "Failed to send verification code. Try again."
+          );
+        }
+      }
+
+      // Clean up on error
+      cleanupRecaptcha();
+    } finally {
+      if (isMountedRef.current) {
+        setIsVerifyingPhone(false);
+      }
     }
   };
 
   // Validate OTP
-  const validateOTP = async () => {
+  const validateOTP = async (): Promise<boolean> => {
     try {
       if (!window.confirmationResult) {
         throw new Error(
@@ -405,24 +559,64 @@ const AuthModal: FC<AuthModalProps> = ({
       const result = await window.confirmationResult.confirm(
         otpDigits.join("")
       );
+
       if (result.user) {
-        toast.success("Phone number verified successfully!");
-        setFormData((prev) => ({
-          ...prev,
-          verified_phone: true,
-        }));
         return true;
       }
+      return false;
     } catch (error) {
       console.error("Error verifying code:", error);
-      toast.error("Failed to verify code");
-      return false;
+
+      if (error instanceof Error && error.message.includes("auth/")) {
+        throw error; // Re-throw to be handled by handleFirebaseError
+      }
+
+      throw new Error("Failed to verify code");
     }
+  };
+
+  // Handle phone verification for registration
+  const handlePhoneVerification = async () => {
+    if (!registerformData.phone) {
+      toast.error("Please enter a phone number");
+      return;
+    }
+
+    // Add validation for reCAPTCHA container before proceeding
+    if (!recaptchaContainerRef.current) {
+      toast.error("Please wait a moment and try again");
+      return;
+    }
+
+    await sendOTP();
+  };
+
+  // Handle resend OTP
+  const handleResendOTP = async () => {
+    // Clean up existing verification
+    cleanupRecaptcha();
+    // Reset OTP state
+    setOtpDigits(["", "", "", "", "", ""]);
+
+    // Wait a moment before sending new OTP to ensure cleanup is complete
+    setTimeout(async () => {
+      await sendOTP();
+    }, 500);
   };
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
-      <div ref={recaptchaContainerRef}></div>
+      <div
+        ref={recaptchaContainerRef}
+        style={{
+          position: "absolute",
+          top: "-9999px",
+          left: "-9999px",
+          width: "1px",
+          height: "1px",
+          overflow: "hidden",
+        }}
+      ></div>
       <div
         ref={modalRef}
         className="relative bg-white w-full max-w-xl p-8 rounded-3xl shadow-xl overflow-hidden"
@@ -438,10 +632,11 @@ const AuthModal: FC<AuthModalProps> = ({
         {openOTP ? (
           <>
             <h2 className="text-lg font-semibold mb-6 text-center text-[#192953]">
-              {t("Verify Your Account")}
+              {t("Verify Your Phone Number")}
             </h2>
             <p className="text-center text-gray-600 mb-4">
-              {t("Please enter the verification code sent to your email/phone")}
+              {t("Please enter the verification code sent to")}{" "}
+              {registerformData.phone}
             </p>
             <form className="flex flex-col gap-4">
               <div className="flex justify-center gap-4 my-4">
@@ -457,15 +652,25 @@ const AuthModal: FC<AuthModalProps> = ({
                       otpInputRefs.current[index] = el;
                     }}
                     className="w-14 h-14 text-center text-xl font-bold bg-gray-100 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:outline-none"
+                    disabled={isVerifyingPhone}
                   />
                 ))}
               </div>
               <button
                 type="submit"
                 onClick={handleVerifyOTP}
-                className="mt-2 bg-[#192953] hover:bg-[#14203d] transition-colors text-white font-semibold rounded-full py-3"
+                disabled={isVerifyingPhone}
+                className="mt-2 bg-[#192953] hover:bg-[#14203d] transition-colors text-white font-semibold rounded-full py-3 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Verify
+                {isVerifyingPhone ? "Verifying..." : "Verify"}
+              </button>
+              <button
+                type="button"
+                onClick={handleResendOTP}
+                disabled={isVerifyingPhone}
+                className="text-sm text-blue-600 hover:underline disabled:opacity-50"
+              >
+                Resend Code
               </button>
             </form>
           </>
@@ -553,15 +758,45 @@ const AuthModal: FC<AuthModalProps> = ({
 
               {/* Phone Input for Register */}
               {modalType === "register" && (
-                <div className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
-                  <PhoneInput
-                    international
-                    defaultCountry="DK"
-                    value={phone}
-                    onChange={setPhone}
-                    className="w-full"
-                    placeholder={t("Phone Number")}
-                  />
+                <div className="relative">
+                  <div className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <PhoneInput
+                      international
+                      defaultCountry="DK"
+                      value={phone}
+                      onChange={setPhone}
+                      className="w-full"
+                      placeholder={t("Phone Number")}
+                    />
+                  </div>
+                  {registerformData.phone && !isPhoneVerified && (
+                    <button
+                      type="button"
+                      onClick={handlePhoneVerification}
+                      disabled={
+                        isVerifyingPhone || !recaptchaContainerRef.current
+                      }
+                      className="mt-2 text-sm bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {isVerifyingPhone ? "Sending..." : "Verify Phone"}
+                    </button>
+                  )}
+                  {isPhoneVerified && (
+                    <div className="mt-2 text-sm text-green-600 flex items-center">
+                      <svg
+                        className="w-4 h-4 mr-1"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      Phone number verified
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -692,7 +927,8 @@ const AuthModal: FC<AuthModalProps> = ({
               <button
                 type="submit"
                 onClick={handelSubmit}
-                className="mt-2 bg-[#192953] hover:bg-[#14203d] transition-colors text-white font-semibold rounded-full py-3"
+                disabled={modalType === "register" && !isPhoneVerified}
+                className="mt-2 bg-[#192953] hover:bg-[#14203d] transition-colors text-white font-semibold rounded-full py-3 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {modalType === "login" ? t("login") : t("Signup")}
               </button>
