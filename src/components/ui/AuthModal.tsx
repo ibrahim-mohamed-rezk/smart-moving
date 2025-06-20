@@ -435,15 +435,16 @@ const AuthModal: FC<AuthModalProps> = ({
       // Clear any existing reCAPTCHA first
       cleanupRecaptcha();
 
-      // Add a small delay to ensure DOM is ready
       setTimeout(() => {
-        // Make sure the container exists and component is still mounted
         if (!recaptchaContainerRef.current || !isMountedRef.current) {
           reject(new Error("reCAPTCHA container not available"));
           return;
         }
 
         try {
+          // Clear the container's content to remove any previous widget
+          recaptchaContainerRef.current.innerHTML = "";
+
           // Create a unique container ID to avoid conflicts
           const containerId = `recaptcha-container-${Date.now()}`;
           recaptchaContainerRef.current.id = containerId;
