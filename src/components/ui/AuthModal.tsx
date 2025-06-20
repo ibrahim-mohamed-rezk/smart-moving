@@ -431,7 +431,7 @@ const AuthModal: FC<AuthModalProps> = ({
         try {
           window.recaptchaVerifier.clear();
         } catch (e) {
-          // ignore
+          console.log(e)
         }
         window.recaptchaVerifier = null;
       }
