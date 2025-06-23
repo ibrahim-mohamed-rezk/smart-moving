@@ -5,25 +5,10 @@ import { UserIcon, Camera, Edit } from "lucide-react";
 import { getData, postData } from "@/libs/axios/server";
 import axios, { AxiosHeaders } from "axios";
 import toast from "react-hot-toast";
-import { app } from "@/libs/firebase/config";
+import { useLocale, useTranslations } from "next-intl";
 import PhoneInput from "react-phone-number-input";
 import type { Value } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
-import { useLocale, useTranslations } from "next-intl";
-
-import {
-  ConfirmationResult,
-  getAuth,
-  RecaptchaVerifier,
-  signInWithPhoneNumber,
-} from "firebase/auth";
-
-declare global {
-  interface Window {
-    recaptchaVerifier: RecaptchaVerifier | null;
-    confirmationResult: ConfirmationResult | null;
-  }
-}
 
 const PersonalInfoForm = ({
   initialData,
@@ -63,16 +48,6 @@ const PersonalInfoForm = ({
     initialData.image || null
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const recaptchaContainerRef = useRef<HTMLDivElement>(null);
-
-  const auth = getAuth(app);
-
-  // Verification state
-  const [showVerification, setShowVerification] = useState(false);
-  const [verificationCode, setVerificationCode] = useState<string>("");
-  const [sendingCode, setSendingCode] = useState(false);
-  const [verifyingCode, setVerifyingCode] = useState(false);
-  const [verificationSuccess, setVerificationSuccess] = useState(false);
 
   // Validation state
   const [errors, setErrors] = useState({
@@ -80,7 +55,6 @@ const PersonalInfoForm = ({
     sur_name: "",
     email: "",
     phone: "",
-    code: "",
   });
 
   // Form submission state
@@ -95,136 +69,6 @@ const PersonalInfoForm = ({
       ...prev,
       [name]: value,
     }));
-
-    // Reset verification when phone changes
-    if (name === "phone") {
-      setShowVerification(false);
-      setVerificationCode("");
-      setVerificationSuccess(false);
-      setFormData((prev) => ({
-        ...prev,
-        verified_phone: initialData.phone === value,
-      }));
-    }
-  };
-
-  // firebase for verify phone
-  const setupRecaptcha = (): void => {
-    // Clear any existing reCAPTCHA to prevent duplicates
-    if (window.recaptchaVerifier) {
-      window.recaptchaVerifier.clear();
-    }
-
-    // Make sure the container exists
-    if (!recaptchaContainerRef.current) {
-      toast.error("reCAPTCHA container not found");
-      return;
-    }
-
-    try {
-      window.recaptchaVerifier = new RecaptchaVerifier(
-        auth,
-        recaptchaContainerRef.current,
-        {
-          size: "invisible",
-          callback: () => {
-            console.log("reCAPTCHA resolved");
-          },
-          "expired-callback": () => {
-            toast.error("reCAPTCHA expired. Please try again.");
-          },
-        }
-      );
-    } catch (error) {
-      console.error("Error creating reCAPTCHA:", error);
-      toast.error(
-        "Failed to set up verification. Please refresh and try again."
-      );
-    }
-  };
-
-  const sendOTP = async (): Promise<void> => {
-    if (!formData.phone) {
-      toast.error("Please enter a valid phone number");
-      return;
-    }
-
-    setSendingCode(true);
-
-    try {
-      if (!window.recaptchaVerifier) {
-        setupRecaptcha();
-      }
-
-      // Format phone number to include "+" if it doesn't already
-      const formattedPhone = formData.phone.startsWith("+")
-        ? formData.phone
-        : `+${formData.phone}`;
-
-      const appVerifier = window.recaptchaVerifier;
-      if (!appVerifier) {
-        throw new Error("reCAPTCHA not initialized properly");
-      }
-
-      const confirmationResult = await signInWithPhoneNumber(
-        auth,
-        formattedPhone,
-        appVerifier
-      );
-
-      window.confirmationResult = confirmationResult;
-      setShowVerification(true);
-      toast.success("Verification code sent to your phone");
-    } catch (error) {
-      console.error("Error sending OTP:", error);
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "Failed to send verification code. Try again."
-      );
-    } finally {
-      setSendingCode(false);
-    }
-  };
-
-  // Validate OTP
-  const validateOTP = async () => {
-    if (!verificationCode) {
-      setErrors((prev) => ({
-        ...prev,
-        code: "Please enter the verification code",
-      }));
-      return;
-    }
-
-    setVerifyingCode(true);
-
-    try {
-      if (!window.confirmationResult) {
-        throw new Error(
-          "Verification session expired. Please request a new code."
-        );
-      }
-
-      const result = await window.confirmationResult.confirm(verificationCode);
-      if (result.user) {
-        toast.success("Phone number verified successfully!");
-        setVerificationSuccess(true);
-        setFormData((prev) => ({
-          ...prev,
-          verified_phone: true,
-        }));
-      }
-    } catch (error) {
-      console.error("Error verifying code:", error);
-      setErrors((prev) => ({
-        ...prev,
-        code: "Invalid verification code. Please try again.",
-      }));
-      toast.error("Failed to verify code");
-    } finally {
-      setVerifyingCode(false);
-    }
   };
 
   // get services
@@ -270,7 +114,6 @@ const PersonalInfoForm = ({
       sur_name: "",
       email: "",
       phone: "",
-      code: "",
     };
 
     // First name validation
@@ -302,12 +145,6 @@ const PersonalInfoForm = ({
       valid = false;
     } else if (!phoneRegex.test(formData.phone)) {
       newErrors.phone = "Please enter a valid phone number (10-15 digits)";
-      valid = false;
-    }
-
-    // Verification code validation if phone changed
-    if (formData.phone !== initialData.phone && !formData.verified_phone) {
-      newErrors.phone = "Please verify your new phone number";
       valid = false;
     }
 
@@ -343,11 +180,6 @@ const PersonalInfoForm = ({
       }
       submitData.append("email", formData.email);
       submitData.append("phone", formData.phone);
-
-      // Add verification status if phone was verified
-      if (formData.verified_phone) {
-        submitData.append("verified_phone", "true");
-      }
 
       if (initialData.role === "company") {
         submitData.append("bio", formData.bio || "");
@@ -409,8 +241,6 @@ const PersonalInfoForm = ({
       onSubmit={handleSubmit}
       className="w-full max-w-6xl mx-auto px-4 sm:px-6 md:px-8 py-8 flex flex-col justify-center items-start gap-8 md:gap-12"
     >
-      {/* Hidden recaptcha container */}
-      <div ref={recaptchaContainerRef} id="recaptcha-container"></div>
       {/* Header - Profile Image and Name */}
       <div className="w-full flex flex-col sm:flex-row justify-start items-center gap-6 md:gap-12">
         <div
@@ -581,131 +411,25 @@ const PersonalInfoForm = ({
               {t("phone")}
             </div>
             <div className="self-stretch relative w-full">
-              <div className="flex flex-col sm:flex-row gap-3 w-full">
-                <div className="flex-1 relative">
-                  <PhoneInput
-                    international
-                    defaultCountry="RU"
-                    className={`self-stretch h-12 md:h-16 p-3 md:p-4 bg-zinc-100 rounded-3xl ${
-                      errors.phone
-                        ? "outline-red-500"
-                        : "outline-1 outline-offset-[-1px] outline-zinc-300"
-                    } w-full text-black text-base md:text-lg font-bold font-['Libre_Baskerville']`}
-                    value={formData.phone}
-                    onChange={(value) => {
-                      setPhone(value as Value);
-                      setFormData((prev) => ({
-                        ...prev,
-                        phone: value as Value,
-                      }));
-                    }}
-                  />
-                  {errors.phone && (
-                    <p className="text-red-500 text-sm mt-1 ml-2">
-                      {errors.phone}
-                    </p>
-                  )}
-
-                  {/* Verification Status Indicator */}
-                  {formData.phone && !showVerification && (
-                    <div
-                      className={`text-sm mt-1 ml-2 ${
-                        formData.verified_phone
-                          ? "text-green-600"
-                          : "text-amber-600"
-                      }`}
-                    >
-                      {formData.verified_phone ? t("verified") : ""}
-                    </div>
-                  )}
-                </div>
-
-                {/* Only show Verify Phone button if phone number has changed and not already verified */}
-                {formData.phone &&
-                  formData.phone !== initialData.phone &&
-                  !formData.verified_phone &&
-                  !showVerification && (
-                    <button
-                      type="button"
-                      onClick={sendOTP}
-                      disabled={sendingCode}
-                      className={`h-12 md:h-16 px-4 sm:px-6 bg-blue-950 rounded-3xl flex justify-center items-center transition-all ${
-                        sendingCode
-                          ? "opacity-70 cursor-not-allowed"
-                          : "hover:bg-blue-900"
-                      }`}
-                    >
-                      <span className="text-white text-sm md:text-base font-normal font-['Libre_Baskerville']">
-                        {sendingCode ? t("sending") : t("verify_phone")}
-                      </span>
-                    </button>
-                  )}
-              </div>
-
-              {/* Verification Code Input */}
-              {showVerification && (
-                <div className="mt-3">
-                  <div className="self-stretch text-blue-950 text-base font-bold font-['Libre_Baskerville'] mb-1">
-                    {t("verification_code")}
-                  </div>
-                  <div className="flex flex-col sm:flex-row gap-3 w-full">
-                    <div className="flex-1">
-                      <input
-                        type="text"
-                        value={verificationCode}
-                        onChange={(e) => {
-                          setVerificationCode(e.target.value);
-                          // Clear error when user types
-                          setErrors((prev) => ({ ...prev, code: "" }));
-                        }}
-                        placeholder="Enter verification code"
-                        className={`self-stretch h-12 md:h-16 p-3 md:p-4 bg-zinc-100 rounded-3xl ${
-                          errors.code
-                            ? "outline-red-500"
-                            : "outline-1 outline-offset-[-1px] outline-zinc-300"
-                        } w-full text-black text-base md:text-lg font-normal font-['Libre_Baskerville']`}
-                      />
-                      {errors.code && (
-                        <p className="text-red-500 text-sm mt-1 ml-2">
-                          {t(errors.code)}
-                        </p>
-                      )}
-                    </div>
-
-                    {/* Verify Code Button */}
-                    <button
-                      type="button"
-                      onClick={validateOTP}
-                      disabled={verifyingCode || !verificationCode}
-                      className={`h-12 md:h-16 px-4 sm:px-6 bg-blue-950 rounded-3xl flex justify-center items-center transition-all ${
-                        verifyingCode || !verificationCode
-                          ? "opacity-70 cursor-not-allowed"
-                          : "hover:bg-blue-900"
-                      }`}
-                    >
-                      <span className="text-white text-sm md:text-base font-normal font-['Libre_Baskerville']">
-                        {verifyingCode ? t("verifying") : t("verify_code")}
-                      </span>
-                    </button>
-                  </div>
-
-                  {/* Resend Code option */}
-                  <button
-                    type="button"
-                    onClick={sendOTP}
-                    disabled={sendingCode}
-                    className="text-blue-950 text-sm font-normal font-['Libre_Baskerville'] mt-2 hover:underline"
-                  >
-                    {sendingCode ? t("sending") : t("resend_code")}
-                  </button>
-
-                  {/* Success message when verified */}
-                  {verificationSuccess && (
-                    <div className="text-green-600 text-sm mt-2">
-                      {t("phone_verified")}
-                    </div>
-                  )}
-                </div>
+              <PhoneInput
+                international
+                defaultCountry="RU"
+                className={`self-stretch h-12 md:h-16 p-3 md:p-4 bg-zinc-100 rounded-3xl ${
+                  errors.phone
+                    ? "outline-red-500"
+                    : "outline-1 outline-offset-[-1px] outline-zinc-300"
+                } w-full text-black text-base md:text-lg font-bold font-['Libre_Baskerville']`}
+                value={formData.phone}
+                onChange={(value) => {
+                  setPhone(value as Value);
+                  setFormData((prev) => ({
+                    ...prev,
+                    phone: value as Value,
+                  }));
+                }}
+              />
+              {errors.phone && (
+                <p className="text-red-500 text-sm mt-1 ml-2">{errors.phone}</p>
               )}
             </div>
           </div>

@@ -11,7 +11,7 @@
     "Requests": "الطلبات"
   },
   "profile": {
-    "complete_order": "اكمال الطلب", 
+    "complete_order": "اكمال الطلب",
     "accept_complete": "قبول الطلب",
     "processing": "قيد التنفيذ",
     "pending": "قيد الانتظار",
@@ -189,7 +189,7 @@
     "first_name": "الاسم الأول",
     "company_name": "اسم الشركة",
     "last_name": "اسم العائلة",
-    "possible_website":"رابط موقع الشركه",
+    "possible_website": "رابط موقع الشركه",
     "email": "البريد الإلكتروني",
     "resend_code": "اعادة الارسال",
     "verify_code": "تحقق من الكود",
@@ -904,5 +904,13 @@
     "parking_distance": "مسافة موقف السيارات",
     "price": "السعر",
     "company": "الشركة"
+  },
+  "VerifyModal": {
+    "title": "تحقق من حسابك",
+    "subtitle": "أدخل الرمز المكون من 4 أرقام المرسل إلى بريدك الإلكتروني",
+    "expires_in": "ستنتهي صلاحية الرمز خلال:",
+    "no_code": "لم يصلك الرمز؟",
+    "resend": "إعادة إرسال الرمز",
+    "verify": "تحقق"
   }
 }

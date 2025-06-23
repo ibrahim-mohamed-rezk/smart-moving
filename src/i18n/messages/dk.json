@@ -107,7 +107,7 @@
   },
   "company": {
     "why_join_us": "Hvorfor tilslutte dig os?",
-    "possible_website":"Link til virksomhedens hjemmeside ",
+    "possible_website": "Link til virksomhedens hjemmeside ",
     "verify_your_account": "Bekræft din konto",
     "please_enter_verification_code": "Indtast venligst bekræftelseskoden sendt til din telefon",
     "verify": "Bekræft",
@@ -192,7 +192,7 @@
   "personal_information": {
     "first_name": "Fornavn",
     "company_name": "Virksomhedsnavn",
-    "possible_website":"Link til virksomhedens hjemmeside ",
+    "possible_website": "Link til virksomhedens hjemmeside ",
     "last_name": "Efternavn",
     "email": "E-mail",
     "resend_code": "Send igen",
@@ -559,7 +559,6 @@
       "Animal": "Dyr",
       "Other": "Andet",
       "The topic is moved OFF": "Emnet flyttes FRA",
-      "the topic is moved OFF": "Emnet flyttes FRA",
       "House/Floor Plan/Storage": "Hus/Etageplan/Lager",
       "1st floor": "1. sal",
       "2nd floor": "2. sal",
@@ -905,5 +904,13 @@
     "parking_distance": "Parkering afstand",
     "price": "Pris",
     "company": "Firma"
+  },
+  "VerifyModal": {
+    "title": "Bekræft din konto",
+    "subtitle": "Indtast den 4-cifrede kode sendt til din e-mail",
+    "expires_in": "Koden udløber om:",
+    "no_code": "Modtog du ikke koden?",
+    "resend": "Send koden igen",
+    "verify": "Bekræft"
   }
 }

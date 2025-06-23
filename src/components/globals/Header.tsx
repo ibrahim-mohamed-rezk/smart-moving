@@ -25,7 +25,7 @@ export default function Header() {
   const [openForgotPassword, setOpenForgotPassword] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [authModalType, setAuthModalType] = useState<
-    "login" | "register" | null
+    "login" | "register" | "verify" | null
   >(null);
   const t = useTranslations("header");
   const [token, setToken] = useState<string | null>(null);
@@ -655,6 +655,7 @@ export default function Header() {
             type={authModalType}
             onClose={() => setAuthModalType(null)}
             setForgotPassword={setOpenForgotPassword}
+            openVerifyModal={() => setAuthModalType("verify")}
           />
         )}
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect, useRef, useState, useCallback } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { Eye, X } from "lucide-react";
 import HiddenIcon from "../../../public/aye";
 import Image from "next/image";
@@ -8,19 +8,13 @@ import { postData } from "@/libs/axios/server";
 import axios, { AxiosHeaders } from "axios";
 import toast from "react-hot-toast";
 import { useParams } from "next/navigation";
-import {
-  getAuth,
-  signInWithPopup,
-  GoogleAuthProvider,
-  signInWithPhoneNumber,
-  RecaptchaVerifier,
-  AuthError,
-} from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { app } from "@/libs/firebase/config";
 import { useTranslations } from "next-intl";
 import PhoneInput from "react-phone-number-input";
 import type { Value } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
+import { VerifyModal } from "./VerifyModal";
 
 // Add this at the top of the file (after imports if you prefer)
 declare global {
@@ -31,40 +25,31 @@ declare global {
 }
 
 interface AuthModalProps {
-  type: "login" | "register" | null;
+  type: "login" | "register" | "verify" | null;
   onClose: () => void;
   setForgotPassword: (value: boolean) => void;
+  openVerifyModal: () => void;
 }
 
 const AuthModal: FC<AuthModalProps> = ({
   type,
   onClose,
   setForgotPassword,
+  openVerifyModal,
 }) => {
   const t = useTranslations("auth");
   const [modalType, setModalType] = useState(type);
   const [showPassword, setShowPassword] = useState(false);
   const modalRef = useRef<HTMLDivElement | null>(null);
-  const [openOTP, setOpenOTP] = useState(false);
-  const [otpDigits, setOtpDigits] = useState(["", "", "", "", "", ""]);
-  const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const params = useParams();
   const [phone, setPhone] = useState<Value>();
   const [isPhoneInput, setIsPhoneInput] = useState(false);
-  const recaptchaContainerRef = useRef<HTMLDivElement>(null);
-  const [isPhoneVerified, setIsPhoneVerified] = useState(false);
-  const [isVerifyingPhone, setIsVerifyingPhone] = useState(false);
-
-  // Add a ref to track if component is mounted
-  const isMountedRef = useRef(true);
-
-  // Track reCAPTCHA state
-  const [recaptchaInitialized, setRecaptchaInitialized] = useState(false);
 
   const [formData, setFormData] = useState({
     login: "",
     password: "",
   });
+
   const [registerformData, setRegisterFormData] = useState({
     first_name: "",
     sur_name: "",
@@ -76,30 +61,6 @@ const AuthModal: FC<AuthModalProps> = ({
     postal_code: "",
   });
 
-  // Cleanup function for reCAPTCHA
-  const cleanupRecaptcha = useCallback(() => {
-    if (window.recaptchaVerifier) {
-      try {
-        window.recaptchaVerifier.clear();
-        window.recaptchaVerifier = null;
-      } catch (error) {
-        console.warn("Error clearing reCAPTCHA:", error);
-      }
-    }
-    if (window.confirmationResult) {
-      window.confirmationResult = null;
-    }
-    setRecaptchaInitialized(false);
-  }, []);
-
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      isMountedRef.current = false;
-      cleanupRecaptcha();
-    };
-  }, [cleanupRecaptcha]);
-
   // Update the registerFormData when phone changes
   useEffect(() => {
     if (phone) {
@@ -107,8 +68,6 @@ const AuthModal: FC<AuthModalProps> = ({
         ...prevData,
         phone,
       }));
-      // Reset phone verification when phone changes
-      setIsPhoneVerified(false);
     }
   }, [phone]);
 
@@ -164,89 +123,6 @@ const AuthModal: FC<AuthModalProps> = ({
     });
     setIsPhoneInput(false);
     setPhone(undefined);
-    setIsPhoneVerified(false);
-    setOpenOTP(false);
-    setOtpDigits(["", "", "", "", "", ""]);
-    // Clean up reCAPTCHA when switching types
-    cleanupRecaptcha();
-  };
-
-  const handleOtpChange = (index: number, value: string) => {
-    if (value.length > 1) {
-      value = value.slice(0, 1);
-    }
-
-    const newOtpDigits = [...otpDigits];
-    newOtpDigits[index] = value;
-    setOtpDigits(newOtpDigits);
-
-    // Auto focus next input
-    if (value && index < 5) {
-      otpInputRefs.current[index + 1]?.focus();
-    }
-  };
-
-  const handleKeyDown = (
-    index: number,
-    e: React.KeyboardEvent<HTMLInputElement>
-  ) => {
-    // Move to previous input on backspace if current input is empty
-    if (e.key === "Backspace" && !otpDigits[index] && index > 0) {
-      otpInputRefs.current[index - 1]?.focus();
-    }
-  };
-
-  // Handle Firebase Auth Errors
-  const handleFirebaseError = (error: AuthError) => {
-    console.error("Firebase error:", error);
-
-    switch (error.code) {
-      case "auth/invalid-phone-number":
-        toast.error("Invalid phone number format");
-        break;
-      case "auth/too-many-requests":
-        toast.error("Too many requests. Please try again later");
-        break;
-      case "auth/quota-exceeded":
-        toast.error("SMS quota exceeded. Please try again later");
-        break;
-      case "auth/user-disabled":
-        toast.error("This phone number has been disabled");
-        break;
-      case "auth/operation-not-allowed":
-        toast.error("Phone authentication is not enabled");
-        break;
-      case "auth/invalid-verification-code":
-        toast.error("Invalid verification code");
-        break;
-      case "auth/code-expired":
-        toast.error("Verification code has expired");
-        break;
-      case "auth/session-expired":
-        toast.error("Verification session has expired");
-        break;
-      case "auth/credential-already-in-use":
-        // Phone number already exists, switch to login
-        setModalType("login");
-        setPhone(registerformData.phone);
-        setFormData((prev) => ({
-          ...prev,
-          login: registerformData.phone?.toString() || "",
-        }));
-        setIsPhoneInput(true);
-        setOpenOTP(false);
-        break;
-      case "auth/account-exists-with-different-credential":
-        toast.error(
-          "Account exists with different credential. Please use email/password login."
-        );
-        setModalType("login");
-        setIsPhoneInput(false);
-        setOpenOTP(false);
-        break;
-      default:
-        toast.error(error.message || "Authentication error occurred");
-    }
   };
 
   const handelSubmit = async (e: React.FormEvent) => {
@@ -293,14 +169,8 @@ const AuthModal: FC<AuthModalProps> = ({
         throw error;
       }
     } else if (modalType === "register") {
-      // Check if phone is verified before proceeding
-      if (!isPhoneVerified) {
-        toast.error("Please verify your phone number first");
-        return;
-      }
-
       try {
-        const response = await postData(
+        await postData(
           "customer/register-api",
           registerformData,
           new AxiosHeaders({
@@ -308,20 +178,10 @@ const AuthModal: FC<AuthModalProps> = ({
             lang: params?.locale as string,
           })
         );
-
         toast.success("Account created successfully");
-
-        // Login the user automatically after registration
-        await axios.post("/api/auth/login", {
-          token: response.token,
-          user: JSON.stringify(response.data),
-          remember: true,
-        });
-
-        onClose();
-        setTimeout(() => {
-          window.location.reload();
-        }, 1500);
+        // Show OTP modal after registration
+        openVerifyModal();
+        setModalType("verify")
       } catch (error) {
         if (axios.isAxiosError(error)) {
           toast.error(error.response?.data?.msg || "An error occurred");
@@ -330,41 +190,6 @@ const AuthModal: FC<AuthModalProps> = ({
         }
         throw error;
       }
-    }
-  };
-
-  const handleVerifyOTP = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const otpCode = otpDigits.join("");
-
-    if (otpCode.length !== 6) {
-      toast.error("Please enter all 6 digits");
-      return;
-    }
-
-    setIsVerifyingPhone(true);
-
-    try {
-      const isValid = await validateOTP();
-
-      if (isValid) {
-        setIsPhoneVerified(true);
-        setOpenOTP(false);
-        toast.success("Phone number verified successfully!");
-
-        // Reset OTP digits
-        setOtpDigits(["", "", "", "", "", ""]);
-        // Clean up after successful verification
-        cleanupRecaptcha();
-      }
-    } catch (error) {
-      if (error instanceof Error && error.message.includes("auth/")) {
-        handleFirebaseError(error as AuthError);
-      } else {
-        toast.error("Failed to verify phone number");
-      }
-    } finally {
-      setIsVerifyingPhone(false);
     }
   };
 
@@ -421,437 +246,211 @@ const AuthModal: FC<AuthModalProps> = ({
     }
   };
 
-  // ////////////////////////////////
-  // firebase for verify phone
-
-  const setupRecaptcha = useCallback((): Promise<void> => {
-    return new Promise((resolve, reject) => {
-      // Clear any existing reCAPTCHA first
-      if (window.recaptchaVerifier) {
-        try {
-          window.recaptchaVerifier.clear();
-        } catch (e) {
-          console.log(e)
-        }
-        window.recaptchaVerifier = null;
-      }
-      if (recaptchaContainerRef.current) {
-        recaptchaContainerRef.current.innerHTML = "";
-      }
-
-      setTimeout(() => {
-        if (!recaptchaContainerRef.current || !isMountedRef.current) {
-          reject(new Error("reCAPTCHA container not available"));
-          return;
-        }
-
-        try {
-          // Use the DOM node directly for RecaptchaVerifier
-          window.recaptchaVerifier = new RecaptchaVerifier(
-            auth,
-            recaptchaContainerRef.current,
-            {
-              size: "invisible",
-              callback: () => {
-                console.log("reCAPTCHA resolved");
-                resolve();
+  if (modalType === "verify") {
+    return (
+      <VerifyModal
+        onClose={() => {
+          onClose();
+        }}
+        onVerify={async (code) => {
+          try {
+            const response = await postData(
+              "customer/verify-code-register",
+              {
+                email: registerformData.email,
+                code,
               },
-              "expired-callback": () => {
-                toast.error("reCAPTCHA expired. Please try again.");
-                cleanupRecaptcha();
-                reject(new Error("reCAPTCHA expired"));
-              },
+              new AxiosHeaders({
+                "Content-Type": "application/json",
+                lang: params?.locale as string,
+              })
+            );
+            toast.success("Account verified successfully");
+            await axios.post("/api/auth/login", {
+              token: response.token,
+              user: JSON.stringify(response.data),
+              remember: true,
+            });
+            onClose();
+            window.location.reload();
+          } catch (error) {
+            if (axios.isAxiosError(error)) {
+              toast.error(error.response?.data?.msg || "Verification failed");
+            } else {
+              toast.error("An unexpected error occurred");
             }
-          );
-          setRecaptchaInitialized(true);
-          resolve();
-        } catch (error) {
-          console.error("Error creating reCAPTCHA:", error);
-          cleanupRecaptcha();
-          reject(error);
-        }
-      }, 1000); // Small delay to ensure DOM is ready
-    });
-  }, [auth, cleanupRecaptcha, recaptchaInitialized]);
-
-  const sendOTP = async (): Promise<void> => {
-    if (!registerformData.phone) {
-      toast.error("Please enter a valid phone number");
-      return;
-    }
-
-    setIsVerifyingPhone(true);
-
-    try {
-      // Ensure container is available before setup
-      if (!recaptchaContainerRef.current) {
-        toast.error(
-          "reCAPTCHA is not ready yet. Please wait a moment and try again."
-        );
-        setIsVerifyingPhone(false);
-        return;
-      }
-
-      // Setup reCAPTCHA with proper error handling
-      await setupRecaptcha();
-
-      // Double-check component is still mounted
-      if (!isMountedRef.current) {
-        throw new Error("Component unmounted during reCAPTCHA setup");
-      }
-
-      // Format phone number to include "+" if it doesn't already
-      const formattedPhone = registerformData.phone.startsWith("+")
-        ? registerformData.phone
-        : `+${registerformData.phone}`;
-
-      const appVerifier = window.recaptchaVerifier;
-      if (!appVerifier) {
-        throw new Error("reCAPTCHA not initialized properly");
-      }
-
-      const confirmationResult = await signInWithPhoneNumber(
-        auth,
-        formattedPhone,
-        appVerifier
-      );
-
-      // Only proceed if component is still mounted
-      if (!isMountedRef.current) {
-        return;
-      }
-
-      window.confirmationResult = confirmationResult;
-      setOpenOTP(true);
-      toast.success("Verification code sent to your phone");
-    } catch (error) {
-      console.error("Error sending OTP:", error);
-
-      // Only show error if component is still mounted
-      if (isMountedRef.current) {
-        if (error instanceof Error && error.message.includes("auth/")) {
-          handleFirebaseError(error as AuthError);
-        } else {
-          toast.error(
-            error instanceof Error
-              ? error.message
-              : "Failed to send verification code. Try again."
-          );
-        }
-      }
-
-      // Clean up on error
-      cleanupRecaptcha();
-    } finally {
-      if (isMountedRef.current) {
-        setIsVerifyingPhone(false);
-      }
-    }
-  };
-
-  // Validate OTP
-  const validateOTP = async (): Promise<boolean> => {
-    try {
-      if (!window.confirmationResult) {
-        throw new Error(
-          "Verification session expired. Please request a new code."
-        );
-      }
-
-      const result = await window.confirmationResult.confirm(
-        otpDigits.join("")
-      );
-
-      if (result.user) {
-        return true;
-      }
-      return false;
-    } catch (error) {
-      console.error("Error verifying code:", error);
-
-      if (error instanceof Error && error.message.includes("auth/")) {
-        throw error; // Re-throw to be handled by handleFirebaseError
-      }
-
-      throw new Error("Failed to verify code");
-    }
-  };
-
-  // Handle phone verification for registration
-  const handlePhoneVerification = async () => {
-    if (!registerformData.phone) {
-      toast.error("Please enter a phone number");
-      return;
-    }
-
-    // Add validation for reCAPTCHA container before proceeding
-    if (!recaptchaContainerRef.current) {
-      toast.error("Please wait a moment and try again");
-      return;
-    }
-
-    await sendOTP();
-  };
-
-  // Handle resend OTP
-  const handleResendOTP = async () => {
-    // Clean up existing verification
-    cleanupRecaptcha();
-    // Reset OTP state
-    setOtpDigits(["", "", "", "", "", ""]);
-
-    // Wait a moment before sending new OTP to ensure cleanup is complete
-    setTimeout(async () => {
-      await sendOTP();
-    }, 500);
-  };
+          }
+        }}
+        onResend={() => {
+          // TODO: Implement resend OTP logic here
+          toast.success("OTP resent");
+        }}
+      />
+    );
+  }
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
-      <div
-        ref={recaptchaContainerRef}
-        style={{
-          position: "absolute",
-          top: "-9999px",
-          left: "-9999px",
-          width: "1px",
-          height: "1px",
-          overflow: "hidden",
-        }}
-      ></div>
-      <div
-        ref={modalRef}
-        className="relative bg-white w-full max-w-xl p-8 rounded-3xl shadow-xl overflow-hidden"
-      >
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+    <>
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+        <div
+          ref={modalRef}
+          className="relative bg-white w-full max-w-xl p-8 rounded-3xl shadow-xl overflow-hidden"
         >
-          <X className="w-6 h-6" />
-        </button>
+          {/* Close button */}
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+          >
+            <X className="w-6 h-6" />
+          </button>
 
-        {openOTP ? (
-          <>
-            <h2 className="text-lg font-semibold mb-6 text-center text-[#192953]">
-              {t("Verify Your Phone Number")}
-            </h2>
-            <p className="text-center text-gray-600 mb-4">
-              {t("Please enter the verification code sent to")}{" "}
-              {registerformData.phone}
-            </p>
-            <form className="flex flex-col gap-4">
-              <div className="flex justify-center gap-4 my-4">
-                {[0, 1, 2, 3, 4, 5].map((index) => (
-                  <input
-                    key={index}
-                    type="text"
-                    maxLength={1}
-                    value={otpDigits[index]}
-                    onChange={(e) => handleOtpChange(index, e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(index, e)}
-                    ref={(el) => {
-                      otpInputRefs.current[index] = el;
-                    }}
-                    className="w-14 h-14 text-center text-xl font-bold bg-gray-100 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:outline-none"
-                    disabled={isVerifyingPhone}
-                  />
-                ))}
-              </div>
-              <button
-                type="submit"
-                onClick={handleVerifyOTP}
-                disabled={isVerifyingPhone}
-                className="mt-2 bg-[#192953] hover:bg-[#14203d] transition-colors text-white font-semibold rounded-full py-3 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isVerifyingPhone ? "Verifying..." : "Verify"}
-              </button>
-              <button
-                type="button"
-                onClick={handleResendOTP}
-                disabled={isVerifyingPhone}
-                className="text-sm text-blue-600 hover:underline disabled:opacity-50"
-              >
-                Resend Code
-              </button>
-            </form>
-          </>
-        ) : (
-          <>
-            {/* Title */}
-            <h2 className="text-lg font-semibold mb-6 text-center text-[#192953]">
-              {t("Please login first to request a moving")}
-            </h2>
+          {/* Title */}
+          <h2 className="text-lg font-semibold mb-6 text-center text-[#192953]">
+            {t("Please login first to request a moving")}
+          </h2>
 
-            {/* Form */}
-            <form className="flex flex-col gap-4">
-              {modalType === "register" && (
-                <>
-                  <input
-                    type="text"
-                    placeholder={t("First Name")}
-                    value={registerformData.first_name}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      setRegisterFormData({
-                        ...registerformData,
-                        first_name: e.target.value,
-                      });
-                    }}
-                    className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <input
-                    type="text"
-                    placeholder={t("Second Name")}
-                    value={registerformData.sur_name}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      setRegisterFormData({
-                        ...registerformData,
-                        sur_name: e.target.value,
-                      });
-                    }}
-                    className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </>
-              )}
-
-              {/* Email/Phone Input for Login */}
-              {modalType === "login" && (
-                <>
-                  {!isPhoneInput ? (
-                    <input
-                      type="text"
-                      placeholder={t("Enter Email Address or Phone Number")}
-                      value={formData.login}
-                      onChange={handleLoginInputChange}
-                      className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  ) : (
-                    <div className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
-                      <PhoneInput
-                        international
-                        defaultCountry="DK"
-                        value={phone}
-                        onChange={(value) => {
-                          setPhone(value);
-                        }}
-                        className="w-full"
-                        id="loginPhone"
-                      />
-                    </div>
-                  )}
-                </>
-              )}
-
-              {/* Email Input for Register */}
-              {modalType === "register" && (
+          {/* Form */}
+          <form className="flex flex-col gap-4">
+            {modalType === "register" && (
+              <>
                 <input
-                  type="email"
-                  placeholder={t("Email Address")}
-                  value={registerformData.email}
+                  type="text"
+                  placeholder={t("First Name")}
+                  value={registerformData.first_name}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     setRegisterFormData({
                       ...registerformData,
-                      email: e.target.value,
+                      first_name: e.target.value,
                     });
                   }}
                   className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-              )}
+                <input
+                  type="text"
+                  placeholder={t("Second Name")}
+                  value={registerformData.sur_name}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    setRegisterFormData({
+                      ...registerformData,
+                      sur_name: e.target.value,
+                    });
+                  }}
+                  className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </>
+            )}
 
-              {/* Phone Input for Register */}
-              {modalType === "register" && (
-                <div className="relative">
+            {/* Email/Phone Input for Login */}
+            {modalType === "login" && (
+              <>
+                {!isPhoneInput ? (
+                  <input
+                    type="text"
+                    placeholder={t("Enter Email Address or Phone Number")}
+                    value={formData.login}
+                    onChange={handleLoginInputChange}
+                    className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                ) : (
                   <div className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <PhoneInput
                       international
                       defaultCountry="DK"
                       value={phone}
-                      onChange={setPhone}
+                      onChange={(value) => {
+                        setPhone(value);
+                      }}
                       className="w-full"
-                      placeholder={t("Phone Number")}
+                      id="loginPhone"
                     />
                   </div>
-                  {registerformData.phone && !isPhoneVerified && (
-                    <button
-                      type="button"
-                      onClick={handlePhoneVerification}
-                      disabled={
-                        isVerifyingPhone || !recaptchaContainerRef.current
-                      }
-                      className="mt-2 text-sm bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {isVerifyingPhone ? "Sending..." : "Verify Phone"}
-                    </button>
-                  )}
-                  {isPhoneVerified && (
-                    <div className="mt-2 text-sm text-green-600 flex items-center">
-                      <svg
-                        className="w-4 h-4 mr-1"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      Phone number verified
-                    </div>
-                  )}
-                </div>
-              )}
+                )}
+              </>
+            )}
 
-              {/* Password with toggle */}
+            {/* Email Input for Register */}
+            {modalType === "register" && (
+              <input
+                type="email"
+                placeholder={t("Email Address")}
+                value={registerformData.email}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setRegisterFormData({
+                    ...registerformData,
+                    email: e.target.value,
+                  });
+                }}
+                className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            )}
+
+            {/* Phone Input for Register */}
+            {modalType === "register" && (
               <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder={t("Enter Password")}
-                  value={
-                    modalType === "login"
-                      ? formData.password
-                      : registerformData.password
+                <div className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <PhoneInput
+                    international
+                    defaultCountry="DK"
+                    value={phone}
+                    onChange={setPhone}
+                    className="w-full"
+                    placeholder={t("Phone Number")}
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Password with toggle */}
+
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder={t("Enter Password")}
+                value={
+                  modalType === "login"
+                    ? formData.password
+                    : registerformData.password
+                }
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  if (modalType === "login") {
+                    setFormData({ ...formData, password: e.target.value });
+                  } else {
+                    setRegisterFormData({
+                      ...registerformData,
+                      password: e.target.value,
+                    });
                   }
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    if (modalType === "login") {
-                      setFormData({ ...formData, password: e.target.value });
-                    } else {
-                      setRegisterFormData({
-                        ...registerformData,
-                        password: e.target.value,
-                      });
-                    }
-                  }}
-                  className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+                }}
+                className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((v) => !v)}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500"
+              >
+                {showPassword ? (
+                  <HiddenIcon className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
+              </button>
+            </div>
+            {/* Forget password link (login only) */}
+            {modalType === "login" ? (
+              <div className="text-right">
                 <button
                   type="button"
-                  onClick={() => setShowPassword((v) => !v)}
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500"
+                  onClick={() => {
+                    onClose();
+                    setForgotPassword(true);
+                  }}
+                  className="text-sm text-blue-600 hover:underline"
                 >
-                  {showPassword ? (
-                    <HiddenIcon className="w-5 h-5" />
-                  ) : (
-                    <Eye className="w-5 h-5" />
-                  )}
+                  {t("Forget Password?")}
                 </button>
               </div>
-
-              {/* Forget password link (login only) */}
-              {modalType === "login" ? (
-                <div className="text-right">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      onClose();
-                      setForgotPassword(true);
-                    }}
-                    className="text-sm text-blue-600 hover:underline"
-                  >
-                    {t("Forget Password?")}
-                  </button>
-                </div>
-              ) : (
+            ) : (
+              modalType === "register" && (
                 <>
                   <input
                     type={showPassword ? "text" : "password"}
@@ -866,24 +465,26 @@ const AuthModal: FC<AuthModalProps> = ({
                     className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </>
-              )}
+              )
+            )}
 
-              {modalType === "register" && (
-                <input
-                  type="text"
-                  placeholder={t("Postal Code")}
-                  value={registerformData.postal_code}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setRegisterFormData({
-                      ...registerformData,
-                      postal_code: e.target.value,
-                    });
-                  }}
-                  className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              )}
+            {modalType === "register" && (
+              <input
+                type="text"
+                placeholder={t("Postal Code")}
+                value={registerformData.postal_code}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setRegisterFormData({
+                    ...registerformData,
+                    postal_code: e.target.value,
+                  });
+                }}
+                className="bg-gray-100 placeholder-gray-400 text-gray-700 rounded-full px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            )}
 
-              {/* google auth */}
+            {/* google auth */}
+            {
               <div className="flex items-center justify-center">
                 <button
                   type="button"
@@ -924,64 +525,63 @@ const AuthModal: FC<AuthModalProps> = ({
                   </svg>
                 </button>
               </div>
+            }
 
-              {/* Submit */}
-              <button
-                type="submit"
-                onClick={handelSubmit}
-                disabled={modalType === "register" && !isPhoneVerified}
-                className="mt-2 bg-[#192953] hover:bg-[#14203d] transition-colors text-white font-semibold rounded-full py-3 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {modalType === "login" ? t("login") : t("Signup")}
-              </button>
-            </form>
+            {/* Submit */}
+            <button
+              type="submit"
+              onClick={handelSubmit}
+              className="mt-2 bg-[#192953] hover:bg-[#14203d] transition-colors text-white font-semibold rounded-full py-3 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {modalType === "login" ? t("login") : t("Signup")}
+            </button>
+          </form>
 
-            {/* Switch link */}
-            <div className="text-center text-sm text-gray-500 mt-4">
-              {modalType === "login" ? (
-                <>
-                  {t("Don't have an account yet?")}{" "}
-                  <span
-                    onClick={handleSwitchType}
-                    className="text-blue-600 hover:underline cursor-pointer"
-                  >
-                    {t("Signup")}
-                  </span>
-                </>
-              ) : (
-                <>
-                  {t("Already have an account?")}{" "}
-                  <span
-                    onClick={handleSwitchType}
-                    className="text-blue-600 hover:underline cursor-pointer"
-                  >
-                    {t("login")}
-                  </span>
-                </>
-              )}
-            </div>
-          </>
-        )}
+          {/* Switch link */}
+          <div className="text-center text-sm text-gray-500 mt-4">
+            {modalType === "login" ? (
+              <>
+                {t("Don't have an account yet?")}{" "}
+                <span
+                  onClick={handleSwitchType}
+                  className="text-blue-600 hover:underline cursor-pointer"
+                >
+                  {t("Signup")}
+                </span>
+              </>
+            ) : (
+              <>
+                {t("Already have an account?")}{" "}
+                <span
+                  onClick={handleSwitchType}
+                  className="text-blue-600 hover:underline cursor-pointer"
+                >
+                  {t("login")}
+                </span>
+              </>
+            )}
+          </div>
 
-        {/* Corner background image */}
-        <div
-          className={`
-            absolute 
-            bottom-0 left-0  
-            w-1/2 h-1/2 
-            opacity-50 
-            -z-10
-          `}
-        >
-          <Image
-            src={"/image0.png"}
-            alt="Background decoration"
-            layout="fill"
-            objectFit="cover"
-          />
+          {/* Corner background image */}
+          <div
+            className={`
+              absolute 
+              bottom-0 left-0  
+              w-1/2 h-1/2 
+              opacity-50 
+              -z-10
+            `}
+          >
+            <Image
+              src={"/image0.png"}
+              alt="Background decoration"
+              layout="fill"
+              objectFit="cover"
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

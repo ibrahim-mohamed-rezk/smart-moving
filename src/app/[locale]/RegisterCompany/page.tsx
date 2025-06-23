@@ -20,13 +20,7 @@ import type { Value } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 
 import { ServiceTypes } from "@/libs/types/types";
-import { useTranslations } from "next-intl";
-import { app } from "@/libs/firebase/config";
-import {
-  getAuth,
-  RecaptchaVerifier,
-  signInWithPhoneNumber,
-} from "firebase/auth";
+import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/routing";
 
 interface PasswordRequirements {
@@ -38,6 +32,7 @@ interface PasswordRequirements {
 
 const AccountCreationForm = () => {
   const t = useTranslations("company");
+  const locale = useLocale();
 
   const [currentTab, setCurrentTab] = useState(1);
   const [showPassword, setShowPassword] = useState(false);
@@ -51,8 +46,6 @@ const AccountCreationForm = () => {
 
   const [phone, setPhone] = useState<Value>();
   const recaptchaContainerRef = useRef<HTMLDivElement>(null);
-  const auth = getAuth(app);
-
   // Form validation states
   const [validEmail, setValidEmail] = useState<boolean | null>(null);
   const [validCVR, setValidCVR] = useState<boolean | null>(null);
@@ -308,110 +301,6 @@ const AccountCreationForm = () => {
     }
   };
 
-  // ////////////////////////////////
-  // firebase for verify phone
-
-  const setupRecaptcha = (): void => {
-    // Clear any existing reCAPTCHA to prevent duplicates
-    if (window.recaptchaVerifier) {
-      window.recaptchaVerifier.clear();
-    }
-
-    // Make sure the container exists
-    if (!recaptchaContainerRef.current) {
-      toast.error("reCAPTCHA container not found");
-      return;
-    }
-
-    try {
-      window.recaptchaVerifier = new RecaptchaVerifier(
-        auth,
-        recaptchaContainerRef.current,
-        {
-          size: "invisible",
-          callback: () => {
-            console.log("reCAPTCHA resolved");
-          },
-          "expired-callback": () => {
-            toast.error("reCAPTCHA expired. Please try again.");
-          },
-        }
-      );
-    } catch (error) {
-      console.error("Error creating reCAPTCHA:", error);
-      toast.error(
-        "Failed to set up verification. Please refresh and try again."
-      );
-    }
-  };
-
-  const sendOTP = async (): Promise<void> => {
-    if (!formData.phone) {
-      toast.error("Please enter a valid phone number");
-      return;
-    }
-
-    try {
-      if (!window.recaptchaVerifier) {
-        setupRecaptcha();
-      }
-
-      // Format phone number to include "+" if it doesn't already
-      const formattedPhone = formData.phone.startsWith("+")
-        ? formData.phone
-        : `+${formData.phone}`;
-
-      const appVerifier = window.recaptchaVerifier;
-      if (!appVerifier) {
-        throw new Error("reCAPTCHA not initialized properly");
-      }
-
-      const confirmationResult = await signInWithPhoneNumber(
-        auth,
-        formattedPhone,
-        appVerifier
-      );
-
-      window.confirmationResult = confirmationResult;
-      setOpenOTP(true);
-      toast.success("Verification code sent to your phone");
-    } catch (error) {
-      console.error("Error sending OTP:", error);
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "Failed to send verification code. Try again."
-      );
-    }
-  };
-
-  // Validate OTP
-  const validateOTP = async () => {
-    try {
-      if (!window.confirmationResult) {
-        throw new Error(
-          "Verification session expired. Please request a new code."
-        );
-      }
-
-      const result = await window.confirmationResult.confirm(
-        otpDigits.join("")
-      );
-      if (result.user) {
-        toast.success("Phone number verified successfully!");
-        setFormData((prev) => ({
-          ...prev,
-          verified_phone: true,
-        }));
-        return true;
-      }
-    } catch (error) {
-      console.error("Error verifying code:", error);
-      toast.error("Failed to verify code");
-      return false;
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!canSubmitForm()) return;
@@ -429,7 +318,6 @@ const AccountCreationForm = () => {
       );
 
       toast.success(t("account_created_successfully"));
-      sendOTP();
       setOpenOTP(true);
       setIsLoading(false);
     } catch (error) {
@@ -447,7 +335,7 @@ const AccountCreationForm = () => {
     e.preventDefault();
     const otpCode = otpDigits.join("");
 
-    if (otpCode.length !== 6) {
+    if (otpCode.length !== 4) {
       toast.error(t("please_enter_all_4_digits"));
       return;
     }
@@ -455,42 +343,35 @@ const AccountCreationForm = () => {
     setIsLoading(true);
 
     try {
-      const isValid = await validateOTP();
+      const response = await postData(
+        "company/verify-code-register",
+        { code: otpCode, email: formData.email, status: true },
+        new AxiosHeaders({
+          "Content-Type": "application/json",
+          lang: locale,
+        })
+      );
 
-      if (isValid) {
-        const response = await postData(
-          "company/verify-code-register",
-          { status: true, phone: formData.phone },
-          new AxiosHeaders({
-            "Content-Type": "application/json",
-            lang: params?.locale as string,
-          })
-        );
+      toast.success(t("otp_verified_successfully"));
 
-        toast.success(t("otp_verified_successfully"));
+      await axios.post("/api/auth/login", {
+        token: response.token,
+        user: JSON.stringify(
+          response.data.role === "company"
+            ? {
+                ...response.data,
+                company: null,
+                company_id: response.data.company.id,
+              }
+            : response.data
+        ),
+        remember: true,
+      });
 
-        await axios.post("/api/auth/login", {
-          token: response.token,
-          user: JSON.stringify(
-            response.data.role === "company"
-              ? {
-                  ...response.data,
-                  company: null,
-                  company_id: response.data.company.id,
-                }
-              : response.data
-          ),
-          remember: true,
-        });
-
-        setOpenOTP(false);
-        setIsLoading(false);
-        window.location.href = "/";
-      }
-      {
-        toast.error(t("invalid_otp"));
-        setIsLoading(false);
-      }
+      setOpenOTP(false);
+      setIsLoading(false);
+      window.location.href = "/";
+      setIsLoading(false);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data?.msg || t("invalid_otp"));
@@ -515,7 +396,7 @@ const AccountCreationForm = () => {
       <div ref={recaptchaContainerRef} id="recaptcha-container"></div>
       {openOTP && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 bg-opacity-50">
-          <div className="bg-white w-full max-w-xl p-8 rounded-3xl shadow-xl overflow-hidden relative">
+          <div className="bg-white w-full max-w-sm p-8 rounded-3xl shadow-xl overflow-hidden relative">
             <h2 className="text-lg font-semibold mb-6 text-center text-[#192953]">
               {t("verify_your_account")}
             </h2>
@@ -524,7 +405,7 @@ const AccountCreationForm = () => {
             </p>
             <form className="flex flex-col gap-4">
               <div className="flex justify-center gap-4 my-4">
-                {[0, 1, 2, 3, 4, 5].map((index) => (
+                {[0, 1, 2, 3].map((index) => (
                   <input
                     key={index}
                     type="text"

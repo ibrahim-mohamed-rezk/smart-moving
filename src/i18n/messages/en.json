@@ -194,7 +194,7 @@
   "personal_information": {
     "first_name": "First name",
     "company_name": "Company name",
-    "possible_website":" company website link",
+    "possible_website": " company website link",
     "last_name": "Last name",
     "email": "Email",
     "resend_code": "Resend",
@@ -903,5 +903,13 @@
     "parking_distance": "Parking Distance",
     "price": "Price",
     "company": "Company"
+  },
+  "VerifyModal": {
+    "title": "Verify Your Account",
+    "subtitle": "Enter the 4-digit code sent to your email",
+    "expires_in": "Code expires in:",
+    "no_code": "Didn't receive code?",
+    "resend": "Resend Code",
+    "verify": "Verify"
   }
 }
