@@ -41,7 +41,7 @@ const ServiceForm = ({
   const [openCalendar2, setOpenCalendar2] = useState(false);
   const [forgetpassword, setForgetPassword] = useState(false);
   const [authModalType, setAuthModalType] = useState<
-    "login" | "register" | null
+    "login" | "register" | "verify" | null
   >(null);
 
   const [formData, setFormData] = useState({
@@ -111,6 +111,7 @@ const ServiceForm = ({
     <div className="container mx-auto mt-[clamp(20px,5vw,120px)] w-full flex-grow py-10 sm:py-12">
       {authModalType && (
         <AuthModal
+          openVerifyModal={() => setAuthModalType("verify")}
           type={authModalType}
           onClose={() => setAuthModalType(null)}
           setForgotPassword={setForgetPassword}
@@ -147,9 +148,11 @@ const ServiceForm = ({
                           }))
                         }
                         className="w-full p-3 border  border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                        placeholder={input.placeHoleder? t(input.placeHoleder) : `${t("Enter")} ${t(
-                          input.title
-                        ).toLowerCase()}`}
+                        placeholder={
+                          input.placeHoleder
+                            ? t(input.placeHoleder)
+                            : `${t("Enter")} ${t(input.title).toLowerCase()}`
+                        }
                         dir="auto"
                       />
                     </div>
@@ -172,9 +175,11 @@ const ServiceForm = ({
                         }
                         name={input.name}
                         className="w-full p-3 min-h-32 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-y"
-                        placeholder={input.placeHoleder? t(input.placeHoleder) : `${t("Enter")} ${t(
-                          input.title
-                        ).toLowerCase()}`}
+                        placeholder={
+                          input.placeHoleder
+                            ? t(input.placeHoleder)
+                            : `${t("Enter")} ${t(input.title).toLowerCase()}`
+                        }
                         dir="auto"
                       ></textarea>
                     </div>
