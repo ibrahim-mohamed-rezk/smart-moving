@@ -8,6 +8,7 @@ import TaskOffersTable from "./TaskOffersTable";
 import ServicesRequests from "./ServicesRequests";
 import { getData } from "@/libs/axios/server";
 import { AxiosHeaders } from "axios";
+import PaymentRequests from "./PaymentRequests";
 
 // This is now a server component
 export default async function PersonalInfoPage({
@@ -67,7 +68,6 @@ export default async function PersonalInfoPage({
         {paramsData.page === "change-password" && (
           <ChangePassword token={token} userData={userData} />
         )}
-
         {/* customer tabs */}
         {userData.role === "customer" && paramsData.page === "tasks" && (
           <Tasks />
@@ -75,11 +75,13 @@ export default async function PersonalInfoPage({
         {userData.role === "customer" && paramsData.page === "task-offers" && (
           <TaskOffersTable locale={locale} params={paramsData} />
         )}
-
         {/* company tabs */}
         {userData.role === "company" && paramsData.page === "tasks" && (
           <ServicesRequests />
         )}
+
+        {userData.role === "company" &&
+          paramsData.page === "payment-requests" && <PaymentRequests token={token} />}
       </div>
     </div>
   );

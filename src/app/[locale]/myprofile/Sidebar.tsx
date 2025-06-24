@@ -74,12 +74,15 @@ const Sidebar = ({
           <div className="w-full max-w-96 inline-flex flex-col justify-center items-center gap-8 lg:gap-14">
             <div className="inline-flex justify-start w-full items-center gap-2 lg:gap-4">
               <div className="w-16 h-16 md:w-18 md:h-18 relative bg-white rounded-full outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden flex items-center justify-center">
-               {userData.image ? <img
-                  className="w-1full h-full"
-                  src={userData.image}
-                  alt="User avatar"
-                /> :
-                <UserIcon className="w-[65%] h-[65%] text-[#192953]" />}
+                {userData.image ? (
+                  <img
+                    className="w-1full h-full"
+                    src={userData.image}
+                    alt="User avatar"
+                  />
+                ) : (
+                  <UserIcon className="w-[65%] h-[65%] text-[#192953]" />
+                )}
               </div>
               <div className="flex  flex-col justify-center items-start gap-1">
                 <div className="text-white text-lg md:text-xl font-bold font-['Libre_Baskerville'] break-words">
@@ -127,25 +130,24 @@ const Sidebar = ({
                   {t("change_password")}
                 </div>
               </button>
-              {/* <button
-                onClick={() => handleNavigation("tasks")}
-                className={`cursor-pointer ${
-                  activeRoute === "tasks" ? "bg-white/90" : ""
-                } self-stretch relative rounded-2xl p-3 lg:p-4 inline-flex justify-center items-center gap-2.5 w-full transition-all hover:bg-white/30`}
-              >
-                <div
-                  className={`flex-1 justify-start ${
-                    activeRoute === "tasks" ? "text-blue-950" : "text-stone-300"
-                  } text-base  lg:text-xl font-bold font-['Libre_Baskerville']`}
+              {userData.role === "company" && (
+                <button
+                  onClick={() => handleNavigation("payment-requests")}
+                  className={`cursor-pointer ${
+                    activeRoute === "payment-requests" ? "bg-white/90" : ""
+                  } self-stretch relative rounded-2xl p-3 lg:p-4 inline-flex justify-center items-center gap-2.5 w-full transition-all hover:bg-white/30`}
                 >
-                  {userData.role === "customer"
-                    ? t("personal_information_title")
-                    : t("company_information_title")}
-                </div>
-                {showNotification && (
-                  <div className="absolute top-1/2 -translate-y-1/2 right-2 w-4 h-4 bg-red-500 rounded-full"></div>
-                )}
-              </button> */}
+                  <div
+                    className={`flex-1 justify-start ${
+                      activeRoute === "payment-requests"
+                        ? "text-blue-950"
+                        : "text-stone-300"
+                    } text-base  lg:text-xl font-bold font-['Libre_Baskerville']`}
+                  >
+                    {t("payment requests")}
+                  </div>
+                </button>
+              )}
             </div>
           </div>
         </div>

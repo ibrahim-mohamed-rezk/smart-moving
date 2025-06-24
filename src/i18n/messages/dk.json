@@ -107,6 +107,7 @@
   },
   "company": {
     "why_join_us": "Hvorfor tilslutte dig os?",
+    "payment requests": "Betalingsanmodninger",
     "possible_website": "Link til virksomhedens hjemmeside ",
     "verify_your_account": "Bekræft din konto",
     "please_enter_verification_code": "Indtast venligst bekræftelseskoden sendt til din telefon",
@@ -912,5 +913,24 @@
     "no_code": "Modtog du ikke koden?",
     "resend": "Send koden igen",
     "verify": "Bekræft"
+  },
+  "PaymentRequests": {
+    "header": "Upload betalingsanmodning",
+    "subheader": "Upload dit billede af betalingsanmodning til behandling",
+    "dropHere": "Slip dit billede her",
+    "chooseOrDrag": "Vælg et billede eller træk det herover",
+    "supports": "Understøtter PNG, JPG, JPEG filer",
+    "removeFile": "Fjern fil",
+    "uploading": "Uploader...",
+    "uploadBtn": "Upload betalingsanmodning",
+    "success": "Betalingsanmodning uploadet!",
+    "error": "Fejl ved upload: {error}",
+    "selectImageFile": "Vælg venligst en billedfil",
+    "selectFileToUpload": "Vælg venligst en fil at uploade",
+    "fileSize": "{size} {unit}",
+    "bytes": "Bytes",
+    "kb": "KB",
+    "mb": "MB",
+    "gb": "GB"
   }
 }

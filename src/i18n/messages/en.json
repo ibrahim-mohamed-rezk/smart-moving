@@ -108,6 +108,7 @@
   },
   "company": {
     "why_join_us": "Why join us?",
+    "payment requests": "Payment requests",
     "possible_website": " company website link",
     "verify_your_account": "Verify your account",
     "please_enter_verification_code": "Please enter the verification code sent to your phone",
@@ -911,5 +912,24 @@
     "no_code": "Didn't receive code?",
     "resend": "Resend Code",
     "verify": "Verify"
+  },
+  "PaymentRequests": {
+    "header": "Payment Request Upload",
+    "subheader": "Upload your payment request image for processing",
+    "dropHere": "Drop your image here",
+    "chooseOrDrag": "Choose an image or drag it here",
+    "supports": "Supports PNG, JPG, JPEG files",
+    "removeFile": "Remove file",
+    "uploading": "Uploading...",
+    "uploadBtn": "Upload Payment Request",
+    "success": "Payment request uploaded successfully!",
+    "error": "Upload error: {error}",
+    "selectImageFile": "Please select an image file",
+    "selectFileToUpload": "Please select a file to upload",
+    "fileSize": "{size} {unit}",
+    "bytes": "Bytes",
+    "kb": "KB",
+    "mb": "MB",
+    "gb": "GB"
   }
 }
