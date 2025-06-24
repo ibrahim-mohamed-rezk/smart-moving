@@ -9,7 +9,7 @@ import { useTranslations } from "next-intl";
 
 export default function PaymentRequests({ token }: { token: string }) {
   const [file, setFile] = useState<File | null>(null);
-  const [uploading, setUploading] = useState<boolean>(false);
+  const [uploading, setUploading] = useState<boolean>(false); 
   const [message, setMessage] = useState<string>("");
   const [dragActive, setDragActive] = useState<boolean>(false);
   const t = useTranslations("PaymentRequests");
