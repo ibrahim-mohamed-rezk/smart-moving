@@ -6,11 +6,6 @@ import { useState, ChangeEvent, FormEvent } from "react";
 import { Upload, FileText, CheckCircle, AlertCircle, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-interface PaymentRequestResponse {
-  success: boolean;
-  message?: string;
-  id?: string;
-}
 
 export default function PaymentRequests({ token }: { token: string }) {
   const [file, setFile] = useState<File | null>(null);
