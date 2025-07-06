@@ -242,7 +242,7 @@ const PersonalInfoForm = ({
       className="w-full max-w-6xl mx-auto px-4 sm:px-6 md:px-8 py-8 flex flex-col justify-center items-start gap-8 md:gap-12"
     >
       {/* Header - Profile Image and Name */}
-      <div className="w-full flex flex-col sm:flex-row justify-start items-center gap-6 md:gap-12">
+      <div className="w-full flex flex-col lg:flex-row justify-start items-center gap-6 md:gap-12">
         <div
           className="w-32 h-32 md:w-44 md:h-44 mx-auto md:mx-0 relative bg-white rounded-full outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden flex items-center justify-center cursor-pointer group"
           onClick={handleImageClick}

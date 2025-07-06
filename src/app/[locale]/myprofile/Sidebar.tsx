@@ -72,29 +72,29 @@ const Sidebar = ({
 
         <div className="relative z-10 p-4 w-full lg:p-2 h-full flex flex-col">
           <div className="w-full max-w-96 inline-flex flex-col justify-center items-center gap-8 lg:gap-14">
-            <div className="inline-flex justify-start w-full items-center gap-2 lg:gap-4">
-              <div className="w-16 h-16 md:w-18 md:h-18 relative bg-white rounded-full outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden flex items-center justify-center">
-                {userData.image ? (
-                  <img
-                    className="w-1full h-full"
-                    src={userData.image}
-                    alt="User avatar"
-                  />
-                ) : (
-                  <UserIcon className="w-[65%] h-[65%] text-[#192953]" />
-                )}
-              </div>
-              <div className="flex  flex-col justify-center items-start gap-1">
-                <div className="text-white text-lg md:text-xl font-bold font-['Libre_Baskerville'] break-words">
-                  {userData.name}
-                </div>
-                <div className="justify-start overflow-hidden ">
-                  <span className="text-white/60 text-xs line-clamp-1 text-ellipsis overflow-hidden md:text-sm  font-bold font-['Libre_Baskerville'] truncate max-w-[180px] md:max-w-[220px] lg:max-w-full block">
-                    {userData.email}
-                  </span>
-                </div>
-              </div>
-            </div>
+            <div className="inline-flex flex-col lg:flex-row justify-start w-full items-center gap-2 lg:gap-4">
+  <div className="w-16 h-16 md:w-18 md:h-18 relative bg-white rounded-full outline-1 outline-offset-[-1px] outline-indigo-950 overflow-hidden flex items-center justify-center">
+    {userData.image ? (
+      <img
+        className="w-full h-full"
+        src={userData.image}
+        alt="User avatar"
+      />
+    ) : (
+      <UserIcon className="w-[65%] h-[65%] text-[#192953]" />
+    )}
+  </div>
+  <div className="flex flex-col justify-center items-center lg:items-start gap-1">
+    <div className="text-white text-lg md:text-xl font-bold font-['Libre_Baskerville'] break-words text-center lg:text-left">
+      {userData.name}
+    </div>
+    <div className="justify-start overflow-hidden">
+      <span className="text-white/60 text-xs line-clamp-1 text-ellipsis overflow-hidden md:text-sm font-bold font-['Libre_Baskerville'] truncate max-w-[180px] md:max-w-[220px] lg:max-w-full block text-center lg:text-left">
+        {userData.email}
+      </span>
+    </div>
+  </div>
+</div>
             <div className="self-stretch flex flex-col justify-start items-start gap-4 lg:gap-8">
               <button
                 onClick={() => handleNavigation("personal-info")}
