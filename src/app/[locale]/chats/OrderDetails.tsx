@@ -76,7 +76,7 @@ const OrderDetails = ({ order }: { order: TaskTypes }) => {
             <div>
               <p className="text-sm font-medium text-gray-900">{t("price")}</p>
               <p className="text-sm text-gray-600">
-                {String(order.offers[0].offer)}
+                {String(order.offers[0].offer)} Kr
               </p>
               {order.offers[0].company && (
                 <p className="text-sm text-gray-500 mt-1">

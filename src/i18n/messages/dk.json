@@ -241,6 +241,9 @@
     }
   },
   "myprofile": {
+    "from government": "Fra byen",
+    "postal code": "Postnummer",
+    "to government": "Til Byen",
     "moving_address": "Til gaden",
     "elevator": "Elevator",
     "my offers": "Mine tilbud",

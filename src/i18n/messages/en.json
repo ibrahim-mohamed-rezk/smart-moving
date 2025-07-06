@@ -243,6 +243,9 @@
     }
   },
   "myprofile": {
+    "from government": "From government",
+        "postal code":"Postal code ",
+    "to government": "To government",
     "moving_address": "To governorate",
     "elevator": "Elevator",
     "my offers": "My offers",

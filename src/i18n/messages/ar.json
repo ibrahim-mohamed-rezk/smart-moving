@@ -237,6 +237,9 @@
     }
   },
   "myprofile": {
+    "from government": "من المحافظة",
+        "postal code":"الرمز البريدي",
+    "to government":"الي المحافظة",
     "moving_address": "الى",
     "elevator": "مصعد كهربائي",
     "my offers": "عروضي",
