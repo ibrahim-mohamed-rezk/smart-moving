@@ -395,7 +395,7 @@ const AccountCreationForm = () => {
       {/* Hidden recaptcha container */}
       <div ref={recaptchaContainerRef} id="recaptcha-container"></div>
       {openOTP && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 bg-opacity-50">
+        <div className="fixed ltr-dir inset-0 z-50 flex items-center justify-center bg-black/20 bg-opacity-50">
           <div className="bg-white w-full max-w-sm p-8 rounded-3xl shadow-xl overflow-hidden relative">
             <h2 className="text-lg font-semibold mb-6 text-center text-[#192953]">
               {t("verify_your_account")}

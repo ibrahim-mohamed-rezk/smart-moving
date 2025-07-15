@@ -111,7 +111,10 @@ const ForgetPasswordModal: FC<ForgetPasswordModalProps> = ({
             </p>
 
             {/* OTP Form */}
-            <form onSubmit={handleOtpSubmit} className="flex flex-col gap-4">
+            <form
+              onSubmit={handleOtpSubmit}
+              className="flex ltr-dir flex-col gap-4"
+            >
               <label className="text-sm font-medium text-[#192953]">
                 {t("Verification Code")}
               </label>

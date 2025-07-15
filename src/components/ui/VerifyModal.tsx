@@ -58,7 +58,7 @@ export const VerifyModal: FC<VerifyModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50 animate-fadeIn">
+    <div className="fixed ltr-dir inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50 animate-fadeIn">
       <div className="relative bg-white rounded-2xl p-8 shadow-2xl border border-gray-200 w-full max-w-sm transition-transform duration-300 scale-100">
         <button
           onClick={onClose}
