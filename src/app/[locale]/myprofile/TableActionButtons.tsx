@@ -43,7 +43,7 @@ const TableActionButtons = ({
 
       const chat = await postData(
         "chat",
-        { user_id: offer?.company?.user_id, order_id: taskDataId },
+        { user_id: offer?.company?.user_id, order_id: taskDataId, offer_id: id },
         new AxiosHeaders({
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
