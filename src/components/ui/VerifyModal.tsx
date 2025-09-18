@@ -1,5 +1,5 @@
-import { useTranslations } from 'next-intl';
-import React, { FC, useState, useEffect, useRef } from 'react';
+import { useTranslations } from "next-intl";
+import React, { FC, useState, useEffect, useRef } from "react";
 
 interface VerifyModalProps {
   onClose: () => void;
@@ -14,8 +14,10 @@ export const VerifyModal: FC<VerifyModalProps> = ({
 }) => {
   const [code, setCode] = useState<string[]>(["", "", "", ""]);
   const [timeLeft, setTimeLeft] = useState<number>(60);
+  const [currentInputIndex, setCurrentInputIndex] = useState<number>(0);
   const inputsRef = useRef<Array<HTMLInputElement | null>>([]);
   const t = useTranslations("VerifyModal");
+
   // Start the 60s countdown on mount
   useEffect(() => {
     const timer = setInterval(() => {
@@ -29,6 +31,14 @@ export const VerifyModal: FC<VerifyModalProps> = ({
     }, 1000);
 
     return () => clearInterval(timer);
+  }, []);
+
+  // Auto-focus first empty input on mount
+  useEffect(() => {
+    const firstEmptyIndex = code.findIndex((digit) => digit === "");
+    const targetIndex = firstEmptyIndex === -1 ? 0 : firstEmptyIndex;
+    setCurrentInputIndex(targetIndex);
+    inputsRef.current[targetIndex]?.focus();
   }, []);
 
   // Progress bar percentage
@@ -45,9 +55,55 @@ export const VerifyModal: FC<VerifyModalProps> = ({
     next[idx] = val;
     setCode(next);
 
-    // auto-focus next
+    // Auto-focus next input if value is entered
     if (val && idx < 3) {
+      setCurrentInputIndex(idx + 1);
+      setTimeout(() => {
+        inputsRef.current[idx + 1]?.focus();
+      }, 0);
+    }
+  };
+
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    idx: number
+  ) => {
+    // Handle backspace
+    if (e.key === "Backspace" && !code[idx] && idx > 0) {
+      const next = [...code];
+      next[idx - 1] = "";
+      setCode(next);
+      setCurrentInputIndex(idx - 1);
+      inputsRef.current[idx - 1]?.focus();
+    }
+
+    // Handle arrow keys
+    if (e.key === "ArrowLeft" && idx > 0) {
+      e.preventDefault();
+      setCurrentInputIndex(idx - 1);
+      inputsRef.current[idx - 1]?.focus();
+    }
+
+    if (e.key === "ArrowRight" && idx < 3) {
+      e.preventDefault();
+      setCurrentInputIndex(idx + 1);
       inputsRef.current[idx + 1]?.focus();
+    }
+  };
+
+  const handleFocus = (idx: number) => {
+    // Don't allow focus if previous inputs are not filled
+    const canFocus =
+      idx === 0 || code.slice(0, idx).every((digit) => digit !== "");
+
+    if (canFocus) {
+      setCurrentInputIndex(idx);
+    } else {
+      // Find the first empty input and focus it instead
+      const firstEmptyIndex = code.findIndex((digit) => digit === "");
+      const targetIndex = firstEmptyIndex === -1 ? 0 : firstEmptyIndex;
+      setCurrentInputIndex(targetIndex);
+      inputsRef.current[targetIndex]?.focus();
     }
   };
 
@@ -84,13 +140,39 @@ export const VerifyModal: FC<VerifyModalProps> = ({
         <h2 className="text-2xl font-bold mb-2 text-center">
           {t("title", { defaultMessage: "Verify Your Account" })}
         </h2>
-        <p className="text-gray-500 mb-6 text-sm text-center">
+        <p className="text-gray-500 mb-4 text-sm text-center">
           {t("subtitle", {
             defaultMessage: "Enter the 4-digit code sent to your email",
           })}
         </p>
 
-        <div className="flex justify-between mb-4 gap-2">
+        <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-6">
+          <div className="flex items-center gap-2 text-amber-800 text-xs">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+              className="w-4 h-4 flex-shrink-0"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+              />
+            </svg>
+            <span>
+              {t("spam_notice", {
+                defaultMessage:
+                  "Check your spam/junk folder if you don't see the email",
+              })}
+            </span>
+          </div>
+        </div>
+
+        {/* Force LTR direction for the input container */}
+        <div className="flex justify-between mb-4 gap-2" dir="ltr">
           {code.map((digit, idx) => (
             <input
               key={idx}
@@ -98,11 +180,21 @@ export const VerifyModal: FC<VerifyModalProps> = ({
               inputMode="numeric"
               maxLength={1}
               value={digit}
+              disabled={false}
               ref={(el) => {
                 inputsRef.current[idx] = el;
               }}
               onChange={(e) => handleChange(e, idx)}
-              className="w-14 h-14 bg-gray-50 border border-gray-300 rounded-lg text-center text-2xl font-semibold focus:ring-2 focus:ring-blue-500 outline-none transition-all shadow-sm"
+              onKeyDown={(e) => handleKeyDown(e, idx)}
+              onFocus={() => handleFocus(idx)}
+              className={`w-14 h-14 border rounded-lg text-center text-2xl font-semibold outline-none transition-all shadow-sm ${
+                idx === currentInputIndex
+                  ? "bg-blue-50 border-blue-500 ring-2 ring-blue-500"
+                  : code[idx]
+                  ? "bg-green-50 border-green-300"
+                  : "bg-gray-50 border-gray-300"
+              }`}
+              style={{ direction: "ltr", textAlign: "center" }}
             />
           ))}
         </div>

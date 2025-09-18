@@ -111,6 +111,7 @@
     "possible_website": "Link til virksomhedens hjemmeside ",
     "verify_your_account": "Bekræft din konto",
     "please_enter_verification_code": "Indtast venligst bekræftelseskoden sendt til din telefon",
+    "check_spam_folder": "Tjek din spam/junk mappe, hvis du ikke kan se e-mailen",
     "verify": "Bekræft",
     "account_created_successfully": "Din konto er oprettet",
     "view details": "Se detaljer",
@@ -915,7 +916,8 @@
     "expires_in": "Koden udløber om:",
     "no_code": "Modtog du ikke koden?",
     "resend": "Send koden igen",
-    "verify": "Bekræft"
+    "verify": "Bekræft",
+    "spam_notice": "Tjek din spam/uønsket post-mappe, hvis du ikke kan finde e-mailen"
   },
   "PaymentRequests": {
     "header": "Upload betalingsanmodning",

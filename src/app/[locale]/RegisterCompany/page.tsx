@@ -41,7 +41,8 @@ const AccountCreationForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const params = useParams<{ locale: string }>();
   const [openOTP, setOpenOTP] = useState(false);
-  const [otpDigits, setOtpDigits] = useState(["", "", "", "", "", ""]);
+  const [otpDigits, setOtpDigits] = useState(["", "", "", ""]);
+  const [currentInputIndex, setCurrentInputIndex] = useState<number>(0);
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   const [phone, setPhone] = useState<Value>();
@@ -276,28 +277,50 @@ const AccountCreationForm = () => {
     window.scrollTo(0, 0);
   };
 
-  const handleOtpChange = (index: number, value: string) => {
-    if (value.length > 1) {
-      value = value.slice(0, 1);
-    }
+  const handleOtpChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    const value = e.target.value;
+    if (!/^\d?$/.test(value)) return;
 
     const newOtpDigits = [...otpDigits];
     newOtpDigits[index] = value;
     setOtpDigits(newOtpDigits);
 
-    // Auto focus next input
-    if (value && index < 5) {
-      otpInputRefs.current[index + 1]?.focus();
+    // Auto focus next input if value is entered
+    if (value && index < 3) {
+      setCurrentInputIndex(index + 1);
+      setTimeout(() => {
+        otpInputRefs.current[index + 1]?.focus();
+      }, 0);
     }
   };
 
   const handleKeyDown = (
-    index: number,
-    e: React.KeyboardEvent<HTMLInputElement>
+    e: React.KeyboardEvent<HTMLInputElement>,
+    index: number
   ) => {
-    // Move to previous input on backspace if current input is empty
+    // Handle backspace
     if (e.key === "Backspace" && !otpDigits[index] && index > 0) {
+      const newOtpDigits = [...otpDigits];
+      newOtpDigits[index - 1] = "";
+      setOtpDigits(newOtpDigits);
+      setCurrentInputIndex(index - 1);
       otpInputRefs.current[index - 1]?.focus();
+    }
+
+    // Handle arrow keys
+    if (e.key === "ArrowLeft" && index > 0) {
+      e.preventDefault();
+      setCurrentInputIndex(index - 1);
+      otpInputRefs.current[index - 1]?.focus();
+    }
+
+    if (e.key === "ArrowRight" && index < 3) {
+      e.preventDefault();
+      setCurrentInputIndex(index + 1);
+      otpInputRefs.current[index + 1]?.focus();
     }
   };
 
@@ -328,6 +351,22 @@ const AccountCreationForm = () => {
       }
       setIsLoading(false);
       throw error;
+    }
+  };
+
+  const handleFocus = (idx: number) => {
+    // Don't allow focus if previous inputs are not filled
+    const canFocus =
+      idx === 0 || otpDigits.slice(0, idx).every((digit) => digit !== "");
+
+    if (canFocus) {
+      setCurrentInputIndex(idx);
+    } else {
+      // Find the first empty input and focus it instead
+      const firstEmptyIndex = otpDigits.findIndex((digit) => digit === "");
+      const targetIndex = firstEmptyIndex === -1 ? 0 : firstEmptyIndex;
+      setCurrentInputIndex(targetIndex);
+      otpInputRefs.current[targetIndex]?.focus();
     }
   };
 
@@ -403,28 +442,70 @@ const AccountCreationForm = () => {
             <p className="text-center text-gray-600 mb-4">
               {t("please_enter_verification_code")}
             </p>
+
+            {/* Spam folder warning */}
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-6">
+              <div className="flex items-center gap-2 text-amber-800 text-xs">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                  className="w-4 h-4 flex-shrink-0"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+                  />
+                </svg>
+                <span>
+                  {t("check_spam_folder", {
+                    defaultMessage:
+                      "Check your spam/junk folder if you don't see the email",
+                  })}
+                </span>
+              </div>
+            </div>
+
             <form className="flex flex-col gap-4">
-              <div className="flex justify-center gap-4 my-4">
+              {/* Force LTR direction for the input container */}
+              <div className="flex justify-center gap-4 my-4" dir="ltr">
                 {[0, 1, 2, 3].map((index) => (
                   <input
                     key={index}
                     type="text"
+                    inputMode="numeric"
                     maxLength={1}
                     value={otpDigits[index]}
-                    onChange={(e) => handleOtpChange(index, e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(index, e)}
+                    disabled={false}
                     ref={(el) => {
                       otpInputRefs.current[index] = el;
                     }}
-                    className="w-14 h-14 text-center text-xl font-bold bg-gray-100 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:outline-none"
+                    onChange={(e) => handleOtpChange(e, index)}
+                    onKeyDown={(e) => handleKeyDown(e, index)}
+                    onFocus={() => handleFocus(index)}
+                    className={`w-14 h-14 border rounded-lg text-center text-2xl font-semibold outline-none transition-all shadow-sm ${
+                      index === currentInputIndex
+                        ? "bg-blue-50 border-blue-500 ring-2 ring-blue-500"
+                        : otpDigits[index]
+                        ? "bg-green-50 border-green-300"
+                        : "bg-gray-50 border-gray-300"
+                    }`}
+                    style={{ direction: "ltr", textAlign: "center" }}
                   />
                 ))}
               </div>
               <button
                 type="submit"
                 onClick={handleVerifyOTP}
-                disabled={isLoading}
-                className="mt-2 bg-[#192953] hover:bg-[#14203d] transition-colors text-white font-semibold rounded-full py-3"
+                disabled={isLoading || otpDigits.some((d) => d === "")}
+                className={`mt-2 transition-colors text-white font-semibold rounded-full py-3 ${
+                  isLoading || otpDigits.some((d) => d === "")
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-[#192953] hover:bg-[#14203d]"
+                }`}
               >
                 {isLoading ? (
                   <>

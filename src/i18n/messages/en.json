@@ -112,6 +112,7 @@
     "possible_website": " company website link",
     "verify_your_account": "Verify your account",
     "please_enter_verification_code": "Please enter the verification code sent to your phone",
+    "check_spam_folder": "Check your spam/junk folder if you don't see the email",
     "verify": "Verify",
     "account_created_successfully": "Account created successfully",
     "view details": "View details",
@@ -244,7 +245,7 @@
   },
   "myprofile": {
     "from government": "From government",
-        "postal code":"Postal code ",
+    "postal code": "Postal code ",
     "to government": "To government",
     "moving_address": "To governorate",
     "elevator": "Elevator",
@@ -914,7 +915,8 @@
     "expires_in": "Code expires in:",
     "no_code": "Didn't receive code?",
     "resend": "Resend Code",
-    "verify": "Verify"
+    "verify": "Verify",
+    "spam_notice": "Check your spam/junk folder if you don't see the email"
   },
   "PaymentRequests": {
     "header": "Payment Request Upload",

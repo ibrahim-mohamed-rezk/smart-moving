@@ -107,6 +107,7 @@
     "possible_website": "رابط موقع الشركه",
     "verify_your_account": "تحقق من هاتفك",
     "please_enter_verification_code": "يرجى إدخال رمز التحقق المرسل إلى بريدك هاتفك",
+    "check_spam_folder": "تحقق من مجلد الرسائل المزعجة (سبام) إذا لم تجد البريد الإلكتروني",
     "verify": "تحقق",
     "account_created_successfully": "تم انشاء حسابك بنجاح",
     "view details": " رؤيه المزيد",
@@ -238,8 +239,8 @@
   },
   "myprofile": {
     "from government": "من المحافظة",
-        "postal code":"الرمز البريدي",
-    "to government":"الي المحافظة",
+    "postal code": "الرمز البريدي",
+    "to government": "الي المحافظة",
     "moving_address": "الى",
     "elevator": "مصعد كهربائي",
     "my offers": "عروضي",
@@ -1638,7 +1639,8 @@
     "expires_in": "ستنتهي صلاحية الرمز خلال:",
     "no_code": "لم يصلك الرمز؟",
     "resend": "إعادة إرسال الرمز",
-    "verify": "تحقق"
+    "verify": "تحقق",
+    "spam_notice": "تحقق من مجلد الرسائل غير المرغوب فيها/البريد العشوائي (سبام) إذا لم تجد البريد الإلكتروني"
   },
   "PaymentRequests": {
     "header": "رفع طلب الدفع",
