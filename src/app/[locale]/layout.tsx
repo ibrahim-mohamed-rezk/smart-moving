@@ -12,6 +12,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { cookies } from "next/headers";
 import NotificationsProvider from "@/libs/providers/NotificationsProvider";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   // change the icon to the global icon
@@ -38,10 +39,17 @@ export default async function LocaleLayout({
 
   const token = (await cookies()).get("token")?.value;
 
-
-
   return (
     <html dir={locale === "ar" ? "rtl" : "ltr"} lang={locale}>
+      <head>
+        <Script id="adwords-conversion-event" strategy="afterInteractive">
+          {`
+            if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+              window.gtag('event', 'conversion', { send_to: 'AW-11439380207/ukprCKqj47MbEO-t3M4q' });
+            }
+          `}
+        </Script>
+      </head>
       <body>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <NotificationsProvider token={token} />
