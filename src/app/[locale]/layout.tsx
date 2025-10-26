@@ -42,6 +42,19 @@ export default async function LocaleLayout({
   return (
     <html dir={locale === "ar" ? "rtl" : "ltr"} lang={locale}>
       <head>
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=AW-11439380207"
+          strategy="afterInteractive"
+        />
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'AW-11439380207');
+          `}
+        </Script>
         <Script id="adwords-conversion-event" strategy="afterInteractive">
           {`
             if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
