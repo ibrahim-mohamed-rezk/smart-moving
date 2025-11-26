@@ -1,18 +1,18 @@
-import { NextIntlClientProvider } from "next-intl";
+// import { NextIntlClientProvider } from "next-intl";
 import type { Metadata } from "next";
 import { getMessages } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
-import { ClientToaster } from "@/components/ui/ClientToaster";
-import Header from "@/components/globals/Header";
-import Footer from "@/components/globals/Footer";
+// import { ClientToaster } from "@/components/ui/ClientToaster";
+// import Header from "@/components/globals/Header";
+// import Footer from "@/components/globals/Footer";
 import "../globals.css";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { cookies } from "next/headers";
-import NotificationsProvider from "@/libs/providers/NotificationsProvider";
-import Script from "next/script";
+// import NotificationsProvider from "@/libs/providers/NotificationsProvider";
+// import Script from "next/script";
 
 export const metadata: Metadata = {
   // change the icon to the global icon
@@ -24,10 +24,10 @@ export const metadata: Metadata = {
 };
 
 export default async function LocaleLayout({
-  children,
+  // children,
   params,
 }: {
-  children: React.ReactNode;
+  // children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
@@ -39,40 +39,64 @@ export default async function LocaleLayout({
 
   const token = (await cookies()).get("token")?.value;
 
+  // return (
+  //   <html dir={locale === "ar" ? "rtl" : "ltr"} lang={locale}>
+  //     <head>
+  //       <Script
+  //         async
+  //         src="https://www.googletagmanager.com/gtag/js?id=AW-11439380207"
+  //         strategy="afterInteractive"
+  //       />
+  //       <Script id="gtag-init" strategy="afterInteractive">
+  //         {`
+  //           window.dataLayer = window.dataLayer || [];
+  //           function gtag(){dataLayer.push(arguments);}
+  //           gtag('js', new Date());
+  //           gtag('config', 'AW-11439380207');
+  //         `}
+  //       </Script>
+  //       <Script id="adwords-conversion-event" strategy="afterInteractive">
+  //         {`
+  //           if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+  //             window.gtag('event', 'conversion', { send_to: 'AW-11439380207/ukprCKqj47MbEO-t3M4q' });
+  //           }
+  //         `}
+  //       </Script>
+  //     </head>
+  //     <body>
+  //       <NextIntlClientProvider locale={locale} messages={messages}>
+  //         <NotificationsProvider token={token} />
+  //         <ClientToaster />
+  //         <Header />
+  //         <main className="bg-[#F0F0F0] min-h-screen rounded-tl-[20px] md:rounded-tl-[30px] lg:rounded-tl-[40px] rounded-tr-[20px] md:rounded-tr-[30px] border-b-0 pb-[50px] lg:rounded-tr-[40px]">
+  //           {children}
+  //         </main>
+  //         <Footer />
+  //       </NextIntlClientProvider>
+  //     </body>
+  //   </html>
+  // );
   return (
     <html dir={locale === "ar" ? "rtl" : "ltr"} lang={locale}>
-      <head>
-        <Script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=AW-11439380207"
-          strategy="afterInteractive"
-        />
-        <Script id="gtag-init" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'AW-11439380207');
-          `}
-        </Script>
-        <Script id="adwords-conversion-event" strategy="afterInteractive">
-          {`
-            if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
-              window.gtag('event', 'conversion', { send_to: 'AW-11439380207/ukprCKqj47MbEO-t3M4q' });
-            }
-          `}
-        </Script>
-      </head>
-      <body>
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          <NotificationsProvider token={token} />
-          <ClientToaster />
-          <Header />
-          <main className="bg-[#F0F0F0] min-h-screen rounded-tl-[20px] md:rounded-tl-[30px] lg:rounded-tl-[40px] rounded-tr-[20px] md:rounded-tr-[30px] border-b-0 pb-[50px] lg:rounded-tr-[40px]">
-            {children}
-          </main>
+      <body className="bg-black">
+        {/* <NextIntlClientProvider messages={messages}>
+          <Navbar />
+          <main>
+                    <Toaster position="top-center" />
+            {children}</main>
           <Footer />
-        </NextIntlClientProvider>
+          <SocialMediaIcons /> 
+        </NextIntlClientProvider> */}
+        <div className="w-screen h-screen flex flex-col gap-4 items-center justify-center text-red-600">
+          <h2>الموقع متوقف لفتره محدوده</h2>
+          {/* Arabic */}
+          <h2>The site is temporarily down</h2>
+          {/* English */}
+          <h2>Сайт временно недоступен</h2>
+          {/* Russian */}
+          <h2>Die Website ist vorübergehend nicht erreichbar</h2>
+          {/* German */}
+        </div>
       </body>
     </html>
   );
