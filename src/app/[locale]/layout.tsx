@@ -1,6 +1,6 @@
 // import { NextIntlClientProvider } from "next-intl";
 import type { Metadata } from "next";
-import { getMessages } from "next-intl/server";
+// import { getMessages } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
 // import { ClientToaster } from "@/components/ui/ClientToaster";
@@ -10,7 +10,7 @@ import "../globals.css";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { cookies } from "next/headers";
+// import { cookies } from "next/headers";
 // import NotificationsProvider from "@/libs/providers/NotificationsProvider";
 // import Script from "next/script";
 
@@ -35,9 +35,9 @@ export default async function LocaleLayout({
   if (!routing.locales.includes(locale as Locale)) {
     notFound();
   }
-  const messages = await getMessages({ locale });
+  // const messages = await getMessages({ locale });
 
-  const token = (await cookies()).get("token")?.value;
+  // const token = (await cookies()).get("token")?.value;
 
   // return (
   //   <html dir={locale === "ar" ? "rtl" : "ltr"} lang={locale}>
